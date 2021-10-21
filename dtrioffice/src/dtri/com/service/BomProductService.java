@@ -381,12 +381,13 @@ public class BomProductService {
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
 
-			jsonArray.put(entity.getId());
+			jsonArray.put(entity.getId()); 
 			jsonArray.put(entity.getProduct_id());
 			jsonArray.put(entity.getType_item_id());
 			jsonArray.put(entity.getType_item_group_id());
 			jsonArray.put(entity.getNumber());
 			jsonArray.put(entity.getUseful());
+			jsonArray.put(entity.getNote());
 
 			jsonArray.put(entity.getGroup_name());
 			for (int i = 1; i <= 25; i++) {
@@ -425,6 +426,7 @@ public class BomProductService {
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getCheckdef());
 			jsonArray.put(entity.getType_order());
+			jsonArray.put(entity.getNote());
 			for (int i = 1; i <= 25; i++) {
 				Method method;
 				try {

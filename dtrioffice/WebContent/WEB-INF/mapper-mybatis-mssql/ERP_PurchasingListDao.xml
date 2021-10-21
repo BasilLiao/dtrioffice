@@ -5,7 +5,7 @@
 
 	<!-- 查詢 資料 BOM清單 -->
 	<select id="queryERP_PurchasingList"
-		resultType="ERP_PurchasingEntity">
+		resultType="ERP_PURTC_PURTD_Entity">
 		SELECT 
 		TD003,
 		TD004,

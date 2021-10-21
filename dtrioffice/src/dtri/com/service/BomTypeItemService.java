@@ -111,8 +111,8 @@ public class BomTypeItemService {
 			entity.setId(content.getInt("id"));
 		if (!content.isNull("type") && !content.get("type").equals(""))
 			entity.setType_item(content.getInt("type"));
-		if (!content.isNull("note") && !content.get("note").equals(""))
-			entity.setNote(content.getString("note"));
+		if (!content.isNull("group_list") && !content.getJSONArray("group_list").getString(1).equals(""))
+			entity.setNote(content.getJSONArray("group_list").getString(1));
 		if (!content.isNull("checkdf") && !content.get("checkdf").equals(""))
 			entity.setCheckdef(content.getBoolean("checkdf"));
 		if (!content.isNull("type_order") && !content.get("type_order").equals(""))
@@ -160,8 +160,8 @@ public class BomTypeItemService {
 				entityItem.setSys_modify_date(new Date());
 				entityItem.setSys_modify_user(loginService.getSessionUserBean().getAccount());
 
-				entityItem.setId(item_one.getInt(0));
-				entityItem.setNote(item_one.getString(1));
+				entityItem.setId(item_one.getInt(0));//id
+				entityItem.setNote(item_one.getString(1).equals("")?entity.getNote():item_one.getString(1));//備註
 				entityItem.setGroup_id(entity.getGroup_id());
 				entityItem.setGroup_name(entity.getGroup_name());
 				entityItem.setType_item(entity.getType_item());
@@ -212,6 +212,7 @@ public class BomTypeItemService {
 		jsonArray.put("是否必需");
 		jsonArray.put("排序");
 		jsonArray.put("是否使用");
+		jsonArray.put("說明");
 		group_listAll.put(jsonArray);
 
 		// 內容
@@ -236,6 +237,7 @@ public class BomTypeItemService {
 				jsonArrayG.put(entity.getCheckdef());
 				jsonArrayG.put(entity.getType_order());
 				jsonArrayG.put(entity.getUseful());
+				jsonArrayG.put(entity.getNote());
 				group_listAll.put(jsonArrayG);
 			}
 			// 項目資料+標題

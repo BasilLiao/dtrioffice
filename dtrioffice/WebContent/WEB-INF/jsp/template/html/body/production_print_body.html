@@ -388,7 +388,7 @@
                                     <th class="p-0"><div class="border border-dark border-right-0 border-left-0">SN</div></th>
                                     <td class="p-0">
                                         <div class="p-0 border border-dark border-right-0 border-left-0" style="height: 87px;">
-                                            <div id="barcodeOutputSn" class="ml-3 pt-4 bg-white"></div>
+                                            <div id="barcodeOutputSn" class="ml-3 pt-3 bg-white"></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -1787,8 +1787,8 @@
             createBarcodeForPrint: function (code) {
                 $("#barcodeOutputSn").barcode(code, "code39", {
                     barWidth: 1,
-                    barHeight: 23,
-                    fontSize: 10,
+                    barHeight: 25,
+                    fontSize: 15,
                 });
                 $("#barcodeOutputSn").css("transform", "scale(1.25)");
             },

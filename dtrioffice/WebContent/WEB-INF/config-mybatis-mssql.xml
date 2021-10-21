@@ -11,6 +11,6 @@
 		<setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
 	<typeAliases>
-		<typeAlias alias="ERP_PurchasingEntity" type="dtri.com.db.entity.ERP_PurchasingEntity" />
+		<typeAlias alias="ERP_PURTC_PURTD_Entity" type="dtri.com.db.entity.ERP_PURTC_PURTD_Entity" />
 	</typeAliases>
 </configuration>

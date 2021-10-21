@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dtri.com.bean.FtpUtilBean;
 import dtri.com.bean.SendMailBean;
-import dtri.com.db.entity.ERP_PurchasingEntity;
+import dtri.com.db.entity.ERP_PURTC_PURTD_Entity;
 import dtri.com.db.entity.PurchasingEntity;
 import dtri.com.db.entity.PurchasingListEntity;
 import dtri.com.db.entity.PurchasingMailEntity;
@@ -118,7 +118,7 @@ public class ScheduleTaskService {
 		List<PurchasingListEntity> mail_DTR_list = ps_service.searchList(entity_DTR_ERP, 0, 5000);
 
 		// ERP 採購單 -> 取得 頂新ERP
-		ERP_PurchasingEntity entity_ERP = new ERP_PurchasingEntity();
+		ERP_PURTC_PURTD_Entity entity_ERP = new ERP_PURTC_PURTD_Entity();
 		List<String> entity_ERP_List = new ArrayList<String>();
 		// 建立排除條建
 		entity_ERP.setS_TD012(s);
@@ -127,7 +127,7 @@ public class ScheduleTaskService {
 			entity_ERP_List.add(one.getErp_order_id() + "-" + one.getErp_item_ns() + '-' + one.getErp_item_no());
 		}
 		entity_ERP.setE_list(entity_ERP_List);
-		List<ERP_PurchasingEntity> mail_ERP_List = erp_service.searchERP_PurchasingList(entity_ERP);
+		List<ERP_PURTC_PURTD_Entity> mail_ERP_List = erp_service.searchERP_PurchasingList(entity_ERP);
 
 		// Step2.清除過期紀錄
 		ps_service.deletelistExpired();
@@ -176,7 +176,7 @@ public class ScheduleTaskService {
 				}
 
 				// 過濾 (品號關鍵字->該負責人)
-				for (ERP_PurchasingEntity erp_Entity : mail_ERP_List) {
+				for (ERP_PURTC_PURTD_Entity erp_Entity : mail_ERP_List) {
 
 					// 如果有關鍵字比對到
 					// String pattern = one.getKey_word();
@@ -227,7 +227,7 @@ public class ScheduleTaskService {
 			// ERP 採購 項目清單
 			if (list_erp.length() > 0) {
 				for (Object one_erp : list_erp) {
-					ERP_PurchasingEntity erp_p_e = (ERP_PurchasingEntity) one_erp;
+					ERP_PURTC_PURTD_Entity erp_p_e = (ERP_PURTC_PURTD_Entity) one_erp;
 					PurchasingListEntity p_noe = new PurchasingListEntity();
 					p_noe.setSys_create_date(new Date());
 					p_noe.setSys_create_user(user);

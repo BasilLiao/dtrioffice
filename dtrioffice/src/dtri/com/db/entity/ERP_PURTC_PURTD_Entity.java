@@ -2,7 +2,7 @@ package dtri.com.db.entity;
 
 import java.util.List;
 
-public class ERP_PurchasingEntity {
+public class ERP_PURTC_PURTD_Entity {
 	private String TD003;// AS '項次',
 	private String TD004;// AS '品號',
 	private String TD005;// AS '品名',

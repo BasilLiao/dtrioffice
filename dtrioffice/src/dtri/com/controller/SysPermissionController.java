@@ -17,7 +17,7 @@ import dtri.com.service.LoginService;
 import dtri.com.service.PermissionService;
 
 @Controller
-public class PermissionController {
+public class SysPermissionController {
 
 	@Autowired
 	LoginService loginService;

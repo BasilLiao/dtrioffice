@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dtri.com.db.entity.ERP_PurchasingEntity;
+import dtri.com.db.entity.ERP_PURTC_PURTD_Entity;
 import dtri.com.db.mssql.dao.ERP_PurchasingListDao;
 
 @Transactional
@@ -22,8 +22,8 @@ public class ERP_PurchasingListService {
 	@Autowired
 	ERP_PurchasingListDao listDao;
 	
-	public List<ERP_PurchasingEntity> searchERP_PurchasingList(ERP_PurchasingEntity event) {
-		List<ERP_PurchasingEntity> entities= new ArrayList<ERP_PurchasingEntity>(); 
+	public List<ERP_PURTC_PURTD_Entity> searchERP_PurchasingList(ERP_PURTC_PURTD_Entity event) {
+		List<ERP_PURTC_PURTD_Entity> entities= new ArrayList<ERP_PURTC_PURTD_Entity>(); 
 		entities = listDao.queryERP_PurchasingList(event);
 	return entities;
 	}

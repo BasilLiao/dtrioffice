@@ -199,7 +199,8 @@
 											<th scope="col" style="min-width: 60px;">項目ID</th>
 											<th scope="col" style="min-width: 300px;">項目名稱</th>
 											<th scope="col" style="min-width: 80px;">數量</th>
-											<th scope="col" style="min-width: 70px; width: 100%;">排序</th>
+											<th scope="col" style="min-width: 70px;" >排序</th>
+											<th scope="col" style="min-width: 150px; width: 100%;">說明備註</th>
 										</tr>
 									</thead>
 									<tbody id="group_tbody">
@@ -215,6 +216,7 @@
 											</select></td>
 											<td><input class="col-md-12" type="text" id="group_number_0" placeholder="Ex:1" value="1" required /></td>
 											<td id="a_i_order_0"></td>
+											<td id="a_i_note_0"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -440,13 +442,17 @@
                         //項目
                         if (templateBody.item_list[i][2] == 1) {
                             value_i += "--| ";
-                            for (var j = 5; j < templateBody.item_list[i].length - 1; j++) {
+                            //第 6 格開始是 資料參數
+                            for (var j = 6; j < templateBody.item_list[i].length - 1; j++) {
                                 value_i += templateBody.item_list[i][j] + " | ";
                             }
                             value_i += "--";
                             s_header += "<option value='' >" + value_i + "</option>";
-                            //同步順續
+                            //同步 排序
                             $("#a_i_order_" + who).text(templateBody.item_list[i][4]);
+                            //同步 說明
+                             $("#a_i_note_" + who).text(templateBody.item_list[i][5]);
+                            
                         } else {
                             //內容
                             value_i += "| ";
@@ -562,6 +568,7 @@
                 group_tbody += "</select></td>";
                 group_tbody += '<td><input class="col-md-12" type="text" id="group_number_' + add_id + '" placeholder="Ex:1" required value="1" /></td>';
                 group_tbody += '<td id="a_i_order_' + add_id + '"></td>';
+                group_tbody += '<td id="a_i_note_' + add_id + '"></td>';
                 $(".t_p_row0").after(group_tbody);
                 this.group_item_choose("a_g_item_" + add_id, 0);
                 //同步帶入
@@ -634,6 +641,7 @@
                 $("#a_u_kind").val($(".t_row" + id + " .s_10")[0].innerText).change();
                 
                 var group_tbody = "";
+               
                 for (var i = 0; i < this.group_list.length; i++) {
                     if (id == this.group_list[i][5] && this.group_list[i][6] != 1) {
                         group_tbody = "";
@@ -653,6 +661,7 @@
                         group_tbody += "</select></td>";
                         group_tbody += '<td><input class="col-md-12" type="text" id="group_number_' + this.group_list[i][4] + '" placeholder="Ex:1" required value="1" /></td>';
                         group_tbody += '<td id="a_i_order_' + this.group_list[i][4] + '"></td>';
+                        group_tbody += '<td id="a_i_note_' + this.group_list[i][4] + '"></td>';
                         $("#group_tbody").append(group_tbody);
                         this.group_item_choose("a_g_item_" + this.group_list[i][4], 0);
                     }
@@ -673,6 +682,8 @@
                     templateBody.re_item(event);
                 });
                 //設定預設參數
+                //
+                
                 for (var i = 0; i < this.group_list.length; i++) {
                     if (id == this.group_list[i][5]) {
                         $("#group_tbody #group_number_" + this.group_list[i][4]).val(this.group_list[i][8]);

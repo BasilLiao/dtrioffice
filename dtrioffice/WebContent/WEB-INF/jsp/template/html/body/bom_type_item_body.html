@@ -11,13 +11,14 @@
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="row mb-2">
 					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
+						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch">
+							查詢功能 : </a>
 					</div>
 				</div>
 				<div class="collapse show" id="collapseSearch">
 					<div class="col-md-12 mb-5">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-4 h5">
 								<div class="row">
 									<div class="col-md-12 text-left">
 										項目群組名稱 : <select class="md-12 a_row2" id="s_group_name" name="s_group_name"></select>
@@ -40,7 +41,8 @@
 				<div class="border">
 					<div class="row mb-2">
 						<div class="col-md-5">
-							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
+							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish">
+								查詢結果 : </a>
 						</div>
 					</div>
 					<div class="collapse show" id="collapseFinish">
@@ -57,7 +59,7 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
+										<tr id="search_thead" class="bg-primary h5">
 											<th scope="col" style="min-width: 90px;">功能</th>
 											<th scope="col" style="min-width: 40px;">筆</th>
 										</tr>
@@ -89,38 +91,39 @@
 			<div class="border border-primary shadow bg-light">
 				<div class="row mb-2">
 					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
+						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded">
+							新增/修改/刪除 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
 					<div class="collapse show" id="collapseAdded">
 						<!-- 新增 或 修改(分辨) -->
-						<div class="row m-0 mb-1">
-							<div class="col-md-2">
-								<div class="text-left">
-									<div class="">狀態 :</div>
-									<div class="" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-								</div>
-							</div>
-							<div class="col-md-2">
+						<div class="row m-0 mb-1 h5">
+							<div class="col-md-3">
 								<div class="row text-left">
-									<div class="col-md-6 pr-0 text-right">GroupID:</div>
-									<div class="col-md-6 pr-0" id="a_u_group_id">0</div>
+									<div class="col-md-6 pr-0 ">狀態 :</div>
+									<div class="col-md-6 pr-0" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="row text-left">
-									<div class="col-md-6 pr-0 text-right">GroupName:</div>
-									<div class="col-md-6 " id="">
-										<input class="col-md-12 mr-2" type="text" id="a_u_group_name" placeholder="Ex:項目分類" value="" required />
+									<div class="col-md-6 pr-0 ">GroupID:</div>
+									<div class="col-md-6 pr-0" id="a_u_group_id">0</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="row text-left">
+									<div class="col-md-3 pr-0 ">Group(項目組):</div>
+									<div class="col-md-9 " id="">
+										<input class="col-md-12 mr-2" type="text" id="a_u_group_name" placeholder="Ex:項目組 分類名稱" value="" required />
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-3 mt-1">
 								<div class="row text-left">
-									<div class="col-md-5 pr-0 text-right">Type:</div>
-									<div class="col-md-4 " id="a_u_group_type">
-										<select class="" required>
+									<div class="col-md-6 pr-0 ">Type(類型):</div>
+									<div class="col-md-6 " id="a_u_group_type">
+										<select class="col-md-12" required>
 											<option value="">請選擇</option>
 											<option value="1">checkbox</option>
 											<option value="2" selected>select</option>
@@ -128,19 +131,19 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-1">
+							<div class="col-md-3 mt-1" title="越大越前面">
 								<div class="row text-left">
-									<div class="col-md-8 pr-0 text-right">必要:</div>
-									<div class="col-md-4">
-										<input class="" type="checkbox" value="true" id="a_u_group_checkdf" checked />
+									<div class="col-md-6 pr-0 ">Sort(排序):</div>
+									<div class="col-md-6">
+										<input class="col-md-12 mr-2" type="text" id="a_u_type_order" placeholder="Ex:12" value="" required />
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2" title="越大越前面">
+							<div class="col-md-3 mt-1">
 								<div class="row text-left">
-									<div class="col-md-5 pr-0 text-right">排序:</div>
-									<div class="col-md-7">
-										<input class="col-md-12 mr-2" type="text" id="a_u_type_order" placeholder="Ex:12" value="" required />
+									<div class="col-md-6 pr-0 ">Must(必填?):</div>
+									<div class="col-md-6">
+										<input class="" type="checkbox" value="true" id="a_u_group_checkdf" checked style="height: 25px; width: 25px;" />
 									</div>
 								</div>
 							</div>
@@ -151,13 +154,13 @@
 						<div class="col-md-12">
 							<div class="row">
 								<table class="table table-sm table-hover table-striped table-bordered table-responsive">
-									<thead>
+									<thead class="" style="border: 3px solid #6a7b7e;">
 										<tr id="item_thead_title" class="bg-primary">
 											<th scope="col" style="min-width: 50px;">類型</th>
 											<th scope="col" style="min-width: 100px;">功能</th>
 											<th scope="col" style="min-width: 70px;">項目ID</th>
-											<th scope="col" style="min-width: 150px;">備註</th>
-											<th scope="col" id="item_lists" style="min-width: 60px;width: 100%;" colspan="25">BOM項目清單-(i01-i25) 最多25項目</th>
+											<th scope="col" style="min-width: 250px;">備註</th>
+											<th scope="col" id="item_lists" style="min-width: 60px; width: 100%;" colspan="25">BOM項目清單-(i01-i25) 最多25項目</th>
 										</tr>
 										<tr id="item_thead" class="bg-info"></tr>
 									</thead>
@@ -315,6 +318,7 @@
             rm_added: function () {
                 $("#a_u_type").text("新增資料");
                 $("#a_u_group_name").val("");
+                $("#a_u_group_note").val("");
                 $("#a_u_type_order").val("1");
                 
                 $("#a_u_group_id").text("0");
@@ -341,7 +345,6 @@
 
                 $("#a_u_type").text(a_u_type);
                 $("#a_u_type_order").val($(".t_row" + id + " .s_8")[0].innerText);
-                
 
                 // a_u_group_name
                 this.choose_disabled(false);
@@ -374,6 +377,7 @@
             //鎖定資料
             choose_disabled: function (disabled) {
                 $("#a_u_group_name").attr("disabled", disabled);
+                $("#a_u_group_note").attr("disabled", disabled);
                 $("#a_u_type_order").attr("disabled", disabled);
                 $("#a_u_group_type select").attr("disabled", disabled);
                 $("#item_tbody tr td input").attr("disabled", disabled);
@@ -424,7 +428,7 @@
                   	//備註
                   	div_item = "";
                   	div_item = '<div class ="row ml-0 mr-0" id="name_v_2">';
-                	div_item +='<input class="col-md-12" type="text" value="' + item_name[3] + '"  placeholder="Ex:項目備註" /></div>';
+                	div_item +='<input class="col-md-12" type="text" value="' + item_name[3] + '"  placeholder="Ex:項目備註" required/></div>';
                   	t_p_row1 +='<th scope="col" class="column_2" >' + div_item + "</th>";
                   	
                     for (var j = 4; j < size_item; j++) {
@@ -455,7 +459,7 @@
                             t_p_row2 = '<tr class= "t_p_row' + id + '"><td ><b>內容</b></td>';
                             t_p_row2 += '<td class="s_type_btn">' + butn2 + "</td>";
                             t_p_row2 += '<td class="column_1" id="value_id_' + id + '" >' + (item_value[item_value.length - 1][2] + 1) + "</td>";
-                            t_p_row2 += '<td class="column_2"><input id="value_note_' + id + '" class="col-md-12" type="text" value="" placeholder="Ex:備註內容"  /></td>';
+                            t_p_row2 += '<td class="column_2"><input id="value_note_' + id + '" class="col-md-12" type="text" value="" placeholder="Ex:備註內容" /></td>';
                             //欄數
                             for (var k = 4; k < item_value[j].length; k++) {
                                 t_p_row2 += '<td class="column_' + (k - 1) + '"><input id="value_' + id + "_" + (k - 1) + '" class="col-md-12" type="text" value=""  placeholder="Ex:內容" /></td>';
@@ -517,7 +521,7 @@
                 j = this.now_column_n;
                 var div_item = "";
                 div_item += '<div class ="row ml-0 mr-0">';
-                div_item += '<input class="col-md-8  mr-2" type="text" id="name_v_' + (j - 1) + '" placeholder="Ex:項目分類" value="" required />';
+                div_item += '<input class="col-md-8  mr-2" type="text" id="name_v_' + (j - 1) + '" placeholder="Ex:項目分類" value="" required/>';
 
                 div_item += '<button rm_id="' + (j - 1) + '" id="name_d_' + (j - 1) + '" class="col-md-3 btn btn-danger btn-sm btn-block d_n_submit"  type="button">移除</button>';
                 div_item += "</div>";
@@ -560,7 +564,7 @@
                 var t_p_row2 = '<tr class= "t_p_row' + r + '"><td ><b>內容</b></td>';
                 t_p_row2 += '<td class="s_type_btn">' + butn2 + "</td>";
                 t_p_row2 += '<td class="column_1" id="value_id_' + id + '" >' + id + "</td>";
-                t_p_row2 += '<td class="column_2"><input class="col-md-12"  id="value_note_' + id + '" type="text" value="' +  $('.t_p_row1 .column_2 input').val() + '" placeholder="Ex:備註內容"  /></td>';
+                t_p_row2 += '<td class="column_2"><input class="col-md-12"  id="value_note_' + id + '" type="text" value="' +  $('.t_p_row1 .column_2 input').val() + '" placeholder="Ex:備註內容"  required/></td>';
                 //欄數
                 for (var k = 4; k < c; k++) {
                     t_p_row2 += '<td class="column_' + (k - 1) + '"><input id="value_' + id + "_" + (k - 1) + '" class="col-md-12" type="text" value="' + $('.t_p_row1 .column_'+(k-1)+' input').val() + '"  placeholder="Ex:內容" required /></td>';
