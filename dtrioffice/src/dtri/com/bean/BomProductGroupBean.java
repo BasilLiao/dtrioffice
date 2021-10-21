@@ -6,7 +6,7 @@ import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
 
-public class BomProductGroupBean {
+public class BomProductGroupBean { 
 	private List<BomProductEntity> bomProductEntities;
 	private List<BomGroupEntity> bomGroupEntities;
 	private List<BomTypeItemEntity> bomTypeItemEntities;
