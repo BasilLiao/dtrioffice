@@ -1,10 +1,10 @@
-<div class="row border" id="software_version_body">
+<div class="row border" id="erp_bom_body">
 	<div class="col-md-12 border">
 		<!-- 功能: 查詢 /新增 /修改 -->
 		<div class="mt-3 mb-3 border">
 			<div class="mb-3">
 				<h3>
-					<b>軟體版本控管</b>
+					<b>頂新ERP 查詢-BOM與料件</b>
 				</h3>
 			</div>
 			<!-- 查詢功能 -->
@@ -238,10 +238,10 @@
 	</div>
 </div>
 <script type="text/javascript">
-	console.log("software_version_body");
+	console.log("erp_bom_body");
 	templateBody = new Vue(
 			{
-				el : "#software_version_body",
+				el : "#erp_bom_body",
 				data : {
 					l_search_thead : "",
 					search_list : "",
@@ -640,15 +640,15 @@
 						content.note2 = $("#a_note2").val();
 
 						var action = "C";
-						var url = "./added_software_version.do";
+						var url = "./added_erp_bom.do";
 						var order = "search_update"; //指令
 						if ($("#a_u_type").text() == "修改資料") {
 							action = "U";
-							url = "./update_software_version.do";
+							url = "./update_erp_bom.do";
 						}
 						if ($("#a_u_type").text() == "移除資料") {
 							action = "D";
-							url = "./delete_software_version.do";
+							url = "./delete_erp_bom.do";
 						}
 						content.page_nb = this.page_batch
 								* this.page_batch_total;//批次(起始數)
@@ -678,7 +678,7 @@
 						content.page_total = this.page_batch_total;//(每次要的最大數量)
 						//content.name = $("#s_name").val();
 
-						var url = "./software_version.do";
+						var url = "./erp_bom.do";
 						var order = "search_update"; //指令
 
 						var data = JSON.stringify({

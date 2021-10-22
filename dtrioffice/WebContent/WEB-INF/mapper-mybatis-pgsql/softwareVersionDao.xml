@@ -21,7 +21,8 @@
 				AND id = #{software_entity.id} 
 			</if>
 		</where>
-		${software_limit}
+		order by sys_modify_date desc 
+		${software_limit} 
 		<!-- id OFFSET #{page_OFFSET} LIMIT 100 -->
 	</select>
 	<!-- 添加 -->
