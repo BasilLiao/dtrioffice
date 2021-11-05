@@ -454,9 +454,9 @@
                              $("#a_i_note_" + who).text(templateBody.item_list[i][5]);
                             
                         } else {
-                            //內容
+                        	//第 6 格開始是 資料參數
                             value_i += "| ";
-                            for (var j = 5; j < templateBody.item_list[i].length - 1; j++) {
+                            for (var j = 6; j < templateBody.item_list[i].length - 1; j++) {
                                 value_i += templateBody.item_list[i][j] + " | ";
                             }
                             s_body += "<option value='" + templateBody.item_list[i][2] + "'>" + value_i + "</option>";

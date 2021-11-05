@@ -15,6 +15,12 @@ public interface SoftwareVersionDao {
 	 * **/
 	List<SoftwareVersionEntity> queryAll(@Param("software_entity") SoftwareVersionEntity entity,@Param("software_limit") String limit);
 	/**
+	 * 
+	 * 一般查詢
+	 * @param name 指定項目查詢
+	 * **/
+	List<SoftwareVersionEntity> queryAll2(@Param("software_entity") SoftwareVersionEntity entity,@Param("software_limit") String limit);
+	/**
 	 * 添加 軟體控管
 	 * 
 	 * **/

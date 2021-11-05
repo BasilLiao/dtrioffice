@@ -12,5 +12,10 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="ERP_PURTC_PURTD_Entity" type="dtri.com.db.entity.ERP_PURTC_PURTD_Entity" />
+		<typeAlias alias="ERP_INVMB_Entity" type="dtri.com.db.entity.ERP_INVMB_Entity" />
+		<typeAlias alias="ERP_INVMC_Entity" type="dtri.com.db.entity.ERP_INVMC_Entity" />
+		<typeAlias alias="ERP_BOMMD_Entity" type="dtri.com.db.entity.ERP_BOMMD_Entity" />
+		<typeAlias alias="ERP_MOC_PUR_Entity" type="dtri.com.db.entity.ERP_MOC_PUR_Entity" />
+
 	</typeAliases>
 </configuration>

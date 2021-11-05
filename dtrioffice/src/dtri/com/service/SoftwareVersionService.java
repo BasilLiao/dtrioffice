@@ -29,9 +29,20 @@ public class SoftwareVersionService {
 	 * @return 查詢後清單
 	 * 
 	 **/
-	public List<SoftwareVersionEntity> searchSoftwareVersion(SoftwareVersionEntity entity,int offset,int page_total) {
+	public List<SoftwareVersionEntity> searchSoftwareVersion(SoftwareVersionEntity entity, int offset, int page_total) {
 		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
-		List<SoftwareVersionEntity> list = svDao.queryAll(entity,all_limit);
+		List<SoftwareVersionEntity> list = svDao.queryAll(entity, all_limit);
+		return list;
+	}
+
+	/**
+	 * @param entity 查詢使用者資料 指定全名客戶名稱
+	 * @return 查詢後清單
+	 * 
+	 **/
+	public List<SoftwareVersionEntity> searchSoftwareVersion2(SoftwareVersionEntity entity, int offset, int page_total) {
+		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
+		List<SoftwareVersionEntity> list = svDao.queryAll2(entity, all_limit);
 		return list;
 	}
 

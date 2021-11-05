@@ -9,6 +9,7 @@
 <script src="./thirdparty/js/jquery-3.4.1.min.js"></script>
 <script src="./thirdparty/js/jquery-ui-1.12.1.min.js"></script>
 <script src="./thirdparty/js/bootstrap-4.4.1.min.js"></script>
+<script src="./thirdparty/js/jquery-table2excel.js"></script>
 <script src="./thirdparty/js/vue-2.6.11.min.js"></script>
 <link rel="icon" type="image/svg" href="./emoji.svg" />
 <style type="text/css">
@@ -46,7 +47,7 @@
 		<div class="col-md-12"></div>
 	</div>
 	<div id="body" class="pt-4 mb-3 mt-3 col-md-12"></div>
-	<div id="footer" class="mt-5 mb-3"></div>
+	<div id="footer" class="mt-1 mb-2"></div>
 	<!-- 執行中 -->
 	<div id="loading" class="d-none fixed-top" onclick="return main.loading(false);">
 		<div class="mt-5 pt-5">
@@ -121,7 +122,7 @@
                 //進入運作中
                 main.loading(true);
                 //排除空白
-                var data = dataSend.replace(/\s+/g, "");
+                var data = dataSend.replaceAll("=", "").replaceAll("!", "");
                 $.ajax({
                     url: url,
                     type: this.ajaxCell.type,

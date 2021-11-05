@@ -209,7 +209,7 @@ public class ProductionPrintController {
 				check_entity_sv.setClient_name(entity_sv.getClient_name());
 				check_entity_sv.setBom_product_id(entity_sv.getBom_product_id());
 				e_code += "_6";
-				if (softwareVersionService.searchSoftwareVersion(check_entity_sv, 0, 999999).size() >= 1) {
+				if (softwareVersionService.searchSoftwareVersion2(check_entity_sv, 0, 999999).size() >= 1) {
 					checked = softwareVersionService.updateSoftwareVers(entity_sv);
 					e_code += "_7";
 				} else {

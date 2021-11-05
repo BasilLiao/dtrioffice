@@ -25,6 +25,30 @@
 		${software_limit} 
 		<!-- id OFFSET #{page_OFFSET} LIMIT 100 -->
 	</select>
+	
+	<!-- 查詢 資料 -->
+	<select id="queryAll2" resultType="SoftwareVersionEntity">
+		SELECT *
+		FROM software_version
+		<where>
+			<if test="software_entity.client_name !=null">
+				AND client_name = #{software_entity.client_name} 
+			</if>
+			<if test="software_entity.bom_product_id !=null">
+				AND bom_product_id like '%' || #{software_entity.bom_product_id} || '%'
+			</if>
+			<if test="software_entity.product_model_in !=null">
+				AND product_model_in like '%' || #{software_entity.product_model_in} || '%'
+			</if>
+			<if test="software_entity.id >0">
+				AND id = #{software_entity.id} 
+			</if>
+		</where>
+		order by sys_modify_date desc 
+		${software_limit} 
+		<!-- id OFFSET #{page_OFFSET} LIMIT 100 -->
+	</select>
+	
 	<!-- 添加 -->
 	<insert id="addedOne" parameterType="SoftwareVersionEntity">
 		INSERT INTO

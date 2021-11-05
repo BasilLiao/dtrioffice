@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dtri.com.db.mssql.dao.ERP_BomDao">
+
+	<!-- 查詢 資料 基本 料號清單 -->
+	<select id="queryERP_INVMB_List" resultType="ERP_INVMB_Entity">
+		select
+		INV.MB001,
+		INV.MB002,
+		INV.MB003,
+		INV.MB009,
+		INV.MB017,
+		CMS.MC002,
+		CMS.MC005
+		from INVMB as INV join CMSMC as CMS on MB017 = MC001
+		<where>
+			<if test="invmb_entity.mb001 !=null">
+				AND INV.MB001 like
+				concat('%',#{invmb_entity.mb001,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="invmb_entity.mb002 !=null">
+				AND INV.MB002 like
+				concat('%',#{invmb_entity.mb002,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="invmb_entity.mb003 !=null">
+				AND INV.MB003 like
+				concat('%',#{invmb_entity.mb003,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="invmb_entity.mc005 !=null">
+				AND CMS.MC005 ='Y'
+			</if>
+		</where>
+		order by INV.MB001 asc
+		${erp_limit}
+	</select>
+
+	<!-- 查詢 資料 stock清單 -->
+	<select id="queryERP_INVMC_List" resultType="ERP_INVMC_Entity">
+		SELECT
+		inv.MC001,
+		inv.MC002,
+		cms.MC002 as CMC002,
+		inv.MC003,
+		inv.MC007,
+		inv.MC004,
+		inv.MC012,
+		inv.MC013
+		FROM INVMC as inv join CMSMC as cms on inv.MC002 = cms.MC001
+		<where>
+			<if test="invmc_entity.mc001 !=null">
+				AND inv.MC001 like
+				concat('%',#{invmc_entity.mc001,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+		order by inv.MC001 asc
+		OFFSET 0 ROWS
+		FETCH FIRST 50 ROWS ONLY
+	</select>
+
+	<!-- 查詢 資料 bom清單 -->
+	<select id="queryERP_BOMMD_List" resultType="ERP_BOMMD_Entity">
+		select
+		bom.MD001,
+		bom.MD003,
+		inv.MB002,
+		inv.MB003,
+		bom.MD006,
+		bom.MD009,
+		bom.MD011,
+		bom.MD012,
+		(bom.MD015+' '+bom.MD201+' '+
+		bom.MD202+' '+bom.MD203+' '+
+		bom.MD204+' '+bom.MD205+' '+
+		bom.MD206+' '+bom.MD207) as
+		MD015,
+		bom.MD016
+		from BOMMD as bom
+		join INVMB as inv
+		on bom.MD003 = inv.MB001
+		<where>
+			bom.MD006 != 0
+			<if test="bommd_entity.md001 !=null">
+				AND bom.MD001 like
+				concat('%',#{bommd_entity.md001,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+		order by bom.MD003 asc
+		OFFSET 0 ROWS
+		FETCH FIRST 500 ROWS ONLY
+	</select>
+
+	<!-- 查詢 未來異動清單 -->
+	<select id="queryERP_MOC_PUR_List" resultType="ERP_MOC_PUR_Entity">
+		SELECT * FROM (
+		SELECT
+		CTB.TB003 AS S000,
+		'預計領' AS TP000,
+		SMC.MC002 AS TP001,
+		SMC.MC001 AS TP002,
+		CTB.TB015 AS TP003,
+		CONVERT(varchar(100),CTB.TB004) AS TP004,
+		'' AS TP005,
+		''+CTB.TB001+'-'+CTB.TB003+' :
+		'+CTB.TB014 AS NOTE000
+		FROM
+		MOCTB AS CTB
+		join CMSMC AS SMC on CTB.TB009 = SMC.MC001
+		join MOCTA AS CTA on CTA.TA001+CTA.TA002 = CTB.TB001+CTB.TB002
+		<where>
+			<if test="mocpur_entity.s000 !=null">
+				AND CTB.TB003 like
+				concat('%',#{mocpur_entity.s000,jdbcType=VARCHAR},'%')
+			</if>
+			AND (CTA.TA011 !='y' OR CTA.TA011 !='Y' ) AND CTA.TA013 = 'Y' AND CTB.TB004 > 0
+		</where>
+		ORDER BY CTB.TB015 ASC
+		OFFSET 0 ROWS FETCH FIRST 50 ROWS ONLY
+		UNION
+		SELECT
+		CTA.TA006 AS S000,
+		'預計生' AS TP000,
+		SMC.MC002 AS TP001,
+		SMC.MC001 AS TP002,
+		CTA.TA010 AS TP003,
+		'' AS TP004,
+		CONVERT(varchar(100),CTA.TA015) AS TP005,
+		''+CTA.TA001+'-'+CTA.TA002+' : '+CTA.TA026+'-'+CTA.TA027 AS NOTE000
+		FROM
+		MOCTA AS CTA
+		join CMSMC AS SMC on CTA.TA020 = SMC.MC001
+		<where>
+			<if test="mocpur_entity.s000 !=null">
+				AND CTA.TA006 like
+				concat('%',#{mocpur_entity.s000,jdbcType=VARCHAR},'%')
+			</if>
+			AND (CTA.TA011 !='y' OR CTA.TA011 !='Y' ) AND CTA.TA013 = 'Y'
+		</where>
+		ORDER BY CTA.TA010 ASC
+		OFFSET 0 ROWS FETCH FIRST 50 ROWS ONLY
+		UNION
+		SELECT
+		RTD.TD004 AS S000,
+		'預計購' AS TP000,
+		SMC.MC002 AS TP001,
+		SMC.MC001 AS TP002,
+		RTD.TD012 AS TP003,
+		'' AS TP004,
+		CONVERT(varchar(100),RTD.TD008) AS TP005,
+		''+RTD.TD001+'-'+RTD.TD002+' : '+RTD.TD005 AS NOTE000
+		FROM
+		PURTD AS RTD
+		join CMSMC AS SMC on RTD.TD007 = SMC.MC001
+		join PURTC AS RTC on RTD.TD001 +RTD.TD002
+		=RTC.TC001 +RTC.TC002
+		<where>
+			<if test="mocpur_entity.s000 !=null">
+				AND RTD.TD004 like
+				concat('%',#{mocpur_entity.s000,jdbcType=VARCHAR},'%')
+			</if>
+			AND RTD.TD015 !=RTD.TD008 AND (RTC.TC027 !='3' OR RTC.TC027='N') AND RTD.TD018 ='Y'
+		</where>
+		ORDER BY RTD.TD012 ASC
+		OFFSET 0 ROWS FETCH FIRST 50 ROWS ONLY
+		) AS MOC_PUR
+		ORDER BY S000 ASC, TP003 ASC ,TP000 ASC
+	</select>
+</mapper>

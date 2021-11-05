@@ -1,3 +1,8 @@
+<style>
+.fixed_cell {
+	position: sticky;
+}
+</style>
 <div class="row border" id="erp_bom_body">
 	<div class="col-md-12 border">
 		<!-- 功能: 查詢 /新增 /修改 -->
@@ -16,24 +21,23 @@
 				</div>
 				<div class="collapse show" id="collapseSearch">
 					<div class="col-md-12 mb-5">
-						<div class="row">
+						<div class="row h5">
 							<div class="col-md-4">
-								<div class="col-md-12 text-left">
-									客戶名稱: <input class="col-md-8" type="text" id="s_c_n" name="s_c_n" placeholder="Ex:Radarteam Sweden AB" required autofocus />
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										BOM料號: <input class="col-md-8" type="text" id="s_b" name="s_b" placeholder="Ex:90-311-Y10KJ07" required />
-									</div>
+								<div class="row p-0 m-0">
+									<div class="col-md-4 text-left pl-0">品號(料號):</div>
+									<input class="col-md-8" type="text" id="s_c_n" name="s_c_n" placeholder="Ex:01-116-305010" required autofocus />
 								</div>
 							</div>
 							<div class="col-md-4">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										產品型號(場內): <input class="col-md-7" type="text" id="s_p" name="s_p" placeholder="Ex:311KY" required />
-									</div>
+								<div class="row p-0 m-0">
+									<div class="col-md-4 text-left pl-0">品名(名稱):</div>
+									<input class="col-md-8" type="text" id="s_b" name="s_b" placeholder="Ex:Intel Celeron Processor 6305" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row p-0 m-0">
+									<div class="col-md-4 text-left pl-0">規格(敘述):</div>
+									<input class="col-md-8" type="text" id="s_p" name="s_p" placeholder="Ex:Intel Celeron Processor 6305_BGA1449" required />
 								</div>
 							</div>
 						</div>
@@ -69,8 +73,8 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
-											<th scope="col" style="min-width: 90px;">功能</th>
+										<tr id="search_thead" class="bg-primary h5">
+											<th scope="col" style="min-width: 170px;">功能</th>
 											<th scope="col" style="min-width: 40px;">筆</th>
 										</tr>
 									</thead>
@@ -99,140 +103,154 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能
-							: </a>
+
+				<div class="col-md-5 pl-0">
+					<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 進階查詢-功能 : </a>
+				</div>
+				<div class="collapse show" id="collapseAdded">
+					<div class="ml-3 mr-3 mt-3">
+						<ul class="nav nav-tabs" id="productionTab" role="tablist">
+							<li class="nav-item border-top border-left border-right border-primary rounded">
+								<!--  --> <a class="nav-link active p-1" id="stock-tab" data-toggle="tab" href="#stock" role="tab" aria-controls="stock" aria-selected="false"><b>[各庫存量]</b></a>
+							</li>
+							<li class="nav-item border-top border-left border-right border-primary rounded">
+								<!--  --> <a class="nav-link p-1" id="stock_c-tab" data-toggle="tab" href="#stock_c" role="tab" aria-controls="stock_c" aria-selected="true"> <b>[未來異動]</b></a>
+							</li>
+							<li class="nav-item border-top border-left border-right border-primary rounded">
+								<!--  --> <a class="nav-link p-1" id="bom-tab" data-toggle="tab" href="#bom" role="tab" aria-controls="bom" aria-selected="true"> <b>[BOM展開]</b></a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content mb-2" id="">
+						<!-- 各庫庫存 -->
+						<div class="col-12 p-0 tab-pane fade bg-white active show" id="stock" role="tabpanel" aria-labelledby="stock-tab">
+							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
+								<div class="row m-0 pt-3 pb-4 h5">
+									<div class="col-md-4 p-0">
+										<div class="row p-0 m-0">
+											<div class="col-md-4 text-left ">各庫(料號):</div>
+											<input class="col-md-8" type="text" id="stock_value" name="stock_value" placeholder="Ex:01-116-305010" required autofocus />
+										</div>
+									</div>
+								</div>
+								<div class="row col-mb-12 pb-2 m-0">
+									<div class="col-md-3"></div>
+									<div class="col-md-2">
+										<button id="stock_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+									</div>
+									<div class="col-md-2">
+										<button id="stock_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除</button>
+									</div>
+									<div class="col-md-2">
+										<button id="stock_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+									</div>
+									<div class="col-md-3"></div>
+								</div>
+							</div>
+							<div class="col-md-12 p-0 bg-light ">
+								<div class="col-md-12 p-0">
+									<!-- 顯示內容 -->
+									<table id="stock_table" style="min-height: 400px; max-height: 480px;" class="shadow table table-sm table-hover table-striped table-bordered table-responsive">
+										<thead>
+											<tr id="stock_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											</tr>
+										</thead>
+										<tbody id="stock_tbody"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- 未來異動 -->
+						<div class="col-12 tab-pane fade bg-white" id="stock_c" role="tabpanel" aria-labelledby="stock_c-tab">
+							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
+								<div class="row m-0 pt-3 pb-4 h5">
+									<div class="col-md-4 p-0">
+										<div class="row p-0 m-0">
+											<div class="col-md-4 text-left ">異動(料號):</div>
+											<input class="col-md-8" type="text" id="stock_c_value" name="stock_c_value" placeholder="Ex:01-116-305010" required autofocus />
+										</div>
+									</div>
+								</div>
+								<div class="row col-mb-12 pb-2 m-0">
+									<div class="col-md-3"></div>
+									<div class="col-md-2">
+										<button id="stock_c_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+									</div>
+									<div class="col-md-2">
+										<button id="stock_c_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除</button>
+									</div>
+									<div class="col-md-2">
+										<button id="stock_c_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+									</div>
+									<div class="col-md-3"></div>
+								</div>
+							</div>
+							<div class="col-md-12 p-0 bg-light ">
+								<div class="col-md-12 p-0">
+									<!-- 顯示內容 -->
+									<table id="stock_c_table" style="min-height: 400px; max-height: 480px;" class="shadow table table-sm table-hover table-striped table-bordered table-responsive">
+										<thead>
+											<tr id="stock_c_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											</tr>
+										</thead>
+										<tbody id="stock_c_tbody"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- BOM -->
+						<div class="col-12 tab-pane fade bg-white" id="bom" role="tabpanel" aria-labelledby="bom-tab">
+							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
+								<div class="row m-0 pt-3 pb-4 h5">
+									<div class="col-md-4 p-0">
+										<div class="row p-0 m-0">
+											<div class="col-md-5 text-left ">產品(品號/料號):</div>
+											<input class="col-md-7" type="text" id="bom_value" name="bom_value" placeholder="Ex:01-116-305010" required autofocus />
+										</div>
+									</div>
+								</div>
+								<div class="row col-mb-12 pb-2 m-0">
+									<div class="col-md-3"></div>
+									<div class="col-md-2">
+										<button id="bom_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+									</div>
+									<div class="col-md-2">
+										<button id="bom_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除(暫存)</button>
+									</div>
+									<div class="col-md-2">
+										<button id="bom_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+									</div>
+									<div class="col-md-3"></div>
+								</div>
+								<div class="row m-0 pt-3 pb-2 h5">
+									<div class="col-md-1 p-2">暫存:</div>
+									<div class="col-md-11 row m-0">
+										<button id="bom_history" class=" d-none m-2 col-md-2 btn-sm btn btn-info btn-block" type="submit" value="">XXXX</button>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 p-0 bg-light ">
+								<div class="col-md-12 p-0">
+									<!-- 顯示內容 -->
+									<table id="bom_table" style="min-height: 400px; max-height: 480px;" class="shadow table table-sm table-hover table-striped table-bordered table-responsive">
+										<thead>
+											<tr id="bom_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											</tr>
+										</thead>
+										<tbody id="bom_tbody"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
-				<form onsubmit="return templateBody.send_added_or_update_save();">
-					<div class="collapse show font-weight-bold" id="collapseAdded">
-						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-1">
-							<div class="col-md-3">
-								<div class="row m-0 p-0 text-left">
-									<div class="col-md-3">狀態 :</div>
-									<div class="col-md-9" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row text-left">
-									<div class="col-md-3 pr-0">ID:</div>
-									<div class="col-md-9 " id="a_id">0</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row text-left">
-									<div class="col-md-3 pr-0">B_ID:</div>
-									<div class="col-md-9 " id="a_bom_id">0</div>
-								</div>
-							</div>
-						</div>
-						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
-						<!-- 新增 或 修改 或 刪除(內容) -->
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-6">
-								<div class="row m-0 p-0">
-									<div class="col-md-3 text-left">BOM料號 :</div>
-									<input class="col-md-9" type="text" id="a_bom_product_id" placeholder="Ex:90-311-Y10KS28" required />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row m-0 p-0">
-									<div class="col-md-3 text-left">客 戶 名 稱 :</div>
-									<input class="col-md-9" type="text" id="a_c_name" placeholder="Ex:Mickey Mouse" required />
-								</div>
-							</div>
-						</div>
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="row col-md-6 m-0 p-0 pr-3 pl-3">
-								<div class="row col-md-6 m-0 p-0">
-									<div class="col-md-6 text-left">M/B 版本 :</div>
-									<input class="col-md-6" type="text" id="a_mb_ver" placeholder="Ex:R1.0" required />
-								</div>
-								<div class="row col-md-6 m-0 p-0">
-									<div class="col-md-6 text-left">M/B ECN 版 :</div>
-									<input class="col-md-6" type="text" id="a_mb_ver_ecn" placeholder="Ex:A20" required />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row  m-0 p-0">
-									<div class="col-md-3 text-left">NVRAM版本:</div>
-									<input class="col-md-9" type="text" id="a_nveram" placeholder="Ex:NVRAM" />
-								</div>
-							</div>
-						</div>
-
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-6">
-								<div class="row  m-0 p-0">
-									<div class="col-md-3 text-left">BIOS版本 :</div>
-									<input class="col-md-9" type="text" id="a_bios" placeholder="301KY_0.00.16" required />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row  m-0 p-0">
-									<div class="col-md-3 text-left">MODEL版本:</div>
-									<input class="col-md-9" type="text" id="a_model" placeholder="DT301Y-10B5-495" required />
-								</div>
-							</div>
-						</div>
-
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-6">
-								<div class="row  m-0 p-0">
-									<div class="col-md-3 text-left">E C 版 本 :</div>
-									<input class="col-md-9" type="text" id="a_ec" placeholder="301KY_0.1.4" required />
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row  m-0 p-0">
-									<div class="col-md-3 text-left">OS :</div>
-									<input class="col-md-9" type="text" id="a_os" placeholder="" required />
-								</div>
-							</div>
-						</div>
-
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-9">
-								<div class="row m-0 p-0">
-									<div class="col-md-2 text-left">項目備註 :</div>
-									<input class="col-md-10" type="text" id="a_note" placeholder="項目解釋" required />
-								</div>
-							</div>
-						</div>
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-9">
-								<div class="row m-0 p-0">
-									<div class="col-md-2 text-left">備 註 1 :</div>
-									<input class="col-md-10" type="text" id="a_note1" placeholder="說明" required />
-								</div>
-							</div>
-						</div>
-						<div class="row m-0 p-0 mb-3 mt-3">
-							<div class="col-md-9">
-								<div class="row m-0 p-0">
-									<div class="col-md-2 text-left">備 註 2 :</div>
-									<input class="col-md-10" type="text" id="a_note2" placeholder="說明" required />
-								</div>
-							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-4"></div>
-							<div class="col-md-2">
-								<div class="">
-									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="">
-									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">清除內容</button>
-								</div>
-							</div>
-							<div class="col-md-4"></div>
-						</div>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -243,9 +261,11 @@
 			{
 				el : "#erp_bom_body",
 				data : {
-					l_search_thead : "",
 					search_list : "",
-					search_group : "",
+					search_list_stock : "",
+					search_list_stock_c : "",
+					search_list_bom : "",
+					search_history_bom : {},
 					//分頁功能
 					page_max : 100,//當前本批 筆數
 					page_max_total : 100,//最大總數
@@ -257,50 +277,173 @@
 				created : function() {
 					//初始化
 					console.log(main.contentData.templateInfo.body["list"]);
-					this.search_group = main.contentData.templateInfo.body["grouplist"];
 					this.search_list = main.contentData.templateInfo.body["list"];
+
+					this.search_list_stock = main.contentData.templateInfo.body["list_stock"];
+					this.search_list_stock_c = main.contentData.templateInfo.body["list_stock_c"];
+					this.search_list_bom = main.contentData.templateInfo.body["list_bom"];
 					//t_choose
-					var min_width = 100;
+					var min_width = "min-width: 100px;";
 					for (var i = 0; i < this.search_list[0].length; i++) {
 						var choose_check = '[<div class="text-left form-check">';
 						choose_check += '<input class="form-check-input" type="checkbox" value="" id="s_' + i + '" checked>';
-						choose_check += '<label class="form-check-label" for="s_' + i + '">'
-								+ this.search_list[0][i] + "</label>";
+						choose_check += '<label class="form-check-label" for="s_' + i + '">' + this.search_list[0][i] + "</label>";
 						choose_check += "</div>]";
 						$("#search_choose").append(choose_check);
 					}
+
 					//t_header
 					for (var i = 0; i < this.search_list[0].length; i++) {
-						if (i == 0 || i == 2 || i == 4 || i == 11) {
-							min_width = 180;
+						if (i == 1 || i == 2 || i == 4 || i == 3) {
+							min_width = "min-width: 200px;";
 						}
-						$("#search_thead").append(
-								'<th style="min-width: ' + min_width + 'px;" class="s_' + i + '" scope="col">'
-										+ this.search_list[0][i] + "</th>");
-						min_width = 100;
+						$("#search_thead").append('<th style="' + min_width + 'px;" class="s_' + i + '" scope="col">' + this.search_list[0][i] + "</th>");
+						min_width = "min-width: 100px;";
+					}
+					//t_stock
+					for (var i = 0; i < this.search_list_stock[0].length; i++) {
+						var left = "";
+						var fixed_cell = "";
+						if (i == 0 || i == 2 || i == 6 || i == 7) {
+							min_width = "min-width: 200px;";
+							if (i == 0) {
+								min_width += "left: 141px;";
+								fixed_cell = " fixed_cell bg-primary";
+							}
+						}
+						//最後
+						if (this.search_list_stock[0].length - 1 == i) {
+							min_width = "width: 100%;";
+						}
+						$("#stock_thead").append(
+								'<th style="'+ min_width +'" class="s_' + i +fixed_cell+'" scope="col">' + this.search_list_stock[0][i] + "</th>");
+						min_width = "min-width: 100px;";
+					}
+					//t_bom
+					for (var i = 1; i < this.search_list_bom[0].length; i++) {
+						var left = "";
+						var fixed_cell = "";
+						if (i == 0 || i == 1 || i == 6 || i == 7 || i == 8) {
+							min_width = "min-width: 200px;";
+							if (i == 1) {
+								min_width += "left: 141px;";
+								fixed_cell = " fixed_cell bg-primary";
+							}
+						}
+						//最後
+						if (this.search_list_bom[0].length - 1 == i) {
+							min_width = "width: 100%;";
+						}
+						$("#bom_thead").append('<th style="'+ min_width +'" class="s_' + i +fixed_cell+'" scope="col">' + this.search_list_bom[0][i] + "</th>");
+						min_width = "min-width: 100px;";
+					}
+					//t_stock_c
+					for (var i = 0; i < this.search_list_stock_c[0].length; i++) {
+						var left = "";
+						var fixed_cell = "";
+						if (i == 0 || i == 4 || i == 5 || i == 7) {
+							min_width = "min-width: 200px;";
+							if (i == 0) {
+								min_width += "left: 141px;";
+								fixed_cell = " fixed_cell bg-primary";
+							}
+						}
+						if (i == 6) {
+							min_width = "min-width: 300px;";
+						}
+						//最後
+						if (this.search_list_stock_c[0].length - 1 == i) {
+							min_width = "width: 100%;";
+						}
+						$("#stock_c_thead").append(
+								'<th style="'+ min_width +'" class="s_' + i +fixed_cell+'" scope="col">' + this.search_list_stock_c[0][i] + "</th>");
+						min_width = "min-width: 100px;";
 					}
 					//t_body
 					this.search_update();
-					//t_body_group
-					this.group_choose();
-
+					this.search_update_stock();
+					this.search_update_stock_c();
+					this.search_update_bom();
 					//動態監聽顯示Table 物件 查看開關
-					$(document).on("click", "#search_choose input",
-							function(event) {
-								templateBody.search_choose(event);
-							});
+					$(document).on("click", "#search_choose input", function(event) {
+						templateBody.search_choose(event);
+					});
 					//查詢監聽
 					$(document).on("click", "#s_submit", function(event) {
-						templateBody.send_search();
-					});
-					//清除修改
-					$(document).on("click", "#a_c_submit", function(event) {
-						templateBody.rm_added();
+						//templateBody.page_batch = 0;
+						templateBody.change_page_init();
+						templateBody.send_search("s_submit");
 					});
 					//清除查詢
 					$(document).on("click", "#c_submit", function(event) {
 						templateBody.rm_search();
 					});
+					//stock監聽
+					$(document).on("click", "#stock_search", function(event) {
+						templateBody.send_search("stock_search");
+					});
+					//stock監聽
+					$(document).on("click", "#stock_clear", function(event) {
+						$("#stock_value").val("");
+					});
+					//stock監聽
+					$(document).on("click", "#stock_excel", function(event) {
+						templateBody.excel_export("stock_table", "各庫存量表_[" + $('#stock_value').val() + "]");
+					});
+
+					//bom監聽
+					$(document).on("click", "#bom_search", function(event) {
+						templateBody.send_search("bom_search");
+					});
+					//bom監聽
+					$(document).on("click", "#bom_clear", function(event) {
+						$("#bom_value").val("");
+						templateBody.search_history_bom = {};
+						$('.bom_history').remove();
+
+					});
+					//bom監聽
+					$(document).on("click", "#bom_excel", function(event) {
+						templateBody.excel_export("bom_table", "BOM表_[" + $('#bom_value').val() + "]");
+					});
+					//stock_c監聽
+					$(document).on("click", "#stock_c_search", function(event) {
+						templateBody.send_search("stock_c_search");
+					});
+					//stock_c監聽
+					$(document).on("click", "#stock_c_clear", function(event) {
+						$("#stock_c_value").val("");
+					});
+					//stock_c監聽
+					$(document).on("click", "#stock_c_excel", function(event) {
+						templateBody.excel_export("stock_c_table", "未來異動表_[" + $('#stock_c_value').val() + "]");
+					});
+
+					//bom監聽
+					$(document).on("click", ".bom_detail", function(event) {
+						var id = event.target.attributes.bom_id.value;
+						$("#bom_value").val(id.replaceAll(' ', '').replaceAll('	', ''));
+						$("#bom_search").trigger("click");
+					});
+					$(document).on("click", ".bom_history", function(event) {
+						var id = event.target.attributes.id.value;
+						$("#bom_value").val(id.replaceAll(' ', '').replaceAll('	', ''));
+						$("#bom_search").trigger("click");
+					});
+
+					//stock監聽
+					$(document).on("click", ".stock_submit", function(event) {
+						templateBody.choose_stock(event);
+					});
+					//bom監聽
+					$(document).on("click", ".bom_submit", function(event) {
+						templateBody.choose_bom(event);
+					});
+					//search_stock_c監聽
+					$(document).on("click", ".stock_c_submit", function(event) {
+						templateBody.choose_stock_c(event);
+					});
+
 				},
 				methods : {
 					search_choose : function(event) {
@@ -319,7 +462,7 @@
 						//頁數-刷新
 						this.change_page_update();
 						//t_body
-						var id_key = 13;
+						var id_key = 7;
 						for (var i = 1; i < this.search_list.length; i++) {
 							//頁數-每頁顯示(不再顯示範圍內則隱藏)
 							var page_group = this.change_page_btn(i);
@@ -327,85 +470,157 @@
 							var s_list = this.search_list[i][id_key];
 
 							var a_submit = '<div class="md-6">';
-							a_submit += '<button user_id="' + s_list + '" class="btn btn-warning btn-sm btn-block a_submit">';
-							a_submit += "改</button></div>";
+							a_submit += '<button user_id="' + s_list + '" class="btn btn-warning btn-sm btn-block stock_submit">';
+							a_submit += "各庫</button></div>";
 
 							var d_submit = '<div class="md-6 ml-1">';
-							d_submit += '<button user_id="' + s_list + '" class="btn btn-danger btn-sm btn-block d_submit">';
-							d_submit += "刪</button></div>";
+							d_submit += '<button user_id="' + s_list + '" class="btn btn-primary btn-sm btn-block bom_submit">';
+							d_submit += "BOM</button></div>";
 
-							$("#search_tbody")
-									.append(
-											'<tr class="page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">'
-													+ a_submit
-													+ d_submit
-													+ "</th></tr>");
+							var f_submit = '<div class="md-6 ml-1">';
+							f_submit += '<button user_id="' + s_list + '" class="btn btn-info btn-sm btn-block stock_c_submit">';
+							f_submit += "異動</button></div>";
+
+							$("#search_tbody").append(
+									'<tr class="page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">'
+											+ a_submit + f_submit + d_submit + "</th></tr>");
 							//計數量
-							$(
-									"#search_tbody .t_row"
-											+ this.search_list[i][id_key])
-									.append("<td >" + i + "</td>");
+							$("#search_tbody .t_row" + this.search_list[i][id_key]).append("<td >" + i + "</td>");
 
 							for (var j = 0; j < this.search_list[i].length; j++) {
-								$("#search_tbody .t_row" + s_list).append(
-										"<td class=s_" + j + ">"
-												+ this.search_list[i][j]
-												+ "</td>");
+								$("#search_tbody .t_row" + s_list).append("<td class=s_" + j + ">" + this.search_list[i][j] + "</td>");
 							}
 						}
-						//修改監聽
-						$(document).on("click", ".a_submit", function(event) {
-							templateBody.choose_update("修改資料", event);
-						});
-						//刪除監聽
-						$(document).on("click", ".d_submit", function(event) {
-							templateBody.choose_delete(event);
-						});
 					},
-					//選擇群組-並建立監聽
-					group_choose : function() {
-						var group = "";
-						$("#a_u_group_name select").empty();
-						group += '<option value="">請選擇</option>';
-						$.each(this.search_group, function(index, val) {
-							group += "<option value=" + val + ">" + index
-									+ "</option>";
-						});
-						$("#a_u_group_name select").append(group);
-
-						$(document)
-								.on(
-										"change",
-										"#a_u_group_name select",
-										function(event) {
-											$("#a_u_group_id").text(
-													event.target.value);
-										});
+					//查詢更新
+					search_update_stock : function() {
+						$("#stock_tbody").empty();
+						//t_body
+						var id_key = 8;
+						var fixed_cell_color = true;
+						for (var i = 1; i < this.search_list_stock.length; i++) {
+							//功能-按鈕
+							var s_list = this.search_list_stock[i][id_key];
+							var a_submit = '<div class="md-6">';
+							a_submit += '<button stock_id="' + s_list + '" class="btn btn-secondary btn-sm btn-block ">';
+							a_submit += "保留</button></div>";
+							//功能
+							$("#stock_tbody").append(
+									'<tr class=" t_rows_' + s_list + '" style="white-space: nowrap;"><th style="left: 1px;" class="ml-0 col-md-12 row fixed_cell">'
+											+ a_submit + "</th></tr>");
+							//計數量
+							$("#stock_tbody .t_rows_" + s_list).append("<td class='fixed_cell' style='left:101px;'>" + i + "</td>");
+							for (var j = 0; j < this.search_list_stock[i].length; j++) {
+								//排版固定
+								var setting = 'class="s_' + j + ' ';
+								if (j == 0) {
+									setting += 'fixed_cell" style="left:141px;"';
+								} else {
+									setting += '"';
+								}
+								$("#stock_tbody .t_rows_" + s_list).append("<td "+setting+">" + this.search_list_stock[i][j] + "</td>");
+							}
+							if (fixed_cell_color) {
+								$("#stock_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#ebecef");
+								fixed_cell_color = false;
+							} else {
+								$("#stock_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#f8f9fc");
+								fixed_cell_color = true;
+							}
+						}
 					},
-					//清除新增/修該內容
-					rm_added : function() {
-						$("#a_u_type").text("新增資料");
-						$("#a_id").text(0);
-						$("#a_bom_id").text(0);
+					//查詢更新
+					search_update_bom : function() {
+						$("#bom_tbody").empty();
+						//t_body
+						var id_key = 10;
+						var fixed_cell_color = true;
+						for (var i = 1; i < this.search_list_bom.length; i++) {
+							//功能-按鈕
+							var s_list = this.search_list_bom[i][id_key];
+							var a_submit = '<div class="md-6">';
+							a_submit += '<button bom_id="' + this.search_list_bom[i][1].replaceAll(' ', '').replaceAll('	', '')
+									+ '" class="bom_detail btn btn-info btn-sm btn-block ">';
+							a_submit += "BOM</button></div>";
 
-						$("#a_bom_product_id").val("");
-						$("#a_c_name").val("");
+							//功能
+							$("#bom_tbody").append(
+									'<tr class=" t_rows_' + s_list + '" style="white-space: nowrap;"><th style="left: 1px;" class="ml-0 col-md-12 row fixed_cell">'
+											+ a_submit + "</th></tr>");
+							//計數量
+							$("#bom_tbody .t_rows_" + s_list).append("<td class='fixed_cell' style='left:101px;'>" + i + "</td>");
 
-						$("#a_mb_ver").val("");
-						$("#a_mb_ver_ecn").val("");
-						$("#a_nveram").val("");
+							for (var j = 1; j < this.search_list_bom[i].length; j++) {
+								//排版固定
+								var setting = 'class="s_' + j + ' ';
+								if (j == 1) {
+									setting += 'fixed_cell" style="left:141px;"';
+								} else {
+									setting += '"';
+								}
+								$("#bom_tbody .t_rows_" + s_list).append("<td " + setting + ">" + this.search_list_bom[i][j] + "</td>");
+							}
 
-						$("#a_bios").val("");
-						$("#a_model").val("");
+							if (fixed_cell_color) {
+								$("#bom_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#ebecef");
+								fixed_cell_color = false;
+							} else {
+								$("#bom_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#f8f9fc");
+								fixed_cell_color = true;
+							}
+						}
 
-						$("#a_ec").val("");
-						$("#a_os").val("");
+						//存檔
+						if (this.search_list_bom.length > 1 && $('#bom_value').val() != "" && this.search_history_bom[$('#bom_value').val()] == null) {
+							var one_bom = this.search_list_bom[1][0].replaceAll(' ', '').replaceAll('	', '');
+							this.search_history_bom[one_bom] = this.search_list_bom;
+							var one_item = $("#bom_history").clone(); //複製樣本
+							one_item[0].id = one_bom;
+							one_item[0].value = one_bom;
+							one_item.insertBefore("#bom_history");
+							$('#' + one_item[0].id).removeClass("d-none");
+							$('#' + one_item[0].id).addClass("bom_history");
+							$('#' + one_item[0].id).text(one_item[0].value + " >");
+						}
+					},
+					//查詢更新
+					search_update_stock_c : function() {
+						$("#stock_c_tbody").empty();
+						//t_body
+						var id_key = 7;
+						var fixed_cell_color = true;
+						for (var i = 1; i < this.search_list_stock_c.length; i++) {
+							//功能-按鈕
+							var s_list = this.search_list_stock_c[i][id_key];
+							var a_submit = '<div class="md-6">';
+							a_submit += '<button stock_c_id="' + s_list + '" class="btn btn-secondary btn-sm btn-block ">';
+							a_submit += "保留</button></div>";
 
-						$("#a_note").val("");
-						$("#a_note1").val("");
-						$("#a_note2").val("");
+							//功能
+							$("#stock_c_tbody").append(
+									'<tr class=" t_rows_' + s_list + '" style="white-space: nowrap;"><th style="left: 1px;" class="ml-0 col-md-12 row fixed_cell">'
+											+ a_submit + "</th></tr>");
+							//計數量
+							$("#stock_c_tbody .t_rows_" + s_list).append("<td class='fixed_cell' style='left:101px;'>" + i + "</td>");
+							for (var j = 0; j < this.search_list_stock_c[i].length; j++) {
+								//排版固定
+								var setting = 'class="s_' + j + ' ';
+								if (j == 0) {
+									setting += 'fixed_cell" style="left:141px;"';
+								} else {
+									setting += '"';
+								}
+								$("#stock_c_tbody .t_rows_" + s_list).append("<td  "+ setting + ">" + this.search_list_stock_c[i][j] + "</td>");
+							}
 
-						this.choose_disabled(false);
+							if (fixed_cell_color) {
+								$("#stock_c_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#ebecef");
+								fixed_cell_color = false;
+							} else {
+								$("#stock_c_tbody .t_rows_" + s_list + " .fixed_cell").css("background-color", "#f8f9fc");
+								fixed_cell_color = true;
+							}
+						}
 					},
 					//查詢清除
 					rm_search : function() {
@@ -413,45 +628,12 @@
 						$("#s_b").val("");
 						$("#s_p").val("");
 					},
-					//選擇  修改
-					choose_update : function(a_u_type, event) {
-						$("#a_u_type").text(a_u_type);
-						var id = event.target.attributes.user_id.value;
-						$("#a_id").text(
-								$(".t_row" + id + " .s_13")[0].innerText);
-						$("#a_bom_id").text(
-								$(".t_row" + id + " .s_14")[0].innerText);
-
-						$("#a_bom_product_id").val(
-								$(".t_row" + id + " .s_4")[0].innerText);
-						$("#a_c_name").val(
-								$(".t_row" + id + " .s_5")[0].innerText);
-
-						$("#a_mb_ver").val(
-								$(".t_row" + id + " .s_6")[0].innerText);
-						$("#a_mb_ver_ecn").val(
-								$(".t_row" + id + " .s_7")[0].innerText);
-						$("#a_nveram").val(
-								$(".t_row" + id + " .s_10")[0].innerText);
-
-						$("#a_bios").val(
-								$(".t_row" + id + " .s_8")[0].innerText);
-						$("#a_model").val(
-								$(".t_row" + id + " .s_11")[0].innerText);
-
-						$("#a_ec").val($(".t_row" + id + " .s_9")[0].innerText);
-						$("#a_os")
-								.val($(".t_row" + id + " .s_12")[0].innerText);
-
-						$("#a_note").val(
-								$(".t_row" + id + " .s_15")[0].innerText);
-						$("#a_note1").val(
-								$(".t_row" + id + " .s_16")[0].innerText);
-						$("#a_note2").val(
-								$(".t_row" + id + " .s_17")[0].innerText);
-
-						// a_u_group_name
-						this.choose_disabled(false);
+					//選擇 庫存
+					choose_stock : function(event) {
+						var id = ".t_row" + event.target.attributes.user_id.value;
+						$("#stock_value").val($(id + " .s_0").text().replaceAll(' ', '').replaceAll('	', ''));
+						$("#stock-tab").trigger("click");
+						$("#stock_search").trigger("click");
 						//移動
 						setTimeout(function() {
 							$("html,body").animate({
@@ -459,18 +641,12 @@
 							}, 'slow');
 						}, 500);
 					},
-					//選擇 刪除
-					choose_delete : function(event) {
-						var id = event.target.attributes.user_id.value;
-						var a_u_type = "移除資料";
-						$("#a_u_type").text(a_u_type);
-						$("#a_u_id").text(
-								$(".t_row" + id + " .s_4")[0].innerText);
-						$("#a_u_group").text(
-								$(".t_row" + id + " .s_6")[0].innerText);
-
-						this.choose_update(a_u_type, event);
-						this.choose_disabled("disabled");
+					//選擇 庫存
+					choose_stock_c : function(event) {
+						var id = ".t_row" + event.target.attributes.user_id.value;
+						$("#stock_c_value").val($(id + " .s_0").text().replaceAll(' ', '').replaceAll('	', ''));
+						$("#stock_c-tab").trigger("click");
+						$("#stock_c_search").trigger("click");
 						//移動
 						setTimeout(function() {
 							$("html,body").animate({
@@ -478,23 +654,20 @@
 							}, 'slow');
 						}, 500);
 					},
-					//鎖定資料
-					choose_disabled : function(disabled) {
-
-						$("#a_bom_product_id").attr("disabled", disabled);
-						$("#a_c_name").attr("disabled", disabled);
-						$("#a_mb_ver").attr("disabled", disabled);
-						$("#a_mb_ver_ecn").attr("disabled", disabled);
-						$("#a_nveram").attr("disabled", disabled);
-						$("#a_bios").attr("disabled", disabled);
-						$("#a_model").attr("disabled", disabled);
-						$("#a_ec").attr("disabled", disabled);
-						$("#a_os").attr("disabled", disabled);
-						$("#a_note").attr("disabled", disabled);
-						$("#a_note1").attr("disabled", disabled);
-						$("#a_note2").attr("disabled", disabled);
-
+					//選擇 BOM 表
+					choose_bom : function(event) {
+						var id = ".t_row" + event.target.attributes.user_id.value;
+						$("#bom_value").val($(id + " .s_0").text().replaceAll(' ', '').replaceAll('	', ''));
+						$("#bom-tab").trigger("click");
+						$("#bom_search").trigger("click");
+						//移動
+						setTimeout(function() {
+							$("html,body").animate({
+								scrollTop : 950
+							}, 'slow');
+						}, 500);
 					},
+
 					//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
 					change_page_init : function() {
 						//active 更換為第一格
@@ -509,8 +682,7 @@
 								$(".p" + now_page).addClass("p" + re_page);
 								$(".p" + re_page).removeClass("p" + now_page);
 								$(".p" + re_page + " a").text(re_page);
-								$(".p" + re_page + " a").attr("id",
-										"p" + re_page);
+								$(".p" + re_page + " a").attr("id", "p" + re_page);
 							}
 							if (re_page == 1) {
 								$(".p" + now_page).addClass(a);
@@ -548,10 +720,8 @@
 							d_none = "d-none";
 						}
 						//頁數-(個位數)+(十位數)
-						var page_group = "pg_"
-								+ (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
-						var page_nb = "p"
-								+ (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
+						var page_group = "pg_" + (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
+						var page_nb = "p" + (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
 						$("." + page_nb).removeClass("disabled");
 						return page_group + " " + d_none;
 					},
@@ -577,16 +747,11 @@
 
 								for (var i = 1; i <= 10; i++) {
 									var now_page = i + (this.page_batch * 10);
-									var previous_page = i
-											+ ((this.page_batch) * 10) - 10;
-									$(".p" + now_page).addClass(
-											"p" + previous_page);
-									$(".p" + previous_page).removeClass(
-											"p" + now_page);
-									$(".p" + previous_page + " a").text(
-											previous_page);
-									$(".p" + previous_page + " a").attr("id",
-											"p" + previous_page);
+									var previous_page = i + ((this.page_batch) * 10) - 10;
+									$(".p" + now_page).addClass("p" + previous_page);
+									$(".p" + previous_page).removeClass("p" + now_page);
+									$(".p" + previous_page + " a").text(previous_page);
+									$(".p" + previous_page + " a").attr("id", "p" + previous_page);
 									if (i == 1) {
 										$(".p" + previous_page).addClass(a);
 									}
@@ -600,15 +765,11 @@
 								$(".page-item").removeClass(a);
 								for (var i = 1; i <= 10; i++) {
 									var now_page = i + (this.page_batch * 10);
-									var next_page = i
-											+ ((this.page_batch + 1) * 10);
-									$(".p" + now_page)
-											.addClass("p" + next_page);
-									$(".p" + next_page).removeClass(
-											"p" + now_page);
+									var next_page = i + ((this.page_batch + 1) * 10);
+									$(".p" + now_page).addClass("p" + next_page);
+									$(".p" + next_page).removeClass("p" + now_page);
 									$(".p" + next_page + " a").text(next_page);
-									$(".p" + next_page + " a").attr("id",
-											"p" + next_page);
+									$(".p" + next_page + " a").attr("id", "p" + next_page);
 									if (i == 1) {
 										$(".p" + next_page).addClass(a);
 									}
@@ -619,67 +780,64 @@
 						}
 						return false;
 					},
-					//傳送 新增 or 修改 or 刪除
-					send_added_or_update_save : function() {
-						var content = new Object();
-						content.id = $("#a_id").text();
-						content.bom_id = $("#a_bom_id").text();
-						content.bom_product_id = $("#a_bom_product_id").val();
-
-						content.client_name = $("#a_c_name").val();
-						content.mb_ver = $("#a_mb_ver").val();
-						content.mb_ver_ecn = $("#a_mb_ver_ecn").val();
-						content.nvram = $("#a_nveram").val();
-						content.bios = $("#a_bios").val();
-
-						content.product_model_in = $("#a_model").val();
-						content.ec = $("#a_ec").val();
-						content.os = $("#a_os").val();
-						content.note = $("#a_note").val();
-						content.note1 = $("#a_note1").val();
-						content.note2 = $("#a_note2").val();
-
-						var action = "C";
-						var url = "./added_erp_bom.do";
-						var order = "search_update"; //指令
-						if ($("#a_u_type").text() == "修改資料") {
-							action = "U";
-							url = "./update_erp_bom.do";
-						}
-						if ($("#a_u_type").text() == "移除資料") {
-							action = "D";
-							url = "./delete_erp_bom.do";
-						}
-						content.page_nb = this.page_batch
-								* this.page_batch_total;//批次(起始數)
-						content.page_total = this.page_batch_total;//(每次要的最大數量)
-						var data = JSON.stringify({
-							data : {
-								datetime : "",
-								action : action,
-								whoami : main.loginData.account,
-								cellBackName : "bodyAfter",
-								cellBackOrder : order,
-								content : content,
-							},
+					excel_export : function(id, whois) {
+						var myDate = new Date();
+						this.reportDate = myDate.getFullYear() + '-' + ('0' + (myDate.getMonth() + 1)).slice(-2) + '-' + ('0' + myDate.getDate()).slice(-2)
+								+ ' ' + myDate.getHours() + ':' + ('0' + (myDate.getMinutes())).slice(-2) + ':' + myDate.getSeconds();
+						$("#" + id).table2excel({
+							// exclude CSS class
+							//https://www.jqueryscript.net/table/Export-Html-Table-To-Excel-Spreadsheet-using-jQuery-table2excel.html
+							preserveColors : false,
+							exclude_img : true,
+							exclude_links : true,
+							exclude : ".noExl",
+							name : "Worksheet Name",
+							filename : "ERP_Report_" + whois + "_" + this.reportDate,//do not include extension
+							fileext : ".xls" // file extension
 						});
-						main.ajaxSend(url, data);
-						return false; //防止真傳送
 					},
 					//傳送 查詢
-					send_search : function() {
-						var content = new Object();
-						content.client_name = $("#s_c_n").val();
-						content.bom_product_id = $("#s_b").val();
-						content.product_model_in = $("#s_p").val();
-
-						content.page_nb = this.page_batch
-								* this.page_batch_total;//批次(起始數)
-						content.page_total = this.page_batch_total;//(每次要的最大數量)
-						//content.name = $("#s_name").val();
-
+					send_search : function(type) {
 						var url = "./erp_bom.do";
+						var content = new Object();
 						var order = "search_update"; //指令
+
+						content.page_nb = this.page_batch * this.page_batch_total;//批次(起始數)
+						content.page_total = this.page_batch_total;//(每次要的最大數量)
+						switch (type) {
+						//料號查詢
+						case "s_submit":
+							content.MB001 = $("#s_c_n").val();
+							content.MB002 = $("#s_b").val();
+							content.MB003 = $("#s_p").val();
+							break;
+						//庫存查詢
+						case "stock_search":
+							order = "search_stock";
+							content.stock_MC001 = $("#stock_value").val().replaceAll(' ', '');
+							break;
+						//BOM查詢
+						case "bom_search":
+							order = "search_bom";
+							content.bom_MD001 = $("#bom_value").val().replaceAll(' ', '').replaceAll('	', '');
+							//如果有查詢過
+							if (this.search_history_bom[content.bom_MD001] != null) {
+								this.search_list_bom = this.search_history_bom[content.bom_MD001];
+								this.search_update_bom();
+								return null;
+							}
+							break;
+						//未來異動
+						case "stock_c_search":
+							order = "search_stock_c";
+							content.stock_c_S001 = $("#stock_c_value").val().replaceAll(' ', '');
+							break;
+						default:
+							break;
+						}
+
+						//content.name = $("#s_name").val();
+						console.log("頁數:" + content.page_nb + "每次:" + content.page_total);
 
 						var data = JSON.stringify({
 							data : {
@@ -699,14 +857,28 @@
 						switch (event.r_cellBackOrder) {
 						case "search_update":
 							//刷新資料
-							if (event.r_content.templateInfo.body["list"] != null
-									&& event.r_content.templateInfo.body["list"] != "") {
+							if (event.r_content.templateInfo.body["list"] != null && event.r_content.templateInfo.body["list"] != "") {
 								this.search_list = event.r_content.templateInfo.body["list"];
 								this.search_update();
-								this.rm_added();
 							}
 							break;
-						case "update_body_nav":
+						case "search_stock":
+							if (event.r_content.templateInfo.body["list_stock"] != null && event.r_content.templateInfo.body["list_stock"] != "") {
+								this.search_list_stock = event.r_content.templateInfo.body["list_stock"];
+								this.search_update_stock();
+							}
+							break;
+						case "search_bom":
+							if (event.r_content.templateInfo.body["list_bom"] != null && event.r_content.templateInfo.body["list_bom"] != "") {
+								this.search_list_bom = event.r_content.templateInfo.body["list_bom"];
+								this.search_update_bom();
+							}
+							break;
+						case "search_stock_c":
+							if (event.r_content.templateInfo.body["list_stock_c"] != null && event.r_content.templateInfo.body["list_stock_c"] != "") {
+								this.search_list_stock_c = event.r_content.templateInfo.body["list_stock_c"];
+								this.search_update_stock_c();
+							}
 							break;
 						}
 					},
@@ -718,8 +890,25 @@
 					$(document).off("click", "#search_choose input");
 					$(document).off("click", "#s_submit");
 					$(document).off("click", "#a_c_submit");
-					$(document).off("click", ".a_submit");
-					$(document).off("click", ".d_submit");
+					//上方
+					$(document).off("click", ".stock_submit");
+					$(document).off("click", ".bom_submit");
+					$(document).off("click", ".stock_c_submit");
+					$(document).off("click", ".bom_detail");
+					$(document).off("click", ".bom_history");
+					//各項目
+					$(document).off("click", "#stock_search");
+					$(document).off("click", "#stock_clear");
+					$(document).off("click", "#stock_excel");
+
+					$(document).off("click", "#bom_search");
+					$(document).off("click", "#bom_clear");
+					$(document).off("click", "#bom_excel");
+
+					$(document).off("click", "#stock_c_search");
+					$(document).off("click", "#stock_c_clear");
+					$(document).off("click", "#stock_c_excel");
+
 				},
 			});
 </script>
