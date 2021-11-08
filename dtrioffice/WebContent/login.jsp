@@ -58,13 +58,12 @@ body {
 		</form>
 	</div>
 	<div id="footer" class="mt-5 mb-3">
-		<div class="text-muted text-center">
-			<p>
-				請使用 1.Brave 2.Chrome 3.Microsoft Edge 瀏覽器 <br>最佳解析度為 1366*768 以上. <br>任何問題 需求 請洽詢 系統管理員 分機:321
-			</p>
-			<p>
-				&copy; 2020 DT Research, Inc. All Rights Reserved.<br> 版本: Beta v0.81.2
-			</p>
+		<div class="text-muted text-center text-muted small">
+			<div class="row m-0 p-0 ">
+				<div class="col-4">&copy; 2020 DT Research, Inc. All Rights Reserved.</div>
+				<div class="col-4">請使用 Brave/Chrome 瀏覽器 最佳解析度為 1366*768 以上</div>
+				<div class="col-4">版本: Beta v0.82.2</div>
+			</div>
 		</div>
 	</div>
 	<!-- 必要訊息${allData}-->

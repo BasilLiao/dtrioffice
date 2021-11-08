@@ -266,9 +266,9 @@ public class ERP_BomService {
 		jsonArray.put("倉庫名");
 		jsonArray.put("倉庫別");
 		// 內容
-		jsonArray.put("領出量");
 		jsonArray.put("入庫量");
-		jsonArray.put("備註(工單號 訂單 ...等等)");
+		jsonArray.put("領出量");
+		jsonArray.put("備註(工單號 訂單 : 品號...等等)");
 		jsonArray.put("id");
 		jsonAll.put(jsonArray);
 		// 內容
@@ -284,8 +284,8 @@ public class ERP_BomService {
 			jsonArray.put(entity.getTp000());
 			jsonArray.put(entity.getTp001());
 			jsonArray.put(entity.getTp002());
-			jsonArray.put(entity.getTp004().equals("") ? "" : entity.getTp004().split("\\.")[0]);
 			jsonArray.put(entity.getTp005().equals("") ? "" : entity.getTp005().split("\\.")[0]);
+			jsonArray.put(entity.getTp004().equals("") ? "" : entity.getTp004().split("\\.")[0]);
 			jsonArray.put(entity.getNote000());
 			jsonArray.put("ID_" + id++);
 			jsonAll.put(jsonArray);
