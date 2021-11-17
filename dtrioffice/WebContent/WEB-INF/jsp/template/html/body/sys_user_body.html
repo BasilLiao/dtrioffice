@@ -9,33 +9,30 @@
 			</div>
 			<!-- 查詢功能 -->
 			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
-				<div class="mb-3 collapse show" id="collapseSearch">
-					<div class="col-md-12 mb-5">
-						<div class="row">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									項目: <select class="md-12 a_row2" id="s_item" name="s_item">
-										<option value="account">帳號</option>
-										<option value="email">Email</option>
-										<option value="name">名稱</option>
-									</select> <input class="col-md-7" type="text" id="s_name" name="s_name" placeholder="Ex:user" required autofocus />
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										職位 : <input class="col-md-7" type="text" id="s_position" name="s_position" placeholder="Ex:董事長" required />
-									</div>
-								</div>
-							</div>
+				<div class=" collapse show" id="collapseSearch">
+					<div class="row col-md-12 m-0 p-0 mb-3 h5">
+						<div class="col-md-1 text-left">項目:</div>
+						<div class="col-md-2 m-0">
+							<select class="col-md-12 a_row2" id="s_item" name="s_item">
+								<option value="account">帳號</option>
+								<option value="email">Email</option>
+								<option value="name">名稱</option>
+							</select>
+						</div>
+						<div class="col-md-3 m-0">
+							<input class="col-md-12" type="text" id="s_name" name="s_name" placeholder="Ex:user" required autofocus />
+						</div>
+						<div class="col-md-1 text-left">職位 :</div>
+						<div class="col-md-3">
+							<input class="col-md-12" type="text" id="s_position" name="s_position" placeholder="Ex:董事長" required />
 						</div>
 					</div>
-					<div class="row mb-2">
+					<div class="row mb-2 m-0 mb-3">
 						<div class="col-md-5"></div>
 						<div class="col-md-2">
 							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
@@ -47,8 +44,8 @@
 			<!-- 功能:查詢結果  /修改 -->
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2">
-						<div class="col-md-5">
+					<div class="row mb-2 m-0">
+						<div class="col-md-5 p-0">
 							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
@@ -63,7 +60,7 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
+										<tr id="search_thead" class="h5 bg-primary">
 											<th scope="col" style="min-width: 90px;">功能</th>
 											<th scope="col" style="min-width: 40px;">筆</th>
 										</tr>
@@ -93,113 +90,111 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
-					<div class="collapse show" id="collapseAdded">
+					<div class="h5 collapse show" id="collapseAdded">
 						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-1">
-							<div class="col-md-2">
-								<div class="text-left">
-									<div class="col-md-12">狀態 :</div>
-									<div class="col-md-12" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-								</div>
+						<div class="row mb-3 col-md-12 p-0 m-0">
+							<div class="row m-0 text-left col-md-3 mb-2">
+								<div class="col-md-3 p-0">狀態 :</div>
+								<div class="col-md-9 p-0" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
 							</div>
-							<div class="col-md-2">
-								<div class="row text-left">
-									<div class="col-md-6 pr-0">UserID:</div>
-									<div class="col-md-6 pl-0" id="a_u_id">0</div>
-								</div>
+							<div class="row m-0 text-left col-md-3 mb-2">
+								<div class="col-6 p-0">UID:</div>
+								<div class="col-6 p-0" id="a_u_id">0</div>
 							</div>
-							<div class="col-md-2">
-								<div class="row text-left">
-									<div class="col-md-6 pr-0">GroupID:</div>
-									<div class="col-md-6 pl-0" id="a_u_group_id">0</div>
-								</div>
+							<div class="row m-0 text-left col-md-3 mb-2">
+								<div class="col-6 p-0">GID:</div>
+								<div class="col-6 p-0" id="a_u_group_id">0</div>
 							</div>
-							<div class="col-md-2">
-								<div class="row text-left">
-									<div class="col-md-8 pr-0">GroupName:</div>
-									<div class="col-md-4 pl-0 pr-0" id="a_u_group_name">
-										<select class="" required></select>
-									</div>
+							<div class="row m-0 text-left col-md-3 mb-2">
+								<div class="col-3 p-0">群組:</div>
+								<div class="col-9 p-0" id="a_u_group_name">
+									<select class="col-md-12" required></select>
 								</div>
 							</div>
 						</div>
 						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
 						<!-- 新增 或 修改 或 刪除(內容) -->
-						<div class="row mb-3 mt-3">
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										個人名稱 : <input class="col-md-7" type="text" id="a_name" name="a_name" placeholder="Ex:小王" required />
+						<div class="row mb-3 mt-3 m-0">
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0">中名 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_name" name="a_name" placeholder="Ex:小王" required />
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										英文名稱 : <input class="col-md-7" type="text" id="a_e_name" name="a_e_name" placeholder="Ex:Mickey Mouse" required />
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0">英名 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_e_name" name="a_e_name" placeholder="Ex:Mickey Mouse" required />
 									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										職位 : <input class="col-md-7" type="text" id="a_position" name="a_position" placeholder="Ex:董事長" required />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										帳號 : <input class="col-md-7" type="text" id="a_account" name="a_account" placeholder="Ex:帳號設定" required />
-									</div>
-								</div>
-							</div>
 
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0">職位 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_position" name="a_position" placeholder="Ex:董事長" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0">帳號 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_account" name="a_account" placeholder="Ex:帳號設定" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0">狀態 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_useful" name="a_useful" placeholder="2=開 1=關" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0 text-left">Mail :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="email" id="a_email" name="a_email" placeholder="Ex:apple@dtri.com" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0 text-left">密碼 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="password" id="a_password" name="a_password" placeholder="Ex:0%^&sr" required />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-9 mb-3">
+								<div class="row m-0 text-left">
+									<div class="col-3 p-0 text-left">說明備註 :</div>
+									<div class="col-9 p-0">
+										<input class="col-md-12" type="text" id="a_note" name="a_note" placeholder="Ex:可不寫" />
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="row mb-5">
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										說明備註 : <input class="col-md-7" type="text" id="a_note" name="a_note" placeholder="Ex:可不寫" />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										狀態 : <input class="col-md-7" type="text" id="a_useful" name="a_useful" placeholder="2=開 1=關" required />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										Email : <input class="col-md-9" type="email" id="a_email" name="a_email" placeholder="Ex:apple@dtri.com" required />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										密碼 : <input class="col-md-7" type="password" id="a_password" name="a_password" placeholder="Ex:0%^&sr" required />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row mb-3">
+						<div class="row m-0">
 							<div class="col-md-4"></div>
-							<div class="col-md-2">
+							<div class="col-md-2 mb-2">
 								<div class="">
 									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-2 mb-2">
 								<div class="">
 									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">清除內容</button>
 								</div>
@@ -304,7 +299,8 @@
 					d_submit += '<button user_id="' + s_list + '" class="btn btn-danger btn-sm btn-block d_submit">';
 					d_submit += "刪</button></div>";
 
-					$("#search_tbody").append('<tr class="page_all t_row' + s_list + ' '+page_group+'"><th class="ml-0 col-md-12 row">' + a_submit + d_submit + "</th></tr>");
+					$("#search_tbody").append(
+							'<tr class="page_all t_row' + s_list + ' '+page_group+'"><th class="ml-0 col-md-12 row">' + a_submit + d_submit + "</th></tr>");
 					//計數量
 					$("#search_tbody .t_row" + this.search_list[i][4]).append("<td >" + i + "</td>");
 

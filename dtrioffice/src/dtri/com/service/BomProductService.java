@@ -286,6 +286,7 @@ public class BomProductService {
 			p_entity.setSys_create_user(loginService.getSessionUserBean().getAccount());
 			p_entity.setSys_modify_date(new Date());
 			p_entity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
+			
 			p_entity.setBom_number(product.getString("bom_number").trim());
 			p_entity.setProduct_model(product.getString("product_model"));
 			p_entity.setVersion_motherboard(product.getString("version_motherboard"));
@@ -333,36 +334,38 @@ public class BomProductService {
 		JSONArray groupOne = new JSONArray();
 		// 標題
 		JSONArray jsonArray = new JSONArray();
-		jsonArray.put("建立時間");
-		jsonArray.put("建立者");
-		jsonArray.put("修改時間");
-		jsonArray.put("修改者");
 
 		jsonArray.put("產品ID");
 		jsonArray.put("產品型號");
 		jsonArray.put("主機板(硬體)-版本");
 
 		jsonArray.put("對應BOM表 單號");
-		jsonArray.put("使用狀態");
 		jsonArray.put("備註");
+		jsonArray.put("狀態");
 		jsonArray.put("類型");
+		
+		jsonArray.put("建立時間");
+		jsonArray.put("建立者");
+		jsonArray.put("修改時間");
+		jsonArray.put("修改者");
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
 			jsonArray = new JSONArray();
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-			jsonArray.put(entity.getSys_modify_user());
 
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getProduct_model());
 			jsonArray.put(entity.getVersion_motherboard());
 
 			jsonArray.put(entity.getBom_number());
-			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getNote());
+			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getKind());
+			
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+			jsonArray.put(entity.getSys_create_user());
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+			jsonArray.put(entity.getSys_modify_user());
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);

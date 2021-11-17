@@ -8,29 +8,29 @@
 				</h3>
 			</div>
 			<!-- 查詢功能 -->
-			<div class="mb-3 border border-primary shadow">
-				<div class="row mb-2">
-					<div class="col-md-5">
+			<div class="mb-3 border border-primary shadow bg-light">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
 				<div class="mb-3 collapse show" id="collapseSearch">
-					<div class="row mb-5">
-						<div class="col-md-3">
+					<div class="row m-0 mb-5 h5">
+						<div class="col-md-4">
 							<div class="row">
 								<div class="col-md-12 text-left">
 									關鍵字(料號) : <input class="col-md-7" type="text" id="s_erp_item_no" placeholder="Ex:0800092000" required autofocus />
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<div class="row">
 								<div class="col-md-12 text-left">
 									關鍵字(品號) : <input class="col-md-7" type="text" id="s_erp_item_name" placeholder="Ex:螺絲釘" required />
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<div class="row">
 								<div class="col-md-12 text-left">
 									使用者(人名) : <input class="col-md-7" type="text" id="s_user_name" placeholder="Ex:無名氏" required />
@@ -38,20 +38,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mb-2">
-						<div class="col-md-5"></div>
-						<div class="col-md-2">
-							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+					<div class="row mb-2 m-0">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<div class="col-md-8 container">
+								<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+							</div>
 						</div>
-						<div class="col-md-5"></div>
+						<div class="col-md-4"></div>
 					</div>
 				</div>
 			</div>
 			<!-- 功能:查詢結果  /修改 -->
-			<div class="mb-3 border border-primary shadow">
+			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2">
-						<div class="col-md-5">
+					<div class="row mb-2 m-0">
+						<div class="col-md-5 p-0">
 							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 寄信清單紀錄 : </a>
 						</div>
 					</div>
@@ -64,7 +66,7 @@
 							</div>
 							<!-- 顯示內容 -->
 							<div class="row">
-								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
+								<table style="min-height: 480px;" class="h5 table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
 										<tr id="search_thead" class="bg-primary">
 											<th scope="col" style="min-width: 90px;">功能</th>
@@ -95,26 +97,24 @@
 				</div>
 			</div>
 			<!-- 新增/修改功能 -->
-			<div class="border border-primary shadow">
-				<div class="row mb-2">
-					<div class="col-md-5">
+			<div class="border border-primary shadow  bg-light">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 設定寄信參數 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
 					<div class="collapse show" id="collapseAdded">
 						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-2">
-							<div class="col-md-2 pr-0">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										<div class="col-md-12">狀態 :</div>
-										<div class="col-md-12" id="a_u_type" style="font-size: 25px; color: red;">修改設定</div>
-									</div>
+						<div class="row mb-2 m-0">
+							<div class="col-md-12">
+								<div class="row mb-2 m-0">
+									<div class="col-md-1">狀態 :</div>
+									<div class="col-md-5" id="a_u_type" style="font-size: 25px; color: red;">修改設定</div>
 								</div>
 							</div>
 						</div>
-						<div class="row mb-2">
+						<div class="row mb-2 m-0">
 							<div class="col-md-7">
 								<div class="row">
 									<div class="col-md-2 pr-0">修改時間:</div>
@@ -124,7 +124,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mb-2">
+						<div class="row mb-2 m-0">
 							<div class="col-md-5">
 								<div class="row">
 									<div class="col-md-4 pr-0">寄信日區間->起始:</div>
@@ -147,7 +147,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mb-2">
+						<div class="row mb-2 m-0">
 							<div class="col-md-5">
 								<div class="row">
 									<div class="col-md-4 pr-0">寄件伺服器->Mail:</div>
@@ -192,7 +192,7 @@ ${itemList}
                             </textarea>
 						</div>
 						<!-- 設定 內容 -->
-						<div class="row mb-3">
+						<div class="row mb-3 m-0">
 							<div class="col-md-3"></div>
 							<div class="col-md-2">
 								<div class="">
@@ -258,7 +258,7 @@ ${itemList}
 			var min_width = "85px";
 			for (var i = 0; i < this.list_item[0].length; i++) {
 				min_width = "85px";
-				if (i == 1 || i == 2 || i == 6 || i == 10) {
+				if (i == 1 || i == 2 || i == 6 || i == 10 || i == 11) {
 					min_width = "175px";
 				} else if (i == 3 || i == 7 || i == 9 || i == 12 || i == 14) {
 					min_width = "250px";
@@ -309,7 +309,8 @@ ${itemList}
 					a_submit += '<div class="md-6">';
 					a_submit += '<button purchasing_id="' + list_id + '" class="btn btn-warning btn-sm btn-block a_submit">';
 					a_submit += "預覽</button></div>";
-					t_body += '<tr class="page_all t_row' + list_id + ' '+page_group+'" style="white-space: nowrap;" ><th class="ml-0 col-md-12 row">' + a_submit + "</th>";
+					t_body += '<tr class="page_all t_row' + list_id + ' '+page_group+'" style="white-space: nowrap;" ><th class="ml-0 col-md-12 row">'
+							+ a_submit + "</th>";
 					//計數量
 					t_body += "<td>" + (i + 1) + "</td>";
 					//關聯內容

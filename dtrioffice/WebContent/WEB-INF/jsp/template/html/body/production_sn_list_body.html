@@ -19,30 +19,32 @@
 			</div>
 			<!-- 項目:目前SN序號 -->
 			<div class="border border-primary mb-3 shadow bg-light">
-				<div class="mb-2">
-					<div class="mt-1">
+				<div class="row m-0 mb-2">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-success btn-sm" aria-controls="showArea" href="#showArea" data-toggle="collapse" role="button" aria-expanded="true">查詢SN</a>
 					</div>
 				</div>
 				<div id="showArea" class="collapse show col-md-12">
-					<div class="row mb-2">
-						<div class="text-left mb-2 mt-2">
+					<div class="row mb-2 h5">
+						<div class="col-md-3 text-left mb-2 mt-2">
 							產品SN身分: <input class="col-md-7" type="text" id="s_sn" placeholder="Ex:13BB12102A888" required autofocus />
 						</div>
-						<div class="text-left mb-2 mt-2">
+						<div class="col-md-3 text-left mb-2 mt-2">
 							製令單號: <input class="col-md-7" type="text" id="s_p_id" placeholder="Ex:A513-00123456789" required />
 						</div>
-						<div class="text-left mb-2 mt-2">
+						<div class="col-md-3 text-left mb-2 mt-2">
 							起始日期: <input class="col-md-7" type="text" id="s_s_d" placeholder="Ex:2021-01-13" />
 						</div>
-						<div class="text-left mb-2 mt-2">
+						<div class="col-md-3 text-left mb-2 mt-2">
 							結束日期: <input class="col-md-7" type="text" id="s_e_d" placeholder="Ex:2021-01-13" />
 						</div>
 					</div>
 					<div class="row mb-2">
 						<div class="col-md-5"></div>
 						<div class="col-md-2">
-							<button id="s_submit" type="submit" class="col-md-12 btn btn-primary btn-block">查詢</button>
+							<div class="col-md-10">
+								<button id="s_submit" type="submit" class="col-md-12 btn btn-primary btn-block">查詢</button>
+							</div>
 						</div>
 						<div class="col-md-5"></div>
 					</div>
@@ -50,8 +52,8 @@
 			</div>
 			<!-- 項目:規則SN設定 -->
 			<div class="border border-primary mb-1 shadow bg-light">
-				<div class=" mb-2">
-					<div class=" mt-1">
+				<div class="row m-0 mb-2">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-success btn-sm" aria-controls="ruleArea" href="#ruleArea" data-toggle="collapse" role="button" aria-expanded="true">查詢清單</a>
 					</div>
 				</div>
@@ -61,7 +63,7 @@
 							<table id="content_excel" class="bg-white text-center" style="width: 100%;">
 								<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
 								<thead>
-									<tr id="i_name">
+									<tr id="i_name" class="h5">
 										<td class=" p-0 border border-secondary no_show_excel" style="width: 80px;"><b>功能</b></td>
 										<td class=" p-0 border border-secondary " style="min-width: 170px;"><b>日期</b></td>
 										<td class=" p-0 border border-secondary "><b>客戶</b></td>
@@ -106,13 +108,19 @@
 				<div class=" row m-4">
 					<div class="col-md-3"></div>
 					<div class="col-md-2">
-						<button id="p_submit_export" class="btn btn-primary btn-block" type="button">Excel 匯出</button>
+						<div class="col-md-10">
+							<button id="p_submit_export" class="btn btn-primary btn-block" type="button">Excel 匯出</button>
+						</div>
 					</div>
 					<div class="col-md-2">
-						<button id="p_submit_def" class="btn btn-warning btn-block" type="button">取消還原</button>
+						<div class="col-md-10">
+							<button id="p_submit_def" class="btn btn-warning btn-block" type="button">取消還原</button>
+						</div>
 					</div>
 					<div class="col-md-2">
-						<button id="p_submit_save" class="btn btn-success btn-block" type="button">儲存資料</button>
+						<div class="col-md-10">
+							<button id="p_submit_save" class="btn btn-success btn-block" type="button">儲存資料</button>
+						</div>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
@@ -171,7 +179,7 @@
 			$(document).on("click", "#p_submit_def", function(event) {
 				templateBody.send_search_save("./production_sn_list.do");
 			});
-			
+
 			//查詢
 			$(document).on("click", "#s_submit", function(event) {
 				templateBody.send_search_save("./production_sn_list.do");
@@ -187,8 +195,8 @@
 		methods : {
 			//檢查-內容
 			sn_check : function() {
-				if ($('#i_date_new input').val() == "" || $('#i_client_new').text() == "" || $('#i_id_new').text() == "" || $('#i_sn_start_new').text() == "" || $('#i_sn_end_new').text() == ""
-						|| $('#i_sn_number_new').text() == "" || $('#i_sn_model_new').text() == "") {
+				if ($('#i_date_new input').val() == "" || $('#i_client_new').text() == "" || $('#i_id_new').text() == "" || $('#i_sn_start_new').text() == ""
+						|| $('#i_sn_end_new').text() == "" || $('#i_sn_number_new').text() == "" || $('#i_sn_model_new').text() == "") {
 					return false;
 				}
 
@@ -249,7 +257,7 @@
 				//重製(清除舊資料)
 				$('.old_sn_list').remove();
 				$('.new_sn_list').remove();
-				
+
 				for (var i = (this.search_list.length - 1); i > 0; i--) {
 					i_c = this.search_list[i];
 					i_demo = $('#i_demo').clone();
@@ -300,12 +308,12 @@
 				content.s_s_d = $('#s_s_d').val();
 				content.s_e_d = $('#s_e_d').val();
 				//要刪除的
-				console.log( $('#content_excel .bg-warning'));
+				console.log($('#content_excel .bg-warning'));
 
 				for (var i = 0; i < $('#content_excel .bg-warning').length; i++) {
 					deletes[i] = $('#content_excel .bg-warning')[i].id;
 				}
-				
+
 				//要新增的
 				for (var i = 0; i < $(".new_sn_list").length; i++) {
 

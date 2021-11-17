@@ -110,7 +110,7 @@ public class ProductionRecordsController {
 		// Step1.解析內容-檢查 -> 取出內容物
 		JsonDataModel data = new JsonDataModel();
 		JSONObject frontData = (JSONObject) data.frontToBack(ajaxJSON).get("data");
-		System.out.println(frontData);
+		//System.out.println(frontData);
 
 		// Step3.建立回傳元素
 		JSONObject r_allData = new JSONObject();
@@ -144,7 +144,7 @@ public class ProductionRecordsController {
 		}
 
 		// Step5.結果回傳
-		System.out.println(r_allData);
+		//System.out.println(r_allData);
 		return r_allData.toString();
 	}
 
@@ -197,7 +197,7 @@ public class ProductionRecordsController {
 		}
 
 		// Step5.結果回傳
-		System.out.println(r_allData);
+		//System.out.println(r_allData);
 		return r_allData.toString();
 	}
 }

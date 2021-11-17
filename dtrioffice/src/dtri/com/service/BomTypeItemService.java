@@ -201,10 +201,6 @@ public class BomTypeItemService {
 		JSONArray jsonArrayG = new JSONArray();
 		// 標題 (群組)
 		JSONArray jsonArray = new JSONArray();
-		jsonArray.put("建立時間");
-		jsonArray.put("建立者");
-		jsonArray.put("修改時間");
-		jsonArray.put("修改者");
 
 		jsonArray.put("群組ID");
 		jsonArray.put("群組名稱");
@@ -213,6 +209,11 @@ public class BomTypeItemService {
 		jsonArray.put("排序");
 		jsonArray.put("是否使用");
 		jsonArray.put("說明");
+
+		jsonArray.put("建立時間");
+		jsonArray.put("建立者");
+		jsonArray.put("修改時間");
+		jsonArray.put("修改者");
 		group_listAll.put(jsonArray);
 
 		// 內容
@@ -222,11 +223,6 @@ public class BomTypeItemService {
 
 			// 群組(群組)
 			if (entity.getId() == 1) {
-				jsonArrayG.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-				jsonArrayG.put(entity.getSys_create_user());
-				jsonArrayG.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-				jsonArrayG.put(entity.getSys_modify_user());
-
 				jsonArrayG.put(entity.getGroup_id());
 				jsonArrayG.put(entity.getGroup_name());
 				if (entity.getType_item() == 1) {
@@ -238,6 +234,11 @@ public class BomTypeItemService {
 				jsonArrayG.put(entity.getType_order());
 				jsonArrayG.put(entity.getUseful());
 				jsonArrayG.put(entity.getNote());
+				
+				jsonArrayG.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+				jsonArrayG.put(entity.getSys_create_user());
+				jsonArrayG.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+				jsonArrayG.put(entity.getSys_modify_user());
 				group_listAll.put(jsonArrayG);
 			}
 			// 項目資料+標題

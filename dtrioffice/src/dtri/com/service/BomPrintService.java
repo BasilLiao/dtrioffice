@@ -240,10 +240,6 @@ public class BomPrintService {
 		JSONArray groupOne = new JSONArray();
 		// 標題
 		JSONArray jsonArray = new JSONArray();
-		jsonArray.put("建立時間");
-		jsonArray.put("建立者");
-		jsonArray.put("修改時間");
-		jsonArray.put("修改者");
 
 		jsonArray.put("產品ID");
 		jsonArray.put("產品型號");
@@ -254,14 +250,14 @@ public class BomPrintService {
 		jsonArray.put("備註");
 		jsonArray.put("上次建單人");
 		jsonArray.put("類型");
+		jsonArray.put("建立時間");
+		jsonArray.put("建立者");
+		jsonArray.put("修改時間");
+		jsonArray.put("修改者");
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
 			jsonArray = new JSONArray();
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-			jsonArray.put(entity.getSys_modify_user());
 
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getProduct_model());
@@ -272,6 +268,11 @@ public class BomPrintService {
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getChecked());
 			jsonArray.put(entity.getKind());
+			
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+			jsonArray.put(entity.getSys_create_user());
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+			jsonArray.put(entity.getSys_modify_user());
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);

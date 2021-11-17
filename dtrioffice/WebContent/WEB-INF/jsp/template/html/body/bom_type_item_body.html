@@ -11,8 +11,7 @@
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="row mb-2">
 					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch">
-							查詢功能 : </a>
+						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
 				<div class="collapse show" id="collapseSearch">
@@ -30,7 +29,9 @@
 					<div class="row mb-3">
 						<div class="col-md-5"></div>
 						<div class="col-md-2">
-							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+							<div class="col-md-10">
+								<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+							</div>
 						</div>
 						<div class="col-md-5"></div>
 					</div>
@@ -41,8 +42,7 @@
 				<div class="border">
 					<div class="row mb-2">
 						<div class="col-md-5">
-							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish">
-								查詢結果 : </a>
+							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
 					<div class="collapse show" id="collapseFinish">
@@ -91,8 +91,7 @@
 			<div class="border border-primary shadow bg-light">
 				<div class="row mb-2">
 					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded">
-							新增/修改/刪除 功能 : </a>
+						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
@@ -156,7 +155,7 @@
 								<table class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead class="" style="border: 3px solid #6a7b7e;">
 										<tr id="item_thead_title" class="bg-primary">
-											<th class="h5 font-weight-bold"  scope="col" style="min-width: 60px;">類型</th>
+											<th class="h5 font-weight-bold" scope="col" style="min-width: 60px;">類型</th>
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 100px;">功能</th>
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 70px;">ID</th>
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 250px;">備註說明</th>
@@ -171,12 +170,12 @@
 						<div class="row mb-3">
 							<div class="col-md-4"></div>
 							<div class="col-md-2">
-								<div class="">
+								<div class="col-md-10">
 									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
 								</div>
 							</div>
 							<div class="col-md-2">
-								<div class="">
+								<div class="col-md-10">
 									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">清除內容</button>
 								</div>
 							</div>
@@ -224,7 +223,7 @@
             }
             //t_header
             for (var i = 0; i < this.search_list[0].length; i++) {
-                if (i == 0 || i == 2 || i == 11) {
+                if (i == 7 || i == 9 || i == 11) {
                     min_width = 180;
                 }
                 $("#search_thead").append('<th style="min-width: ' + min_width + 'px;" class="s_' + i + '" scope="col">' + this.search_list[0][i] + "</th>");
@@ -274,7 +273,7 @@
                 	//頁數-每頁顯示(不再顯示範圍內則隱藏)
 					var page_group = this.change_page_btn(i);
                     //功能
-                    var s_list = this.search_list[i][4];
+                    var s_list = this.search_list[i][0];
 
                     var a_submit = '<div class="md-6">';
                     a_submit += '<button user_id="' + s_list + '" class="btn btn-warning btn-sm btn-block a_submit">';
@@ -286,7 +285,7 @@
 
                     $("#search_tbody").append('<tr class="page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">' + a_submit + d_submit + "</th></tr>");
                     //計數量
-                    $("#search_tbody .t_row" + this.search_list[i][4]).append("<td >" + i + "</td>");
+                    $("#search_tbody .t_row" + s_list).append("<td >" + i + "</td>");
 
                     for (var j = 0; j < this.search_list[i].length; j++) {
                         $("#search_tbody .t_row" + s_list).append("<td class=s_" + j + ">" + this.search_list[i][j] + "</td>");
@@ -309,7 +308,7 @@
                 group += '<option value="">請選擇</option>';
                 $.each(this.search_list, function (index, val) {
                     if (index > 0) {
-                        group += "<option value=" + val[5] + ">" + val[5] + "</option>";
+                        group += "<option value=" + val[1] + ">" + val[1] + "</option>";
                     }
                 });
                 $("#s_group_name").append(group);
@@ -334,28 +333,28 @@
             	this.rm_id = [];//移除 清空
                 var id = event.target.attributes.user_id.value;
 
-                $("#a_u_group_id").text($(".t_row" + id + " .s_4")[0].innerText);
-                $("#a_u_group_name").val($(".t_row" + id + " .s_5")[0].innerText);
-                $("#a_u_group_type select").val($(".t_row" + id + " .s_6")[0].innerText.split("=")[0]);
-                if($(".t_row" + id + " .s_7")[0].innerText=='true'){
+                $("#a_u_group_id").text($(".t_row" + id + " .s_0")[0].innerText);
+                $("#a_u_group_name").val($(".t_row" + id + " .s_1")[0].innerText);
+                $("#a_u_group_type select").val($(".t_row" + id + " .s_2")[0].innerText.split("=")[0]);
+                if($(".t_row" + id + " .s_3")[0].innerText=='true'){
 	                $("#a_u_group_checkdf").prop("checked", true);            	
                 }else{
                 	 $("#a_u_group_checkdf").prop("checked", false);     
                 }
 
                 $("#a_u_type").text(a_u_type);
-                $("#a_u_type_order").val($(".t_row" + id + " .s_8")[0].innerText);
+                $("#a_u_type_order").val($(".t_row" + id + " .s_4")[0].innerText);
 
                 // a_u_group_name
                 this.choose_disabled(false);
                 //新增欄位
-                this.added_item($(".t_row" + id + " .s_4")[0].innerText);
+                this.added_item($(".t_row" + id + " .s_0")[0].innerText);
                 //移動
                 setTimeout(function() {
 					$("html,body").animate({
 						scrollTop : 900
 					}, 'slow');
-				}, 500);
+				}, 200);
             },
             //選擇 刪除
             choose_delete: function (event) {

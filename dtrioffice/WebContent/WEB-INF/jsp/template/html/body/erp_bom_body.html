@@ -22,19 +22,19 @@
 				<div class="collapse show" id="collapseSearch">
 					<div class="col-md-12 mb-5">
 						<div class="row h5">
-							<div class="col-md-4">
+							<div class="col-lg-4 col-md-6 mb-2">
 								<div class="row p-0 m-0">
 									<div class="col-md-4 text-left pl-0">品號(料號):</div>
 									<input class="col-md-8" type="text" id="s_c_n" name="s_c_n" placeholder="Ex:01-116-305010" required autofocus />
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-lg-4 col-md-6 mb-2">
 								<div class="row p-0 m-0">
 									<div class="col-md-4 text-left pl-0">品名(名稱):</div>
 									<input class="col-md-8" type="text" id="s_b" name="s_b" placeholder="Ex:Intel Celeron Processor 6305" required />
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-lg-4 col-md-6 mb-2">
 								<div class="row p-0 m-0">
 									<div class="col-md-4 text-left pl-0">規格(敘述):</div>
 									<input class="col-md-8" type="text" id="s_p" name="s_p" placeholder="Ex:Intel Celeron Processor 6305_BGA1449" required />
@@ -42,12 +42,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mb-2">
+					<div class="row m-0 mb-2">
 						<div class="col-md-4"></div>
-						<div class="col-md-2">
+						<div class="col-md-2 mb-2">
 							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-2 mb-2">
 							<button id="c_submit" class="col-md-12 btn btn-warning btn-block" type="submit">清除</button>
 						</div>
 						<div class="col-md-4"></div>
@@ -123,12 +123,12 @@
 					</div>
 					<div class="tab-content mb-2" id="">
 						<!-- 各庫庫存 -->
-						<div class="col-12 p-0 tab-pane fade bg-white active show" id="stock" role="tabpanel" aria-labelledby="stock-tab">
+						<div class="col-12 tab-pane fade bg-white active show" id="stock" role="tabpanel" aria-labelledby="stock-tab">
 							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
 								<div class="row m-0 pt-3 pb-4 h5">
-									<div class="col-md-4 p-0">
-										<div class="row p-0 m-0">
-											<div class="col-md-4 text-left ">各庫(料號):</div>
+									<div class="col-lg-4 col-md-7">
+										<div class="row m-0">
+											<div class="col-md-4 text-left p-0">各庫(料號):</div>
 											<input class="col-md-8" type="text" id="stock_value" name="stock_value" placeholder="Ex:01-116-305010" required autofocus />
 										</div>
 									</div>
@@ -136,13 +136,13 @@
 								<div class="row col-mb-12 pb-2 m-0">
 									<div class="col-md-3"></div>
 									<div class="col-md-2">
-										<button id="stock_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+										<button id="stock_search" class="col-md-12 mb-2 btn btn-primary btn-block" type="submit">查詢</button>
 									</div>
 									<div class="col-md-2">
-										<button id="stock_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除</button>
+										<button id="stock_clear" class="col-md-12 mb-2 btn btn-warning btn-block" type="submit">清除</button>
 									</div>
 									<div class="col-md-2">
-										<button id="stock_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+										<button id="stock_excel" class="col-md-12 mb-2 btn btn-info btn-block" type="submit">匯出Excel</button>
 									</div>
 									<div class="col-md-3"></div>
 								</div>
@@ -166,9 +166,9 @@
 						<div class="col-12 tab-pane fade bg-white" id="stock_c" role="tabpanel" aria-labelledby="stock_c-tab">
 							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
 								<div class="row m-0 pt-3 pb-4 h5">
-									<div class="col-md-4 p-0">
-										<div class="row p-0 m-0">
-											<div class="col-md-4 text-left ">異動(料號):</div>
+									<div class="col-lg-4 col-md-8">
+										<div class="row m-0">
+											<div class="col-md-4 text-left p-0">異動(料號):</div>
 											<input class="col-md-8" type="text" id="stock_c_value" name="stock_c_value" placeholder="Ex:01-116-305010" required autofocus />
 										</div>
 									</div>
@@ -176,13 +176,13 @@
 								<div class="row col-mb-12 pb-2 m-0">
 									<div class="col-md-3"></div>
 									<div class="col-md-2">
-										<button id="stock_c_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+										<button id="stock_c_search" class="col-md-12 mb-2 btn btn-primary btn-block" type="submit">查詢</button>
 									</div>
 									<div class="col-md-2">
-										<button id="stock_c_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除</button>
+										<button id="stock_c_clear" class="col-md-12 mb-2 btn btn-warning btn-block" type="submit">清除</button>
 									</div>
 									<div class="col-md-2">
-										<button id="stock_c_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+										<button id="stock_c_excel" class="col-md-12 mb-2 btn btn-info btn-block" type="submit">匯出Excel</button>
 									</div>
 									<div class="col-md-3"></div>
 								</div>
@@ -206,9 +206,9 @@
 						<div class="col-12 tab-pane fade bg-white" id="bom" role="tabpanel" aria-labelledby="bom-tab">
 							<div class="col-md-12 p-0 mb-3 pt-0 shadow bg-light border border-primary">
 								<div class="row m-0 pt-3 pb-4 h5">
-									<div class="col-md-4 p-0">
-										<div class="row p-0 m-0">
-											<div class="col-md-5 text-left ">產品(品號/料號):</div>
+									<div class="col-lg-4 col-md-8">
+										<div class="row m-0">
+											<div class="col-md-5 text-left p-0">產品(品號/料號):</div>
 											<input class="col-md-7" type="text" id="bom_value" name="bom_value" placeholder="Ex:01-116-305010" required autofocus />
 										</div>
 									</div>
@@ -216,20 +216,20 @@
 								<div class="row col-mb-12 pb-2 m-0">
 									<div class="col-md-3"></div>
 									<div class="col-md-2">
-										<button id="bom_search" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+										<button id="bom_search" class="col-md-12 mb-2 btn btn-primary btn-block" type="submit">查詢</button>
 									</div>
 									<div class="col-md-2">
-										<button id="bom_clear" class="col-md-12 btn btn-warning btn-block" type="submit">清除(暫存)</button>
+										<button id="bom_clear" class="col-md-12 mb-2 btn btn-warning btn-block" type="submit">清除(暫存)</button>
 									</div>
 									<div class="col-md-2">
-										<button id="bom_excel" class="col-md-12 btn btn-info btn-block" type="submit">匯出Excel</button>
+										<button id="bom_excel" class="col-md-12 mb-2 btn btn-info btn-block" type="submit">匯出Excel</button>
 									</div>
 									<div class="col-md-3"></div>
 								</div>
 								<div class="row m-0 pt-3 pb-2 h5">
 									<div class="col-md-1 p-2">暫存:</div>
 									<div class="col-md-11 row m-0">
-										<button id="bom_history" class=" d-none m-2 col-md-2 btn-sm btn btn-info btn-block" type="submit" value="">XXXX</button>
+										<button id="bom_history" class=" d-none m-2 col-lg-2 col-md-3 btn-sm btn btn-info btn-block" type="submit" value="">XXXX</button>
 									</div>
 								</div>
 							</div>

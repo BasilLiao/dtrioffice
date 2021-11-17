@@ -313,29 +313,24 @@ public class ProductionPrintService {
 		JSONArray jsonArray = new JSONArray();
 		if (bpg != null) {
 			// 標題
-			jsonArray.put("建立時間");
-			jsonArray.put("建立者");
-			jsonArray.put("修改時間");
-			jsonArray.put("修改者");
-
 			jsonArray.put("產品ID");
 			jsonArray.put("產品型號");
 			jsonArray.put("主機板(硬體)-版本");
 
 			jsonArray.put("對應BOM表 單號");
-			jsonArray.put("使用狀態");
+			jsonArray.put("狀態");
 			jsonArray.put("備註");
 			jsonArray.put("上次建單人");
 			jsonArray.put("類型");
+
+			jsonArray.put("建立時間");
+			jsonArray.put("建立者");
+			jsonArray.put("修改時間");
+			jsonArray.put("修改者");
 			jsonAll.put(jsonArray);
 			// 內容 產品清單
 			for (BomProductEntity entity : bpg.getBomProductEntities()) {
 				jsonArray = new JSONArray();
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-				jsonArray.put(entity.getSys_create_user());
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-				jsonArray.put(entity.getSys_modify_user());
-
 				jsonArray.put(entity.getId());
 				jsonArray.put(entity.getProduct_model());
 				jsonArray.put(entity.getVersion_motherboard());
@@ -345,6 +340,11 @@ public class ProductionPrintService {
 				jsonArray.put(entity.getNote());
 				jsonArray.put(entity.getChecked());
 				jsonArray.put(entity.getKind());
+				
+				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+				jsonArray.put(entity.getSys_create_user());
+				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+				jsonArray.put(entity.getSys_modify_user());
 				jsonAll.put(jsonArray);
 			}
 			list.put("list", jsonAll);
@@ -357,7 +357,6 @@ public class ProductionPrintService {
 					groupList.put(groupOne);
 				}
 				jsonArray = new JSONArray();
-
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 				jsonArray.put(entity.getSys_create_user());
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
@@ -369,9 +368,10 @@ public class ProductionPrintService {
 				jsonArray.put(entity.getType_item_group_id());
 				jsonArray.put(entity.getNumber());
 				jsonArray.put(entity.getType_order());
+				
 				jsonArray.put(entity.getUseful());
-
 				jsonArray.put(entity.getGroup_name());
+				
 				for (int i = 1; i <= 25; i++) {
 					Method method;
 					try {
@@ -439,14 +439,8 @@ public class ProductionPrintService {
 		// 標題
 		jsonArray = new JSONArray();
 		jsonAll = new JSONArray();
-
-		jsonArray.put("建立時間");
-		jsonArray.put("建立者");
-		jsonArray.put("修改時間");
-		jsonArray.put("修改者");
-
 		jsonArray.put("工單號碼");
-		jsonArray.put("BOM ID");
+		jsonArray.put("BID");
 		jsonArray.put("BOM料號");
 		jsonArray.put("生產數量");
 		jsonArray.put("訂單編號");
@@ -456,14 +450,14 @@ public class ProductionPrintService {
 		jsonArray.put("主機板(硬體)-版本");
 		jsonArray.put("單據來源");
 
+		jsonArray.put("建立時間");
+		jsonArray.put("建立者");
+		jsonArray.put("修改時間");
+		jsonArray.put("修改者");
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
 		for (ProductionRecordsEntity entity : bpg2) {
 			jsonArray = new JSONArray();
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-			jsonArray.put(entity.getSys_modify_user());
 
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getBom_id());
@@ -476,6 +470,10 @@ public class ProductionPrintService {
 			jsonArray.put(entity.getVersion_motherboard());
 			jsonArray.put(entity.getCome_from());
 
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+			jsonArray.put(entity.getSys_create_user());
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+			jsonArray.put(entity.getSys_modify_user());
 			jsonAll.put(jsonArray);
 		}
 

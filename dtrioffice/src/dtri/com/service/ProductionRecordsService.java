@@ -155,25 +155,21 @@ public class ProductionRecordsService {
 
 		// 標題
 		JSONArray jsonArray = new JSONArray();
+
+		jsonArray.put("工單號碼");
+		jsonArray.put("BOM料號");
+		jsonArray.put("生產數");
+		jsonArray.put("進度");
+		jsonArray.put("狀態");
+
 		jsonArray.put("建立時間");
 		jsonArray.put("建立者");
 		jsonArray.put("修改時間");
 		jsonArray.put("修改者");
-
-		jsonArray.put("工單號碼");
-		jsonArray.put("BOM料號");
-		jsonArray.put("生產數量");
-		jsonArray.put("進度");
-		jsonArray.put("狀態");
-
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
 		for (ProductionRecordsEntity entity : bpg) {
 			jsonArray = new JSONArray();
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-			jsonArray.put(entity.getSys_modify_user());
 
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getBom_product_id());
@@ -190,6 +186,10 @@ public class ProductionRecordsService {
 			jsonArray.put(entity.getProduct_start_sn());
 			jsonArray.put(entity.getProduct_end_sn());
 
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+			jsonArray.put(entity.getSys_create_user());
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
+			jsonArray.put(entity.getSys_modify_user());
 			jsonAll.put(jsonArray);
 		}
 

@@ -9,59 +9,59 @@
 			</div>
 			<!-- 查詢功能 -->
 			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
-						<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
+				<div class="row m-0 mb-2">
+					<div class="col-md-5 p-0">
+						<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch">查詢功能</a>
 					</div>
 				</div>
 				<div class="mb-0 collapse show" id="collapseSearch">
-					<div class="row mb-5">
+					<div class="row mb-5 m-0 pt-2 h5">
 						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									工單序號 : <input class="col-md-8" type="text" id="s_id" placeholder="Ex:A512-201007008" required autofocus />
-								</div>
+							<div class="row m-0">
+								<div class="col-md-5 p-0">工單序號 :</div>
+								<input class="col-md-7" type="text" id="s_id" placeholder="Ex:A512-201007008" required autofocus />
 							</div>
 						</div>
 						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									產品SN身分 : <input class="col-md-7" type="text" id="s_sn_id" placeholder="Ex:133Z12108B216" required />
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									狀態 : <select id="s_product_status">
-										<option value="-1">請選擇</option>
-										<option value="0">作廢單</option>
-										<option value="1">有效單</option>
-									</select>
-								</div>
+							<div class="row m-0">
+								<div class="col-md-6 p-0">產品SN身分 :</div>
+								<input class="col-md-6 text-left" type="text" id="s_sn_id" placeholder="Ex:133Z12108B216" required />
 							</div>
 						</div>
 						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									流程進度 : <select id="s_product_progress">
-										<option value="-1">請選擇</option>
-										<option value="1">準備物料</option>
-										<option value="2">預約生產</option>
-										<option value="3">準備生產</option>
-									</select>
-								</div>
+							<div class="row m-0">
+								<div class="col-md-3  p-0">狀態 :</div>
+								<select class="col-md-6 text-left" id="s_product_status">
+									<option value="-1">請選擇</option>
+									<option value="0">作廢單</option>
+									<option value="1">有效單</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="row m-0">
+								<div class="col-md-5 p-0">流程進度 :</div>
+								<select class="col-md-6 text-left" id="s_product_progress">
+									<option value="-1">請選擇</option>
+									<option value="1">準備物料</option>
+									<option value="2">預約生產</option>
+									<option value="3">準備生產</option>
+								</select>
 							</div>
 						</div>
 
 					</div>
-					<div class="row mb-2">
+					<div class="row m-0 mb-2">
 						<div class="col-md-4"></div>
 						<div class="col-md-2">
-							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+							<div class="col-md-10 container">
+								<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
+							</div>
 						</div>
 						<div class="col-md-2">
-							<button id="s_c_submit" class="btn btn-warning btn-block" type="button">清除</button>
+							<div class="col-md-10 container">
+								<button id="s_c_submit" class="btn btn-warning btn-block" type="button">清除</button>
+							</div>
 						</div>
 
 						<div class="col-md-4"></div>
@@ -71,8 +71,8 @@
 			<!-- 功能:查詢結果  /修改 -->
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2">
-						<div class="col-md-5">
+					<div class="row m-0 mb-2">
+						<div class="col-md-5 p-0">
 							<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
@@ -87,7 +87,7 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
+										<tr id="search_thead" class="bg-primary h5">
 											<th scope="col" style="min-width: 90px;">功能</th>
 											<th scope="col" style="min-width: 30px;">筆</th>
 										</tr>
@@ -117,8 +117,8 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row m-0 mb-2">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 查看/刪除 功能 : </a>
 					</div>
 				</div>
@@ -347,7 +347,7 @@
 						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
 
 						<!-- 設定 內容 -->
-						<div class="row mb-3">
+						<div class="row m-0 mb-3">
 							<div class="col-md-4"></div>
 							<div class="col-md-2">
 								<div class="col-md-10 container">
@@ -402,11 +402,11 @@
 			var min_width = "85px;";
 			for (var i = 0; i < this.item_list[0].length; i++) {
 				min_width = "85px;";
-				if (i == 0 || i == 2 || i == 4 || i == 5) {
+				if (i == 0 || i == 1 || i == 5 || i == 7) {
 					min_width = "175px;";
-				}else if( (this.item_list[0].length-1)==i){
-					min_width +="width: 100%;" 
-					
+				} else if ((this.item_list[0].length - 1) == i) {
+					min_width += "width: 100%;"
+
 				}
 				t_header_group += '<th style="min-width: ' + min_width + '" class="s_' + i + '" scope="col">' + this.item_list[0][i] + "</th>";
 			}
@@ -457,14 +457,14 @@
 				var a_submit = "";
 				var d_submit = "";
 
-				var none = 7;//需隱藏 多餘
-				var progress = 7//進度
-				var status = 14;//單據狀態
+				var none = 3;//需隱藏 多餘
+				var progress = 3//進度
+				var status = 10;//單據狀態
 				for (var i = 1; i < this.item_list.length; i++) {
 					//頁數-每頁顯示(不再顯示範圍內則隱藏)
 					var page_group = this.change_page_btn(i);
 					//功能
-					list_id = this.item_list[i][4];
+					list_id = this.item_list[i][0];
 
 					a_submit = "";
 					a_submit += '<div class="md-6">';
@@ -476,7 +476,8 @@
 					d_submit += '<button purchasing_id="' + list_id + '" class="btn btn-danger btn-sm btn-block d_submit">';
 					d_submit += "廢</button></div>";
 
-					t_body += '<tr class="page_all t_row'+ list_id +' '+ page_group+ '" style="white-space: nowrap;" ><th class="ml-0 col-md-12 row">' + a_submit + d_submit + "</th>";
+					t_body += '<tr class="page_all t_row'+ list_id +' '+ page_group+ '" style="white-space: nowrap;" ><th class="ml-0 col-md-12 row">'
+							+ a_submit + d_submit + "</th>";
 					//計數量
 					t_body += "<td>" + (i) + "</td>";
 					//關聯內容
@@ -518,7 +519,7 @@
 							}
 							continue;
 						}
-						if (j > none) {
+						if (j > none && j < (none + 10)) {
 							t_body += "<td class='s_" + j + " d-none' >" + this.item_list[i][j] + "</td>";
 						} else {
 							t_body += "<td class='s_" + j + "'>" + this.item_list[i][j] + "</td>";
@@ -588,32 +589,32 @@
 
 				var id = event.target.attributes.purchasing_id.value;
 
-				$("#a_id").text($(".t_row" + id + " .s_4")[0].innerText);
-				$("#a_p_id").text($(".t_row" + id + " .s_5")[0].innerText);
-				$("#a_p_q").text($(".t_row" + id + " .s_6")[0].innerText);
-				$("#a_p_s").text($(".t_row" + id + " .s_7")[0].innerText);
+				$("#a_id").text($(".t_row" + id + " .s_0")[0].innerText);
+				$("#a_p_id").text($(".t_row" + id + " .s_1")[0].innerText);
+				$("#a_p_q").text($(".t_row" + id + " .s_2")[0].innerText);
+				$("#a_p_s").text($(".t_row" + id + " .s_3")[0].innerText);
 
-				$("#a_c_d").text($(".t_row" + id + " .s_0")[0].innerText);
-				$("#a_c_u").text($(".t_row" + id + " .s_1")[0].innerText);
-				$("#a_m_d").text($(".t_row" + id + " .s_2")[0].innerText);
-				$("#a_m_u").text($(".t_row" + id + " .s_3")[0].innerText);
-				$("#a_p_u").text($(".t_row" + id + " .s_14")[0].innerText);
+				$("#a_c_d").text($(".t_row" + id + " .s_13")[0].innerText);
+				$("#a_c_u").text($(".t_row" + id + " .s_14")[0].innerText);
+				$("#a_m_d").text($(".t_row" + id + " .s_15")[0].innerText);
+				$("#a_m_u").text($(".t_row" + id + " .s_16")[0].innerText);
+				$("#a_p_u").text($(".t_row" + id + " .s_10")[0].innerText);
 
-				$("#a_o_i").text($(".t_row" + id + " .s_8")[0].innerText);
-				$("#a_c_n").text($(".t_row" + id + " .s_9")[0].innerText);
-				$("#a_v_m").text($(".t_row" + id + " .s_11")[0].innerText);
-				$("#a_p_m").text($(".t_row" + id + " .s_10")[0].innerText);
+				$("#a_o_i").text($(".t_row" + id + " .s_4")[0].innerText);
+				$("#a_c_n").text($(".t_row" + id + " .s_5")[0].innerText);
+				$("#a_v_m").text($(".t_row" + id + " .s_7")[0].innerText);
+				$("#a_p_m").text($(".t_row" + id + " .s_6")[0].innerText);
 
-				$("#a_c_f").text($(".t_row" + id + " .s_13")[0].innerText);
-				$("#a_s_sn").text($(".t_row" + id + " .s_15")[0].innerText);
-				$("#a_e_sn").text($(".t_row" + id + " .s_16")[0].innerText);
+				$("#a_c_f").text($(".t_row" + id + " .s_9")[0].innerText);
+				$("#a_s_sn").text($(".t_row" + id + " .s_11")[0].innerText);
+				$("#a_e_sn").text($(".t_row" + id + " .s_12")[0].innerText);
 
 				//移動
 				setTimeout(function() {
 					$("html,body").animate({
 						scrollTop : 750
 					}, 'slow');
-				}, 500);
+				}, 200);
 			},
 
 			//選擇 廢止
@@ -630,7 +631,7 @@
 					$("html,body").animate({
 						scrollTop : 750
 					}, 'slow');
-				}, 500);
+				}, 200);
 			},
 
 			//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
@@ -748,8 +749,8 @@
 			//傳送  廢止 或 更新
 			send_update_save : function() {
 				//無法對自訂單做修正
-				if ($('#a_p_u').text() == '自訂紀錄'|| $('#a_p_u').text() == '無效單' || $('#a_p_s').text() == '準備生產') {
-					 main.alertshow(true, " 結果->無法修改[自訂紀錄] or [無效單] or [準備生產]");
+				if ($('#a_p_u').text() == '自訂紀錄' || $('#a_p_u').text() == '無效單' || $('#a_p_s').text() == '準備生產') {
+					main.alertshow(true, " 結果->無法修改[自訂紀錄] or [無效單] or [準備生產]");
 					return false;
 				}
 				// 條件項目
@@ -761,10 +762,10 @@
 				var action = "D";
 				var url = "./stop_production_records.do";
 				var order = "search_update"; //指令
-				
+
 				//如果是 (修改)參數
 				if ($("#a_u_type").text() == "查看細節(改)") {
-					if ($('#a_p_s').text() == '預約生產' ) {
+					if ($('#a_p_s').text() == '預約生產') {
 						content.id = this.old_id;
 						content.new_id = $('#a_id').text();
 						content.production_quantity = $('#a_p_q').text();
@@ -772,7 +773,7 @@
 						action = "U";
 						url = "./update_production_records.do";
 					} else {
-						 main.alertshow(true, " 結果->無法修改[自訂紀錄] or [無效單] ");
+						main.alertshow(true, " 結果->無法修改[自訂紀錄] or [無效單] ");
 						return false;
 					}
 				}

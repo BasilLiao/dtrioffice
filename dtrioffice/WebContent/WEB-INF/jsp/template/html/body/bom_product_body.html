@@ -9,12 +9,12 @@
 			</div>
 			<!-- 查詢功能 -->
 			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
-				<div class="collapse show" id="collapseSearch">
+				<div class="h5 collapse show" id="collapseSearch">
 					<div class="col-md-12">
 						<div class="row">
 							<div class="col-md-6 border border-primary">
@@ -63,8 +63,8 @@
 			<!-- 功能:查詢結果  /修改 -->
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2">
-						<div class="col-md-5">
+					<div class="row mb-2 m-0">
+						<div class="col-md-5 p-0">
 							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
+										<tr id="search_thead" class="h5 bg-primary">
 											<th scope="col" style="min-width: 135px;">功能</th>
 											<th scope="col" style="min-width: 40px;">筆</th>
 										</tr>
@@ -109,77 +109,75 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/另存/修改/刪除 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
 					<div class="collapse show" id="collapseAdded">
 						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-1">
-							<div class="col-md-2">
-								<div class="text-left">
-									<div class="col-md-12">狀態 :</div>
-									<div class="col-md-12" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-								</div>
+						<div class="h5">
+							<div class="row p-0 m-0 mb-2 col-md-4 text-left ">
+								<div class="col-md-3">狀態 :</div>
+								<div class="col-md-9" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
 							</div>
-						</div>
-						<div class="row mb-2 ml-1">
-							<div class="col-md-1">
-								<div class="row text-left">
-									<div class="col-md-7 pr-0">ID:</div>
-									<div class="col-md-5 pl-0" id="a_u_id">0</div>
+							<div class="row p-0 m-0 mb-2">
+								<div class="col-md-2">
+									<div class="row m-0 text-left">
+										<div class="col-md-4 p-0">ID:</div>
+										<div class="col-md-8 p-0" id="a_u_id">0</div>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row text-left">
-									<div class="col-md-4 pr-0">產品型號:</div>
-									<div class="col-md-8 pl-0" id="">
-										<input class="col-md-12" type="text" id="a_u_model" placeholder="Ex:型號123456" required autofocus />
+								<div class="col-md-3">
+									<div class="row m-0 text-left">
+										<div class="col-md-4 p-0">產品型號:</div>
+										<div class="col-md-8 p-0" id="">
+											<input class="col-md-12" type="text" id="a_u_model" placeholder="Ex:型號123456" required autofocus />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="row m-0 text-left">
+										<div class="col-md-8 p-0">主機板(硬體)-版本:</div>
+										<div class="col-md-4 p-0" id="">
+											<input class="col-md-12" type="text" id="a_u_version_motherboard" placeholder="Ex:v1.995.0" required />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row m-0 text-left">
+										<div class="col-md-4 pr-0">BOM料號:</div>
+										<div class="col-md-8 p-0" id="">
+											<input class="col-md-12" type="text" id="a_u_bom_number" placeholder="Ex:A512-9487945-08449" required />
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<div class="row text-left">
-									<div class="col-md-8 pr-0">主機板(硬體)-版本:</div>
-									<div class="col-md-4 pl-0" id="">
-										<input class="col-md-12" type="text" id="a_u_version_motherboard" placeholder="Ex:v1.995.0" required />
+							<div class="row p-0 m-0 mb-2">
+								<div class="col-md-2">
+									<div class="row m-0 text-left mb-2">
+										<div class="col-md-4 p-0">啟用 :</div>
+										<div class="col-md-8 p-0" id="">
+											<input class="col-md-12" type="text" id="a_u_useful" placeholder="1=開 2=關" value="1" required />
+										</div>
+									</div>
+									<div class="row m-0 text-left align-items-center">
+										<div class="col-md-4 p-0 ">類型 :</div>
+										<div class="col-md-8 p-0" id="">
+											<select class=" col-md-12 custom-select" id="a_u_kind" id="inlineFormCustomSelect">
+												<option value="0" selected>技轉中</option>
+												<option value="1">可量產</option>
+											</select>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-5">
-								<div class="row text-left">
-									<div class="col-md-3 pr-0">BOM料號:</div>
-									<div class="col-md-7 pl-0" id="">
-										<input class="col-md-12" type="text" id="a_u_bom_number" placeholder="Ex:A512-9487945-08449" required />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row mb-2 ml-1">
-							<div class="col-md-2">
-								<div class="row text-left mb-2">
-									<div class="col-md-5 pr-0">啟用 :</div>
-									<div class="col-md-7 pl-0" id="">
-										<input class="col-md-10" type="text" id="a_u_useful" placeholder="1=開 2=關" value="1" required />
-									</div>
-								</div>
-								<div class="row text-left align-items-center">
-									<div class="col-md-5 pr-0 ">類型 :</div>
-									<div class="col-md-7 pl-0" id="">
-										<select id="a_u_kind" class="custom-select p-1" id="inlineFormCustomSelect">
-											<option value="0" selected>技轉中</option>
-											<option value="1">可量產</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-10">
-								<div class="row text-left">
-									<div class="col-md-1 pr-0">備註 :</div>
-									<div class="col-md-11 pl-0" id="">
-										<textarea class="col-md-11" id="a_u_note" placeholder="備註" rows="4" cols="50" /></textarea>
+								<div class="col-md-10">
+									<div class="row m-0 text-left">
+										<div class="col-md-1 p-0">說明備註:</div>
+										<div class="col-md-11 p-0 pl-2" id="">
+											<textarea class="col-md-12" id="a_u_note" placeholder="備註" rows="4" cols="50" /></textarea>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -191,15 +189,15 @@
 							<div class="">
 								<table class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="group_thead" class="bg-primary">
+										<tr id="group_thead" class="bg-primary h5">
 											<th scope="col" style="min-width: 90px;">功能</th>
 											<th scope="col" style="min-width: 60px;">ID</th>
 											<th scope="col" style="min-width: 60px;">組ID</th>
 											<th scope="col" style="min-width: 150px;">項目組</th>
-											<th scope="col" style="min-width: 60px;">項目ID</th>
+											<th scope="col" style="min-width: 60px;">項目</th>
 											<th scope="col" style="min-width: 300px;">項目名稱</th>
 											<th scope="col" style="min-width: 80px;">數量</th>
-											<th scope="col" style="min-width: 70px;" >排序</th>
+											<th scope="col" style="min-width: 70px;">排序</th>
 											<th scope="col" style="min-width: 150px; width: 100%;">說明備註</th>
 										</tr>
 									</thead>
@@ -280,10 +278,10 @@
             }
             //t_header
             for (var i = 0; i < this.search_list[0].length; i++) {
-                if (i == 0 || i == 2 || i == 5 || i == 7 || i == 9) {
+                if (  i == 2|| i == 3 || i == 5 || i == 7 || i == 9) {
                     min_width = 180;
                 }
-                if ( i == 6) {
+                if ( i == 1  ||i == 6) {
                     min_width = 150;
                 }
                 $("#search_thead").append('<th style="min-width: ' + min_width + 'px;" class="s_' + i + '" scope="col">' + this.search_list[0][i] + "</th>");
@@ -370,7 +368,7 @@
                 	var page_group = this.change_page_btn(i);
                 	
                     //功能
-                    var s_list = this.search_list[i][4];
+                    var s_list = this.search_list[i][0];
 
                     var na_submit = '<div class="md-6">';
                     na_submit += '<button user_id="' + s_list + '" class="btn btn-info btn-sm btn-block na_submit">';
@@ -386,7 +384,7 @@
 
                     $("#search_tbody").append('<tr class= "page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">'+na_submit + a_submit + d_submit + '</th></tr>');
                     //計數量
-                    $("#search_tbody .t_row" + this.search_list[i][4]).append("<td >" + i + "</td>");
+                    $("#search_tbody .t_row" +s_list).append("<td >" + i + "</td>");
 
                     for (var j = 0; j < this.search_list[i].length; j++) {
                         $("#search_tbody .t_row" + s_list).append("<td class=s_" + j + ">" + this.search_list[i][j] + "</td>");
@@ -629,16 +627,16 @@
                 }
                 
                 var id = event.target.attributes.user_id.value;
-                $("#a_u_id").text($(".t_row" + id + " .s_4")[0].innerText);
-                $("#a_u_model").val($(".t_row" + id + " .s_5")[0].innerText);
-                $("#a_u_version_motherboard").val($(".t_row" + id + " .s_6")[0].innerText);
-               	$("#a_u_bom_number").val($(".t_row" + id + " .s_7")[0].innerText);
+                $("#a_u_id").text($(".t_row" + id + " .s_0")[0].innerText);
+                $("#a_u_model").val($(".t_row" + id + " .s_1")[0].innerText);
+                $("#a_u_version_motherboard").val($(".t_row" + id + " .s_2")[0].innerText);
+               	$("#a_u_bom_number").val($(".t_row" + id + " .s_3")[0].innerText);
 				if(a_u_type=="另存資料"){
 					$("#a_u_bom_number").val("");
                 }
-                $("#a_u_useful").val($(".t_row" + id + " .s_8")[0].innerText);
-                $("#a_u_note").val($(".t_row" + id + " .s_9")[0].innerText);
-                $("#a_u_kind").val($(".t_row" + id + " .s_10")[0].innerText).change();
+                $("#a_u_note").val($(".t_row" + id + " .s_4")[0].innerText);
+                $("#a_u_useful").val($(".t_row" + id + " .s_5")[0].innerText);
+                $("#a_u_kind").val($(".t_row" + id + " .s_6")[0].innerText).change();
                 
                 var group_tbody = "";
                
@@ -721,7 +719,8 @@
                 $("#a_u_version_motherboard").attr("disabled", disabled);
                 $("#a_u_useful").attr("disabled", disabled);
                 $("#a_u_note").attr("disabled", disabled);
-
+                $("#a_u_kind").attr("disabled", disabled);
+                
                 $("#group_tbody select").attr("disabled", disabled);
                 $("#group_tbody button").attr("disabled", disabled);
                 $("#group_tbody input").attr("disabled", disabled);

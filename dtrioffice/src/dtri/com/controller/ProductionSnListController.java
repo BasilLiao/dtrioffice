@@ -82,7 +82,7 @@ public class ProductionSnListController {
 		}
 
 		// Step6.結果回傳
-		System.out.println(r_allData);
+		//System.out.println(r_allData);
 		return r_allData.toString();
 	}
 
@@ -141,7 +141,7 @@ public class ProductionSnListController {
 			r_allData = recordsListService.fail_ajaxRspJson(frontData, "你沒有權限!!");
 		}
 		// Step6.結果回傳
-		System.out.println(r_allData);
+		//System.out.println(r_allData);
 		return r_allData.toString();
 	}
 

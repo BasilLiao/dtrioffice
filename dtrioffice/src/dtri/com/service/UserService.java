@@ -141,7 +141,7 @@ public class UserService {
 		jsonArray.put("修改者");
 
 		jsonArray.put("使用者ID");
-		jsonArray.put("使用者名稱");
+		jsonArray.put("中文名稱");
 		jsonArray.put("英文名稱");
 		jsonArray.put("帳號");
 		jsonArray.put("職位");
