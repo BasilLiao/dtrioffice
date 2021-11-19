@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dtri.com.db.entity.BomTypeItemEntity;
 import dtri.com.db.entity.GroupEntity;
-import dtri.com.service.BomTypeItemService;
+import dtri.com.service.BomAccessoriesTypeItemService;
 import dtri.com.service.LoginService;
 import dtri.com.tools.JsonDataModel;
 
 @Controller
-public class BomTypeItemController {
+public class BomAccessoriesTypeItemController {
 
 	@Autowired
 	LoginService loginService;
 	@Autowired
-	BomTypeItemService itemService;
+	BomAccessoriesTypeItemService itemService;
 	// 功能
-	final static String SYS_F = "bom_type_item.do";
+	final static String SYS_F = "bom_accessories_type_item.do";
 
 	/**
 	 * 
@@ -34,10 +34,10 @@ public class BomTypeItemController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/bom_type_item", method = {
+	@RequestMapping(value = "/bom_accessories_type_item", method = {
 			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
-	public String search_bom_type_item(@RequestBody String ajaxJSON) {
-		System.out.println("---controller - bom_type_item");
+	public String search_bom_accessories_type_item(@RequestBody String ajaxJSON) {
+		System.out.println("---controller - bom_accessories_type_item");
 		// Step1.取出 session 訊息 & 檢查權限
 		List<GroupEntity> group = loginService.getSessionGroupBean();
 		boolean checkPermission = loginService.checkPermission(group, SYS_F, "01000001");
@@ -80,10 +80,10 @@ public class BomTypeItemController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/added_bom_type_item", method = {
+	@RequestMapping(value = "/added_bom_accessories_type_item", method = {
 			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
-	public String added_bom_type_item(@RequestBody String ajaxJSON) {
-		System.out.println("---controller - added_bom_type_item");
+	public String added_bom_accessories_type_item(@RequestBody String ajaxJSON) {
+		System.out.println("---controller - added_bom_accessories_type_item");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
 		List<GroupEntity> group = loginService.getSessionGroupBean();
 		boolean checkPermission = loginService.checkPermission(group, SYS_F, "01001001");
@@ -132,10 +132,10 @@ public class BomTypeItemController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/update_bom_type_item", method = {
+	@RequestMapping(value = "/update_bom_accessories_type_item", method = {
 			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
-	public String update_bom_type_item(@RequestBody String ajaxJSON) {
-		System.out.println("---controller - update_bom_type_item");
+	public String update_bom_accessories_type_item(@RequestBody String ajaxJSON) {
+		System.out.println("---controller - update_bom_accessories_type_item");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
 		List<GroupEntity> group = loginService.getSessionGroupBean();
 		boolean checkPermission = loginService.checkPermission(group, SYS_F, "01000101");
@@ -185,10 +185,10 @@ public class BomTypeItemController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/delete_bom_type_item", method = {
+	@RequestMapping(value = "/delete_bom_accessories_type_item", method = {
 			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
-	public String delete_bom_type_item(@RequestBody String ajaxJSON) {
-		System.out.println("---controller - delete_bom_type_item");
+	public String delete_bom_accessories_type_item(@RequestBody String ajaxJSON) {
+		System.out.println("---controller - delete_bom_accessories_type_item");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
 		List<GroupEntity> group = loginService.getSessionGroupBean();
 		boolean checkPermission = loginService.checkPermission(group, SYS_F, "01000011");

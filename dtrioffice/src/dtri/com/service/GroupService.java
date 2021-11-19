@@ -15,8 +15,8 @@ import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.PermissionEntity;
 import dtri.com.db.pgsql.dao.GroupDao;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

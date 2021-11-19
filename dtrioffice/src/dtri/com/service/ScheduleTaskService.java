@@ -32,9 +32,9 @@ import dtri.com.db.entity.PurchasingEntity;
 import dtri.com.db.entity.PurchasingListEntity;
 import dtri.com.db.entity.PurchasingMailEntity;
 import dtri.com.db.entity.PurchasingSettingEntity;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.FtpUtilModel;
-import dtri.com.models.MailModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.FtpUtilModel;
+import dtri.com.tools.MailModel;
 
 @Transactional
 @Service

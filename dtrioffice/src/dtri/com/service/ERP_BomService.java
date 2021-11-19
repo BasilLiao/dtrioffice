@@ -16,8 +16,8 @@ import dtri.com.db.entity.ERP_INVMB_Entity;
 import dtri.com.db.entity.ERP_INVMC_Entity;
 import dtri.com.db.entity.ERP_MOC_PUR_Entity;
 import dtri.com.db.mssql.dao.ERP_BomDao;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

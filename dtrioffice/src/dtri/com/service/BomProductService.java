@@ -23,8 +23,8 @@ import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
 import dtri.com.db.pgsql.dao.BomProductDao;
 import dtri.com.db.pgsql.dao.BomTypeItemDao;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service
@@ -293,7 +293,7 @@ public class BomProductService {
 			p_entity.setUseful(product.getInt("useful"));
 			p_entity.setKind(product.getInt("kind"));
 			p_entity.setNote(product.getString("note"));
-
+			p_entity.setBom_type("product");
 			// 取得ID
 			p_entity.setId(product.getInt("id"));
 			// 如果是新增或另存 (取下個ID)

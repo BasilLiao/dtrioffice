@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dtri.com.bean.BomProductGroupBean;
 import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.GroupEntity;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.BomPrintService;
 import dtri.com.service.LoginService;
 import dtri.com.service.ProductionRecordsService;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class BomPrintController {

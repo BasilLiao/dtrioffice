@@ -48,11 +48,11 @@
 		production_records(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		id,order_id,client_name,production_quantity,product_model,bom_product_id,
-		version_motherboard,note,come_from,product_status,product_progress,bom_id)
+		version_motherboard,note,come_from,product_status,product_progress,bom_id,bom_type)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
 		#{id},#{order_id},#{client_name},#{production_quantity},#{product_model},#{bom_product_id},
-		#{version_motherboard},#{note},#{come_from},#{product_status},#{product_progress},#{bom_id});
+		#{version_motherboard},#{note},#{come_from},#{product_status},#{product_progress},#{bom_id},#{bom_type});
 	</insert>
 
 	<!-- 更新 狀態 內容 -->
@@ -84,18 +84,19 @@
 
 	<!-- 更新 進度 -->
 	<update id="updateOneProgress" parameterType="ProductionRecordsEntity">
-		UPDATE 
-		production_records 
+		UPDATE
+		production_records
 		SET product_progress= #{product_progress},
 		sys_modify_date = #{sys_modify_date} ,
 		sys_modify_user = #{sys_modify_user} ,
 		product_start_sn = #{product_start_sn} ,
-		production_quantity =#{production_quantity},
+		production_quantity
+		=#{production_quantity},
 		product_end_sn = #{product_end_sn}
 		WHERE id = #{id};
 	</update>
 	<delete id="deleteOneProgress" parameterType="ProductionRecordsEntity">
-		DELETE FROM 
+		DELETE FROM
 		production_records WHERE product_status = 2 AND id = #{id};
 	</delete>
 

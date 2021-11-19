@@ -14,11 +14,11 @@ import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.PurchasingListEntity;
 import dtri.com.db.entity.PurchasingMailEntity;
 import dtri.com.db.entity.PurchasingSettingEntity;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.LoginService;
 import dtri.com.service.PermissionService;
 import dtri.com.service.PurchasingSettingService;
 import dtri.com.service.ScheduleTaskService;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class PurchasingSettingController {

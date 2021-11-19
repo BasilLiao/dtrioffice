@@ -28,7 +28,7 @@ public class ProductionRecordsEntity {
 	private Integer product_status;
 	private String product_start_sn;
 	private String product_end_sn;
-	
+	private String bom_type;// BOM 類型 product = 產品BOM /accessories = 配件BOM
 
 	public Date getSys_create_date() {
 		return sys_create_date;
@@ -180,6 +180,14 @@ public class ProductionRecordsEntity {
 
 	public void setProduct_end_sn(String product_end_sn) {
 		this.product_end_sn = product_end_sn;
+	}
+
+	public String getBom_type() {
+		return bom_type;
+	}
+
+	public void setBom_type(String bom_type) {
+		this.bom_type = bom_type;
 	}
 
 }

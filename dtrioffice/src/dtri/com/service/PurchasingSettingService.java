@@ -17,8 +17,8 @@ import dtri.com.db.entity.PurchasingListEntity;
 import dtri.com.db.entity.PurchasingMailEntity;
 import dtri.com.db.entity.PurchasingSettingEntity;
 import dtri.com.db.pgsql.dao.PurchasingListSettingDao;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

@@ -16,9 +16,9 @@ import dtri.com.db.entity.ERP_INVMB_Entity;
 import dtri.com.db.entity.ERP_INVMC_Entity;
 import dtri.com.db.entity.ERP_MOC_PUR_Entity;
 import dtri.com.db.entity.GroupEntity;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.ERP_BomService;
 import dtri.com.service.LoginService;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class ErpBomController {

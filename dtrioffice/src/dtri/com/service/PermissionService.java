@@ -16,8 +16,8 @@ import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.PermissionEntity;
 import dtri.com.db.pgsql.dao.GroupDao;
 import dtri.com.db.pgsql.dao.PermissionDao;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service
@@ -170,7 +170,7 @@ public class PermissionService {
 		jsonArray.put("修改者");
 		jsonArray.put("單元ID");
 		jsonArray.put("單元名稱");
-		jsonArray.put("單元群組ID");
+		jsonArray.put("群組ID");
 		jsonArray.put("群組名稱");
 		jsonArray.put("控制單元名稱");
 		jsonArray.put("權限");

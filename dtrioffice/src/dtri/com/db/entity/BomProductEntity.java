@@ -20,6 +20,7 @@ public class BomProductEntity {
 	private Integer useful;
 	private String checked;
 	private Integer kind;
+	private String bom_type;
 
 	// 例外處理 非SQL 物件(查詢條件)
 	private BomGroupEntity groupEntity;
@@ -136,5 +137,13 @@ public class BomProductEntity {
 
 	public void setKind(Integer kind) {
 		this.kind = kind;
+	}
+
+	public String getBom_type() {
+		return bom_type;
+	}
+
+	public void setBom_type(String bom_type) {
+		this.bom_type = bom_type;
 	}
 }

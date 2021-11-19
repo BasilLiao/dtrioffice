@@ -14,7 +14,7 @@ import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.ProductionSnEntity;
 import dtri.com.db.pgsql.dao.ProductionSnDao;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

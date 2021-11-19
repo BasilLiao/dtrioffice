@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.BomTypeItemEntity;
-import dtri.com.db.pgsql.dao.BomTypeItemDao;
+import dtri.com.db.pgsql.dao.BomAccessoriesTypeItemDao;
 import dtri.com.tools.Fm_Time_Model;
 import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service
-public class BomTypeItemService {
+public class BomAccessoriesTypeItemService {
 	@Autowired
-	private BomTypeItemDao itemDao;
+	private BomAccessoriesTypeItemDao itemDao;
 	@Autowired
 	private LoginService loginService;
 
@@ -288,7 +288,7 @@ public class BomTypeItemService {
 		JsonObjBean objBean = new JsonObjBean();
 		JsonTemplateBean templateBean = new JsonTemplateBean();
 
-		templateBean.setWebPageBody("html/body/bom_type_item_body.html");
+		templateBean.setWebPageBody("html/body/bom_accessories_type_item_body.html");
 		templateBean.setBodyData(p_Obj);
 
 		objBean.setR_cellBackName(frontData.getString("cellBackName"));

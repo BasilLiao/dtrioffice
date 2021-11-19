@@ -1,10 +1,10 @@
-<div class="row border" id="bom_product_body">
+<div class="row border" id="bom_accessories_product_body">
 	<div class="col-md-12 border">
 		<!-- 功能: 查詢 /新增 /修改 -->
 		<div class="mt-3 mb-3 border">
 			<div class="mb-3">
 				<h3>
-					<b>建立 產品BOM規格 功能</b>
+					<b>建立 配件BOM規格 功能</b>
 				</h3>
 			</div>
 			<!-- 查詢功能 -->
@@ -241,9 +241,9 @@
 	</div>
 </div>
 <script type="text/javascript">
-    console.log("bom_product_body");
+    console.log("bom_accessories_product_body");
     templateBody = new Vue({
-        el: "#bom_product_body",
+        el: "#bom_accessories_product_body",
         data: {
             l_search_thead: "", //鎖定查詢
             search_list: "",
@@ -889,15 +889,15 @@
                 content.group_item = group_item;
                 console.log(content);
                 var action = "C";
-                var url = "./added_bom_product.do";
+                var url = "./added_bom_accessories_product.do";
                 var order = "search_update"; //指令
                 if ($("#a_u_type").text() == "修改資料") {
                     action = "U";
-                    url = "./update_bom_product.do";
+                    url = "./update_bom_accessories_product.do";
                 }
                 if ($("#a_u_type").text() == "移除資料") {
                     action = "D";
-                    url = "./delete_bom_product.do";
+                    url = "./delete_bom_accessories_product.do";
                 }
 				//查詢
                 var search_list = [];
@@ -935,7 +935,7 @@
                 content.search_list = search_list;
                 content.page_nb = this.page_batch*this.page_batch_total;//批次(起始數)
                 content.page_total = this.page_batch_total;//(每次要的最大數量)
-                var url = "./bom_product.do";
+                var url = "./bom_accessories_product.do";
                 var order = "search_update"; //指令
 
                 var data = JSON.stringify({

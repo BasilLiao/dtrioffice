@@ -6,10 +6,11 @@ import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
 
-public class BomProductGroupBean { 
+public class BomProductGroupBean {
 	private List<BomProductEntity> bomProductEntities;
 	private List<BomGroupEntity> bomGroupEntities;
 	private List<BomTypeItemEntity> bomTypeItemEntities;
+	private List<BomTypeItemEntity> bomAccessoriesTypeItemEntities;
 
 	public List<BomProductEntity> getBomProductEntities() {
 		return bomProductEntities;
@@ -33,5 +34,13 @@ public class BomProductGroupBean {
 
 	public void setBomTypeItemEntities(List<BomTypeItemEntity> bomTypeItemEntities) {
 		this.bomTypeItemEntities = bomTypeItemEntities;
+	}
+
+	public List<BomTypeItemEntity> getBomAccessoriesTypeItemEntities() {
+		return bomAccessoriesTypeItemEntities;
+	}
+
+	public void setBomAccessoriesTypeItemEntities(List<BomTypeItemEntity> bomAccessoriesTypeItemEntities) {
+		this.bomAccessoriesTypeItemEntities = bomAccessoriesTypeItemEntities;
 	}
 }

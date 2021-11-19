@@ -14,7 +14,7 @@ import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.PurchasingEntity;
 import dtri.com.db.entity.UserEntity;
 import dtri.com.db.pgsql.dao.PurchasingDao;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

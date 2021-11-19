@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.ProductionSnEntity;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.LoginService;
 import dtri.com.service.ProductionSnService;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class ProductionSnController {

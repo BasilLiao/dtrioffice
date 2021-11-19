@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.ProductionRecordsEntity;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.LoginService;
 import dtri.com.service.ProductionSnListService;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class ProductionSnListController {

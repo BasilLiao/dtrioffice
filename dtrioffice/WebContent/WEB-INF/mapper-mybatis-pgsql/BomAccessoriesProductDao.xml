@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="dtri.com.db.pgsql.dao.BomProductDao">
+<mapper namespace="dtri.com.db.pgsql.dao.BomAccessoriesProductDao">
 
 	<!-- 查詢 資料 BOM清單 -->
-	<select id="queryProduct_bom_number" resultType="BomProductEntity">
+	<select id="queryAccessories_product_bom_number" resultType="BomProductEntity">
 		SELECT *
-		FROM bom_product
+		FROM bom_accessories_product
 		WHERE bom_number = #{bom_number} LIMIT 1
 	</select>
 	<!-- 查詢 資料 BOM料號重覆性 -->
-	<select id="queryProduct" resultType="BomProductEntity">
+	<select id="queryAccessoriesProduct" resultType="BomProductEntity">
 		SELECT *
-		FROM bom_product
+		FROM bom_accessories_product
 		WHERE ${where_product} order by
 		sys_modify_date desc ${product_limit}
 		<!-- id OFFSET #{page_OFFSET} LIMIT 100 -->
 	</select>
-	<select id="queryProductbyId" resultType="BomProductEntity">
+	<select id="queryAccessoriesProductbyId" resultType="BomProductEntity">
 		SELECT *
-		FROM bom_product
+		FROM bom_accessories_product
 		WHERE id=${id} order by
 		sys_modify_date desc
 	</select>
 	<!-- 查詢 資料 群組 及 項目 -->
-	<select id="queryGroup" resultType="BomGroupEntity">
+	<select id="queryAccessoriesGroup" resultType="BomGroupEntity">
 		SELECT g.* ,
 		t.i01,t.i02,t.i03,t.i04,t.i05,
 		t.i06,t.i07,t.i08,t.i09,t.i10,
@@ -33,9 +33,9 @@
 		t.i21,t.i22,t.i23,t.i24,t.i25,
 		t.type_item,t.note
 		,t.group_name,t.type_order
-		FROM bom_group as g
+		FROM bom_accessories_group as g
 		inner
-		join bom_tpye_item as t
+		join bom_accessories_tpye_item as t
 		ON(t.id = g.type_item_id AND t.group_id =
 		g.type_item_group_id)
 		where ${where_group}
@@ -50,9 +50,9 @@
 	</select>
 
 	<!-- 產品項目 添加 -->
-	<insert id="addedOne" parameterType="BomProductEntity">
+	<insert id="addedAccessoriesOne" parameterType="BomProductEntity">
 		INSERT INTO
-		bom_product(
+		bom_accessories_product(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		product_model,version_motherboard,bom_number,
 		id,note,useful,kind,bom_type)
@@ -62,9 +62,9 @@
 		#{id},#{note},#{useful},#{kind},#{bom_type});
 	</insert>
 	<!-- 群組項目 -->
-	<insert id="addedOneGroup" parameterType="BomGroupEntity">
+	<insert id="addedAccessoriesOneGroup" parameterType="BomGroupEntity">
 		INSERT INTO
-		bom_group (
+		bom_accessories_group (
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		product_id,type_item_id,type_item_group_id,number,
 		useful)
@@ -74,9 +74,9 @@
 		#{useful});
 	</insert>
 	<!-- 群組項目By id -->
-	<insert id="addedOneGroupByid" parameterType="BomGroupEntity">
+	<insert id="addedAccessoriesOneGroupByid" parameterType="BomGroupEntity">
 		INSERT INTO
-		bom_group (id,
+		bom_accessories_group (id,
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		product_id,type_item_id,type_item_group_id,number,
 		useful)
@@ -86,70 +86,69 @@
 		#{useful});
 	</insert>
 	<!-- 取得下個物件 -->
-	<select id="nextvalBomProduct" resultType="Integer">
+	<select id="nextvalBomAccessoriesProduct" resultType="Integer">
 		select
-		nextval('bom_product_id_seq');
+		nextval('bom_accessories_product_id_seq');
 	</select>
 	<!-- 取得下個物件 -->
-	<select id="nextvalBomGroup" resultType="Integer">
+	<select id="nextvalBomAccessoriesGroup" resultType="Integer">
 		select
-		nextval('bom_group_id_seq');
+		nextval('bom_accessories_group_id_seq');
 	</select>
 	<!-- 移除項目群組 -->
-	<delete id="deleteGroupByProduct_id">
-		DELETE FROM bom_group WHERE
+	<delete id="deleteAccessoriesGroupByProduct_id">
+		DELETE FROM bom_accessories_group WHERE
 		product_id =
 		#{product_id};
 	</delete>
 	<!-- 移除不對等 項目群 內的項目 -->
-	<delete id="deleteGroupOther" parameterType="BomGroupEntity">
+	<delete id="deleteAccessoriesGroupOther" parameterType="BomGroupEntity">
 		DELETE FROM
-		bom_group WHERE product_id = #{product_id} AND id not in(${note});
+		bom_accessories_group WHERE product_id = #{product_id} AND id not in(${note});
 	</delete>
 
 	<!-- 移除產品 -->
-	<delete id="deleteProduct">
-		DELETE FROM bom_product WHERE id =
+	<delete id="deleteAccessoriesProduct">
+		DELETE FROM bom_accessories_product WHERE id =
 		#{id};
 	</delete>
 	<!-- 更新 檢查點 -->
-	<update id="checkedOne">
+	<update id="checkedAccessoriesOne">
 		UPDATE
-		bom_product
+		bom_accessories_product
 		SET checked= #{name}
 		WHERE id = #{id};
 	</update>
 	<!-- 指更新 產品類別(可量產/技轉中) -->
-	<update id="updateProductKind" parameterType="BomProductEntity">
+	<update id="updateAccessoriesProductKind" parameterType="BomProductEntity">
 		UPDATE
-		bom_product
+		bom_accessories_product
 		SET kind = ${kind}
 		WHERE id = ${id};
 	</update>
 	<!-- 更新 產品資料 -->
-	<update id="updateProduct" parameterType="BomProductEntity">
+	<update id="updateAccessoriesProduct" parameterType="BomProductEntity">
 		UPDATE
-		bom_product
+		bom_accessories_product
 		SET
 		sys_modify_date = #{sys_modify_date},
 		sys_modify_user =
 		#{sys_modify_user},
 		product_model = #{product_model},
-		version_motherboard =
-		#{version_motherboard},
+		version_motherboard = #{version_motherboard},
 		bom_number =
 		#{bom_number},
 		note = #{note},
 		checked = '',
 		useful = #{useful},
-		kind = #{kind},
-		bom_type = #{bom_type} 
+		bom_type = #{bom_type},
+		kind = #{kind}
 		WHERE id = #{id};
 	</update>
 	<!-- 更新 群組項目資料 -->
-	<update id="updateGroup" parameterType="BomGroupEntity">
+	<update id="updateAccessoriesGroup" parameterType="BomGroupEntity">
 		UPDATE
-		bom_group
+		bom_accessories_group
 		SET
 		sys_modify_date = #{sys_modify_date},
 		sys_modify_user =

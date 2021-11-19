@@ -21,13 +21,13 @@ import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.entity.ProductionSnEntity;
 import dtri.com.db.entity.SoftwareVersionEntity;
-import dtri.com.models.JsonDataModel;
 import dtri.com.service.APIService;
 import dtri.com.service.LoginService;
 import dtri.com.service.ProductionPrintService;
 import dtri.com.service.ProductionRecordsService;
 import dtri.com.service.ProductionSnService;
 import dtri.com.service.SoftwareVersionService;
+import dtri.com.tools.JsonDataModel;
 
 @Controller
 public class ProductionPrintController {
@@ -230,6 +230,7 @@ public class ProductionPrintController {
 
 			bomPreEnt.setBom_number(entity.getBom_product_id());
 			bomPreEnt.setId(entity.getBom_id());
+			bomPreEnt.setBom_type(entity.getBom_type());
 			bomPreEnt.setGroupEntity(new BomGroupEntity());
 			bomPreEnts.add(bomPreEnt);
 			// 規格定義

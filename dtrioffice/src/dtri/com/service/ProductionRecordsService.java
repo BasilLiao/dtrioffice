@@ -13,8 +13,8 @@ import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.pgsql.dao.ProductionRecordsDAO;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 /**
  * @author Basil 登記生產紀錄
@@ -63,6 +63,7 @@ public class ProductionRecordsService {
 		recordsEntity.setCome_from(json.getString("come_from"));
 		recordsEntity.setProduct_status(p_status);
 		recordsEntity.setProduct_progress(json.getInt("product_progress"));
+		recordsEntity.setBom_type(json.getString("bom_type"));
 
 		if (dao.beforeCheckAddOne(json.getString("production_id")) == null) {
 			dao.addOne(recordsEntity);
@@ -82,6 +83,7 @@ public class ProductionRecordsService {
 		}
 		return check;
 	}
+
 	/** 中止_單據進度 **/
 	public boolean updateProgress_stop(ProductionRecordsEntity entity) {
 		boolean check = false;
@@ -92,6 +94,7 @@ public class ProductionRecordsService {
 		}
 		return check;
 	}
+
 	/** 更新單據狀態 **/
 	public boolean updateEntity(ProductionRecordsEntity entity) {
 		boolean check = false;
@@ -138,13 +141,16 @@ public class ProductionRecordsService {
 		// 類型? 產品SN序號
 		if (!content.isNull("product_start_sn") && !content.getString("product_start_sn").equals(""))
 			entity.setProduct_start_sn(content.getString("product_start_sn"));
-		
+
 		// 類型? 數量
-		if (!content.isNull("production_quantity") && content.getInt("production_quantity")>=0)
+		if (!content.isNull("production_quantity") && content.getInt("production_quantity") >= 0)
 			entity.setProduction_quantity(content.getInt("production_quantity"));
 		// 類型? 客戶名稱
 		if (!content.isNull("client_name") && !content.getString("client_name").equals(""))
 			entity.setClient_name(content.getString("client_name"));
+		// 主附件?
+		if (!content.isNull("bom_type") && !content.getString("bom_type").equals(""))
+			entity.setBom_type(content.getString("bom_type"));
 		return entity;
 	}
 

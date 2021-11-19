@@ -14,8 +14,8 @@ import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.pgsql.dao.ProductionRecordsDAO;
-import dtri.com.models.Fm_Time_Model;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.Fm_Time_Model;
+import dtri.com.tools.JsonDataModel;
 
 /**
  * @author Basil 登記生產紀錄

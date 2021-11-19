@@ -9,16 +9,16 @@
 			</div>
 			<!-- 查詢功能 -->
 			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
 				<div class=" collapse show" id="collapseSearch">
-					<div class="row mb-5">
+					<div class="row mb-5 m-0 h5">
 						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
+							<div class="row m-0">
+								<div class="col-md-12 p-0 text-left">
 									單元名稱 : <input class="col-md-7" type="text" id="s_name" name="s_name" placeholder="Ex:功能參數" required autofocus />
 								</div>
 							</div>
@@ -38,7 +38,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mb-3">
+					<div class="row mb-3 m-0">
 						<div class="col-md-5"></div>
 						<div class="col-md-2">
 							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
@@ -50,8 +50,8 @@
 			<!-- 功能:查詢結果  /修改 -->
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2">
-						<div class="col-md-5">
+					<div class="row mb-2 m-0">
+						<div class="col-md-5 p-0">
 							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
@@ -66,7 +66,7 @@
 							<div class="row">
 								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
 									<thead>
-										<tr id="search_thead" class="bg-primary">
+										<tr id="search_thead" class="bg-primary h5">
 											<th scope="col" style="min-width: 90px;">功能</th>
 											<th scope="col" style="min-width: 40px;">筆</th>
 										</tr>
@@ -96,24 +96,22 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
+				<div class="row mb-2 m-0">
+					<div class="col-md-5 p-0">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
 					</div>
 				</div>
 				<form onsubmit="return templateBody.send_added_or_update_save();">
 					<div class="collapse show" id="collapseAdded">
 						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-1">
-							<div class="col-md-2">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										<div class="col-md-12">狀態 :</div>
-										<div class="col-md-12" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-									</div>
+						<div class="row mb-1 m-0 h5">
+							<div class="col-md-3">
+								<div class="row m-0 p-0 col-md-12 text-left">
+									<div class="col-md-4 p-0">狀態 :</div>
+									<div class="col-md-8 p-0" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="row">
 									<div class="col-md-12 row text-left">
 										<div class="col-md-7">單元ID:</div>
@@ -121,18 +119,18 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<div class="row">
 									<div class="col-md-12 row text-left">
 										<div class="col-md-6">單元群組ID :</div>
-										<div class="col-md-2" id="a_u_group"></div>
+										<div class="col-md-6" id="a_u_group"></div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
 						<!-- 新增 或 修改 或 刪除(內容) -->
-						<div class="row mb-3 mt-3">
+						<div class="row mb-3 mt-3 h5">
 							<div class="col-md-3">
 								<div class="row">
 									<div class="col-md-12 text-left">
@@ -162,7 +160,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mb-5">
+						<div class="row mb-5 h5">
 							<div class="col-md-3">
 								<div class="row">
 									<div class="col-md-12 text-left">
@@ -235,7 +233,7 @@
 			}
 			//t_header
 			for (var i = 0; i < this.search_list[0].length; i++) {
-				if (i == 0 || i == 2 || i == 5) {
+				if (i == 0 || i == 2 || i == 5 || i == 8) {
 					min_width = 180;
 				} else if (i == 11) {
 					min_width = 480;
@@ -291,7 +289,8 @@
 					d_submit += "刪</button></div>";
 
 					$("#search_tbody").append(
-							'<tr class="page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">' + a_submit + d_submit + "</th></tr>");
+							'<tr class="page_all t_row' + s_list + ' '+page_group+'" style="white-space: nowrap;"><th class="ml-0 col-md-12 row">' + a_submit
+									+ d_submit + "</th></tr>");
 					//計數量
 					$("#search_tbody .t_row" + this.search_list[i][4]).append("<td >" + i + "</td>");
 

@@ -10,7 +10,7 @@ import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.UserEntity;
-import dtri.com.models.JsonDataModel;
+import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service

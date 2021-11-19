@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dtri.com.db.entity.GroupEntity;
 import dtri.com.db.entity.UserEntity;
 import dtri.com.db.pgsql.dao.UserDao;
-import dtri.com.models.MD5HashModel;
+import dtri.com.tools.MD5HashModel;
 
 @Transactional
 @Service

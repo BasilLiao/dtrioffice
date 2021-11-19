@@ -115,6 +115,13 @@
 								<div class="row h5 m-0">
 									<div class="col-md-6 border border-primary">
 										<div class="text-left mb-2 mt-2 row m-0">
+											<div class="col-3 p-0">產品類型:</div>
+											<select class="col-3 a_row2" id="s_g_bom_type" name="s_g_bom_type">
+												<option value="product">產品類型</option>
+												<option value="accessories">配件類型</option>
+											</select>
+										</div>
+										<div class="text-left mb-2 mt-2 row m-0">
 											<div class="col-3 p-0">項目群組:</div>
 											<select class="col-3 a_row2" id="s_g_item" name="s_g_item">
 												<option value="">請選擇</option>
@@ -570,7 +577,11 @@
 									</td>
 								</tr>
 								<tr>
-									<td id="c2_note" colspan="6" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">表單編號: QR-701-06 / 規格負責人: / 建單負責人:</td>
+									<td class="row m-0 p-0" colspan="1" style="font-size: 0.5rem; padding-right: 10px;">
+										<div>主/附件 :</div>
+										<div id="c2_bom_type"></div>
+									</td>
+									<td id="c2_note" colspan="5" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">表單編號: QR-701-06 / 規格負責人: / 建單負責人:</td>
 								</tr>
 							</tbody>
 						</table>
@@ -646,6 +657,8 @@
 			search_list : "",
 			group_list : "",
 			item_list : "",
+			item_acc_list : "",
+
 			production_list : "",
 			softwareVer_list : "",
 			sn_all_list : "",
@@ -680,7 +693,9 @@
 			console.log(main.contentData.templateInfo.body);
 			this.group_list = main.contentData.templateInfo.body["group_list"];
 			this.item_list = main.contentData.templateInfo.body["item_list"];
+			this.item_acc_list = main.contentData.templateInfo.body["item_acc_list"];
 			this.search_list = main.contentData.templateInfo.body["list"];
+
 			this.item_nb_max = main.contentData.templateInfo.body["group_list"].length + 1;
 			this.production_list = main.contentData.templateInfo.body["production_list"];
 			this.softwareVer_list = main.contentData.templateInfo.body["softwareVer_list"];
@@ -706,7 +721,7 @@
 				if (i == 2 || i == 3) {
 					min_width = 200;
 				}
-				if (i == 1 || i == 6 || i == 8 || i == 10) {
+				if (i == 1 || i == 6 || i == 9 || i == 11) {
 					min_width = 180;
 				}
 
@@ -724,7 +739,7 @@
 			}
 			//t_header
 			for (var i = 0; i < this.production_list[0].length; i++) {
-				if (i == 0 || i == 2 || i == 4 || i == 7 || i == 9 || i == 11) {
+				if (i == 0 || i == 2 || i == 4 || i == 7 || i == 10 || i == 12) {
 					min_width = 180;
 				}
 				if (i == 3 || i == 6 || i == 8) {
@@ -806,8 +821,8 @@
 			//t_body_group
 			this.group_choose();
 			//建立 選項
-			this.group_item_choose("s_g_item", -1);
-			this.group_item_choose("a_g_item_0", 0);
+			this.group_item_choose("s_g_item", -1, this.item_list);
+			this.group_item_choose("a_g_item_0", 0, this.item_list);
 
 			//動態監聽顯示是否用 客製化SN
 			$(document).on("click", "#sn_customized_ok", function(event) {
@@ -859,10 +874,27 @@
 			$(document).on("click", ".from_move", function(event) {
 				templateBody.from_move(event);
 			});
+			//切換群組項目 監聽
+			$(document).on("change", "#s_g_bom_type", function(event) {
+				if ($("#s_g_bom_type").val() == "product") {
+					templateBody.group_item_choose("s_g_item", -1, templateBody.item_list);
+					templateBody.group_item_choose("a_g_item_0", 0, templateBody.item_list);
+				} else {
+					templateBody.group_item_choose("s_g_item", -1, templateBody.item_acc_list);
+					templateBody.group_item_choose("a_g_item_0", 0, templateBody.item_acc_list);
+				}
+				s_i_item = "<option value=''>請選擇</option>";
+				$("#s_i_item").empty();
+				$("#s_i_item").append(s_i_item);
+			});
 
 			//切換項目 監聽
 			$(document).on("change", "#s_g_item", function(event) {
-				templateBody.item_choose(event, -1);
+				if ($("#s_g_bom_type").val() == "product") {
+					templateBody.item_choose(event, -1, templateBody.item_list);
+				} else {
+					templateBody.item_choose(event, -1, templateBody.item_acc_list);
+				}
 			});
 
 			//新增監聽
@@ -1021,6 +1053,8 @@
 					var id_p = event.target.attributes.user_id.value;
 					templateBody.event = event;
 					//自動_先檢查是否有效
+					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_9").text() + "]").attr("selected", "selected");
+
 					$("#a_c_submit2").trigger("click");
 					$("#s_c_submit").trigger("click");
 					$("#s_bom_id").val($(".t_row2" + id_p + " .s_1").text());
@@ -1133,26 +1167,26 @@
 				}
 			},
 			//選擇項目
-			item_choose : function(event, who) {
+			item_choose : function(event, who, item_list) {
 				var s_i_item = "";
-				for (var i = 0; i < templateBody.item_list.length; i++) {
-					if (templateBody.item_list[i][0] == event.target.value) {
+				for (var i = 0; i < item_list.length; i++) {
+					if (item_list[i][0] == event.target.value) {
 						var value_i = "";
 						//項目
-						if (templateBody.item_list[i][2] == 1) {
+						if (item_list[i][2] == 1) {
 							value_i += "--| ";
-							for (var j = 4; j < templateBody.item_list[i].length - 1; j++) {
-								value_i += templateBody.item_list[i][j] + " | ";
+							for (var j = 4; j < item_list[i].length - 1; j++) {
+								value_i += item_list[i][j] + " | ";
 							}
 							value_i += "--";
 							s_i_item += "<option value=''>" + value_i + "</option>";
 						} else {
 							//內容
 							value_i += "| ";
-							for (var j = 4; j < templateBody.item_list[i].length - 1; j++) {
-								value_i += templateBody.item_list[i][j] + " | ";
+							for (var j = 4; j < item_list[i].length - 1; j++) {
+								value_i += item_list[i][j] + " | ";
 							}
-							s_i_item += "<option value='" + templateBody.item_list[i][2] + "'>" + value_i + "</option>";
+							s_i_item += "<option value='" + item_list[i][2] + "'>" + value_i + "</option>";
 						}
 					}
 				}
@@ -1173,14 +1207,14 @@
 				}
 			},
 			//選擇 群組-項目
-			group_item_choose : function(id, def) {
+			group_item_choose : function(id, def, item) {
 				//s_choose s_g_item
 				var s_g_item = "<option value=''>請選擇</option>";
 				var group_name = "";
-				for (var i = 0; i < this.item_list.length; i++) {
-					if (group_name != this.item_list[i][1]) {
-						s_g_item += "<option value='" + this.item_list[i][0] + "'>" + this.item_list[i][1] + "</option>"; //群組
-						group_name = this.item_list[i][1];
+				for (var i = 0; i < item.length; i++) {
+					if (group_name != item[i][1]) {
+						s_g_item += "<option value='" + item[i][0] + "'>" + item[i][1] + "</option>"; //群組
+						group_name = item[i][1];
 					}
 				}
 				$("#" + id).empty();
@@ -1231,6 +1265,9 @@
 				lk += "'i_item':'" + $("#s_i_item").val() + "',";
 				lk += "'p_model':'" + $("#s_model").val() + "',";
 				lk += "'p_bom_id':'" + $("#s_bom_id").val() + "',";
+				if ($("#s_l_list div").length < 2) {
+					lk += "'bom_type':'" + $("#s_g_bom_type").val() + "',";
+				}
 				lk += "'p_bom_number':'" + $("#s_bom_number").val() + "'}";
 
 				$("#s_l_list").append('<div class="text-left mb-2 mt-2">' + lk + "</div>");
@@ -1341,6 +1378,7 @@
 				var fullDate = new Date();
 				var twoDigitMonth = fullDate.getMonth() + 1 >= 10 ? fullDate.getMonth() + 1 : "0" + (fullDate.getMonth() + 1);
 				var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
+				$("#c2_bom_type").text($(".t_row" + id + " .s_8")[0].innerText);
 				$("#c2_note").text(
 						"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_3")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
 								+ $("#nav_account").text() + " / 單據來源 : " + come_from);
@@ -1653,6 +1691,7 @@
 						content.product_model = $(".t_row" + this.s_4 + " .s_1").text();
 						content.version_motherboard = $(".t_row" + this.s_4 + " .s_2").text();
 						content.come_from = "流程卡";
+						content.bom_type = $(".t_row" + this.s_4 + " .s_9").text();
 						content.production_quantity = quantity;
 						//軟體定義項目
 						content.mb_ver = $("#mb_ver").text();
@@ -1926,6 +1965,7 @@
 			$(document).off("click", ".a_i_item");
 			$(document).off("click", ".from_move");
 			$(document).off("click", ".production_ok");
+			$(document).off("change", "#s_g_bom_type");
 
 			$(document).off("change", ".select_sn");
 

@@ -1,16 +1,16 @@
-<div class="row border" id="bom_type_item_body">
+<div class="row border" id="bom_accessories_type_item_body">
 	<div class="col-md-12 border">
 		<!-- 功能: 查詢 /新增 /修改 -->
 		<div class="mt-3 mb-3 border">
 			<div class="mb-3">
 				<h3>
-					<b>建立 產品BOM項目 功能</b>
+					<b>建立 配件BOM項目 功能</b>
 				</h3>
 			</div>
 			<!-- 查詢功能 -->
 			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2 m-0">
-					<div class="col-md-5 p-0">
+				<div class="row mb-2">
+					<div class="col-md-5">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 					</div>
 				</div>
@@ -40,8 +40,8 @@
 			<!-- 功能:查詢結果  /修改 -->
 			<div class="mb-3 border border-primary shadow bg-light">
 				<div class="border">
-					<div class="row mb-2 m-0">
-						<div class="col-md-5 p-0">
+					<div class="row mb-2">
+						<div class="col-md-5">
 							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 						</div>
 					</div>
@@ -89,8 +89,8 @@
 			</div>
 			<!-- 新增/修改功能 -->
 			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2 m-0">
-					<div class="col-md-5 p-0">
+				<div class="row mb-2">
+					<div class="col-md-5">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
 					</div>
 				</div>
@@ -188,9 +188,9 @@
 	</div>
 </div>
 <script type="text/javascript">
-    console.log("bom_type_item_body");
+    console.log("bom_accessories_type_item_body");
     templateBody = new Vue({
-        el: "#bom_type_item_body",
+        el: "#bom_accessories_type_item_body",
         data: {
             search_list: "", //項目名稱
             search_item: "", //內容
@@ -594,7 +594,7 @@
 
                 
                 var action = "C";
-                var url = "./added_bom_type_item.do";
+                var url = "./added_bom_accessories_type_item.do";
                 var order = "search_update"; //指令
                 if ($("#a_u_type").text() == "新增資料") {
 	                if($("#item_thead th").length >4){
@@ -611,7 +611,7 @@
                 }
                 if ($("#a_u_type").text() == "修改資料") {
                     action = "U";
-                    url = "./update_bom_type_item.do";
+                    url = "./update_bom_accessories_type_item.do";
                     if($("#item_thead th").length >4){
 	                	//真正有資 修改 增群組   (id /note)
 	                	 group_list[0] = $("#name_v_1").text();
@@ -642,7 +642,7 @@
                 }
                 if ($("#a_u_type").text() == "移除資料") {
                     action = "D";
-                    url = "./delete_bom_type_item.do";
+                    url = "./delete_bom_accessories_type_item.do";
                 }
 
                 var data = JSON.stringify({
@@ -663,7 +663,7 @@
                 var content = new Object();
                 content.group_name = $("#s_group_name").val();
 
-                var url = "./bom_type_item.do";
+                var url = "./bom_accessories_type_item.do";
                 var order = "search_update"; //指令
 
                 var data = JSON.stringify({

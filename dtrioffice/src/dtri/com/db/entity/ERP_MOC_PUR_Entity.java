@@ -2,7 +2,7 @@ package dtri.com.db.entity;
 
 import java.util.Date;
 
-import dtri.com.models.Fm_Time_Model;
+import dtri.com.tools.Fm_Time_Model;
 
 //BOM 規格查詢
 /**

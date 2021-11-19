@@ -23,30 +23,29 @@ import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
 import dtri.com.db.pgsql.dao.BomAccessoriesProductDao;
 import dtri.com.db.pgsql.dao.BomAccessoriesTypeItemDao;
-import dtri.com.db.pgsql.dao.BomProductDao;
-import dtri.com.db.pgsql.dao.BomTypeItemDao;
 import dtri.com.tools.Fm_Time_Model;
 import dtri.com.tools.JsonDataModel;
 
 @Transactional
 @Service
-public class BomPrintService {
+public class BomAccessoriesProductService {
 	@Autowired
-	private BomProductDao productDao;
+	private BomAccessoriesProductDao productDao;
 	@Autowired
-	private BomTypeItemDao itemDao;
-
-	@Autowired
-	private BomAccessoriesProductDao productAccDao;
-	@Autowired
-	private BomAccessoriesTypeItemDao itemAccDao;
+	private BomAccessoriesTypeItemDao itemDao;
 	@Autowired
 	private LoginService loginService;
 
+	/** 查詢唯一值 **/
+	public BomProductEntity searchById(Integer id) {
+		BomProductEntity re = new BomProductEntity();
+		re = productDao.queryAccessoriesProductbyId(id);
+		return re;
+	}
+
 	/**
-	 * @param entitys    查詢條件
-	 * @param offset     幾頁
-	 * @param page_total 數量
+	 * @param entitys 查詢物件
+	 * @param offset  分頁筆數(100筆為單位)
 	 * @return 查詢後清單
 	 * 
 	 **/
@@ -62,16 +61,13 @@ public class BomPrintService {
 		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
 		List<Integer> group_limit_in = new ArrayList<Integer>();
 
-		List<BomProductEntity> p_list = new ArrayList<BomProductEntity>();
 		ArrayList<BomGroupEntity> g_list = new ArrayList<BomGroupEntity>();
+		List<BomProductEntity> p_list = new ArrayList<BomProductEntity>();
 		List<BomTypeItemEntity> i_list = new ArrayList<BomTypeItemEntity>();
-		List<BomTypeItemEntity> i_listAcc = new ArrayList<BomTypeItemEntity>();
 		int select_nb = 0;// 查詢條件
 		// ----------項目----------
-		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || //
-				entitys.get(0).getProduct_model() != null || //
-				entitys.get(0).getBom_type() != null || //
-				entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
+		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || entitys.get(0).getProduct_model() != null
+				|| entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
 			for (BomProductEntity entity : entitys) {
 				// 組
 				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
@@ -109,12 +105,7 @@ public class BomPrintService {
 				// 除對多餘的 OR
 				all_where_group = all_where_group.substring(0, all_where_group.length() - 3);
 				// 取得傭有條件的 群組 項目
-				if (entitys.get(0).getBom_type().equals("product")) {
-					g_list = productDao.queryGroup(all_where_group, null);
-				} else {
-					g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
-				}
-
+				g_list = productDao.queryAccessoriesGroup(all_where_group, null);
 				// 過濾 重複 產品清單
 				Map<Integer, Integer> g_m_list = new HashMap<Integer, Integer>();
 				if (entitys.size() >= 0) {
@@ -135,11 +126,7 @@ public class BomPrintService {
 						}
 					}
 					all_where_group += "0)";
-					if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-						g_list = productDao.queryGroup(all_where_group, null);
-					} else {
-						g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
-					}
+					g_list = productDao.queryAccessoriesGroup(all_where_group, null);
 				}
 
 				// ID 條件
@@ -152,78 +139,81 @@ public class BomPrintService {
 				}
 				all_where_product += "0)";
 				// 產品-清單
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-					p_list = productDao.queryProduct(all_where_product, all_limit);
-				} else {
-					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
-				}
-
+				p_list = productDao.queryAccessoriesProduct(all_where_product, all_limit);
 			} else {
 				all_where_group += "type_item_id !=0";
 				// ID 條件
 				all_where_product += "product_model !=''";
 				// 產品-清單
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-					p_list = productDao.queryProduct(all_where_product, all_limit);
-				} else {
-					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
-				}
-
+				p_list = productDao.queryAccessoriesProduct(all_where_product, all_limit);
 				for (BomProductEntity one : p_list) {
 					group_limit_in.add(one.getId());
 				}
 				// 取得傭有條件的 群組 項目+產品
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-					g_list = productDao.queryGroup(all_where_group, group_limit_in);
-				} else {
-					g_list = productAccDao.queryAccessoriesGroup(all_where_group, group_limit_in);
-				}
+				g_list = productDao.queryAccessoriesGroup(all_where_group, group_limit_in);
 			}
 
 		} else {
 			// 無條件
 			// 產品-清單
-			if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-				p_list = productDao.queryProduct("product_model !='' ", all_limit);
-			} else {
-				p_list = productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit);
-			}
-
+			p_list = productDao.queryAccessoriesProduct("product_model !='' ", all_limit);
 			// 取得傭有條件的 群組 項目 (限制)
 			for (BomProductEntity one : p_list) {
 				group_limit_in.add(one.getId());
 			}
-
-			if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-				g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
-			} else {
-				g_list = productAccDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in);
-			}
-
+			g_list = productDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in);
 		}
 
 		// 項目-清單
 		i_list = itemDao.queryAll("!= ' '");
-		i_listAcc = itemAccDao.queryAll("!= ' '");
-		// 產品
-		bpg.setBomProductEntities(p_list);
-		// 規格
 		bpg.setBomGroupEntities(g_list);
-
+		bpg.setBomProductEntities(p_list);
 		bpg.setBomTypeItemEntities(i_list);
-		bpg.setBomAccessoriesTypeItemEntities(i_listAcc);
 		return bpg;
 	}
 
-	/** 檢查過 第一次列印 **/
-	public void checked(int id, String name) {
-		productDao.checkedOne(id, name);
+	/** 新增 **/
+	public Boolean added(BomProductEntity entity) {
+		Boolean check = false;
+		if (productDao.queryAccessories_product_bom_number(entity) != null) {
+			entity.setBom_number(entity.getBom_number() + "_重複");
+		}
+		productDao.addedAccessoriesOne(entity);
+		for (BomGroupEntity one : entity.getGroupEntitis()) {
+			productDao.addedAccessoriesOneGroup(one);
+		}
 
+		return check;
 	}
 
-	/** 修正 BOM 生產單類型 **/
-	public void productkind(int id, int kind) {
-		productDao.updateProductKind(id, kind);
+	/** 更新 **/
+	public Boolean update(BomProductEntity entity) {
+		Boolean check = false;
+		productDao.updateAccessoriesProduct(entity);
+		BomGroupEntity re_other = new BomGroupEntity();
+		re_other.setNote("");
+		for (BomGroupEntity one : entity.getGroupEntitis()) {
+			// 沒這項目->新增
+			if (productDao.updateAccessoriesGroup(one) != 1) {
+				int id = productDao.nextvalBomAccessoriesGroup();
+				one.setId(id);
+				productDao.addedAccessoriesOneGroupByid(one);
+			}
+			re_other.setProduct_id(one.getProduct_id());
+			re_other.setNote(re_other.getNote() + one.getId() + ",");
+		}
+		// 移除多餘
+		re_other.setNote(re_other.getNote() + "0");
+		productDao.deleteAccessoriesGroupOther(re_other);
+		return check;
+	}
+
+	/** 移除 **/
+	public Boolean delete(BomProductEntity entity) {
+		Boolean check = false;
+		productDao.deleteAccessoriesGroupByProduct_id(entity.getId());
+		productDao.deleteAccessoriesProduct(entity.getId());
+		return check;
 
 	}
 
@@ -244,7 +234,7 @@ public class BomPrintService {
 	}
 
 	/** JSON to 清單 **/
-	public List<BomProductEntity> jsonToEntities(JSONObject content, String action) {
+	public List<BomProductEntity> jsonToEntitiesSearch(JSONObject content, String action) {
 		List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
 
 		// 查詢?
@@ -270,13 +260,65 @@ public class BomPrintService {
 				// 項目?->BOM料號
 				if (!one.isNull("p_bom_number") && !one.get("p_bom_number").equals(""))
 					p_entity.setBom_number(one.getString("p_bom_number"));
-				// 類型?
-				if (!one.isNull("bom_type") && !one.get("bom_type").equals(""))
-					p_entity.setBom_type(one.getString("bom_type"));
 
 				p_entity.setGroupEntity(g_entity);
 				entitys.add(p_entity);
 			}
+		}
+		return entitys;
+	}
+
+	/** JSON to 清單 **/
+	public List<BomProductEntity> jsonToEntities(JSONObject content, String action) {
+		List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
+		// 更新 新增 移除用
+		if (!content.isNull("product") && !content.get("product").equals("") && !content.isNull("group_item") && !content.get("group_item").equals("")) {
+			BomProductEntity p_entity = new BomProductEntity();
+			BomGroupEntity g_entity = new BomGroupEntity();
+			List<BomGroupEntity> groupEntitis = new ArrayList<BomGroupEntity>();
+			JSONObject product = (JSONObject) content.get("product");
+			JSONArray group_list = (JSONArray) content.get("group_item");
+			JSONArray group_one = new JSONArray();
+
+			p_entity.setSys_create_date(new Date());
+			p_entity.setSys_create_user(loginService.getSessionUserBean().getAccount());
+			p_entity.setSys_modify_date(new Date());
+			p_entity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
+
+			p_entity.setBom_number(product.getString("bom_number").trim());
+			p_entity.setProduct_model(product.getString("product_model"));
+			p_entity.setVersion_motherboard(product.getString("version_motherboard"));
+			p_entity.setUseful(product.getInt("useful"));
+			p_entity.setKind(product.getInt("kind"));
+			p_entity.setNote(product.getString("note"));
+			p_entity.setBom_type("accessories");
+
+			// 取得ID
+			p_entity.setId(product.getInt("id"));
+			// 如果是新增或另存 (取下個ID)
+			if (action.equals("C") || p_entity.getId() == 0) {
+				int id = productDao.nextvalBomAccessoriesProduct();
+				p_entity.setId(id);
+			}
+			for (Object object : group_list) {
+				g_entity = new BomGroupEntity();
+				group_one = (JSONArray) object;
+				g_entity.setSys_create_date(p_entity.getSys_create_date());
+				g_entity.setSys_create_user(p_entity.getSys_create_user());
+				g_entity.setSys_modify_date(p_entity.getSys_modify_date());
+				g_entity.setSys_modify_user(p_entity.getSys_modify_user());
+				if (!action.equals("C")) {// 新增不需要ID
+					g_entity.setId(group_one.getInt(0));
+				}
+				g_entity.setProduct_id(p_entity.getId());
+				g_entity.setType_item_id(group_one.getInt(2));
+				g_entity.setType_item_group_id(group_one.getInt(3));
+				g_entity.setNumber(group_one.getInt(4));
+				g_entity.setUseful(product.getInt("useful"));
+				groupEntitis.add(g_entity);
+			}
+			p_entity.setGroupEntitis(groupEntitis);
+			entitys.add(p_entity);
 		}
 
 		return entitys;
@@ -289,7 +331,6 @@ public class BomPrintService {
 		JSONArray item_listAll = new JSONArray();
 		JSONArray groupList = new JSONArray();
 		JSONArray groupOne = new JSONArray();
-		JSONArray item_acc_listAll = new JSONArray();
 		// 標題
 		JSONArray jsonArray = new JSONArray();
 
@@ -298,16 +339,14 @@ public class BomPrintService {
 		jsonArray.put("主機板(硬體)-版本");
 
 		jsonArray.put("對應BOM表 單號");
-		jsonArray.put("使用狀態");
 		jsonArray.put("備註");
-		jsonArray.put("上次建單人");
+		jsonArray.put("狀態");
 		jsonArray.put("類型");
+
 		jsonArray.put("建立時間");
 		jsonArray.put("建立者");
 		jsonArray.put("修改時間");
 		jsonArray.put("修改者");
-		jsonArray.put("類型");
-
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
@@ -318,20 +357,18 @@ public class BomPrintService {
 			jsonArray.put(entity.getVersion_motherboard());
 
 			jsonArray.put(entity.getBom_number());
-			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getNote());
-			jsonArray.put(entity.getChecked());
+			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getKind());
 
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
-			jsonArray.put(entity.getBom_type());
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);
-		// ======== 細項 群組清單========
+		// 細項 群組清單
 		boolean checkf = false;
 		for (BomGroupEntity entity : bpg.getBomGroupEntities()) {
 
@@ -351,8 +388,8 @@ public class BomPrintService {
 			jsonArray.put(entity.getType_item_id());
 			jsonArray.put(entity.getType_item_group_id());
 			jsonArray.put(entity.getNumber());
-			jsonArray.put(entity.getType_order());
 			jsonArray.put(entity.getUseful());
+			jsonArray.put(entity.getNote());
 
 			jsonArray.put(entity.getGroup_name());
 			for (int i = 1; i <= 25; i++) {
@@ -378,9 +415,9 @@ public class BomPrintService {
 			}
 
 			groupOne.put(jsonArray);
+			checkf = true;
 		}
-
-		checkf = true;
+		// groupList.put(groupOne);
 		list.put("group_list", groupOne);
 		// 項目清單
 		// 項目資料+標題
@@ -389,8 +426,9 @@ public class BomPrintService {
 			jsonArray.put(entity.getGroup_id());
 			jsonArray.put(entity.getGroup_name());
 			jsonArray.put(entity.getId());
+			jsonArray.put(entity.getCheckdef());
 			jsonArray.put(entity.getType_order());
-
+			jsonArray.put(entity.getNote());
 			for (int i = 1; i <= 25; i++) {
 				Method method;
 				try {
@@ -416,41 +454,6 @@ public class BomPrintService {
 			item_listAll.put(jsonArray);
 		}
 		list.put("item_list", item_listAll);
-
-		// ACC 項目清單
-		// ACC 項目資料+標題
-		for (BomTypeItemEntity entity : bpg.getBomAccessoriesTypeItemEntities()) {
-			jsonArray = new JSONArray();
-			jsonArray.put(entity.getGroup_id());
-			jsonArray.put(entity.getGroup_name());
-			jsonArray.put(entity.getId());
-			jsonArray.put(entity.getType_order());
-
-			for (int i = 1; i <= 25; i++) {
-				Method method;
-				try {
-					method = entity.getClass().getMethod("getI" + String.format("%02d", i));
-					String value = (String) method.invoke(entity);
-					if (value == null || value.equals("")) {
-						continue;
-					}
-					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-			jsonArray.put(entity.getNote());
-			item_acc_listAll.put(jsonArray);
-		}
-		list.put("item_acc_list", item_acc_listAll);
 		return list;
 	}
 
@@ -466,7 +469,7 @@ public class BomPrintService {
 		JsonObjBean objBean = new JsonObjBean();
 		JsonTemplateBean templateBean = new JsonTemplateBean();
 
-		templateBean.setWebPageBody("html/body/bom_print_body.html");
+		templateBean.setWebPageBody("html/body/bom_accessories_product_body.html");
 		templateBean.setBodyData(p_Obj);
 
 		objBean.setR_cellBackName(frontData.getString("cellBackName"));
