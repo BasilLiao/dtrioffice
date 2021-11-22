@@ -30,8 +30,8 @@ body {
 	<div id="body" class="mt-3 mb-3">
 		<form action="./index.do" data-toggle="validator" method="post">
 			<div class="row">
-				<div class="col-md-4"></div>
-				<div class="col-md-4 mt-2 mb-3 p-4 border border-primary rounded bg-white shadow-lg">
+				<div class="col-lg-4 col-md-3"></div>
+				<div class="col-lg-4 col-md-6 mt-2 mb-3 p-4 border border-primary rounded bg-white shadow-lg">
 					<div class="row m-0 mb-3">
 						<h3>Please sign in</h3>
 					</div>
@@ -48,12 +48,11 @@ body {
 							<input type="checkbox" value="remember-me"> Remember me
 						</div>
 					</div>
-
 					<div class="mb-3 m-0 text-center">
 						<button class="col-md-12 m-0 btn btn-primary" type="submit">Sign in</button>
 					</div>
 				</div>
-				<div class="col-md-4"></div>
+				<div class="col-lg-4 col-md-3"></div>
 			</div>
 		</form>
 	</div>

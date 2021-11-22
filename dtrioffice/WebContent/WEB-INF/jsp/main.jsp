@@ -34,19 +34,19 @@
 </head>
 <!-- 排版端 -->
 <body class="col-md" id="main">
-	<div class="mb-1 fixed-top">
-		<div id="header_nav" class="col-md">
-			<div id="header" class="pt-2 mb-1"></div>
-			<div id="nav" class="mt-2 mb-1 "></div>
+	<div class="m-0 fixed-top">
+		<div id="header_nav" class="col-md p-0">
+			<div id="header" class="p-0 m-0"></div>
+			<div id="nav" class="mt-0 mb-0"></div>
 			<div class="alert mb-0 pb-1 pt-0 mb-1 alert-primary fade shadow" role="alert">
 				<div id="alert_message"></div>
 			</div>
 		</div>
 	</div>
-	<div class="pb-4 pt-5 col-md-12">
+	<div class="pb-4 pt-4 col-md-12">
 		<div class="col-md-12"></div>
 	</div>
-	<div id="body" class="pt-4 mb-3 mt-3 col-md-12"></div>
+	<div id="body" class="p-0 col-md-12"></div>
 	<div id="footer" class="mt-1 mb-2"></div>
 	<!-- 執行中 -->
 	<div id="loading" class="d-none fixed-top" onclick="return main.loading(false);">

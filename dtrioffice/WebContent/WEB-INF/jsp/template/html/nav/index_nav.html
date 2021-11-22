@@ -2,15 +2,15 @@
 	<button class="col-1 navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-	<div class="col-lg-1 col-md-5 col-5 text-center" id="">
-		<a class="navbar-brand" href="#">Menu</a>
+	<div class="col-lg-1 col-md-5 col-5 p-0 text-center" id="">
+		<a class="navbar-brand" href="#">DTR ERP</a>
 	</div>
-	<div class="col-lg-8 col-md-12 col-12 collapse navbar-collapse " id="navbarNav">
+	<div class="col-lg-9 col-md-12 col-12 collapse navbar-collapse " id="navbarNav">
 		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link" href="#" onclick="templateNav.index()">Home</a></li>
+			<li class="nav-item p-1"><a class="nav-link p-1" href="#" onclick="templateNav.index()">Home</a></li>
 		</ul>
 	</div>
-	<div class="col-lg-2 col-md-3 col-3 text-center" id="">
+	<div class="col-lg-1 col-md-3 col-3 p-0 text-center" id="" style="font-size: 14px;">
 		<div class="" id="nav_account"></div>
 		您好!
 	</div>
@@ -25,7 +25,7 @@
 			{
 				el : "#index_nav",
 				data : {
-					navList : '<li class="nav-item dropdown "><a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">請輸入值</a><div class="m-0 dropdown-menu shadow pt-2 pb-0"></div></li>',
+					navList : '<li class="p-1 nav-item dropdown "><a class=" nav-link dropdown-toggle p-1" href="#" data-toggle="dropdown">請輸入值</a><div class="m-0 dropdown-menu shadow pt-2 pb-0"></div></li>',
 					navItem : '<a class="dropdown-item border border-light" href="#">請輸入值</a>',
 					//導覽區塊 相關值
 					userName : "",
@@ -45,7 +45,7 @@
 						for (var j = 0; j < this.nav[i].group_item.length; j++) {
 							//功能清單名稱/href
 							htmlnav[0].children[1].innerHTML = htmlnav[0].children[1].innerHTML
-									+ '<a style="font-size: 17px;" class="dropdown-item border-bottom border-secondar rounded" nameurl='
+									+ '<a style="font-size: 18px;" class="p-2 dropdown-item border-bottom border-secondar rounded" nameurl='
 									+ this.nav[i].group_item[j].split(" ")[0] + ' href="#">' + this.nav[i].group_item[j].split(" ")[1] + "</a>";
 							$(".navbar-nav").append(htmlnav);
 						}
@@ -121,6 +121,7 @@
 
 .navbar-dark .navbar-nav .nav-link {
 	color: rgb(255 255 255/ 0.9);
+	font-size: 18px;
 }
 
 #nav_account {
