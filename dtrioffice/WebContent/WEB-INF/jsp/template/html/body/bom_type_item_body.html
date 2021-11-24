@@ -655,7 +655,7 @@
                         content: content,
                     },
                 });
-                main.ajaxSend(url, data);
+                main.ajaxSend(url, data.replaceAll(')', '').replaceAll('(', ''));
                 return false; //防止真傳送
             },
             //傳送 查詢

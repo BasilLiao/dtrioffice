@@ -371,7 +371,7 @@
 					$("html,body").animate({
 						scrollTop : 900
 					}, 'slow');
-				}, 500);
+				}, 200);
             },
             //鎖定資料
             choose_disabled: function (disabled) {
@@ -591,7 +591,7 @@
                 content.type_order = $("#a_u_type_order").val();
                 content.type = $("#a_u_group_type select").val();
                 content.checkdf = $("#a_u_group_checkdf").prop("checked");
-
+                
                 
                 var action = "C";
                 var url = "./added_bom_accessories_type_item.do";
@@ -655,7 +655,7 @@
                         content: content,
                     },
                 });
-                main.ajaxSend(url, data);
+                main.ajaxSend(url, data.replaceAll(')', '').replaceAll('(', ''));
                 return false; //防止真傳送
             },
             //傳送 查詢
