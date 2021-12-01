@@ -524,6 +524,8 @@ public class ProductionPrintService {
 		// 標題
 		jsonArray = new JSONArray();
 		jsonAll = new JSONArray();
+		jsonArray.put("建立時間");
+		jsonArray.put("建立者");
 		jsonArray.put("工單號碼");
 		jsonArray.put("BID");
 		jsonArray.put("BOM料號");
@@ -536,8 +538,6 @@ public class ProductionPrintService {
 		jsonArray.put("單據來源");
 		jsonArray.put("主/配件");
 
-		jsonArray.put("建立時間");
-		jsonArray.put("建立者");
 		jsonArray.put("修改時間");
 		jsonArray.put("修改者");
 		jsonAll.put(jsonArray);
@@ -545,6 +545,8 @@ public class ProductionPrintService {
 		for (ProductionRecordsEntity entity : bpg2) {
 			jsonArray = new JSONArray();
 
+			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
+			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getBom_id());
 			jsonArray.put(entity.getBom_product_id());
@@ -557,8 +559,6 @@ public class ProductionPrintService {
 			jsonArray.put(entity.getCome_from());
 			jsonArray.put(entity.getBom_type());
 
-			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
 			jsonAll.put(jsonArray);

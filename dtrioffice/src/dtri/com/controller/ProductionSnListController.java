@@ -67,6 +67,7 @@ public class ProductionSnListController {
 				entity.setSys_create_date(Fm_Time_Model.toDate(d_s));
 				String d_e = currentdate.getYear() + "-12-31";
 				entity.setSys_modify_date(Fm_Time_Model.toDate(d_e));
+				entity.setProduct_start_sn("");
 			}
 			// Step4-2 .DB 查詢 正確 資料
 			// 取得換頁碼 如果沒有 0
@@ -80,7 +81,6 @@ public class ProductionSnListController {
 			// Step4-1 .登出 && 包裝 錯誤 資料
 			r_allData = recordsListService.fail_ajaxRspJson(frontData, "你沒有權限!!");
 		}
-
 		// Step6.結果回傳
 		//System.out.println(r_allData);
 		return r_allData.toString();

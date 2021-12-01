@@ -38,7 +38,7 @@ public class ProductionSnListService {
 	 **/
 	public List<ProductionRecordsEntity> searchAll(ProductionRecordsEntity entity, int offset, int page_total) {
 		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
-		List<ProductionRecordsEntity> list = dao.queryProductionRecords(entity, all_limit);
+		List<ProductionRecordsEntity> list = dao.queryProductionRecordLists(entity, all_limit);
 		return list;
 	}
 
@@ -116,8 +116,11 @@ public class ProductionSnListService {
 		if (!content.isNull("s_p_id") && !content.getString("s_p_id").equals(""))
 			entity.setId(content.getString("s_p_id"));
 		// 類型? 產品SN序號
-		if (!content.isNull("s_sn") && !content.getString("s_sn").equals(""))
+		if (!content.isNull("s_sn") && !content.getString("s_sn").equals("")) {
 			entity.setProduct_start_sn(content.getString("s_sn"));
+		} else {
+			entity.setProduct_start_sn("");
+		}
 
 		return entity;
 	}

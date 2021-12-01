@@ -25,14 +25,15 @@ public interface ProductionRecordsDAO {
 	Integer updateOneContent(ProductionRecordsEntity entity);
 
 	// 取得全部資料
-	List<ProductionRecordsEntity> queryProductionRecords(@Param("where_product") ProductionRecordsEntity entity,
-			@Param("product_limit") String limit);
+	List<ProductionRecordsEntity> queryProductionRecords(@Param("where_product") ProductionRecordsEntity entity, @Param("product_limit") String limit);
+
+	// 取得全部資料
+	List<ProductionRecordsEntity> queryProductionRecordLists(@Param("where_product") ProductionRecordsEntity entity, @Param("product_limit") String limit);
 
 	// 更新進度
 	Integer updateOneProgress(ProductionRecordsEntity entity);
-	
-	//限定移除
+
+	// 限定移除
 	Integer deleteOneProgress(ProductionRecordsEntity entity);
-	
 
 }
