@@ -32,9 +32,35 @@
 			</if>
 		</where>
 		order by
-		sys_modify_date desc ${product_limit}
+		sys_create_date desc ${product_limit}
 		<!-- id OFFSET #{page_OFFSET} LIMIT 100 -->
 	</select>
+	<!-- 查詢 資料 所有資料 -->
+	<select id="queryProductionRecordLists" resultType="ProductionRecordsEntity">
+		SELECT *
+		FROM production_records
+		<where>
+			<if test="where_product.id!=null">
+				id like '%' || #{where_product.id} || '%'
+			</if>
+			<if test="where_product.product_model!=null and where_product.product_model!=''">
+				AND product_model like '%' || #{where_product.product_model} || '%'
+			</if>
+			<if test="where_product.product_start_sn!=null and where_product.product_start_sn!=''">
+				AND #{where_product.product_start_sn} between product_start_sn AND product_end_sn
+			</if>
+			<!-- 時間區間 -->
+			<if test="where_product.sys_create_date!=null and where_product.sys_modify_date!=null">
+				AND sys_modify_date between #{where_product.sys_create_date} AND #{where_product.sys_modify_date}
+			</if>
+			<if test="where_product.product_start_sn!=null">
+				AND product_start_sn !='' 
+			</if>
+		</where>
+		order by
+		product_start_sn desc ${product_limit}
+	</select>
+	
 	<!-- 查詢單筆 紀錄 -->
 	<select id="beforeCheckAddOne" resultType="ProductionRecordsEntity">
 		SELECT *

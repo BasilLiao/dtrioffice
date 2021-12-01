@@ -739,10 +739,10 @@
 			}
 			//t_header
 			for (var i = 0; i < this.production_list[0].length; i++) {
-				if (i == 0 || i == 2 || i == 4 || i == 7 || i == 10 || i == 12) {
+				if (i == 0 || i == 2 || i == 4 || i == 6 || i == 9 || i == 12) {
 					min_width = 180;
 				}
-				if (i == 3 || i == 6 || i == 8) {
+				if (i == 5 || i == 8 || i == 10) {
 					min_width = 150;
 				}
 
@@ -1025,13 +1025,13 @@
 				//頁數-刷新
 				this.change_page_update2();
 				//t_body
-				var checked = 10;
-				var kind = 11;
+				var checked = 12;
+				var kind = 13;
 				for (var i = 1; i < this.production_list.length; i++) {
 					//頁數-每頁顯示(不再顯示範圍內則隱藏)
 					var page_group = this.change_page_btn2(i);
 					//功能
-					var s_list = this.production_list[i][0];
+					var s_list = this.production_list[i][2];
 
 					var a_submit = '<div class="md-6">';
 					a_submit += '<button user_id="' + s_list + '" class="btn btn-warning btn-sm btn-block a_submit2">';
@@ -1053,12 +1053,12 @@
 					var id_p = event.target.attributes.user_id.value;
 					templateBody.event = event;
 					//自動_先檢查是否有效
-					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_9").text() + "]").attr("selected", "selected");
+					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_11").text() + "]").attr("selected", "selected");
 
 					$("#a_c_submit2").trigger("click");
 					$("#s_c_submit").trigger("click");
-					$("#s_bom_id").val($(".t_row2" + id_p + " .s_1").text());
-					$("#s_bom_number").val($(".t_row2" + id_p + " .s_2").text());
+					$("#s_bom_id").val($(".t_row2" + id_p + " .s_3").text());
+					$("#s_bom_number").val($(".t_row2" + id_p + " .s_4").text());
 					$("#s_l_submit").trigger("click");
 					$("#s_submit").trigger("click");
 
@@ -1286,24 +1286,24 @@
 				if (event == null) {
 					//自動帶入
 					id_p = production.target.attributes.user_id.value;
-					id = $(".t_row2" + id_p + " .s_1").text();
+					id = $(".t_row2" + id_p + " .s_3").text();
 					//先檢查是否有效
 					if ($(".t_row" + id + " .s_0").length == 0) {
 						main.alertshow(true, "尚未比對到[產品規格]資料,Step1.請在[產品規格]的[BOM料號]查詢 後,Step2.再[製令生產]進行[預覽]!!");
 						return;
 					}
 					//項目帶入
-					$("#barcodeInput").text($(".t_row2" + id_p + " .s_0").text());
-					$("#client_name").text($(".t_row2" + id_p + " .s_5").text());
-					$("#order_id").text($(".t_row2" + id_p + " .s_4").text());
-					$("#p_number").text($(".t_row2" + id_p + " .s_3").text());
+					$("#barcodeInput").text($(".t_row2" + id_p + " .s_2").text());
+					$("#client_name").text($(".t_row2" + id_p + " .s_7").text());
+					$("#order_id").text($(".t_row2" + id_p + " .s_6").text());
+					$("#p_number").text($(".t_row2" + id_p + " .s_5").text());
 					$("#barcodeInput").trigger("focusout");
 					$("#barcodeInput").attr("contenteditable", false);
 					$("#order_id").attr("contenteditable", false);
 					$("#client_name").attr("contenteditable", false);
 					$("#p_number").attr("contenteditable", true);
 
-					come_from = $(".t_row2" + id_p + " .s_8").text();
+					come_from = $(".t_row2" + id_p + " .s_10").text();
 				} else {
 					//自定義
 					$("#barcodeInput").attr("contenteditable", true);
@@ -1380,7 +1380,7 @@
 				var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
 				$("#c2_bom_type").text($(".t_row" + id + " .s_8")[0].innerText);
 				$("#c2_note").text(
-						"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_3")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
+						"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_12")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
 								+ $("#nav_account").text() + " / 單據來源 : " + come_from);
 
 				//可拖曳位置(方便站台排序)
