@@ -128,8 +128,8 @@
 		SET product_status = 0 ,
 		sys_modify_date = #{entity.sys_modify_date} ,
 		sys_modify_user = #{entity.sys_modify_user} ,
-		id = CONCAT(id,'_stop_sys') 
-		WHERE product_status != 0 AND sys_modify_date <![CDATA[<=]]>
+		id = CONCAT(id,'_stop_sys')
+		WHERE product_progress != 3 AND product_progress != 4 AND product_progress != 5 AND product_status != 0 AND sys_modify_date <![CDATA[<=]]>
 		#{entity.sys_modify_date};
 	</update>
 
