@@ -54,13 +54,13 @@
 				AND sys_modify_date between #{where_product.sys_create_date} AND #{where_product.sys_modify_date}
 			</if>
 			<if test="where_product.product_start_sn!=null">
-				AND product_start_sn !='' 
+				AND product_start_sn !=''
 			</if>
 		</where>
 		order by
 		product_start_sn desc ${product_limit}
 	</select>
-	
+
 	<!-- 查詢單筆 紀錄 -->
 	<select id="beforeCheckAddOne" resultType="ProductionRecordsEntity">
 		SELECT *
@@ -121,6 +121,18 @@
 		product_end_sn = #{product_end_sn}
 		WHERE id = #{id};
 	</update>
+	<!-- 更新 過期工單 狀態 內容 -->
+	<update id="updateAllExpiredProgress" parameterType="ProductionRecordsEntity">
+		UPDATE
+		production_records
+		SET product_status = 0 ,
+		sys_modify_date = #{entity.sys_modify_date} ,
+		sys_modify_user = #{entity.sys_modify_user} ,
+		id = CONCAT(id,'_stop_sys') 
+		WHERE product_status != 0 AND sys_modify_date <![CDATA[<=]]>
+		#{entity.sys_modify_date};
+	</update>
+
 	<delete id="deleteOneProgress" parameterType="ProductionRecordsEntity">
 		DELETE FROM
 		production_records WHERE product_status = 2 AND id = #{id};

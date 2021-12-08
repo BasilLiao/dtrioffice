@@ -38,6 +38,12 @@ public class ProductionRecordsService {
 	public List<ProductionRecordsEntity> searchAll(ProductionRecordsEntity entity, int offset, int page_total) {
 		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
 		List<ProductionRecordsEntity> list = dao.queryProductionRecords(entity, all_limit);
+		// 順便移除 過期清單
+		ProductionRecordsEntity entityExpired = new ProductionRecordsEntity();
+		System.out.println(Fm_Time_Model.to_yMd_Hms(Fm_Time_Model.to_count(-120, new Date())));
+		entityExpired.setSys_modify_date(Fm_Time_Model.to_count(-120, new Date()));
+		entityExpired.setSys_modify_user("system");
+		dao.updateAllExpiredProgress(entityExpired);
 		return list;
 	}
 
