@@ -269,7 +269,7 @@ public class ProductionPrintController {
 		}
 
 		// Step6.結果回傳
-		System.out.println(r_allData);
+		//System.out.println(r_allData);
 		return r_allData.toString();
 	}
 

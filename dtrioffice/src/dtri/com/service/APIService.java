@@ -116,7 +116,7 @@ public class APIService {
 			production_records.put("sys_ver", "0");
 			production_records.put("sys_status", "0");
 			production_records.put("ph_s_date", "");
-			production_records.put("sys_sn_auto", sys_sn);//是否 是系統生產
+			production_records.put("sys_sn_auto", sys_sn);// 是否 是系統生產
 
 			production_records.put("pr_bom_id", entity.getBom_product_id());
 			production_records.put("pr_p_model", entity.getProduct_model());
@@ -133,9 +133,9 @@ public class APIService {
 			production_records.put("ps_b_sn", mesApi.getPs_b_sn());// 客製化 & 燒入流水號
 
 			JSONObject prbitem = new JSONObject();
-
 			for (int bg = 0; bg < bomProGro.getBomGroupEntities().size(); bg++) {
 				BomGroupEntity bge_one = bomProGro.getBomGroupEntities().get(bg);
+				// System.out.println(bge_one);
 				String value1 = bge_one.getI01() == null ? "" : bge_one.getI01();
 				String value2 = bge_one.getI02() == null ? "" : bge_one.getI02();
 				String value3 = bge_one.getI03() == null ? "" : bge_one.getI03();
@@ -148,15 +148,15 @@ public class APIService {
 			production_records.put("pr_b_item", prbitem);// 規格
 			production_records.put("pr_p_quantity", entity.getProduction_quantity());
 			production_records.put("pr_s_item", new JSONObject()// 軟體定義
-					.put("OS ", software.getOs())//
-					.put("BIOS ", software.getBios())//
-					.put("M/B_Ver", software.getMb_ver())//
-					.put("Model_In", software.getProduct_model_in())//
-					.put("NV_RAM", software.getNvram())//
-					.put("USER_note1", software.getNote1())//
-					.put("PM_Note", software.getNote())//
-					.put("USER_Note2", software.getNote2())//
-					.put("M/B_Ver_ECN", software.getMb_ver_ecn()));
+					.put("OS ", new JSONObject().put("Is", software.getOs()))//
+					.put("BIOS ", new JSONObject().put("Is", software.getBios()))//
+					.put("M/B_Ver", new JSONObject().put("Is", software.getMb_ver()))//
+					.put("Model_In", new JSONObject().put("Is", software.getProduct_model_in()))//
+					.put("NV_RAM", new JSONObject().put("Is", software.getNvram()))//
+					.put("USER_note1", new JSONObject().put("Is", software.getNote1()))//
+					.put("PM_Note", new JSONObject().put("Is", software.getNote()))//
+					.put("USER_Note2", new JSONObject().put("Is", software.getNote2()))//
+					.put("M/B_Ver_ECN", new JSONObject().put("Is", software.getMb_ver_ecn())));
 
 			production_records.put("pr_c_from", "DTR ERP");
 			production_records.put("sys_m_date", "");

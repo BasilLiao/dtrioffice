@@ -74,11 +74,13 @@ public class ProductionPrintService {
 		List<BomTypeItemEntity> i_list = new ArrayList<BomTypeItemEntity>();
 		List<BomTypeItemEntity> i_listAcc = new ArrayList<BomTypeItemEntity>();
 		int select_nb = 0;// 查詢條件
-		// ----------項目----------
-		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || //
-				entitys.get(0).getProduct_model() != null || //
-				entitys.get(0).getBom_type() != null || //
-				entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
+		// =======有條件=======
+		if (entitys.size() > 0 && //
+				(entitys.get(0).getBom_number() != null || // BOM 料號
+						entitys.get(0).getProduct_model() != null || // 產品型號
+						entitys.get(0).getBom_type() != null || // 類型(主產品/副產品)
+						entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {// 產品內規格
+			BomProductEntity bomEntity = entitys.get(0);
 			for (BomProductEntity entity : entitys) {
 				// 組
 				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
@@ -108,15 +110,14 @@ public class ProductionPrintService {
 					product_bom_nb = " bom_number LIKE '%" + entity.getBom_number() + "%' ";
 					all_where_product += "(" + product_bom_nb + ") AND ";
 				}
-
 			}
-
+			
 			// 如果(項目有值) / 如果只有(產品有值)
 			if (!all_where_group.equals(" ")) {
 				// 除對多餘的 OR
 				all_where_group = all_where_group.substring(0, all_where_group.length() - 3);
 				// 取得傭有條件的 群組 項目
-				if (entitys.get(0).getBom_type().equals("product")) {
+				if (bomEntity.getBom_type().equals("product")) {
 					g_list = productDao.queryGroup(all_where_group, null);
 				} else {
 					g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
@@ -124,100 +125,87 @@ public class ProductionPrintService {
 
 				// 過濾 重複 產品清單
 				Map<Integer, Integer> g_m_list = new HashMap<Integer, Integer>();
-				if (entitys.size() >= 0) {
-					for (BomGroupEntity bomG : g_list) {
-						if (g_m_list.containsKey(bomG.getProduct_id())) {
-							g_m_list.put(bomG.getProduct_id(), g_m_list.get(bomG.getProduct_id()) + 1);
-						} else {
-							g_m_list.put(bomG.getProduct_id(), 1);
-						}
+				for (BomGroupEntity bomG : g_list) {
+					if (g_m_list.containsKey(bomG.getProduct_id())) {
+						g_m_list.put(bomG.getProduct_id(), g_m_list.get(bomG.getProduct_id()) + 1);
+					} else {
+						g_m_list.put(bomG.getProduct_id(), 1);
 					}
 				}
 				// 取得產品條件後 再次取得資料 項目-群組
-				if (entitys.size() > 0) {
-					all_where_group = " product_id in(";
-					for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
-						if (select_nb <= item.getValue()) {
-							all_where_group += item.getKey() + ",";
-						}
+				all_where_group = " product_id in(";
+				for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
+					if (select_nb <= item.getValue()) {
+						all_where_group += item.getKey() + ",";
 					}
-					all_where_group += "0)";
-					if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
-						g_list = productDao.queryGroup(all_where_group, null);
-					} else {
-						g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
-					}
+				}
+				all_where_group += "0)";
+				if (bomEntity.getBom_type().equals("product")) {
+					g_list = productDao.queryGroup(all_where_group, null);
+				} else {
+					g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
 				}
 
 				// ID 條件
-				all_where_product += "product_model !=''";
-				all_where_product += " AND id in(";
+				all_where_product += "product_model !='' AND id in(";
 				for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
 					if (select_nb <= item.getValue()) {
 						all_where_product += item.getKey() + ",";
 					}
 				}
 				all_where_product += "0)";
-				// 產品-清單
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
+				// 產品-清單(主件/附件)?
+				if (bomEntity.getBom_type().equals("product")) {
 					p_list = productDao.queryProduct(all_where_product, all_limit);
 				} else {
 					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
 				}
-
 			} else {
-				all_where_group += "type_item_id !=0";
-				// ID 條件
 				all_where_product += "product_model !=''";
-				// 產品-清單
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
+				all_where_group += "type_item_id !=0";
+				// 取得擁有條件的 群組 項目 (限制[主見/配件])
+				if (bomEntity.getBom_type().equals("product")) {//主件
 					p_list = productDao.queryProduct(all_where_product, all_limit);
-				} else {
-					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
-				}
-
-				for (BomProductEntity one : p_list) {
-					group_limit_in.add(one.getId());
-				}
-				// 取得傭有條件的 群組 項目+產品
-				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
+					for (BomProductEntity one : p_list) {
+						group_limit_in.add(one.getId());
+					}
 					g_list = productDao.queryGroup(all_where_group, group_limit_in);
-				} else {
+				} else {//配件
+					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
+					for (BomProductEntity one : p_list) {
+						group_limit_in.add(one.getId());
+					}
 					g_list = productAccDao.queryAccessoriesGroup(all_where_group, group_limit_in);
 				}
 			}
 
 		} else {
-			// 無條件
-			// 產品-清單
-			if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
+			// =======無條件=======
+			// 取得擁有條件的 群組 項目 (限制[主見/配件])
+			//if (entitys.get(0).getBom_type().equals("product")) {//主件
 				p_list = productDao.queryProduct("product_model !='' ", all_limit);
-			} else {
-				p_list = productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit);
-			}
-
-			// 取得傭有條件的 群組 項目 (限制)
-			for (BomProductEntity one : p_list) {
-				group_limit_in.add(one.getId());
-			}
-
-			if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
+				for (BomProductEntity one : p_list) {
+					group_limit_in.add(one.getId());
+				}
 				g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
-			} else {
+			/*} else {//配件
+				p_list = productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit);
+				for (BomProductEntity one : p_list) {
+					group_limit_in.add(one.getId());
+				}
 				g_list = productAccDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in);
-			}
-
+			}*/
 		}
 
-		// 項目-清單
-		i_list = itemDao.queryAll("!= ' '");
-		i_listAcc = itemAccDao.queryAll("!= ' '");
 		// 產品
 		bpg.setBomProductEntities(p_list);
 		// 規格
 		bpg.setBomGroupEntities(g_list);
-
+		// 項目(主件)-清單
+		i_list = itemDao.queryAll("!= ' '");
 		bpg.setBomTypeItemEntities(i_list);
+		// 項目(配件)-清單
+		i_listAcc = itemAccDao.queryAll("!= ' '");
 		bpg.setBomAccessoriesTypeItemEntities(i_listAcc);
 		return bpg;
 	}

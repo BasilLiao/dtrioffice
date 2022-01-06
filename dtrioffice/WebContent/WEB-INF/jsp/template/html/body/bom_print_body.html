@@ -352,7 +352,12 @@ thead .textN2 {
 										<div>主/附件 :</div>
 										<div id="c1_bom_type"></div>
 									</td>
-									<td id="c1_note" class="pt-0 pb-0" colspan="4" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">表單編號: QR-701-06 / 規格負責人: / 建單負責人:</td>
+									<td id="c1_note" class="pt-0 pb-0" colspan="4" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">
+										<div class="row m-0">
+											<div>表單編號: QR-701-06 / 規格負責人: /</div>
+											<div>建單負責人:</div>
+										</div>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -832,9 +837,9 @@ thead .textN2 {
 							$(this).remove();
 						});
 						$("#c1_bom_type").text($(".t_row" + id + " .s_12")[0].innerText);
-						$("#c1_note").text(
+						/*$("#c1_note").text(
 								"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_11")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
-										+ $("#nav_account").text() + " / 單據來源:" + this.current_report);
+										+ $("#nav_account").text() + " / 單據來源:" + this.current_report);*/
 
 					},
 					//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
@@ -957,7 +962,7 @@ thead .textN2 {
 						//如果select = checked (登記生產) 檢查是否有勾選 
 						if (select == "checked") {
 							if (!$('#a_u_production input').prop('checked')) {
-								this.current_report = "生產注意事項";
+								this.current_report = "自訂";
 								this.printDiv();
 								return;
 							} else {
