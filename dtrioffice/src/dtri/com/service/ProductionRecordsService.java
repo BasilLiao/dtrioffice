@@ -154,6 +154,9 @@ public class ProductionRecordsService {
 		// 類型? 客戶名稱
 		if (!content.isNull("client_name") && !content.getString("client_name").equals(""))
 			entity.setClient_name(content.getString("client_name"));
+		// 訂單?
+		if (!content.isNull("order_id") && !content.getString("order_id").equals(""))
+			entity.setOrder_id(content.getString("order_id"));
 		// 主附件?
 		if (!content.isNull("bom_type") && !content.getString("bom_type").equals(""))
 			entity.setBom_type(content.getString("bom_type"));

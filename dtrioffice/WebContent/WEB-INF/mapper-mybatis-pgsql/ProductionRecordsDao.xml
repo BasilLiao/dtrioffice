@@ -101,6 +101,7 @@
 		sys_modify_date = #{sys_modify_date} ,
 		sys_modify_user = #{sys_modify_user} ,
 		client_name = #{client_name} ,
+		order_id = #{order_id} ,
 		production_quantity =#{production_quantity}
 		<if test="#{new_id}!=null">
 			,id= #{new_id}

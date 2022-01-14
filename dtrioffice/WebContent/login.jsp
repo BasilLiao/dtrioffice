@@ -19,32 +19,32 @@ body {
 </head>
 
 <body id="login" class="container">
-	<div id="header" class="mt-5 mb-3">
-		<div class="text-center">
-			<h3>DTR ERP</h3>
-		</div>
-	</div>
-	<div id="nav" class="mt-3 mb-3">
-		<div class="text-center">導覽</div>
-	</div>
+
 	<div id="body" class="mt-3 mb-3">
 		<form action="./index.do" data-toggle="validator" method="post">
-			<div class="row">
+
+			<div class="row m-0 mt-5 pt-5">
 				<div class="col-lg-4 col-md-3"></div>
 				<div class="col-lg-4 col-md-6 mt-2 mb-3 p-4 border border-primary rounded bg-white shadow-lg">
-					<div class="row m-0 mb-3">
-						<h3>Please sign in</h3>
+					<div id="header" class="mt-1 mb-4">
+						<div class="text-center">
+							<img alt="" src="./thirdparty/images/image_2022_01_14T03_16_05_574Z.png" style="width: 100%">
+							<h6>ERP Expansion</h6>
+						</div>
 					</div>
 					<div class="row m-0 mb-3">
-						<div class="col-md-4 ">Account</div>
+						<h4>Please sign in</h4>
+					</div>
+					<div class="row m-0 mb-3">
+						<div class="col-md-4 p-0">Account</div>
 						<input class="col-md-8" type="text" id="account" name="inputAccount" placeholder="Account" required autofocus>
 					</div>
 					<div class="row m-0 mb-3">
-						<div class="col-md-4">Password</div>
+						<div class="col-md-4  p-0">Password</div>
 						<input class="col-md-8" type="password" id="password" name="inputPassword" placeholder="Password" required>
 					</div>
 					<div class="row m-0 mb-3">
-						<div class="col-md-10">
+						<div class="col-md-10  p-0">
 							<input type="checkbox" value="remember-me"> Remember me
 						</div>
 					</div>
@@ -61,7 +61,7 @@ body {
 			<div class="row m-0 p-0 ">
 				<div class="col-4">&copy; 2020 DT Research, Inc. All Rights Reserved.</div>
 				<div class="col-4">請使用 Brave/Chrome 瀏覽器 最佳解析度為 1366*768 以上</div>
-				<div class="col-4">版本: Beta v0.85.7</div>
+				<div class="col-4">版本: Beta v0.85.9</div>
 			</div>
 		</div>
 	</div>

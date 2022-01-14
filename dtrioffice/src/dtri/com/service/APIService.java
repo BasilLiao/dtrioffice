@@ -141,8 +141,8 @@ public class APIService {
 				String value3 = bge_one.getI03() == null ? "" : bge_one.getI03();
 				String value4 = bge_one.getI04() == null ? "" : bge_one.getI04();
 				prbitem.put(bge_one.getGroup_name(), new JSONObject()//
-						.put("Is ", value1 + value2 + value3 + value4)//
-						.put("Qty ", bge_one.getNumber()));//
+						.put("Is", value1 + value2 + value3 + value4)//
+						.put("Qty", bge_one.getNumber()));//
 
 			}
 			production_records.put("pr_b_item", prbitem);// 規格

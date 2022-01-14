@@ -281,11 +281,11 @@
 							<div class="row m-0">
 								<div class="col-md-4 p-0">
 									<div class="col-md-12 ">
-										<div class="row">
-											<div class="col-md-5 p-2 pr-0 border border-secondary">
+										<div class="row bg-light">
+											<div class="col-md-5 p-2 pr-0 border border-primary">
 												<b>訂單編號</b>
 											</div>
-											<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_o_i"></div>
+											<div class="col-md-7 p-2 pr-0 border border-primary" id="a_o_i" contenteditable="true"></div>
 										</div>
 									</div>
 								</div>
@@ -770,6 +770,8 @@
 						content.new_id = $('#a_id').text();
 						content.production_quantity = $('#a_p_q').text();
 						content.client_name = $('#a_c_n').text();
+						content.order_id = $('#a_o_i').text();
+						
 						action = "U";
 						url = "./update_production_records.do";
 					} else {
