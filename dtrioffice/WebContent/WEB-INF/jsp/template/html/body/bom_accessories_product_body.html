@@ -170,6 +170,10 @@
 												<option value="1">可量產</option>
 											</select>
 										</div>
+										<div class="col-md-4 p-0" style="font-size: 20px; color: red;">限制 :</div>
+										<div class="col-md-8 p-0 mt-2" id="" style="font-size: 18px; color: red;">
+											[可裝配 <b id="needUseNb">42</b> 項]<br>[不裝配 <b id="notUseNb">28</b> 項]
+										</div>
 									</div>
 								</div>
 								<div class="col-md-10">
@@ -206,13 +210,13 @@
 											<td class="s_type_added"><button name="" id="a_item" type="button" class="btn btn-success btn-sm btn-block a_p_submit">添加</button></td>
 											<td id="group_id_0">0</td>
 											<td id="item_group_id_0"></td>
-											<td class="s_type_added"><select name="0" id="a_g_item_0" class="a_g_item md-12">
+											<td class="s_type_added"><select name="0" id="a_g_item_0" class="a_g_item md-12"  disabled="disabled">
 											</select></td>
 											<td id="item_id_0"></td>
-											<td class="s_type_added"><select name="0" id="a_i_item_0" class="md-12 a_i_item">
+											<td class="s_type_added"><select name="0" id="a_i_item_0" class="md-12 a_i_item"  disabled="disabled">
 													<option value="">請選擇</option>
 											</select></td>
-											<td><input class="col-md-12" type="text" id="group_number_0" placeholder="Ex:1" value="1" required /></td>
+											<td><input class="col-md-12" type="text" id="group_number_0" placeholder="Ex:1" value="0" required  disabled="disabled"/></td>
 											<td id="a_i_order_0"></td>
 											<td id="a_i_note_0"></td>
 										</tr>
@@ -250,6 +254,8 @@
             group_list: "",
             item_list: "",
             item_nb_max: 1, //最大ID數
+            needUseNb : 42,//限制 可裝配
+            notUseNb : 28,//限制 不裝配
             //分頁功能
             page_max:100,//當前本批 筆數
             page_max_total:100,//最大總數
@@ -307,6 +313,7 @@
             //清除修改(預設)
             $(document).on("click", "#a_c_submit", function (event) {
                 templateBody.rm_added(true);
+                templateBody.check_nb();
                 setTimeout(function(){
                   	 $("html,body").animate({ scrollTop: 1000 }, 'slow'); 
                   }, 500);
@@ -326,6 +333,7 @@
             //新增監聽
             $(document).on("click", "#a_item", function (event) {
                 templateBody.added_item("");
+                templateBody.check_nb();
             });
             // 條件清除
             $(document).on("click", "#s_c_submit", function (event) {
@@ -335,6 +343,10 @@
             $(document).on("click", "#s_l_submit", function (event) {
                 templateBody.lk_select();
             });
+            //監聽異動
+            $(document).on("change", ".item_nbs", function (event) {
+           	 templateBody.check_nb();
+           });
         },
         methods: {
             search_choose: function (event) {
@@ -394,6 +406,7 @@
                 $(document).off("click", ".na_submit");
                 $(document).on("click", ".na_submit", function (event) {
                     templateBody.choose_update("另存資料", event);
+                    templateBody.check_nb();
                     setTimeout(function(){
                    	 $("html,body").animate({ scrollTop: 1000 }, 'slow'); 
                    }, 500);
@@ -402,6 +415,7 @@
                 $(document).off("click", ".a_submit");
                 $(document).on("click", ".a_submit", function (event) {
                     templateBody.choose_update("修改資料", event);
+                    templateBody.check_nb();
                     setTimeout(function(){
                    	 $("html,body").animate({ scrollTop: 1000 }, 'slow'); 
                    }, 500);
@@ -410,6 +424,7 @@
                 $(document).off("click", ".d_submit");
                 $(document).on("click", ".d_submit", function (event) {
                     templateBody.choose_delete(event);
+                    templateBody.check_nb();
                     setTimeout(function(){
                       	 $("html,body").animate({ scrollTop: 1000 }, 'slow'); 
                       }, 500);
@@ -510,7 +525,7 @@
                 $("#a_u_useful").val("1");
                 $("#a_u_note").val("");
 
-                $("#group_number_0").val(1);
+                $("#group_number_0").val(0);
 
                 var check = $("#group_tbody .re_choose");
                 if (check !== null) {
@@ -545,7 +560,21 @@
 				$("#s_bom_number").val("");
 				$("#s_g_item").val("").trigger("change");
             },
-
+            //檢查數量 可配備42項目/部裝配28項目
+            check_nb: function(){
+            	var notUse = 0;
+            	var needUse = 0;
+            	$(".item_nbs");
+            	for (var i = 0; i < $(".item_nbs").length; i++) {
+            		if($(".item_nbs")[i].value>0){
+            			needUse+=1;
+            		}else{
+            			notUse+=1;            			
+            		}
+				}
+            	$("#notUseNb").text(this.notUseNb-notUse);
+            	$("#needUseNb").text(this.needUseNb-needUse);
+            },
             //新增子項目
             added_item: function (def_item) {
                 var add_id = $(".t_p_row0 #group_id_0").text();
@@ -564,7 +593,7 @@
                 group_tbody += '<select name="' + add_id + '" id="a_i_item_' + add_id + '" class="md-12 a_i_item" required>';
                 group_tbody += '<option value="">請選擇</option>';
                 group_tbody += "</select></td>";
-                group_tbody += '<td><input class="col-md-12" type="text" id="group_number_' + add_id + '" placeholder="Ex:1" required value="1" /></td>';
+                group_tbody += '<td><input class="col-md-12 pr-0 item_nbs" type="number" id="group_number_' + add_id + '" placeholder="Ex:1" required value="0" /></td>';
                 group_tbody += '<td id="a_i_order_' + add_id + '"></td>';
                 group_tbody += '<td id="a_i_note_' + add_id + '"></td>';
                 $(".t_p_row0").after(group_tbody);
@@ -586,6 +615,7 @@
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
                     templateBody.re_item(event);
+                    templateBody.check_nb();
                 });
                 //設定預設參數
                 $("#group_number_" + add_id).val($(".t_p_row0 #group_number_0").val());
@@ -657,7 +687,7 @@
                         group_tbody += '<select name="' + this.group_list[i][4] + '" id="a_i_item_' + this.group_list[i][4] + '" class="md-12 a_i_item" required>';
                         group_tbody += '<option value="">請選擇</option>';
                         group_tbody += "</select></td>";
-                        group_tbody += '<td><input class="col-md-12" type="text" id="group_number_' + this.group_list[i][4] + '" placeholder="Ex:1" required value="1" /></td>';
+                        group_tbody += '<td><input class="col-md-12 pr-0 item_nbs" type="number" id="group_number_' + this.group_list[i][4] + '" placeholder="Ex:1" required value="0" /></td>';
                         group_tbody += '<td id="a_i_order_' + this.group_list[i][4] + '"></td>';
                         group_tbody += '<td id="a_i_note_' + this.group_list[i][4] + '"></td>';
                         $("#group_tbody").append(group_tbody);
@@ -695,6 +725,10 @@
                     }
                 }
                 this.choose_disabled(false);
+              //鎖定
+                $("#group_number_0").attr("disabled","disabled");
+                $("#a_i_item_0").attr("disabled","disabled");
+                $("#a_g_item_0").attr("disabled","disabled");
             },
             //選擇 刪除
             choose_delete: function (event) {
@@ -850,6 +884,10 @@
             },
             //傳送 新增 or 修改 or 刪除 or 另存
             send_added_or_update_save: function () {
+            	if ($('#needUseNb').text()<0 || $('#notUseNb').text()<0) {
+					main.alertshow(true, "[可裝配 or 不裝配]項目數量異常 ,請再次檢查清楚!!");
+					return false;
+				}
             	//移動
             	 setTimeout(function(){
                   	 $("html,body").animate({ scrollTop: 350 }, 'slow'); 
@@ -994,6 +1032,8 @@
             $(document).off("click", "#s_c_submit");
             $(document).off("change", "#s_g_item");
             $(document).off("change", ".a_g_item");
+            $(document).off("change", ".item_nbs");
+            
             $(document).off("click", "#a_item");
             $(document).off("click", ".a_i_item");
         },

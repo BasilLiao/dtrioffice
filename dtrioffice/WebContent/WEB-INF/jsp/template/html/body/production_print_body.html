@@ -1,87 +1,22 @@
 <script src="./thirdparty/js/jquery-barcode.min.js"></script>
-<style id="table2Style">
-#table2 table {
-	position: relative;
-	font-size: 2rem;
-	font-family: Microsoft JhengHei;
-}
-/*
-	#table td th {
-		border-width: 1px !important;
-		border-style: solid !important;
-		border-color: black !important;
-		-webkit-print-color-adjust: exact;
-	}
-	
-*/
-#table2 th {
-	text-align: center;
-}
-
-#table2 .topic th {
-	height: 85px;
-	line-height: 85px;
-}
-
-#table2 td[colspan="6"] {
-	padding: 0;
-}
-
-#table2 td[colspan="6"] table {
-	margin: 0;
-}
-
-#table2 #barcodeInput, #table2 #BOMID, #table2 .textN1 {
-	font-family: monospace;
-	font-weight: bold;
-	font-size: 1.8rem;
-	text-align: center;
-}
-
-#table2 #barcodeOutput {
+<style id="print_style">
+#barcodeOutput {
 	margin: auto;
 }
 
-#table2 [contenteditable] {
-	font-weight: bold;
+.font_28 {
+	font-size: 28px;
+	line-height: 28px;
 }
 
-#table2 .textN2, .textT2 {
-	font-size: 1.2rem;
-	line-height: 30px;
-	height: 32px;
+.font_24 {
+	font-size: 24px;
+	line-height: 24px;
 }
 
-#table2 .line2 td, #table2 .line2 th {
-	font-size: 1.5rem;
-}
-
-#table2 .itemList {
-	width: 50%;
-	min-height: 800px;
-}
-
-#table2 .itemList .item {
-	line-height: 25px;
-}
-
-#table2 .others {
-	display: inline-block;
-	text-align: left;
-	padding: 0 10px;
-}
-
-#table2 .othersEdit {
-	display: inline-block;
-	min-height: 66px;
-}
-
-#table2 .sign th {
-	font-size: 1.5rem;
-}
-
-[contentEditable="true"]:empty:not(:focus):before {
-	content: attr(data-text);
+.font_20 {
+	font-size: 20px;
+	line-height: 20px;
 }
 </style>
 <div class="row border" id="production_print_body">
@@ -95,13 +30,109 @@
 			</div>
 			<div>
 				<ul class="nav nav-tabs" id="productionTab" role="tablist">
-					<li class="nav-item border-top border-left border-right border-primary rounded"><a class="nav-link active p-1" id="production-tab" data-toggle="tab" href="#production" role="tab"
-						aria-controls="production" aria-selected="false"><b>[製令生產]</b></a></li>
+					<li class="nav-item border-top border-left border-right border-primary rounded"><a class="nav-link active p-1" id="pro-tab" data-toggle="tab" href="#pro" role="tab" aria-controls="pro"
+						aria-selected="false"><b>[製令生產]</b></a></li>
 					<li class="nav-item border-top border-left border-right border-primary rounded"><a class="nav-link p-1" id="bom-tab" data-toggle="tab" href="#bom" role="tab" aria-controls="bom"
 						aria-selected="true"><b>[產品規格]</b></a></li>
 				</ul>
 			</div>
 			<div class="tab-content mb-2" id="productionTabContent">
+
+				<!-- [製令生產] -->
+				<div class="tab-pane fade show active" id="pro" role="tabpanel" aria-labelledby="production-tab">
+					<!-- 查詢功能 -->
+					<div class="border border-primary shadow bg-light mb-2">
+						<div class="row m-0 mb-2">
+							<div class="col-md-5 p-0" id="collapse_search_btn2">
+								<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseSearch2" role="button" aria-expanded="true" aria-controls="collapseSearch2"><b>[製令生產]查詢功能</b></a>
+							</div>
+						</div>
+						<div class="collapse show" id="collapseSearch2">
+							<div class="col-md-12">
+								<div class="row h5 m-0">
+									<div class="text-left mb-2 mt-2">
+										工單號碼: <input class="col-md-8" type="text" id="s_id" name="s_id" placeholder="Ex:製令單 A512-C8763" required autofocus />
+									</div>
+									<div class="text-left mb-2 mt-2">
+										產品型號: <input class="col-md-8" type="text" id="s_model2" name="s_model2" placeholder="Ex:型號 301KY" required />
+									</div>
+									<div class="text-left mb-2 mt-2">
+										BOM料號: <input class="col-md-8" type="text" id="s_bom_number2" name="s_bom_number2" placeholder="Ex:90-301-Y11QJ08" required autofocus />
+									</div>
+									<div class="text-left mb-2 mt-2">
+										歷史單據(狀態): <select class="md-12 a_row2" id="s_history_production" name="s_history_production">
+											<option value="2">準備生產中</option>
+											<option value="3">已登記生產</option>
+										</select>
+									</div>
+								</div>
+								<div class="mb-2 mt-2 row">
+									<div class="col-md-4"></div>
+									<div class="col-md-2">
+										<div class="col-md-10 container">
+											<button id="s_submit2" class="col-md-12 btn btn-primary btn-block mr-2" type="submit">條件查詢</button>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="col-md-10 container">
+											<button id="s_c_submit2" class="col-md-12 btn btn-warning btn-block" type="button">條件清除</button>
+										</div>
+									</div>
+									<div class="col-md-4"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 功能:查詢結果(有效製令單)  /修改 -->
+					<div class="border border-primary shadow bg-light">
+						<div class="border">
+							<div class="row m-0 mb-2">
+								<div class="col-md-5 p-0" id="collapse_list_btn2">
+									<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseFinish2" role="button" aria-expanded="true" aria-controls="collapseFinish2"><b>[製令生產]查詢結果</b></a>
+								</div>
+							</div>
+							<div class="collapse show" id="collapseFinish2">
+								<div class="col-md-12">
+									<div id="search_choose2" class="row mb-2">
+										<div class="text-left">
+											<b>顯示名稱-></b>
+										</div>
+									</div>
+									<!-- 顯示內容 -->
+									<div class="row">
+										<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
+											<thead>
+												<tr id="search_thead2" class="bg-primary h5">
+													<th scope="col" style="min-width: 80px;">功能</th>
+													<th scope="col" style="min-width: 40px;">筆</th>
+												</tr>
+											</thead>
+											<tbody id="search_tbody2"></tbody>
+										</table>
+									</div>
+									<div aria-label="Page" id="page-group2">
+										<ul class="pagination justify-content-center">
+											<li class="page-item p_p2 disabled"><a id="p_p2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">Previous 10 </a></li>
+											<li class="page-item p_nb2 p2_1 active"><a id="p2_1" class="page-link" href="#" onclick="return templateBody.change_page2(this);">1</a></li>
+											<li class="page-item p_nb2 p2_2"><a id="p2_2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">2</a></li>
+											<li class="page-item p_nb2 p2_3"><a id="p2_3" class="page-link" href="#" onclick="return templateBody.change_page2(this);">3</a></li>
+											<li class="page-item p_nb2 p2_4"><a id="p2_4" class="page-link" href="#" onclick="return templateBody.change_page2(this);">4</a></li>
+											<li class="page-item p_nb2 p2_5"><a id="p2_5" class="page-link" href="#" onclick="return templateBody.change_page2(this);">5</a></li>
+											<li class="page-item p_nb2 p2_6"><a id="p2_6" class="page-link" href="#" onclick="return templateBody.change_page2(this);">6</a></li>
+											<li class="page-item p_nb2 p2_7"><a id="p2_7" class="page-link" href="#" onclick="return templateBody.change_page2(this);">7</a></li>
+											<li class="page-item p_nb2 p2_8"><a id="p2_8" class="page-link" href="#" onclick="return templateBody.change_page2(this);">8</a></li>
+											<li class="page-item p_nb2 p2_9"><a id="p2_9" class="page-link" href="#" onclick="return templateBody.change_page2(this);">9</a></li>
+											<li class="page-item p_nb2 p2_10"><a id="p2_10" class="page-link" href="#" onclick="return templateBody.change_page2(this);">10</a></li>
+											<li class="page-item p_n2 disabled"><a id="p_n2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">Next 10 </a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- [產品規格] -->
 				<div class="tab-pane fade" id="bom" role="tabpanel" aria-labelledby="bom-tab">
 					<!-- 查詢功能 -->
 					<div class="border border-primary shadow mb-2 bg-light">
@@ -215,101 +246,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane fade show active" id="production" role="tabpanel" aria-labelledby="production-tab">
-					<!-- 查詢功能 -->
-					<div class="border border-primary shadow bg-light mb-2">
-						<div class="row m-0 mb-2">
-							<div class="col-md-5 p-0" id="collapse_search_btn2">
-								<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseSearch2" role="button" aria-expanded="true" aria-controls="collapseSearch2"><b>[製令生產]查詢功能</b></a>
-							</div>
-						</div>
-						<div class="collapse show" id="collapseSearch2">
-							<div class="col-md-12">
-								<div class="row h5 m-0">
-									<div class="text-left mb-2 mt-2">
-										工單號碼: <input class="col-md-8" type="text" id="s_id" name="s_id" placeholder="Ex:製令單 A512-C8763" required autofocus />
-									</div>
-									<div class="text-left mb-2 mt-2">
-										產品型號: <input class="col-md-8" type="text" id="s_model2" name="s_model2" placeholder="Ex:型號 301KY" required />
-									</div>
-									<div class="text-left mb-2 mt-2">
-										BOM料號: <input class="col-md-8" type="text" id="s_bom_number2" name="s_bom_number2" placeholder="Ex:90-301-Y11QJ08" required autofocus />
-									</div>
-									<div class="text-left mb-2 mt-2">
-										歷史單據(狀態): <select class="md-12 a_row2" id="s_history_production" name="s_history_production">
-											<option value="2">準備生產中</option>
-											<option value="3">已登記生產</option>
-										</select>
-									</div>
-								</div>
-								<div class="mb-2 mt-2 row">
-									<div class="col-md-4"></div>
-									<div class="col-md-2">
-										<div class="col-md-10 container">
-											<button id="s_submit2" class="col-md-12 btn btn-primary btn-block mr-2" type="submit">條件查詢</button>
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="col-md-10 container">
-											<button id="s_c_submit2" class="col-md-12 btn btn-warning btn-block" type="button">條件清除</button>
-										</div>
-									</div>
-									<div class="col-md-4"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- 功能:查詢結果(有效製令單)  /修改 -->
-					<div class="border border-primary shadow bg-light">
-						<div class="border">
-							<div class="row m-0 mb-2">
-								<div class="col-md-5 p-0" id="collapse_list_btn2">
-									<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseFinish2" role="button" aria-expanded="true" aria-controls="collapseFinish2"><b>[製令生產]查詢結果</b></a>
-								</div>
-							</div>
-							<div class="collapse show" id="collapseFinish2">
-								<div class="col-md-12">
-									<div id="search_choose2" class="row mb-2">
-										<div class="text-left">
-											<b>顯示名稱-></b>
-										</div>
-									</div>
-									<!-- 顯示內容 -->
-									<div class="row">
-										<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
-											<thead>
-												<tr id="search_thead2" class="bg-primary h5">
-													<th scope="col" style="min-width: 80px;">功能</th>
-													<th scope="col" style="min-width: 40px;">筆</th>
-												</tr>
-											</thead>
-											<tbody id="search_tbody2"></tbody>
-										</table>
-									</div>
-									<div aria-label="Page" id="page-group2">
-										<ul class="pagination justify-content-center">
-											<li class="page-item p_p2 disabled"><a id="p_p2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">Previous 10 </a></li>
-											<li class="page-item p_nb2 p2_1 active"><a id="p2_1" class="page-link" href="#" onclick="return templateBody.change_page2(this);">1</a></li>
-											<li class="page-item p_nb2 p2_2"><a id="p2_2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">2</a></li>
-											<li class="page-item p_nb2 p2_3"><a id="p2_3" class="page-link" href="#" onclick="return templateBody.change_page2(this);">3</a></li>
-											<li class="page-item p_nb2 p2_4"><a id="p2_4" class="page-link" href="#" onclick="return templateBody.change_page2(this);">4</a></li>
-											<li class="page-item p_nb2 p2_5"><a id="p2_5" class="page-link" href="#" onclick="return templateBody.change_page2(this);">5</a></li>
-											<li class="page-item p_nb2 p2_6"><a id="p2_6" class="page-link" href="#" onclick="return templateBody.change_page2(this);">6</a></li>
-											<li class="page-item p_nb2 p2_7"><a id="p2_7" class="page-link" href="#" onclick="return templateBody.change_page2(this);">7</a></li>
-											<li class="page-item p_nb2 p2_8"><a id="p2_8" class="page-link" href="#" onclick="return templateBody.change_page2(this);">8</a></li>
-											<li class="page-item p_nb2 p2_9"><a id="p2_9" class="page-link" href="#" onclick="return templateBody.change_page2(this);">9</a></li>
-											<li class="page-item p_nb2 p2_10"><a id="p2_10" class="page-link" href="#" onclick="return templateBody.change_page2(this);">10</a></li>
-											<li class="page-item p_n2 disabled"><a id="p_n2" class="page-link" href="#" onclick="return templateBody.change_page2(this);">Next 10 </a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
-			<!-- SN 自動生成器 -->
+
+			<!-- [SN 自動生成器] -->
 			<div class="border border-primary shadow bg-light mb-2">
 				<div class="row m-0 mb-2">
 					<div class="col-md-5 p-0" id="collapse_report">
@@ -334,7 +273,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- MES 設定 -->
+
+			<!-- [MES 客製化欄位設定] -->
 			<div class="border border-primary shadow bg-light mb-2">
 				<div class="row m-0 mb-2">
 					<div class="col-md-5 p-0" id="collapse_report">
@@ -373,264 +313,264 @@
 					</div>
 				</div>
 			</div>
-			<!-- 產品流程卡 -->
+
+			<!-- [產品流程卡] -->
 			<div class="border border-primary shadow bg-light mb-2">
 				<div class="row mb-2 m-0">
 					<div class="col-md-5 p-0" id="collapse_report">
 						<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseAdded2" role="button" aria-expanded="true" aria-controls="collapseAdded2"><b>[產品流程卡]列印預覽</b></a>
 					</div>
 				</div>
-				<div class="collapse show container" id="collapseAdded2" style="background: white; min-height: 1570px; min-width: 1110px;">
-					<div id="table2" class="border border-dark">
-						<table class="table table-bordered table-sm mb-0">
-							<thead style="border: 3px solid black;">
-								<tr class="topic">
-									<th class="p-0" style="width: 11%;"><div class="border border-dark border-right-0 border-left-0">M/B</div></th>
-									<td class="p-0" style="width: 26%;"><div class="border border-dark border-right-0 border-left-0 p-0" style="height: 87px;"></div></td>
-									<th class="p-0" style="width: 8%;"><div class="border border-dark border-right-0 border-left-0">LAN</div></th>
-									<td class="p-0" style="width: 25%;"><div class="border border-dark border-right-0 border-left-0 p-0" style="height: 87px;"></div></td>
-									<th class="p-0" style="width: 7%;"><div class="border border-dark border-right-0 border-left-0">IMEI</div></th>
-									<td class="p-0" style="width: 25%;"><div class="border border-dark border-right-0 border-left-0 p-0" style="height: 87px;"></div></td>
-								</tr>
-								<tr class="topic">
-									<th class="p-0"><div class="border border-dark border-right-0 border-left-0">BAT</div></th>
-									<td class="p-0"><div class="border border-dark border-right-0 border-left-0 p-0" style="height: 87px;"></div></td>
-									<th class="p-0"><div class="border border-dark border-right-0 border-left-0">WiFi</div></th>
-									<td class="p-0"><div class="border border-dark border-right-0 border-left-0 p-0" style="height: 87px;"></div></td>
-									<th class="p-0"><div class="border border-dark border-right-0 border-left-0">SN</div></th>
-									<td class="p-0">
-										<div class="p-0 border border-dark border-right-0 border-left-0" style="height: 87px;">
-											<div id="barcodeOutputSn" class="ml-3 pt-3 bg-white"></div>
+				<div class="col show container" id="collapseAdded2">
+					<div id="table2" class="border border-dark text-center" style="background: white; height: 1492px; width: 1210px; overflow: hidden; margin: auto;">
+						<!-- SN設定 -->
+						<div id="snList" class="border border-dark p-0 m-0" style="height: 167px; width: 100%">
+							<div class="col-12 p-0 ">
+								<div class="row m-0">
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">M/B</div>
+											<div class="col-9 p-0 "></div>
 										</div>
-									</td>
-								</tr>
-								<tr class="font-weight-bold text-center" style="font-size: 26px; border-top: 3px solid black;">
-									<td class="p-0"><div class="border border-dark p-1">工單號</div></td>
-									<td class="p-0" colspan="5">
-										<div class="row ml-0 mr-0 border border-gray">
-											<div class="col-md-5 border rounded border-dark" contenteditable="true" id="barcodeInput" data-text="填寫(工單號碼)"></div>
-											<div class="col-md-1 p-1 border border-dark">BOM</div>
-											<div class="col-md-4 border-left border border-dark" id="BOMID"></div>
-											<div class="col-md-2 p-1 border border-dark" id="kind2"></div>
+									</div>
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">LAN</div>
+											<div class="col-9 p-0 "></div>
 										</div>
-									</td>
-								</tr>
-								<tr class="font-weight-bold text-center" style="font-size: 22px;">
-									<td class="p-0"><div class="border border-dark p-1">條碼</div></td>
-									<td colspan="5" class="p-0">
-										<div class="row ml-0 mr-0">
-											<div class="col-md-7 border border-dark">
-												<div class="pt-1" id="barcodeOutput"></div>
-											</div>
-											<div class="col-md-1 p-1 border border-dark">客戶</div>
-											<div class="col-md-4 p-0 pt-1 border border-dark" contenteditable="true" id="client_name" data-text="填寫(客戶名稱/位置)"></div>
-										</div>
-									</td>
-								</tr>
-								<tr class="line2" style="text-align: center; font-weight: bold;">
-									<td class="p-0"><div class="p- pt-1 border border-dark">訂單SO</div></td>
-									<td colspan="5" class="p-0">
-										<div class="row ml-0 mr-0">
-											<div class="col-md-4 p-0 pt-1 border rounded border-dark coll2" contenteditable="true" id="order_id"></div>
-											<div class="col-md-1 p-0 pt-1 border border-dark">投線</div>
-											<div class="col-md-2 p-0 border rounded border-dark" id="datepicker1">
-												<div class="d-none"></div>
-												<input class="col-md-12 p-0" type="text" value="" placeholder="填寫(投線日期)" />
-											</div>
-
-											<div class="col-md-1 p-0 pt-1 border border-dark">出貨</div>
-											<div class="col-md-2 p-0 border rounded border-dark" id="datepicker2">
-												<div class="d-none"></div>
-												<input class="col-md-12 p-0" type="text" value="" placeholder="填寫(出貨日期)" />
-											</div>
-
-											<div class="col-md-1 p-0 pt-1 border border-dark">數量</div>
-											<div class="col-md-1 p-0 pt-1 border border-dark coll2 rounded" contenteditable="true" data-text="" id="p_number"></div>
-										</div>
-									</td>
-								</tr>
-								<tr class="line2">
-									<th class="p-0"><div class="p-0 pt-1 border border-dark">注意項目</div></th>
-									<td colspan="5" class="p-0">
-										<div contenteditable="true" id="note" class="p-0 pt-1 pl-1 coll2 border border-dark rounded" data-text=""></div>
-									</td>
-								</tr>
-								<tr style="border-top: 3px solid black;">
-									<td colspan="6">
-										<table class="table table-sm" style="font-size: 20px; text-align: center;">
-											<tr>
-												<th class="p-0" style="width: 10%;"><div class="p-0 border border-dark">項目</div></th>
-												<th class="p-0" style="width: 11%;"><div class="p-0 border border-dark">版本</div></th>
-												<th class="p-0" style="width: 11%;"><div class="p-0 border border-dark">ECN</div></th>
-												<th class="p-0" style="width: 8%;"><div class="p-0 border border-dark">Chk</div></th>
-												<th class="p-0" style="width: 10%;"><div class="p-0 border border-dark">By</div></th>
-												<th class="p-0" style="width: 10%;"><div class="p-0 border border-dark">項目</div></th>
-												<th class="p-0" style="width: 22%;"><div class="p-0 border border-dark">更新版本</div></th>
-												<th class="p-0" style="width: 8%;"><div class="p-0 border border-dark">Chk</div></th>
-												<th class="p-0" style="width: 10%;"><div class="p-0 border border-dark">By</div></th>
-											</tr>
-
-											<tr>
-												<th class="p-0"><div class="p-0 textT2 border border-dark">M/B 版本</div></th>
-												<td class="p-0">
-													<div id="mb_ver" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0">
-													<div id="mb_ver_ecn" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-												<td class="p-0" rowspan="3"></td>
-												<th class="p-0"><div class="p-0 border textT2 border-dark">NVRAM</div></th>
-												<td class="p-0">
-													<div id="nvram" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-												<td class="p-0" rowspan="3"></td>
-											</tr>
-
-											<tr>
-												<th class="p-0"><div class="p-0 textT2 border border-dark">BIOS</div></th>
-												<td class="p-0" colspan="2">
-													<div id="bios" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-												<th class="p-0"><div class="p-0 textT2 border border-dark">MODEL</div></th>
-												<td class="p-0">
-													<div id="product_model_in" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-											</tr>
-
-											<tr>
-												<th class="p-0"><div class="p-0 textT2 border border-dark">EC</div></th>
-												<td class="p-0" colspan="2">
-													<div id="ec" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-												<th class="p-0"><div class="p-0 textT2 border border-dark">OS</div></th>
-												<td class="p-0">
-													<div id="os" contenteditable="true" class="p-0 textN2 border border-dark rounded" data-text=""></div>
-												</td>
-												<td class="p-0"><div class="p-0 textT2 border border-dark"></div></td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</thead>
-							<tbody style="border: 3px solid black;">
-								<tr>
-									<td class="border border-dark" colspan="6">
-										<div class="itemList listLeft2 float-left" style="width: 50%;">
-											<div class="itemSample"
-												style="display: none; border-right: solid 1px rgb(150, 150, 150); border-bottom: solid 1px rgb(150, 150, 150); margin: 0 5px 5px; white-space: nowrap; overflow: hidden;">
-												<span class="name" style="font-size: 1.2rem; font-weight: bold; padding-right: 3px;"></span> <span class="content" style="font-size: 1.1rem; padding-right: 5px;"></span> <span
-													class="amount" style="font-size: 1.1rem;"></span>
-											</div>
-										</div>
-										<div class="itemList listRight2 float-left" style="width: 50%;"></div>
-									</td>
-								</tr>
-								<tr style="border-top: 2px solid black;">
-									<td colspan="6" style="font-size: 1.35rem;">
-										<div class="row m-0 pt-1 pb-1">
-											<div class="col-md-1 others">
-												<b>備註1</b>
-											</div>
-											<div class="col-md-5 pr-1 pl-1 othersEdit border border-dark rounded" id="note1" contenteditable="true" data-text="最多兩行(不填寫請輸入 空白)"></div>
-											<div class="col-md-1 others">
-												<b>備註2</b>
-											</div>
-											<div class="col-md-5 pr-1 pl-1 othersEdit border border-dark rounded" id="note2" contenteditable="true" data-text="最多兩行(不填寫請輸入 空白)"></div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="6">
-										<table class="table table-sm" style="border-top: 3px solid black;">
-											<thead>
-												<tr class="sign">
-													<th class="p-0" style="width: 12%;"><div class="p-0 textT2 border border-dark">Ass'y</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">Burn-in</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">T1</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">T2</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">P1</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">P2</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">QC</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">RF</div></th>
-													<th class="p-0" style="width: 11%;"><div class="p-0 textT2 border border-dark">PM</div></th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-													<td class="p-0"><div class="p-0 border border-dark" style="height: 60px;"></div></td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td class="row m-0 p-0" colspan="1" style="font-size: 0.5rem; padding-right: 10px;">
-										<div>主/附件 :</div>
-										<div id="c2_bom_type"></div>
-									</td>
-									<td id="c2_note" colspan="5" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">表單編號: QR-701-06 / 規格負責人: / 建單負責人:</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="collapse2 mt-2" id="">
-					<div class="mb-2 text-center">
-						<b>數量為100份 ,產生列印 約1分鐘 演算時間...稍後</b>
-					</div>
-					<div class="row m-0 mb-2">
-						<div class="col-md-4">
-							<div class="col-md-6 p-0 float-right">
-								<div class="row border border-primary rounded">
-									<label class="input-group-text"> <input id="production_ok" type="checkbox" checked /></label>
-									<div class="border pl-1">
-										<div class="group-list-10" style="height: 24px;">
-											<b>投入生產 和 MES導入</b>
+									</div>
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">IMEI</div>
+											<div class="col-9 p-0 "></div>
 										</div>
 									</div>
 								</div>
-								<div class="row border border-primary rounded mt-1">
-									<label class="input-group-text"> <input id="production_sn_ok" type="checkbox" checked /></label>
-									<div class="border pl-1">
-										<div class="group-list-10" style="height: 24px;">
-											<b>產品SN身分 區間導入</b>
+							</div>
+							<div class="col-12 p-0">
+								<div class="row m-0">
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">BAT</div>
+											<div class="col-9 p-0 "></div>
+										</div>
+									</div>
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">WiFi</div>
+											<div class="col-9 p-0 "></div>
+										</div>
+									</div>
+									<div class="col-4 p-0">
+										<div class="row m-0 border border-dark">
+											<div class="col-3 p-1 pt-4 pb-3 m-0 border border-secondary font-weight-bolder h2">SN</div>
+											<div class="col-9 p-0 ">
+												<div id="barcodeOutputSn" class="ml-3 pt-2 bg-white"></div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-2">
-							<div class="">
-								<div class="col-md-10 container">
-									<button id="p_submit2" class="btn btn-primary btn-block" type="button">列印內容</button>
+
+						<div id="setOrder" class="border border-dark p-0 m-0" style="height: 168px; width: 100%">
+							<div class="row m-0 h4">
+								<div class="col-1 p-0 pt-1 pb-1 border border-dark font-weight-bolder">工單號</div>
+								<div class="col-4 p-1 border border-secondary rounded font_28" contenteditable="true" style="height: 39px; overflow: hidden;" id="barcodeInput"></div>
+								<div class="col-1 p-1 border border-dark font-weight-bolder">BOM</div>
+								<div class="col-4 p-1 border border-dark font_28" id="BOMID"></div>
+								<div class="col-2 p-1 border border-dark font-weight-bolder font_28" id="kind2"></div>
+							</div>
+							<div class="row m-0">
+								<div class="col-1 p-1 mb-0 pt-2 border border-dark font-weight-bolder h4">條碼</div>
+								<div class="col-6 p-0 mb-0 pt-1 border border-dark rounded">
+									<div class="p-0" id="barcodeOutput"></div>
 								</div>
+								<div class="col-1 p-1 mb-0 pt-2 border border-dark font-weight-bolder h4">客戶</div>
+								<div class="col-4 p-1 mb-0 pt-2 border border-secondary rounded font_28" contenteditable="true" style="overflow: hidden; height: 48px" id="client_name"></div>
+							</div>
+							<div class="row m-0">
+								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">訂單號</div>
+								<div class="col-3 p-1 border border-secondary rounded font_28" id="order_id" style="overflow: hidden; height: 40px"></div>
+								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">投現日</div>
+								<div class="col-2 p-0 border border-secondary rounded font_28" id="datepicker1" style="overflow: hidden; height: 40px">
+									<div class="d-none col-12 p-0 p-1"></div>
+									<input type="text" value="" placeholder="填寫(投線日期)" class="col-12 p-0 pl-1">
+								</div>
+								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">出貨日</div>
+								<div class="col-2 p-0 border border-secondary rounded font_28" id="datepicker2" style="overflow: hidden; height: 40px">
+									<div class="d-none col-12 p-0 p-1"></div>
+									<input type="text" value="" placeholder="填寫(出貨日期)" class="col-12 p-0 pl-1">
+								</div>
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h4">數量</div>
+								<div class="col-1 p-1 border border-secondary rounded font_28" contenteditable="true" style="height: 40px; overflow: hidden;" id="p_number">1</div>
+							</div>
+							<div class="row m-0 ">
+								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">注意項</div>
+								<div class="col-11 p-1 border border-secondary rounded text-left font_28" contenteditable="true" style="height: 42px; overflow: hidden;" id="note"></div>
 							</div>
 						</div>
-						<div class="col-md-2">
-							<div class="">
-								<div class="col-md-10 container">
-									<button id="a_c_submit2" class="btn btn-warning btn-block" type="button">清除內容</button>
+
+						<div id="setSoftware" class="border border-dark p-0 m-0" style="height: 141px; width: 100%">
+							<div class="row m-0 font-weight-bolder h5">
+								<div class="col-1 p-1 border border-dark">項目</div>
+								<div class="col-3 row m-0 p-0 border border-dark">
+									<div class="col-6 p-1 border-right border-dark">版本</div>
+									<div class="col-6 p-1 border-left border-dark">ECN</div>
 								</div>
+								<div class="col-1 p-1 border border-dark">Chk</div>
+								<div class="col-1 p-1 border border-dark">By</div>
+								<div class="col-1 p-1 border border-dark">項目</div>
+								<div class="col-3 p-1 border border-dark">更新版本</div>
+								<div class="col-1 p-1 border border-dark">Chk</div>
+								<div class="col-1 p-1 border border-dark">By</div>
+							</div>
+							<div class="row m-0">
+								<div class="col-1 p-1 pt-2 border border-dark h6 m-0 font-weight-bolder">M/B版本</div>
+								<div class="row col-3 p-0 m-0 border border-dark">
+									<div class="col-6 p-1 border-right border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="mb_ver"></div>
+									<div class="col-6 p-1 border-left border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="mb_ver_ecn"></div>
+								</div>
+								<div class="col-1 p-1 border border-dark"></div>
+								<div class="col-1 p-1 "></div>
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h5">NVRAM</div>
+								<div class="row col-3 p-0 m-0 border border-dark">
+									<div class="col p-1 border border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="nvram"></div>
+								</div>
+								<div class="col-1 p-1 border border-dark"></div>
+								<div class="col-1 p-1"></div>
+							</div>
+							<div class="row m-0">
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h5">BIOS</div>
+								<div class="col-3 p-1 border border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="bios"></div>
+								<div class="col-1 p-1 border border-dark"></div>
+								<div class="col-1 p-1"></div>
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h5">MODEL</div>
+								<div class="col-3 p-1 border border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="product_model_in"></div>
+								<div class="col-1 p-1 border border-dark"></div>
+								<div class="col-1 p-1"></div>
+							</div>
+							<div class="row m-0 border-bottom border-dark">
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h5">EC</div>
+								<div class="col-3 p-1 border border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="ec"></div>
+								<div class="col-1 p-1 border border-dark"></div>
+								<div class="col-1 p-1"></div>
+								<div class="col-1 p-1 mb-0 border border-dark font-weight-bolder h5">OS</div>
+								<div class="col-3 p-1 border border-secondary rounded font_24" contenteditable="true" style="height: 34px; overflow: hidden;" id="os"></div>
+								<div class="col-1 p-1 border border-dark "></div>
+								<div class="col-1 p-1"></div>
 							</div>
 						</div>
-						<div class="col-md-4"></div>
+						<div id="setHardware" class="border border-dark p-0 m-0 text-left" style="height: 720px; width: 100%; overflow: hidden;">
+							<div class="row m-0">
+								<div class="listLeft2 col-6 p-1">
+									<div class="p-1 border-bottom border-right border-secondary itemSample ui-sortable-handle" style="height: 34px; display: none; overflow: hidden;">
+										<div class="m-0 font_24">
+											<span class="name font-weight-bolder pr-1"></span> <span class="content"></span> <span class="amount"></span>
+										</div>
+									</div>
+								</div>
+								<div class="listRight2 col-6 p-1"></div>
+							</div>
+						</div>
+						<div id="setHardware_notUse" class="border border-dark p-0 m-0" style="height: 131px; width: 100%; overflow: hidden;">
+							<div class="row m-0 list_notUse">
+								<div class=" row m-1 font_24">
+									<div class="name font-weight-bolder pr-1">注意!!不裝配 :</div>
+								</div>
+								<div class="d-none itemSample_notUse row m-1 font_24 border-bottom border-right border-secondary">
+									<div class="name font-weight-bolder pr-1"></div>
+									<div class="content pr-1"></div>
+									<div class="amount"></div>
+								</div>
+
+							</div>
+						</div>
+						<div id="setNote" class="border border-dark p-0 m-0" style="height: 60px; width: 100%">
+							<div class="row m-0 text-left" style="height: 60px;">
+								<div class="col-1 p-1 border border-dark font-weight-bolder h5" style="height: 100%;">備註1</div>
+								<div class="col-5 p-1 border border-dark rounded font_24" contenteditable="true" style="height: 100%; overflow: hidden;" id="note1"></div>
+								<div class="col-1 p-1 border border-dark font-weight-bolder h5" style="height: 100%;">備註2</div>
+								<div class="col-5 p-1 border border-dark rounded font_24" contenteditable="true" style="height: 100%; overflow: hidden;" id="note2"></div>
+							</div>
+						</div>
+						<div id="setName" class="border border-dark font-weight-bolder h5 p-0 m-0" style="height: 80px; width: 100%">
+							<div class="row m-0">
+								<div class="col p-1 border border-dark">Ass'y</div>
+								<div class="col p-1 border border-dark">Burn-in</div>
+								<div class="col p-1 border border-dark">T1</div>
+								<div class="col p-1 border border-dark">T2</div>
+								<div class="col p-1 border border-dark">P1</div>
+								<div class="col p-1 border border-dark">P2</div>
+								<div class="col p-1 border border-dark">QC</div>
+								<div class="col p-1 border border-dark">RF</div>
+								<div class="col p-1 border border-dark">PM</div>
+							</div>
+							<div class="row m-0" style="height: 45px">
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+								<div class="col p-1 border border-dark"></div>
+							</div>
+						</div>
+						<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
+							<div class="row m-0 text-muted">
+								<div class="col-1 p-0 border border-dark">類型:</div>
+								<div class="col-1 p-0 border border-dark" id="c2_bom_type"></div>
+								<div class="col-10 p-0 border border-dark text-right" id="c2_note"></div>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="collapse2 mt-2" id="">
+						<div class="mb-2 text-center">
+							<b>數量為100份 ,產生列印 約1分鐘 演算時間...稍後</b>
+						</div>
+						<div class="row m-0 mb-2">
+							<div class="col-md-4">
+								<div class="col-md-8 p-0 float-right">
+									<div class="row border border-primary rounded">
+										<label class="input-group-text"> <input id="production_ok" type="checkbox" checked /></label>
+										<div class="border pl-1">
+											<div class="group-list-10" style="height: 24px;">
+												<b>投入生產 和 MES導入</b>
+											</div>
+										</div>
+									</div>
+									<div class="row border border-primary rounded mt-1">
+										<label class="input-group-text"> <input id="production_sn_ok" type="checkbox" checked /></label>
+										<div class="border pl-1">
+											<div class="group-list-10" style="height: 24px;">
+												<b>產品SN身分 區間導入</b>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="row p-0">
+									<div class="col-md-6 container">
+										<button id="p_submit2" class="btn btn-primary btn-block" type="button">列印內容</button>
+									</div>
+									<div class="col-md-6 container">
+										<button id="a_c_submit2" class="btn btn-warning btn-block" type="button">清除內容</button>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-4"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 產品流程 -->
+
+			<!-- [產品流程] -->
 			<div class="border border-primary shadow bg-light mb-2">
 				<div class="row m-0 mb-2">
 					<div class="col-md-5 p-0" id="collapse_procedure">
@@ -642,6 +582,7 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- 浮動電梯 -->
 		<div class="text-center fixed-bottom m-3" style="width: 140px; font-family: Microsoft JhengHei; font-size: 16px; left: auto;">
 			<div id="top" class="shadow from_move row p-2 m-2 bg-light border border-primary rounded" style="cursor: pointer;">
@@ -732,7 +673,7 @@
 				if (i == 2 || i == 3) {
 					min_width = 200;
 				}
-				if (i == 1 || i == 6 ||  i == 9 || i == 11) {
+				if (i == 1 || i == 6 || i == 9 || i == 11) {
 					min_width = 180;
 				}
 
@@ -753,7 +694,7 @@
 				if (i == 0 || i == 2 || i == 4 || i == 6 || i == 9 || i == 12) {
 					min_width = 180;
 				}
-				if (i == 5 ||i == 7 || i == 8 || i == 10) {
+				if (i == 5 || i == 7 || i == 8 || i == 10) {
 					min_width = 150;
 				}
 
@@ -1244,6 +1185,7 @@
 
 				$("#group_number_0").val(1);
 				$("#barcodeInput").text("");
+				$("#order_id").text("");
 				$("#datepicker1 input").val("");
 				$("#datepicker2 input").val("");
 				$(".textN1").text("");
@@ -1326,7 +1268,7 @@
 
 				//共用欄位位
 				this.s_4 = $(".t_row" + id + " .s_0")[0].innerText;
-				$("#a_u_version_motherboard").text($(".t_row" + id + " .s_4")[0].innerText);
+				$("#ver_motherboard").text($(".t_row" + id + " .s_4")[0].innerText);
 				$("#BOMID").text($(".t_row" + id + " .s_3")[0].innerText);
 				if ($(".t_row" + id + " .s_7")[0].innerText == 1) {
 					$("#kind2").text("量產單");
@@ -1340,42 +1282,63 @@
 				var group_tbody = "";
 				var $listLeft = $("#collapseAdded2 .listLeft2");
 				var $listRight = $("#collapseAdded2 .listRight2");
+				var $list_notUse = $("#collapseAdded2 .list_notUse");
 				var $sample = $listLeft.find(".itemSample");
+				var $sample_notUse = $list_notUse.find(".itemSample_notUse");
+
 				$listLeft.add($listRight).find(".item").remove();
 				var indexItemId = 5;
 				var indexId = 6;
-				var indexAmount = 8;
+				var indexAmount = 8;//陣列[] 數量
 				var indexOrder = 9;
-				var indexName = 11;
-				var indexContent = 12;
+				var indexName = 11;//陣列[] 項目名稱
+				var indexContent = 12;//陣列[] 項目內容
 				var $target = $listLeft;
 				var counting = 0;
-				var columnItemNumber = 25;
+				var columnItemNumber = 21;
 				this.group_list.sort(function(a, b) {
 					return b[indexOrder] - a[indexOrder];
 				});
 				//規格生成
 				for (var i = 0; i < this.group_list.length; i++) {
 					if (id == this.group_list[i][indexItemId] && this.group_list[i][indexId] != 1) {
-						if (this.group_list[i][indexAmount] == 0)
-							continue;
-						var $new = $sample.clone().show().removeClass("itemSample").addClass("item");
-						$new.find(".name").html(this.group_list[i][indexName] + ":");
-						var tmp = [];
-						for (var n = indexContent; n < this.group_list[i].length; n++) {
-							tmp.push(this.group_list[i][n]);
+						//如果數量大於0 ->上面顯示
+						if (this.group_list[i][indexAmount] > 0) {
+							var $new = $sample.clone().show().removeClass("itemSample").addClass("item");
+							//數量
+							if (this.group_list[i][indexAmount] > 1) {
+								$new.find(".amount").html("(x" + this.group_list[i][indexAmount] + ")");
+							}
+							//項目名稱
+							$new.find(".name").html(this.group_list[i][indexName] + ":");
+							//內容
+							var tmp = [];
+							for (var n = indexContent; n < this.group_list[i].length; n++) {
+								tmp.push(this.group_list[i][n]);
+							}
+							$new.find(".content").html(tmp.join(" "));
+							counting = counting + 1;
+							if (counting > columnItemNumber)
+								$target = $listRight;
+							$target.append($new);
+						} else {
+							//如果數量小於0 ->下面顯示 d-none 
+							var $new_notUse = $sample_notUse.clone().show().removeClass("d-none").removeClass("itemSample_notUse").addClass("item_notUse");
+							//項目名稱
+							$new_notUse.find(".name").html(this.group_list[i][indexName] + ":");
+							//內容
+							var tmp = [];
+							for (var n = indexContent; n < this.group_list[i].length; n++) {
+								tmp.push(this.group_list[i][n]);
+							}
+							$new_notUse.find(".content").html(tmp.join(" "));
+
+							$list_notUse.append($new_notUse);
 						}
-						$new.find(".content").html(tmp.join(" "));
-						if (this.group_list[i][indexAmount] > 1) {
-							$new.find(".amount").html("(x" + this.group_list[i][indexAmount] + ")");
-						}
-						if (++counting > columnItemNumber)
-							$target = $listRight;
-						$target.append($new);
+
 					}
 				}
-				$("#collapseAdded2 .listLeft2").add($("#collapseAdded2 .listRight2")).find(".item").css("margin-bottom", "1px").find(".content").css(
-						"font-size", "1.3rem");
+				$("#collapseAdded2 .listLeft2").add($("#collapseAdded2 .listRight2"));
 				$('#collapseAdded input[type="checkbox"]').change(function() {
 					var checked = $(this).prop("checked");
 					if (checked) {
@@ -1425,6 +1388,7 @@
 					$("#note").text("");
 					$("#note1").text("");
 					$("#note2").text("");
+
 				}
 			},
 			//select_sn 選單
@@ -1818,6 +1782,7 @@
 				$("#barcodeOutput").barcode(code, "code39", {
 					barWidth : 2,
 					barHeight : 20,
+					fontSize : 14,
 				});
 			},
 			//產生回傳
@@ -1825,23 +1790,25 @@
 				$("#barcodeOutputSn").barcode(code, "code39", {
 					barWidth : 1,
 					barHeight : 25,
-					fontSize : 15,
+					fontSize : 20,
 				});
 				$("#barcodeOutputSn").css("transform", "scale(1.25)");
 			},
+			//列印
 			printDiv : function() {
-				var divToPrint = document.getElementById("collapseAddedPrint");
-				var style = document.getElementById("table2Style");
+				var divToPrint = document.getElementById("table2");
+				var style = document.getElementById("print_style");
 				var newWin = window.open("", "Print-Window");
 				newWin.document.open();
 				newWin.document.write("<html>" + "<head>" + '<link rel="stylesheet" href="./thirdparty/css/bootstrap-4.4.1.min.css" />' + style.outerHTML
-						+ "</head>" + '<body onload="window.print()" class="container" id="main">' + "<div>" + divToPrint.innerHTML + "</div>" + "</body>"
-						+ "</html>");
+						+ "</head>" + '<body onload="window.print()" class="container text-center" id="main">' + "<div>" + divToPrint.innerHTML + "</div>"
+						+ "</body>" + "</html>");
 				newWin.document.close();
 				setTimeout(function() {
-					newWin.close();
+					//newWin.close();
 				}, 2000);
 			},
+			//列印
 			printDiv2 : function() {
 				this.d_1 = $("#datepicker1 input").val();
 				this.d_2 = $("#datepicker2 input").val();
@@ -1855,7 +1822,7 @@
 				var number_total = parseInt($("#p_number").text());
 				if (this.sn_all_nb != null)
 					this.createBarcodeForPrint(this.sn_all_nb[0]);
-				var style = document.getElementById("table2Style");
+				var style = document.getElementById("print_style");
 				var newWin = ""; //= window.open("", "Print-Window");
 				var divToPrint = "";
 				var print_production = "";
@@ -1873,7 +1840,7 @@
 							if (templateBody.sn_all_nb != null) {
 								templateBody.createBarcodeForPrint(templateBody.sn_all_nb[new_nb + i - 1]);
 							}
-							divToPrint = document.getElementById("collapseAdded2");
+							divToPrint = document.getElementById("table2");
 							if (i == 1 || i == print_nb * print_page + 1) {
 								//初始化-每分頁第一筆資料
 								newWin = window.open("", "Print-Window_" + new_nb);
@@ -1887,10 +1854,10 @@
 								newWin.document.open();
 								newWin.document.write("<html><head>" + "<title>DTR ERP(" + (new_nb + 1) + " to " + (new_nb + in_nb) + ")</title>"
 										+ '<link rel="stylesheet" href="./thirdparty/css/bootstrap-4.4.1.min.css" />' + style.outerHTML + "</head>"
-										+ '<body onload="window.print()" class="container" id="main">' + print_production + "</body></html>");
+										+ '<body onload="window.print()" class="container text-center" id="main">' + print_production + "</body></html>");
 								newWin.document.close(); //完成頁面顯示
 								setTimeout(function() {
-									newWin.close();
+									//newWin.close();
 								}, 6500);
 								//console.log(newWin.document.getElementById('datepicker1').getElementsByTagName("input"));
 							}
