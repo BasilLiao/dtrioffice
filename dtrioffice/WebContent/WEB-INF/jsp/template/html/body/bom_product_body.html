@@ -509,6 +509,13 @@
             //更新 項目ID
             item_one_choose: function (event) {
                 $("#item_id_" + event.target.attributes.name.value).text(event.target.value);
+            	//數量變化
+                var qty_id = event.currentTarget.id.replaceAll('a_i_item','group_number');
+                var item_c =$("#"+event.currentTarget.id).children("option:selected");
+    			$("#"+qty_id).val(1);
+            	if(item_c.text().indexOf("無")>0 ||item_c.text().indexOf("No")>0||item_c.val()==""){
+            		$("#"+qty_id).val(0);
+    			}
             },
             //清除新增/修該內容
             rm_added: function (def) {

@@ -1,72 +1,23 @@
 <script src="./thirdparty/js/jquery-barcode.min.js"></script>
 <style id="table2Style">
-#table2 table {
-	position: relative;
-	font-size: 2rem;
-	font-family: Microsoft JhengHei;
+.font_28 {
+	font-size: 28px;
+	line-height: 28px;
 }
 
-@media print {
-	.table tr td, .table tr th {
-		border-width: 1px !important;
-		border-style: solid !important;
-		border-color: black !important;
-		-webkit-print-color-adjust: exact;
-	}
+.font_24 {
+	font-size: 24px;
+	line-height: 24px;
 }
 
-.group-list-10 {
-	font-size: 1.2rem;
-}
-
-#table2 th {
-	text-align: center;
-}
-
-#table2 .topic th, #table2 .topic td {
-	height: 80px;
-	line-height: 80px;
-}
-
-#table2 td[colspan="6"] {
-	padding: 0;
-}
-
-#table2 td[colspan="6"] table {
-	margin: 0;
-}
-
-#table2 [contenteditable] {
-	font-weight: bold;
-}
-
-thead .textN2 {
-	font-size: 1.5rem;
+.font_20 {
+	font-size: 20px;
 	line-height: 20px;
-	height: 40px;
 }
 
-#table2 .line2 td, #table2 .line2 th {
-	font-size: 1.5rem;
-}
-
-#table2 .itemList {
-	width: 50%;
-	height: 840px;
-}
-
-#table2 .itemList .item {
-	line-height: 30px;
-}
-
-#table2 .others {
-	display: inline-block;
-	text-align: left;
-	padding: 0 10px;
-}
-
-#table2 .sign th {
-	font-size: 1.5rem;
+.cb_pkg_ch {
+	height: 18px;
+	width: 18px;
 }
 
 [contentEditable=true]:empty:not(:focus):before {
@@ -195,175 +146,165 @@ thead .textN2 {
 					<div class="col-md-8 p-0" id="collapse_btn">
 						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="false" aria-controls="collapseAdded">生產注意事項 列印預覽 : </a>
 					</div>
-					<div class="row col-md-4 m-0">
-						<div class="col-md-4 pt-2">
-							<b>類型 : ></b>
+				</div>
+				<div class="collapse container" id="collapseAdded">
+					<!-- 設定[注意事項] -->
+					<div class="row m-0 p-0 pb-2">
+						<div class="col-6 row m-0 p-0 text-center font_28 border border-dark" style="height: 48px;">
+							<div class="col-md-2 p-2">限制 :</div>
+							<div class="col-md-10 p-2" id="" style="color: red;">
+								[可裝配 <b id="needUseNb">42</b> 項] [不裝配 <b id="notUseNb">28</b> 項]
+							</div>
 						</div>
-						<div class="col-md-4" id="">
-							<select id="a_u_kind" class="custom-select p-1" id="inlineFormCustomSelect">
-								<option value="0" selected>技轉中</option>
-								<option value="1">可量產</option>
-							</select>
+						<div class="col-2 row m-0 p-0 text-center"></div>
+						<div class="col-4 row m-0 p-0 text-center font_28 border border-dark" style="height: 48px;">
+							<div class="col-md-4 p-2">類型 :</div>
+							<div class="col-md-4 p-1" id="">
+								<select id="a_u_kind" class="custom-select" id="inlineFormCustomSelect">
+									<option value="0" selected>技轉中</option>
+									<option value="1">可量產</option>
+								</select>
+							</div>
+							<div class="col-md-4 p-2" id="">
+								<button class="btn-sm btn btn-primary btn-block" id="p_submit3" type="button">修正</button>
+							</div>
 						</div>
-						<div class="col-md-4 pt-1" id="">
-							<button class=" btn-sm btn btn-primary btn-block" id="p_submit3" type="button">修正</button>
+					</div>
+					<!-- 生產注意事項 -->
+					<div id="collapseAddedPrint" class="border border-dark" style="background: white; height: 1455px; width: 1110px; overflow: hidden; margin: auto;">
+						<!-- [標題] -->
+						<div id="snList" class="border border-dark p-0 m-0 text-left" style="height: 280px; width: 100%">
+							<div class="border border-dark h1 mb-0 p-2 text-center font-weight-bolder">生產注意事項</div>
+							<div class="row m-0 ">
+								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">工單號</div>
+								<div class="col-4 p-0 border border-dark font_28">
+									<input id="a_u_id" value="" type="text" class="col-12 p-1 border border-warning rounded">
+								</div>
+								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">訂單號</div>
+								<div class="col-4 p-0 border border-dark font_28">
+									<input id="a_u_o_id" value="" type="text" class="col-12 p-1 border border-warning rounded">
+								</div>
+							</div>
+							<div class="row m-0">
+								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">客戶 / 國家</div>
+								<div class="col-2 p-0 border border-dark font_28">
+									<input id="a_u_c" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm">
+								</div>
+								<div class="col-2 p-0 border border-dark font_28">
+									<input id="a_u_country" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm">
+								</div>
+								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">數量</div>
+								<div class="col-2 p-0 border border-dark font_28">
+									<input id="a_u_nb" value="1" type="number" class="col-12 p-1 pr-0 border border-warning rounded" min="0">
+								</div>
+								<div class="col-2 p-1 pt-2 border border-dark font_28 text-center" id="kind1"></div>
+							</div>
+							<div class="row m-0">
+								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">產品BOM號</div>
+								<div id="a_u_bom_number" class="col-3 p-1 pt-2 border border-dark font_28 can_rm"></div>
+								<div id="a_u_bom_id" class="d-none">632</div>
+								<div class="col-1 p-1 border border-dark h3 mb-0 font-weight-bolder">型號</div>
+								<div id="a_u_model" class="col-2 p-1 pt-2 border border-dark font_28 can_rm"></div>
+								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder font_24">主板(硬)版本</div>
+								<div id="a_u_version_bios" class="col-2 p-1 pt-2 border border-dark font_28 can_rm"></div>
+							</div>
+							<div class="row m-0">
+								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">PM備註</div>
+								<div class="col-10 p-0 border border-dark font_28" style="height: 68px">
+									<textarea id="a_u_note" rows="2" class="col-12 p-1 border border-warning rounded" style="overflow: hidden; height: 67px;"></textarea>
+								</div>
+							</div>
+						</div>
+						<!-- [產品內容 需裝配] -->
+						<div id="setHardware" class="border border-dark p-0 m-0 text-left" style="height: 720px; width: 100%; overflow: hidden;">
+							<div class="row m-0">
+								<div class="listLeft col-6 p-1">
+									<div class="p-1 border-bottom border-right border-secondary itemSample ui-sortable-handle" style="height: 34px; display: none; overflow: hidden;">
+										<div class="m-0 font_20" style="white-space: nowrap;">
+											<span class="name font-weight-bolder pr-1"></span> <span class="content"></span> <span class="amount"></span>
+										</div>
+									</div>
+								</div>
+								<div class="listRight col-6 p-1"></div>
+							</div>
+						</div>
+						<!-- [產品內容 不裝配] -->
+						<div id="setHardware_notUse" class="border border-dark p-0 m-0" style="height: 131px; width: 100%; overflow: hidden;">
+							<div class="row m-0 list_notUse">
+								<div class=" row m-1 font_24">
+									<div class="name font-weight-bolder pr-1">注意!!不裝配 :</div>
+								</div>
+								<div class="d-none itemSample_notUse row m-1 font_20 border-bottom border-right border-secondary">
+									<div class="name font-weight-bolder pr-1"></div>
+									<div class="content pr-1"></div>
+									<div class="amount"></div>
+								</div>
+							</div>
+						</div>
+						<!-- 包裝型態 -->
+						<div id="" class="border border-dark p-0 m-0" style="height: 140px; width: 100%; overflow: hidden;">
+							<div class="row m-0 p-1 font_20">
+								<div class="col-1 font-weight-bolder p-0 pt-1">包裝形態</div>
+								<div class="col-11 p-0">
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_1" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">Power cord</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_2" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">BOG</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_3" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">License</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_4" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">BOX Label</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_5" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">Bulk Pack</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_6" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">Retail Pack</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_7" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">作業系統OS</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_8" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">無</div>
+									</div>
+									<div class="itemSample float-left col-md-4 row p-1 m-0">
+										<label id="cb_pkg_9" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div class="border col-9 font_24 p-1" contenteditable="true">無</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 備註 -->
+						<div id="" class="border border-dark p-0 m-0" style="height: 160px; width: 100%; overflow: hidden;">
+							<div class="row m-0 p-1 font_20" style="height: 100%">
+								<div class="col-1 font-weight-bolder p-0">備註</div>
+								<div class="col-11 p-0" style="height: 100%">
+									<textarea rows="7" class="col-12 p-1 border border-warning rounded"></textarea>
+								</div>
+							</div>
+						</div>
+						<!-- 類型 -->
+						<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
+							<div class="row m-0 text-muted">
+								<div class="col-1 p-0 border border-dark">類型:</div>
+								<div class="col-1 p-0 border border-dark" id="c1_bom_type"></div>
+								<div class="col-10 p-0 border border-dark text-right" id="c1_note" title=""></div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="collapse container" id="collapseAdded" style="min-height: 1570px; min-width: 1110px;">
-					<div id="collapseAddedPrint" style="background: white;">
-						<table class="table table-bordered border border-dark">
-							<thead>
-								<tr>
-									<td colspan="5" class="text-center border border-dark" style="position: relative;">
-										<h2 class="m-0">生產注意事項</h2>
-									</td>
-								</tr>
-								<tr>
-									<th width="15%" class="p-1 border border-dark" style="font-size: 1.3em;">工單號碼</th>
-									<td width="35%" class="p-0 border border-dark">
-										<div id="a_u_id" contenteditable="true" class="can_rm p-2 textN2 border border-dark rounded" data-text=""></div>
-									</td>
-									<th width="15%" class="p-1 border border-dark" style="font-size: 1.3em;">訂單編號</th>
-									<td colspan="2" class="p-0 border border-dark">
-										<div id="a_u_o_id" contenteditable="true" class="can_rm p-2 textN2 border border-dark rounded" data-text=""></div>
-									</td>
-								</tr>
-								<tr>
-									<th class="p-1 border border-dark" style="font-size: 1.3em;">客戶名稱/國家</th>
-									<td class="p-0 border border-dark row p-0 m-0">
-										<div id="a_u_c" contenteditable="true" class="can_rm p-2 textN2 border border-dark rounded col-7" data-text=""></div>
-										<div id="a_u_country" contenteditable="true" class="can_rm p-2 textN2 border border-dark rounded col-5" data-text=""></div>
-									</td>
-									<th class="p-1 border border-dark" style="font-size: 1.3em;">數量</th>
-									<td class="p-0 border border-dark row p-0 m-0">
-										<div id="a_u_nb" contenteditable="true" class="can_rm p-2 textN2 border border-dark rounded col-12" data-text=""></div>
-									</td>
-									<td id="kind1" width="20%" class="p-0 can_rm border border-dark" data-text="(量產|技轉)單" style="text-align: center; font-weight: bold; font-size: 26px;"></td>
-								</tr>
-								<tr style="font-size: 1.3em;">
-									<th class="p-1 border border-dark" style="font-weight: bold;">產品型號</th>
-									<td colspan="4" class="p-0">
-										<div class="row m-0">
-											<div id="a_u_model" class="col-md-3 p-1  border border-dark can_rm"></div>
-											<div class="col-md-2 p-1  border border-dark " style="font-weight: bold;">BOM料號</div>
-											<div id="a_u_bom_id" class="d-none"></div>
-											<div id="a_u_bom_number" class="col-md-3 p-1  border border-dark  can_rm"></div>
-											<div class="col-md-3 pt-1 pl-2  border border-dark " style="font-weight: bold;">主機板(硬體)版本</div>
-											<div id="a_u_version_bios" class="col-md-1 p-1  border border-dark can_rm"></div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th style="font-size: 1.3em;" class="p-1 border border-dark">PM 備註</th>
-									<td colspan="4" class="p-0 border border-dark"><div id="a_u_note" style="font-size: 14px; overflow: hidden; word-break: break-all;" class="can_rm"></div></td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="5" class="p-1 border border-dark">
-										<div class=" ml-0 p-0 col-md-12 itemList listLeft float-left" style="width: 50%; height: 825px;">
-											<div class="itemSample ml-1 p-1 border-right border-bottom border-secondary" style="display: none; white-space: nowrap; overflow: hidden; line-height: 23px;">
-												<span class="name" style="font-size: 1.2rem; font-weight: bold; padding-right: 3px;"></span> <span class="content" style="font-size: 1.2rem; padding-right: 5px;"></span> <span
-													class="amount" style="font-size: 1.2rem;"></span>
-											</div>
-										</div>
-										<div class="itemList listRight float-left" style="width: 50%;"></div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="5" class="border border-dark p-3">
-										<div class="title " style="font-weight: bold;">包裝形態</div>
-										<div style="padding-left: 80px; overflow: hidden; margin-top: -22px;">
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_1" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10 " style="height: 28px;" contenteditable="true">Power cord</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_2" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">BOG</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_3" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">License</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_4" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">BOX Label</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_5" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">Bulk Pack</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 10px 0; padding-right: 0;">
-												<label id="cb_pkg_6" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">Retail Pack</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 0 0; padding-right: 0;">
-												<label id="cb_pkg_7" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">作業系統OS</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 0 0; padding-right: 0;">
-												<label id="cb_pkg_8" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">無</div>
-												</div>
-											</div>
-											<div class="itemSample float-left col-md-4 row" style="margin: 0 0px 0 0; padding-right: 0;">
-												<label id="cb_pkg_9" class="cb_pkg input-group-text"> <input type="checkbox" />
-												</label>
-												<div class="border col-9" style="padding: 3px;">
-													<div class="group-list-10" style="height: 28px;" contenteditable="true">無</div>
-												</div>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="5" class=" pb-0 border border-dark">
-										<div class="title" style="font-weight: bold;">備註</div>
-										<div class="p-1 border border-dark rounded" style="font-size: 1.1em; width: 100%; height: 220px; word-break: break-all;" contenteditable="true"></div>
-									</td>
-								</tr>
-								<tr>
-									<td class="row m-0 p-0" colspan="1" style="font-size: 0.5rem; padding-right: 10px;">
-										<div>主/附件 :</div>
-										<div id="c1_bom_type"></div>
-									</td>
-									<td id="c1_note" class="pt-0 pb-0" colspan="4" style="font-size: 0.5rem; text-align: right; padding-right: 10px;">
-										<div class="row m-0">
-											<div>表單編號: QR-701-06 / 規格負責人: /</div>
-											<div>建單負責人:</div>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="row mb-3 m-0" id="printBtn">
+				<div class="row mb-3 mt-3 m-0" id="printBtn">
 					<div class="col-md-4">
 						<div class="mr-1 ml-1 float-right row border border-primary rounded" style="padding-right: 0px;">
 							<label id="a_u_production" class="input-group-text"> <input type="checkbox" checked="checked"></label>
@@ -433,6 +374,8 @@ thead .textN2 {
 					s_0 : 0,//當前產品ID
 					d_1 : '',//當前的 投線日
 					d_2 : '',//當前的 出貨日
+					needUseNb : 42,//限制 可裝配
+					notUseNb : 28,//限制 不裝配
 					current_report : "自訂",//當前報表來源
 				},
 				created : function() {
@@ -734,10 +677,21 @@ thead .textN2 {
 					},
 					//清除新增/修該內容
 					rm_added : function() {
+						
+						//輸入清除
+						$('#a_u_country').val("");
+						$('#a_u_note').val("");
+						$('#a_u_id').val("");
+						$('#a_u_c').val("");
+						$('#a_u_nb').val(1);
+						//清除設定
 						$('.can_rm').text("");
+						//清除選取
 						$('.itemSample label input').prop('checked', false);
 						$("#group_number_0").val(1);
-						$("#collapseAdded .itemList .item").remove();
+						$("#setHardware  .item").remove();
+						$("#setHardware_notUse  .item_notUse").remove();
+						
 
 					},
 					//清除選擇
@@ -765,6 +719,7 @@ thead .textN2 {
 						$("#s_bom_number").val("");
 						$("#s_g_item").val("").trigger("change");
 					},
+
 					//選擇  預覽
 					choose_show : function(a_u_type, event) {
 						this.rm_added();
@@ -781,7 +736,7 @@ thead .textN2 {
 						$("#a_u_bom_id").text($(".t_row" + id + " .s_0")[0].innerText);
 						$("#a_u_version_motherboard").text($(".t_row" + id + " .s_4")[0].innerText);
 
-						$("#a_u_note").text($(".t_row" + id + " .s_5")[0].innerText);
+						$("#a_u_note").val($(".t_row" + id + " .s_5")[0].innerText);
 						$("#a_u_kind").val($(".t_row" + id + " .s_7")[0].innerText).change();
 
 						if ($(".t_row" + id + " .s_7")[0].innerText == 1) {
@@ -793,46 +748,73 @@ thead .textN2 {
 						var group_tbody = "";
 						var $listLeft = $("#collapseAdded .listLeft");
 						var $listRight = $("#collapseAdded .listRight");
+						var $list_notUse = $("#collapseAdded .list_notUse");
 						var $sample = $listLeft.find(".itemSample");
+						var $sample_notUse = $list_notUse.find(".itemSample_notUse");
 						$listLeft.add($listRight).find(".item").remove();
 						var indexItemId = 5;
 						var indexId = 6;
-						var indexAmount = 8;
+						var indexAmount = 8;//陣列[] 數量
 						var indexOrder = 9;
-						var indexName = 11;
-						var indexContent = 12;
+						var indexName = 11;//陣列[] 項目名稱
+						var indexContent = 12;//陣列[] 項目內容
 						var $target = $listLeft;
 						var counting = 0;
-						var columnItemNumber = 25;
+						var columnItemNumber = 21;//每行最多 項目
 						this.group_list.sort(function(a, b) {
 							return b[indexOrder] - a[indexOrder];
 						});
+						var notUse = 0;
+						var needUse = 0;
 						for (var i = 0; i < this.group_list.length; i++) {
 							if (id == this.group_list[i][indexItemId] && this.group_list[i][indexId] != 1) {
-								if (this.group_list[i][indexAmount] == 0)
-									continue;
-								var $new = $sample.clone().show().removeClass("itemSample").addClass("item");
-								$new.find(".name").html(this.group_list[i][indexName] + ":");
-								var tmp = [];
-								for (var n = indexContent; n < this.group_list[i].length; n++) {
-									tmp.push(this.group_list[i][n]);
+								//如果數量大於0 ->上面顯示
+								if (this.group_list[i][indexAmount] > 0) {
+									needUse += 1;
+									var $new = $sample.clone().show().removeClass("itemSample").addClass("item");
+									//數量
+									if (this.group_list[i][indexAmount] > 1) {
+										$new.find(".amount").html("(x" + this.group_list[i][indexAmount] + ")");
+									}
+									//項目名稱
+									$new.find(".name").html(this.group_list[i][indexName] + ":");
+									//內容
+									var tmp = [];
+									for (var n = indexContent; n < this.group_list[i].length; n++) {
+										tmp.push(this.group_list[i][n]);
+									}
+									$new.find(".content").html(tmp.join(" "));
+									counting = counting + 1;
+									if (counting > columnItemNumber)
+										$target = $listRight;
+									$target.append($new);
+								} else {
+									notUse += 1
+									//如果數量小於0 ->下面顯示 d-none 
+									var $new_notUse = $sample_notUse.clone().show().removeClass("d-none").removeClass("itemSample_notUse").addClass(
+											"item_notUse");
+									//項目名稱
+									$new_notUse.find(".name").html(this.group_list[i][indexName] + ":");
+									//內容
+									var tmp = [];
+									for (var n = indexContent; n < this.group_list[i].length; n++) {
+										tmp.push(this.group_list[i][n]);
+									}
+									$new_notUse.find(".content").html(tmp.join(" "));
+									$list_notUse.append($new_notUse);
 								}
-								$new.find(".content").html(tmp.join(" "));
-								if (this.group_list[i][indexAmount] > 1) {
-									$new.find(".amount").html("(x" + this.group_list[i][indexAmount] + ")");
-								}
-								if (++counting > columnItemNumber)
-									$target = $listRight;
-								$target.append($new);
 							}
 						}
+						//計算
+						$("#notUseNb").text(this.notUseNb - notUse);
+						$("#needUseNb").text(this.needUseNb - needUse);
 
 						$('#collapseAdded input[type="checkbox"]').change(function() {
 							var checked = $(this).prop("checked");
 							if (checked) {
-								$(this).after('<input type="checkbox" checked="checked">');
+								$(this).after('<input class="cb_pkg_ch" type="checkbox" checked="checked">');
 							} else {
-								$(this).after('<input type="checkbox">');
+								$(this).after('<input class="cb_pkg_ch" type="checkbox">');
 							}
 							$(this).remove();
 						});
@@ -840,6 +822,7 @@ thead .textN2 {
 						$("#c1_note").text(
 								"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_11")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
 										+ $("#nav_account").text() + " / 單據來源:" + this.current_report);
+						$("#c1_note").attr('title', $(".t_row" + id + " .s_11")[0].innerText);
 
 					},
 					//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
@@ -969,19 +952,25 @@ thead .textN2 {
 								this.current_report = "生產注意事項";
 								//登記 單據(檢核)
 								var regex = new RegExp("^[A-Z0-9]+\-[A-Z0-9]+$");
-								if (!regex.test($("#a_u_id").text())) {
+								if (!regex.test($("#a_u_id").val())) {
 									main.alertshow(true, "[製令單號]格式錯誤!!");
 									return;
 								}
-								content.production_id = $("#a_u_id").text();
-								content.order_id = $("#a_u_o_id").text();
-								content.order_country = $("#a_u_country").text();
-								content.client_name = $("#a_u_c").text() + "(" + content.order_country + ")";
+								//檢核
+								if ($('#needUseNb').text() < 0 || $('#notUseNb').text() < 0) {
+									main.alertshow(true, "[可裝配 or 不裝配]項目數量異常 ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 檢查清楚!!");
+									return false;
+								}
+
+								content.production_id = $("#a_u_id").val();
+								content.order_id = $("#a_u_o_id").val();
+								content.order_country = $("#a_u_country").val();
+								content.client_name = $("#a_u_c").val() + "(" + content.order_country + ")";
 								content.bom_type = $("#c1_bom_type").text();
 
 								var quantity = 0;
-								if ($("#a_u_nb").text() != "" && $.isNumeric($("#a_u_nb").text())) {
-									quantity = $("#a_u_nb").text();
+								if ($("#a_u_nb").val() != "" && $.isNumeric($("#a_u_nb").val())) {
+									quantity = $("#a_u_nb").val();
 								}
 
 								content.production_quantity = quantity;
@@ -1045,7 +1034,15 @@ thead .textN2 {
 						newWin.document.write("<html>" + "<head>" + '<link rel="stylesheet" href="./thirdparty/css/bootstrap-4.4.1.min.css" />'
 								+ style.outerHTML + "</head>" + '<body onload="window.print()" class="container" id="main">' + "<div>" + divToPrint.innerHTML
 								+ "</div>" + "</body>" + "</html>");
+
+						newWin.document.getElementById('a_u_id').value = $("#a_u_id").val();
+						newWin.document.getElementById('a_u_o_id').value = $("#a_u_o_id").val();
+						newWin.document.getElementById('a_u_country').value = $("#a_u_country").val();
+						newWin.document.getElementById('a_u_note').value = $("#a_u_note").val();
+						newWin.document.getElementById('a_u_c').value = $("#a_u_c").val();
+
 						newWin.document.close();
+
 						setTimeout(function() {
 							newWin.close();
 						}, 500);
@@ -1072,6 +1069,7 @@ thead .textN2 {
 								this.item_list = main.contentData.templateInfo.body["item_list"];
 								this.search_list = main.contentData.templateInfo.body["list"];
 								this.search_update();
+
 								//如果是登記生產
 								this.printDiv();
 							}

@@ -191,18 +191,24 @@ public class BomAccessoriesProductService {
 		Boolean check = false;
 		productDao.updateAccessoriesProduct(entity);
 		BomGroupEntity re_other = new BomGroupEntity();
+		List<BomGroupEntity> bomGs = new ArrayList<BomGroupEntity>();
 		re_other.setNote("");
+		// Step1.檢查須更新或添加
 		for (BomGroupEntity one : entity.getGroupEntitis()) {
 			// 沒這項目->新增
 			if (productDao.updateAccessoriesGroup(one) != 1) {
 				int id = productDao.nextvalBomAccessoriesGroup();
 				one.setId(id);
-				productDao.addedAccessoriesOneGroupByid(one);
+				bomGs.add(one);
 			}
 			re_other.setProduct_id(one.getProduct_id());
 			re_other.setNote(re_other.getNote() + one.getId() + ",");
 		}
-		// 移除多餘
+		// Step2.添加內容
+		for (BomGroupEntity oneAdd : bomGs) {
+			productDao.addedAccessoriesOneGroupByid(oneAdd);
+		}
+		// Step3.移除內容(re_other 有登記的除外)
 		re_other.setNote(re_other.getNote() + "0");
 		productDao.deleteAccessoriesGroupOther(re_other);
 		return check;

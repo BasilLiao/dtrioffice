@@ -373,7 +373,7 @@
 							</div>
 						</div>
 
-						<div id="setOrder" class="border border-dark p-0 m-0" style="height: 168px; width: 100%">
+						<div id="setOrder" class="border border-dark p-0 m-0" style="height: 180px; width: 100%">
 							<div class="row m-0 h4">
 								<div class="col-1 p-0 pt-1 pb-1 border border-dark font-weight-bolder">工單號</div>
 								<div class="col-4 p-1 border border-secondary rounded font_28" contenteditable="true" style="height: 39px; overflow: hidden;" id="barcodeInput"></div>
@@ -406,8 +406,8 @@
 								<div class="col-1 p-1 border border-secondary rounded font_28" contenteditable="true" style="height: 40px; overflow: hidden;" id="p_number">1</div>
 							</div>
 							<div class="row m-0 ">
-								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">注意項</div>
-								<div class="col-11 p-1 border border-secondary rounded text-left font_28" contenteditable="true" style="height: 42px; overflow: hidden;" id="note"></div>
+								<div class="col-1 p-0 pt-2 pb-1 mb-0 border border-dark font-weight-bolder h4">注意項</div>
+								<div class="col-11 p-1 border border-secondary rounded text-left font_20" contenteditable="true" style="height: 50px; overflow: hidden; white-space: nowrap;" id="note"></div>
 							</div>
 						</div>
 
@@ -465,7 +465,7 @@
 							<div class="row m-0">
 								<div class="listLeft2 col-6 p-1">
 									<div class="p-1 border-bottom border-right border-secondary itemSample ui-sortable-handle" style="height: 34px; display: none; overflow: hidden;">
-										<div class="m-0 font_24">
+										<div class="m-0 font_24" style="white-space: nowrap;">
 											<span class="name font-weight-bolder pr-1"></span> <span class="content"></span> <span class="amount"></span>
 										</div>
 									</div>
@@ -1805,7 +1805,7 @@
 						+ "</body>" + "</html>");
 				newWin.document.close();
 				setTimeout(function() {
-					//newWin.close();
+					newWin.close();
 				}, 2000);
 			},
 			//列印
@@ -1857,7 +1857,7 @@
 										+ '<body onload="window.print()" class="container text-center" id="main">' + print_production + "</body></html>");
 								newWin.document.close(); //完成頁面顯示
 								setTimeout(function() {
-									//newWin.close();
+									newWin.close();
 								}, 6500);
 								//console.log(newWin.document.getElementById('datepicker1').getElementsByTagName("input"));
 							}

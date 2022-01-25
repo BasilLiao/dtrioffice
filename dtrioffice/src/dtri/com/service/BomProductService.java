@@ -70,8 +70,7 @@ public class BomProductService {
 				|| entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
 			for (BomProductEntity entity : entitys) {
 				// 組
-				if (entity.getGroupEntity().getType_item_group_id() != null
-						&& entity.getGroupEntity().getType_item_group_id() != 0) {
+				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
 					select_nb++;
 					all_where_group += "(";
 					type_item_group_id = " type_item_group_id = " + entity.getGroupEntity().getType_item_group_id();
@@ -100,7 +99,7 @@ public class BomProductService {
 				}
 
 			}
-		
+
 			// 如果(項目有值) / 如果只有(產品有值)
 			if (!all_where_group.equals(" ")) {
 				// 除對多餘的 OR
@@ -192,18 +191,24 @@ public class BomProductService {
 		Boolean check = false;
 		productDao.updateProduct(entity);
 		BomGroupEntity re_other = new BomGroupEntity();
+		List<BomGroupEntity> bomGs = new ArrayList<BomGroupEntity>();
 		re_other.setNote("");
+		// Step1.檢查須更新或添加
 		for (BomGroupEntity one : entity.getGroupEntitis()) {
 			// 沒這項目->新增
 			if (productDao.updateGroup(one) != 1) {
 				int id = productDao.nextvalBomGroup();
 				one.setId(id);
-				productDao.addedOneGroupByid(one);
+				bomGs.add(one);
 			}
 			re_other.setProduct_id(one.getProduct_id());
 			re_other.setNote(re_other.getNote() + one.getId() + ",");
 		}
-		// 移除多餘
+		// Step2.添加內容
+		for (BomGroupEntity oneAdd : bomGs) {
+			productDao.addedOneGroupByid(oneAdd);
+		}
+		// Step3.移除內容(re_other 有登記的除外)
 		re_other.setNote(re_other.getNote() + "0");
 		productDao.deleteGroupOther(re_other);
 		return check;
@@ -273,8 +278,7 @@ public class BomProductService {
 	public List<BomProductEntity> jsonToEntities(JSONObject content, String action) {
 		List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
 		// 更新 新增 移除用
-		if (!content.isNull("product") && !content.get("product").equals("") && !content.isNull("group_item")
-				&& !content.get("group_item").equals("")) {
+		if (!content.isNull("product") && !content.get("product").equals("") && !content.isNull("group_item") && !content.get("group_item").equals("")) {
 			BomProductEntity p_entity = new BomProductEntity();
 			BomGroupEntity g_entity = new BomGroupEntity();
 			List<BomGroupEntity> groupEntitis = new ArrayList<BomGroupEntity>();
@@ -286,7 +290,7 @@ public class BomProductService {
 			p_entity.setSys_create_user(loginService.getSessionUserBean().getAccount());
 			p_entity.setSys_modify_date(new Date());
 			p_entity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
-			
+
 			p_entity.setBom_number(product.getString("bom_number").trim());
 			p_entity.setProduct_model(product.getString("product_model"));
 			p_entity.setVersion_motherboard(product.getString("version_motherboard"));
@@ -343,7 +347,7 @@ public class BomProductService {
 		jsonArray.put("備註");
 		jsonArray.put("狀態");
 		jsonArray.put("類型");
-		
+
 		jsonArray.put("建立時間");
 		jsonArray.put("建立者");
 		jsonArray.put("修改時間");
@@ -361,7 +365,7 @@ public class BomProductService {
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getKind());
-			
+
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
@@ -384,7 +388,7 @@ public class BomProductService {
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
 
-			jsonArray.put(entity.getId()); 
+			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getProduct_id());
 			jsonArray.put(entity.getType_item_id());
 			jsonArray.put(entity.getType_item_group_id());
