@@ -244,43 +244,45 @@
 						<!-- 包裝型態 -->
 						<div id="" class="border border-dark p-0 m-0" style="height: 140px; width: 100%; overflow: hidden;">
 							<div class="row m-0 p-1 font_20">
-								<div class="col-1 font-weight-bolder p-0 pt-1">包裝形態</div>
+								<div class="col-1 font-weight-bolder p-0 pt-1">
+									包裝<br>形態
+								</div>
 								<div class="col-11 p-0">
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_1" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">Power cord</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Power cord</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_2" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">BOG</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOG</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_3" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">License</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">License</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_4" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">BOX Label</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOX Label</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_5" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">Bulk Pack</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Bulk Pack</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_6" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">Retail Pack</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Retail Pack</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_7" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">作業系統OS</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">作業系統OS</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_8" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">無</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">無</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
 										<label id="cb_pkg_9" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
-										<div class="border col-9 font_24 p-1" contenteditable="true">無</div>
+										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">無</div>
 									</div>
 								</div>
 							</div>
@@ -290,7 +292,7 @@
 							<div class="row m-0 p-1 font_20" style="height: 100%">
 								<div class="col-1 font-weight-bolder p-0">備註</div>
 								<div class="col-11 p-0" style="height: 100%">
-									<textarea rows="7" class="col-12 p-1 border border-warning rounded"></textarea>
+									<textarea id="a_u_note2" rows="7" class="col-12 p-1 border border-warning rounded"></textarea>
 								</div>
 							</div>
 						</div>
@@ -677,12 +679,15 @@
 					},
 					//清除新增/修該內容
 					rm_added : function() {
-						
+
 						//輸入清除
 						$('#a_u_country').val("");
 						$('#a_u_note').val("");
+						$('#a_u_note2').val("");
+
 						$('#a_u_id').val("");
 						$('#a_u_c').val("");
+						$('#a_u_o_id').val("");
 						$('#a_u_nb').val(1);
 						//清除設定
 						$('.can_rm').text("");
@@ -691,7 +696,6 @@
 						$("#group_number_0").val(1);
 						$("#setHardware  .item").remove();
 						$("#setHardware_notUse  .item_notUse").remove();
-						
 
 					},
 					//清除選擇
@@ -1039,7 +1043,9 @@
 						newWin.document.getElementById('a_u_o_id').value = $("#a_u_o_id").val();
 						newWin.document.getElementById('a_u_country').value = $("#a_u_country").val();
 						newWin.document.getElementById('a_u_note').value = $("#a_u_note").val();
+						newWin.document.getElementById('a_u_note2').value = $('#a_u_note2').val();
 						newWin.document.getElementById('a_u_c').value = $("#a_u_c").val();
+						newWin.document.getElementById('a_u_nb').value = $("#a_u_nb").val();
 
 						newWin.document.close();
 

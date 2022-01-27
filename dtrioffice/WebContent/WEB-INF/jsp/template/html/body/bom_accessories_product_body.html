@@ -257,6 +257,7 @@
             needUseNb : 42,//限制 可裝配
             notUseNb : 28,//限制 不裝配
             //分頁功能
+            def_choose:true,
             page_max:100,//當前本批 筆數
             page_max_total:100,//最大總數
             page_batch:0,//第幾批
@@ -328,7 +329,7 @@
             });
             //切換子項目 監聽
             $(document).on("change", ".a_i_item", function (event) {
-                templateBody.item_one_choose(event);
+                templateBody.item_one_choose(event,templateBody.def_choose);
             });
             //新增監聽
             $(document).on("click", "#a_item", function (event) {
@@ -508,12 +509,14 @@
                 $("#" + id).append(s_g_item);
             },
             //更新 項目ID
-            item_one_choose: function (event) {
+            item_one_choose: function (event,def_choose) {
                 $("#item_id_" + event.target.attributes.name.value).text(event.target.value);
               	//數量變化
                 var qty_id = event.currentTarget.id.replaceAll('a_i_item','group_number');
                 var item_c =$("#"+event.currentTarget.id).children("option:selected");
-    			$("#"+qty_id).val(1);
+                if(def_choose){
+                	$("#"+qty_id).val(1);
+                }
             	if(item_c.text().indexOf("無")>0 ||item_c.text().indexOf("No")>0||item_c.val()==""){
             		$("#"+qty_id).val(0);
     			}
@@ -609,7 +612,7 @@
                 $("#a_i_order_" + add_id).text(0);
 
                 //下方 切換項目 監聽
-                $(document).off("change", ".a_g_item");
+               /* $(document).off("change", ".a_g_item");
                 $(document).on("change", ".a_g_item", function (event) {
                     templateBody.item_choose(event, event.target.attributes.name.value);
                 });
@@ -617,7 +620,7 @@
                 $(document).off("change", ".a_i_item");
                 $(document).on("change", ".a_i_item", function (event) {
                     templateBody.item_one_choose(event);
-                });
+                });*/
                 //移除監聽
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -654,6 +657,7 @@
             },
             //選擇  修改(另存)
             choose_update: function (a_u_type, event) {
+            	templateBody.def_choose = false;
                 $("#group_id_0").text(this.item_nb_max);
                 $("#a_item").attr("name", this.item_nb_max);
 
@@ -702,7 +706,7 @@
                     }
                 }
                 //下方 切換項目 監聽
-                $(document).off("change", ".a_g_item");
+               /* $(document).off("change", ".a_g_item");
                 $(document).on("change", ".a_g_item", function (event) {
                     templateBody.item_choose(event, event.target.attributes.name.value);
                 });
@@ -710,7 +714,7 @@
                 $(document).off("change", ".a_i_item");
                 $(document).on("change", ".a_i_item", function (event) {
                     templateBody.item_one_choose(event);
-                });
+                });*/
                 //移除監聽
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -736,6 +740,7 @@
                 $("#group_number_0").attr("disabled","disabled");
                 $("#a_i_item_0").attr("disabled","disabled");
                 $("#a_g_item_0").attr("disabled","disabled");
+                templateBody.def_choose = true;
             },
             //選擇 刪除
             choose_delete: function (event) {
