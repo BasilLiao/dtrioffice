@@ -962,8 +962,22 @@
 								}
 								//檢核
 								if ($('#needUseNb').text() < 0 || $('#notUseNb').text() < 0) {
-									main.alertshow(true, "[可裝配 or 不裝配]項目數量異常 ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 檢查清楚!!");
+									main.alertshow(true, "[可裝配 or 不裝配]項目數量異常 ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
 									return false;
+								}
+								var itme_not_null = $('#setHardware .item .content');
+								for (var i = 0; i < itme_not_null.length; i++) {
+									if(itme_not_null[i].innerText.search('No')!=-1 || itme_not_null[i].innerText.search('無')!=-1){
+										main.alertshow(true, "[可裝配]內容 項目含[無 or No] ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
+										return false;
+									}
+								}
+								var itme_is_null = $('#setHardware_notUse .item_notUse .content');
+								for (var i = 0; i < itme_is_null.length; i++) {
+									if(itme_is_null[i].innerText.search('No')==-1 || itme_is_null[i].innerText.search('無')==-1){
+										main.alertshow(true, "[不裝配]內容 尚未含[無 or No] ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
+										return false;
+									}
 								}
 
 								content.production_id = $("#a_u_id").val();

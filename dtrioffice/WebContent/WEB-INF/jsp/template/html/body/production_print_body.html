@@ -1005,6 +1005,7 @@
 					var id_p = event.target.attributes.user_id.value;
 					templateBody.event = event;
 					//自動_先檢查是否有效
+					$("#s_g_bom_type option").removeAttr("selected");
 					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_11").text() + "]").attr("selected", "selected");
 
 					$("#a_c_submit2").trigger("click");
@@ -1184,6 +1185,7 @@
 				$("#barcodeOutput div").remove();
 
 				$("#group_number_0").val(1);
+				$("#c2_bom_type").text("");
 				$("#barcodeInput").text("");
 				$("#order_id").text("");
 				$("#datepicker1 input").val("");
@@ -1194,7 +1196,10 @@
 				$(".othersEdit").text("");
 				$("#barcodeOutputSn").text("");
 
-				$("#collapseAdded2 .itemList .item").remove();
+				$("#collapseAdded2 .listLeft2 .item").remove();
+				$("#collapseAdded2 .listRight2 .item").remove();
+				$("#collapseAdded2 .list_notUse .item_notUse").remove();
+
 			},
 			//清除選擇
 			rm_select : function() {
@@ -1286,7 +1291,9 @@
 				var $sample = $listLeft.find(".itemSample");
 				var $sample_notUse = $list_notUse.find(".itemSample_notUse");
 
-				$listLeft.add($listRight).find(".item").remove();
+				$listLeft.find(".item").remove();
+				$listRight.find(".item").remove();
+				$list_notUse.find(".item_notUse").remove();
 				var indexItemId = 5;
 				var indexId = 6;
 				var indexAmount = 8;//陣列[] 數量
