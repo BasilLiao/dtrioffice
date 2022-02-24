@@ -52,6 +52,7 @@
 				AND inv.MC001 like
 				concat('%',#{invmc_entity.mc001,jdbcType=VARCHAR},'%')
 			</if>
+			AND inv.MC007 != 0
 		</where>
 		order by inv.MC001 asc
 		OFFSET 0 ROWS
@@ -99,7 +100,7 @@
 		SMC.MC002 AS TP001,
 		SMC.MC001 AS TP002,
 		CTB.TB015 AS TP003,
-		CONVERT(varchar(100),CTB.TB004) AS TP004,
+		CONVERT(varchar(100),CTB.TB004-CTB.TB005) AS TP004,
 		'' AS TP005,
 		''+CTB.TB001+'-'+CTB.TB002+' :
 		'+CTB.TB014 AS NOTE000
@@ -113,6 +114,7 @@
 				concat('%',#{mocpur_entity.s000,jdbcType=VARCHAR},'%')
 			</if>
 			AND (CTA.TA011 !='y' AND CTA.TA011 !='Y' ) AND CTA.TA013 = 'Y' AND CTB.TB004 > 0
+			AND CTB.TB004!=CTB.TB005 
 		</where>
 		ORDER BY CTB.TB015 ASC
 		OFFSET 0 ROWS FETCH FIRST 50 ROWS ONLY
@@ -159,7 +161,7 @@
 				AND RTD.TD004 like
 				concat('%',#{mocpur_entity.s000,jdbcType=VARCHAR},'%')
 			</if>
-			AND RTD.TD015 !=RTD.TD008 AND (RTC.TC027 !='3' AND RTC.TC027='N') AND RTD.TD018 ='Y'
+			AND RTD.TD015 !=RTD.TD008 AND (RTC.TC027 !='3' AND RTC.TC027='N') AND RTD.TD018 ='Y' AND RTD.TD016 != 'y'
 		</where>
 		ORDER BY RTD.TD012 ASC
 		OFFSET 0 ROWS FETCH FIRST 50 ROWS ONLY

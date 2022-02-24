@@ -186,6 +186,7 @@
                     $("#countDown").addClass("d-none");
                     templateNav.signout();
                 }
+                $("#nav_timeout").text("T.O.:"+this.countDownSecond+"/s");
                 $("#timeOutmsg h2").text("程序登出中....請點我繼續..." + this.countDownSecond);
                 //console.log("倒數登出 : "+this.countDownSecond);
             },

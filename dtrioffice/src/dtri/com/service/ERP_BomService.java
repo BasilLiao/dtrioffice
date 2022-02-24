@@ -267,7 +267,7 @@ public class ERP_BomService {
 		jsonArray.put("倉庫別");
 		// 內容
 		jsonArray.put("入庫量");
-		jsonArray.put("領出量");
+		jsonArray.put("未領量");
 		jsonArray.put("備註(工單號 訂單 : 品號...等等)");
 		jsonArray.put("id");
 		jsonAll.put(jsonArray);

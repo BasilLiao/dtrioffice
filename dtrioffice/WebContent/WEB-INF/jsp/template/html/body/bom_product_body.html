@@ -87,7 +87,7 @@
 									<tbody id="search_tbody"></tbody>
 								</table>
 							</div>
-							<div aria-label="Page">
+							<div id="page-items" aria-label="Page">
 								<ul class="pagination justify-content-center">
 									<li class="page-item p_p disabled"><a id="p_p" class="page-link" href="#" onclick="return templateBody.change_page(this);">Previous 10 </a></li>
 									<li class="page-item p_nb p1 active"><a id="p1" class="page-link" href="#" onclick="return templateBody.change_page(this);">1</a></li>
@@ -519,6 +519,7 @@
             	if(item_c.text().indexOf("無")>0 ||item_c.text().indexOf("No")>0||item_c.val()==""){
             		$("#"+qty_id).val(0);
     			}
+            	templateBody.check_nb();
             },
             //清除新增/修該內容
             rm_added: function (def) {
@@ -627,7 +628,7 @@
                	$(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
                     templateBody.re_item(event);
-                    templateBody.check_nb();
+                   
                 });
                 //設定預設參數
                 $("#group_number_" + add_id).val($(".t_p_row0 #group_number_0").val());
@@ -760,6 +761,7 @@
             re_item: function (event) {
                 console.log(event.target.id);
                 $(".t_p_row" + event.target.id).remove();
+                templateBody.check_nb();
             },
             //鎖定資料
             choose_disabled: function (disabled) {
@@ -787,14 +789,14 @@
               	for (var re_page = 1; re_page <= 10; re_page++) {
 					var now_page = re_page+(this.page_batch*10);
 					//如果就在第一頁 不需更換
-					if(!$(".p"+now_page).hasClass("p"+re_page)){
-						$(".p"+now_page).addClass("p"+re_page);
-						$(".p"+re_page).removeClass("p"+now_page);
-						$(".p"+re_page+" a").text(re_page);
-						$(".p"+re_page+" a").attr("id","p"+re_page);
+					if(!$("#page-items .p"+now_page).hasClass("p"+re_page)){
+						$("#page-items .p"+now_page).addClass("p"+re_page);
+						$("#page-items .p"+re_page).removeClass("p"+now_page);
+						$("#page-items .p"+re_page+" a").text(re_page);
+						$("#page-items .p"+re_page+" a").attr("id","p"+re_page);
 					}
 					if(re_page==1){
-						$(".p"+re_page).addClass(a);
+						$("#page-items .p"+re_page).addClass(a);
 					}					
            		}
             	//分頁功能

@@ -210,7 +210,7 @@
 							</div>
 							<div class="row m-0">
 								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">PM備註</div>
-								<div class="col-10 p-0 border border-dark font_28" style="height: 68px">
+								<div class="col-10 p-0 border border-dark font_20" style="height: 68px">
 									<textarea id="a_u_note" rows="2" class="col-12 p-1 border border-warning rounded" style="overflow: hidden; height: 67px;"></textarea>
 								</div>
 							</div>
@@ -974,7 +974,7 @@
 								}
 								var itme_is_null = $('#setHardware_notUse .item_notUse .content');
 								for (var i = 0; i < itme_is_null.length; i++) {
-									if(itme_is_null[i].innerText.search('No')==-1 || itme_is_null[i].innerText.search('無')==-1){
+									if(itme_is_null[i].innerText.search('No')==-1 && itme_is_null[i].innerText.search('無')==-1){
 										main.alertshow(true, "[不裝配]內容 尚未含[無 or No] ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
 										return false;
 									}
