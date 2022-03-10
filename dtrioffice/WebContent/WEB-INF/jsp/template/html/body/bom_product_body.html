@@ -224,7 +224,7 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<div class="col-md-4"></div>
+							<div class="col-md-3"></div>
 							<div class="col-md-2">
 								<div class="">
 									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
@@ -235,7 +235,12 @@
 									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">預設內容</button>
 								</div>
 							</div>
-							<div class="col-md-4"></div>
+							<div class="col-md-2">
+								<div class="">
+									<button id="a_d_submit" class="btn btn-danger btn-block" type="button">清除內容</button>
+								</div>
+							</div>
+							<div class="col-md-3"></div>
 						</div>
 					</div>
 				</form>
@@ -255,7 +260,6 @@
             item_nb_max: 1, //最大ID數
             needUseNb : 42,//限制 可裝配
             notUseNb : 28,//限制 不裝配
-            def_choose : false,
             //分頁功能
             page_max:100,//當前本批 筆數
             page_max_total:100,//最大總數
@@ -318,6 +322,11 @@
                   	 $("html,body").animate({ scrollTop: 1000 }, 'slow'); 
                   }, 500);
             });
+            //清除
+            $(document).on("click", "#a_d_submit", function (event) {
+                templateBody.rm_added(false);
+               
+            });
             //切換項目 監聽
             $(document).on("change", "#s_g_item", function (event) {
                 templateBody.item_choose(event, -1);
@@ -328,7 +337,7 @@
             });
             //切換子項目 監聽
             $(document).on("change", ".a_i_item", function (event) {
-                templateBody.item_one_choose(event,templateBody.def_choose);
+            	templateBody.item_one_choose(event,templateBody);          
             });
             //新增監聽
             $(document).on("click", "#a_item", function (event) {
@@ -508,12 +517,12 @@
                 $("#" + id).append(s_g_item);
             },
             //更新 項目ID
-            item_one_choose: function (event,def_choose) {
+            item_one_choose: function (event) {
                 $("#item_id_" + event.target.attributes.name.value).text(event.target.value);
             	//數量變化
                 var qty_id = event.currentTarget.id.replaceAll('a_i_item','group_number');
                 var item_c =$("#"+event.currentTarget.id).children("option:selected");
-                if(def_choose){
+                if($("#"+qty_id).val()==0){
 	    			$("#"+qty_id).val(1);                	
                 }
             	if(item_c.text().indexOf("無")>0 ||item_c.text().indexOf("No")>0||item_c.val()==""){
@@ -612,18 +621,6 @@
                 //同步帶入
                 $("#a_i_order_" + add_id).text(0);
 
-                //下方 切換項目 監聽
-                /*$(document).off("change", ".a_g_item");
-                $(document).on("change", ".a_g_item", function (event) {
-                    templateBody.item_choose(event, event.target.attributes.name.value);
-                });*/
-                
-                //切換子項目 監聽
-               /* $(document).off("change", ".a_i_item");
-                $(document).on("change", ".a_i_item", function (event) {
-                    templateBody.item_one_choose(event);
-                    
-                });*/
                 //移除監聽
                	$(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -662,7 +659,6 @@
             },
             //選擇  修改(另存)
             choose_update: function (a_u_type, event) {
-            	templateBody.def_choose = false;
                 $("#group_id_0").text(this.item_nb_max);
                 $("#a_item").attr("name", this.item_nb_max);
 
@@ -710,16 +706,6 @@
                         this.group_item_choose("a_g_item_" + this.group_list[i][4], 0);
                     }
                 }
-                //下方 切換項目 監聽
-               /* $(document).off("change", ".a_g_item");
-                $(document).on("change", ".a_g_item", function (event) {
-                    templateBody.item_choose(event, event.target.attributes.name.value);
-                });
-                //切換子項目 監聽
-                $(document).off("change", ".a_i_item");
-                $(document).on("change", ".a_i_item", function (event) {
-                    templateBody.item_one_choose(event,templateBody.def_choose);
-                });*/
                 //移除監聽
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -744,7 +730,7 @@
                 $("#group_number_0").attr("disabled","disabled");
                 $("#a_i_item_0").attr("disabled","disabled");
                 $("#a_g_item_0").attr("disabled","disabled");
-                templateBody.def_choose = true;
+                
                 
             },
             //選擇 刪除
@@ -1043,6 +1029,8 @@
             $(document).off("click", "#search_choose input");
             $(document).off("click", "#s_submit");
             $(document).off("click", "#a_c_submit");
+            $(document).off("click", "#a_d_submit");
+            
             $(document).off("click", ".a_submit");
             $(document).off("click", ".d_submit");
 
@@ -1052,7 +1040,7 @@
             $(document).off("change", "#s_g_item");
             $(document).off("change", ".a_g_item");
             $(document).off("click", "#a_item");
-            $(document).off("click", ".a_i_item");
+            $(document).off("change", ".a_i_item");
             $(document).off("change", ".item_nbs");
             
         },

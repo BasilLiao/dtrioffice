@@ -210,13 +210,13 @@
 											<td class="s_type_added"><button name="" id="a_item" type="button" class="btn btn-success btn-sm btn-block a_p_submit">添加</button></td>
 											<td id="group_id_0">0</td>
 											<td id="item_group_id_0"></td>
-											<td class="s_type_added"><select name="0" id="a_g_item_0" class="a_g_item md-12"  disabled="disabled">
+											<td class="s_type_added"><select name="0" id="a_g_item_0" class="a_g_item md-12" disabled="disabled">
 											</select></td>
 											<td id="item_id_0"></td>
-											<td class="s_type_added"><select name="0" id="a_i_item_0" class="md-12 a_i_item"  disabled="disabled">
+											<td class="s_type_added"><select name="0" id="a_i_item_0" class="md-12 a_i_item" disabled="disabled">
 													<option value="">請選擇</option>
 											</select></td>
-											<td><input class="col-md-12" type="text" id="group_number_0" placeholder="Ex:1" value="0" required  disabled="disabled"/></td>
+											<td><input class="col-md-12" type="text" id="group_number_0" placeholder="Ex:1" value="0" required disabled="disabled" /></td>
 											<td id="a_i_order_0"></td>
 											<td id="a_i_note_0"></td>
 										</tr>
@@ -225,7 +225,7 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<div class="col-md-4"></div>
+							<div class="col-md-3"></div>
 							<div class="col-md-2">
 								<div class="">
 									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
@@ -236,7 +236,12 @@
 									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">預設內容</button>
 								</div>
 							</div>
-							<div class="col-md-4"></div>
+							<div class="col-md-2">
+								<div class="">
+									<button id="a_d_submit" class="btn btn-danger btn-block" type="button">清除內容</button>
+								</div>
+							</div>
+							<div class="col-md-3"></div>
 						</div>
 					</div>
 				</form>
@@ -257,7 +262,6 @@
             needUseNb : 42,//限制 可裝配
             notUseNb : 28,//限制 不裝配
             //分頁功能
-            def_choose:true,
             page_max:100,//當前本批 筆數
             page_max_total:100,//最大總數
             page_batch:0,//第幾批
@@ -323,13 +327,19 @@
             $(document).on("change", "#s_g_item", function (event) {
                 templateBody.item_choose(event, -1);
             });
+            //清除
+            $(document).on("click", "#a_d_submit", function (event) {
+                templateBody.rm_added(false);
+               
+            });
             //下方 切換項目 監聽
             $(document).on("change", ".a_g_item", function (event) {
                 templateBody.item_choose(event, event.target.attributes.name.value);
             });
             //切換子項目 監聽
+            $(document).off("change", ".a_i_item");
             $(document).on("change", ".a_i_item", function (event) {
-                templateBody.item_one_choose(event,templateBody.def_choose);
+                templateBody.item_one_choose(event);
             });
             //新增監聽
             $(document).on("click", "#a_item", function (event) {
@@ -509,13 +519,13 @@
                 $("#" + id).append(s_g_item);
             },
             //更新 項目ID
-            item_one_choose: function (event,def_choose) {
+            item_one_choose: function (event) {
                 $("#item_id_" + event.target.attributes.name.value).text(event.target.value);
-              	//數量變化
+            	//數量變化
                 var qty_id = event.currentTarget.id.replaceAll('a_i_item','group_number');
                 var item_c =$("#"+event.currentTarget.id).children("option:selected");
-                if(def_choose){
-                	$("#"+qty_id).val(1);
+                if($("#"+qty_id).val()==0){
+	    			$("#"+qty_id).val(1);                	
                 }
             	if(item_c.text().indexOf("無")>0 ||item_c.text().indexOf("No")>0||item_c.val()==""){
             		$("#"+qty_id).val(0);
@@ -612,16 +622,6 @@
                 //同步帶入
                 $("#a_i_order_" + add_id).text(0);
 
-                //下方 切換項目 監聽
-               /* $(document).off("change", ".a_g_item");
-                $(document).on("change", ".a_g_item", function (event) {
-                    templateBody.item_choose(event, event.target.attributes.name.value);
-                });
-                //切換子項目 監聽
-                $(document).off("change", ".a_i_item");
-                $(document).on("change", ".a_i_item", function (event) {
-                    templateBody.item_one_choose(event);
-                });*/
                 //移除監聽
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -657,7 +657,6 @@
             },
             //選擇  修改(另存)
             choose_update: function (a_u_type, event) {
-            	templateBody.def_choose = false;
                 $("#group_id_0").text(this.item_nb_max);
                 $("#a_item").attr("name", this.item_nb_max);
 
@@ -705,16 +704,7 @@
                         this.group_item_choose("a_g_item_" + this.group_list[i][4], 0);
                     }
                 }
-                //下方 切換項目 監聽
-               /* $(document).off("change", ".a_g_item");
-                $(document).on("change", ".a_g_item", function (event) {
-                    templateBody.item_choose(event, event.target.attributes.name.value);
-                });
-                //切換子項目 監聽
-                $(document).off("change", ".a_i_item");
-                $(document).on("change", ".a_i_item", function (event) {
-                    templateBody.item_one_choose(event);
-                });*/
+
                 //移除監聽
                 $(document).off("click", ".d_item");
                 $(document).on("click", ".d_item", function (event) {
@@ -740,7 +730,6 @@
                 $("#group_number_0").attr("disabled","disabled");
                 $("#a_i_item_0").attr("disabled","disabled");
                 $("#a_g_item_0").attr("disabled","disabled");
-                templateBody.def_choose = true;
             },
             //選擇 刪除
             choose_delete: function (event) {
@@ -1032,23 +1021,24 @@
         },
         //移除監聽事件
         beforeDestroy: function () {
-            console.log("to beforeDestroy event");
-            $(document).off("click", "#a_u_group_name select");
-            $(document).off("click", "#search_choose input");
-            $(document).off("click", "#s_submit");
-            $(document).off("click", "#a_c_submit");
-            $(document).off("click", ".a_submit");
-            $(document).off("click", ".d_submit");
+        	 console.log("to beforeDestroy event");
+             $(document).off("click", "#a_u_group_name select");
+             $(document).off("click", "#search_choose input");
+             $(document).off("click", "#s_submit");
+             $(document).off("click", "#a_c_submit");
+             $(document).off("click", "#a_d_submit");
+             
+             $(document).off("click", ".a_submit");
+             $(document).off("click", ".d_submit");
 
-            $(document).off("click", "#a_u_submit");
-            $(document).off("click", "#s_l_submit");
-            $(document).off("click", "#s_c_submit");
-            $(document).off("change", "#s_g_item");
-            $(document).off("change", ".a_g_item");
-            $(document).off("change", ".item_nbs");
-            
-            $(document).off("click", "#a_item");
-            $(document).off("click", ".a_i_item");
+             $(document).off("click", "#a_u_submit");
+             $(document).off("click", "#s_l_submit");
+             $(document).off("click", "#s_c_submit");
+             $(document).off("change", "#s_g_item");
+             $(document).off("change", ".a_g_item");
+             $(document).off("click", "#a_item");
+             $(document).off("change", ".a_i_item");
+             $(document).off("change", ".item_nbs");
         },
     });
 </script>
