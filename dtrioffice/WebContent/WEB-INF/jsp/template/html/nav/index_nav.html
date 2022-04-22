@@ -11,8 +11,11 @@
 		</ul>
 	</div>
 	<div class="col-lg-1 col-md-3 col-3 p-0 text-center" id="">
-		<div class="" id="nav_account" style="font-size: 18px;line-height: 18px"></div>
-		<div class="" id="nav_timeout" style="font-size: 12px;line-height: 12px"></div>
+		<div class="" id="" style="font-size: 18px; line-height: 18px">
+			<div id="nav_account"></div>
+			您好!
+		</div>
+		<div class="" id="nav_timeout" style="font-size: 12px; line-height: 12px"></div>
 	</div>
 	<div class="col-lg-1 col-md-3 col-3 text-center">
 		<button class="btn btn-sm btn-warning btn-block" type="submit" onclick="templateNav.signout()">登出</button>
@@ -50,7 +53,7 @@
 							$(".navbar-nav").append(htmlnav);
 						}
 					}
-					$("#nav_account").text(main.loginData.name+"您好!");
+					$("#nav_account").text(main.loginData.name);
 					//console.log(htmlnav[0].children[1]);
 				},
 				methods : {

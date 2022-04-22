@@ -294,6 +294,11 @@
 							</select>
 						</div>
 						<div class="">
+							<select id="ph_wline_id" class="p-1 pr-2 m-1">
+								<option class="ph_wline_id_no" value="" selected="selected">產線</option>
+							</select>
+						</div>
+						<div class="">
 							<select id="ph_wpro_id" class="p-1 pr-3 m-1">
 								<option class="ph_wpro_id_no" value="" selected="selected">工作程序</option>
 							</select>
@@ -617,6 +622,7 @@
 			pr_type : "",
 			pr_w_years : "",
 			ph_wpro_id : "",
+			ph_wline_id :"",
 			sn_all_nb : "",
 			item_nb_max : 0, //最大ID數
 			//分頁功能
@@ -654,7 +660,8 @@
 			this.sn_all_list = main.contentData.templateInfo.body["sn_all_list"];
 			this.pr_type = main.contentData.templateInfo.body["pr_type"];
 			this.pr_w_years = main.contentData.templateInfo.body["pr_w_years"];
-			this.ph_wpro_id = main.contentData.templateInfo.body["ph_wpro_id"];
+			this.ph_wpro_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wProgram"]);
+			this.ph_wline_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wLine"]);
 
 			$("#group_id_0").text(this.item_nb_max);
 			$("#a_item").attr("group_id", this.item_nb_max);
@@ -765,7 +772,18 @@
 					ph_wpro_id_no.removeAttr("selected", " ");
 					ph_wpro_id_no.appendTo("#ph_wpro_id");
 				}
+				
+				for (var ph_wline_id_one = 0; ph_wline_id_one < this.ph_wline_id.length; ph_wline_id_one++) {
+					var ph_wline_id_no = $(".ph_wline_id_no").clone();
+					ph_wline_id_no.removeClass("ph_wline_id_no");
+					ph_wline_id_no.attr("id", this.ph_wline_id[ph_wline_id_one]);
+					ph_wline_id_no.attr("value", this.ph_wline_id[ph_wline_id_one]);
+					ph_wline_id_no.text(this.ph_wline_id[ph_wline_id_one]);
+					ph_wline_id_no.removeAttr("selected", " ");
+					ph_wline_id_no.appendTo("#ph_wline_id");
+				}
 			}
+			
 
 			//t_body
 			this.search_update();
@@ -1691,6 +1709,7 @@
 						content.pr_type = $("#pr_type").val();
 						content.pr_w_years = $("#pr_w_years").val();
 						content.ph_wpro_id = $("#ph_wpro_id").val();
+						content.pr_wline_id = $("#ph_wline_id").val();
 						//SN 登記演算
 						var sn_array = [];
 						if ($("#production_sn_ok").prop("checked")) {

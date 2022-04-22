@@ -31,12 +31,12 @@ import dtri.com.db.entity.SoftwareVersionEntity;
 public class APIService {
 	private static boolean check_connect = true;
 
-	public JSONArray mes_WorkstationProgramList() {
+	public JSONObject mes_WorkstationProgramList() {
 		JSONObject mes_obj = new JSONObject();
 		BasicCookieStore cookieStore = new BasicCookieStore();
 		SSLContextBuilder builder = new SSLContextBuilder();
 		SSLConnectionSocketFactory sslConnectionFactory;
-		JSONArray content = new JSONArray();
+		JSONObject content = new JSONObject();
 		// 連線失敗不再連線
 		if (!check_connect) {
 			return null;
@@ -56,7 +56,8 @@ public class APIService {
 			request.setEntity(params);
 			HttpResponse response = httpclient.execute(request);
 			HttpEntity entity2 = response.getEntity();
-			content = new JSONArray(EntityUtils.toString(entity2));
+			content = new JSONObject(EntityUtils.toString(entity2));
+
 			System.out.println(content);
 
 		} catch (Exception e) {
@@ -73,6 +74,7 @@ public class APIService {
 		MesApiBean mesApi = new MesApiBean();
 		mesApi.setPh_p_number(mes.has("ph_p_number") ? mes.getString("ph_p_number") : "");// 產品 認證/號/名稱
 		mesApi.setPh_wpro_id(mes.has("ph_wpro_id") ? mes.getString("ph_wpro_id") : "");// 工作程序
+		mesApi.setPr_wline_id(mes.has("pr_wline_id") ? mes.getString("pr_wline_id") : "");// 產線線別
 		mesApi.setPr_type(mes.has("pr_type") ? mes.getString("pr_type") : "");// 製令單類型
 		mesApi.setPr_w_years(mes.has("pr_w_years") ? mes.getString("pr_w_years") : "");// 保固年分
 		mesApi.setPs_b_f_sn(mes.has("ps_sn_burn_fixed") ? mes.getString("ps_sn_burn_fixed") : "");// 特殊SN 固定
@@ -109,6 +111,7 @@ public class APIService {
 			production_records.put("sys_m_user", "");
 			production_records.put("ph_schedule", "");
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
+			production_records.put("pr_wl_id", mesApi.getPr_wline_id());// 產線-程序
 			production_records.put("ph_p_number", mesApi.getPh_p_number());// 產品 認證/編號
 			production_records.put("ph_p_name", mesApi.getPh_p_name());// 產品 認證/編號
 			production_records.put("sys_c_user", "");
