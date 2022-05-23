@@ -206,6 +206,7 @@
 			s_4:0,//當前產品ID
 			d_1:'',//當前的 投線日
 			d_2:'',//當前的 出貨日
+			moveT:'',
         },
         created: function () {
             //初始化
@@ -350,7 +351,8 @@
                 //新增欄位
                 this.added_item($(".t_row" + id + " .s_0")[0].innerText);
                 //移動
-                setTimeout(function() {
+                clearTimeout(this.moveT);
+                this.moveT = setTimeout(function() {
 					$("html,body").animate({
 						scrollTop : 900
 					}, 'slow');
@@ -367,7 +369,8 @@
                 this.choose_update(a_u_type, event);
                 this.choose_disabled("disabled");
                 //移動
-                setTimeout(function() {
+                clearTimeout(this.moveT);
+                this.moveT = setTimeout(function() {
 					$("html,body").animate({
 						scrollTop : 900
 					}, 'slow');
@@ -458,10 +461,10 @@
                             t_p_row2 = '<tr class= "t_p_row' + id + '"><td ><b>內容</b></td>';
                             t_p_row2 += '<td class="s_type_btn">' + butn2 + "</td>";
                             t_p_row2 += '<td class="column_1" id="value_id_' + id + '" >' + (item_value[item_value.length - 1][2] + 1) + "</td>";
-                            t_p_row2 += '<td class="column_2"><input id="value_note_' + id + '" class="col-md-12" type="text" value="" placeholder="Ex:備註內容" /></td>';
+                            t_p_row2 += '<td class="column_2"><input id="value_note_' + id + '" class="col-md-12" type="text" value="" placeholder="Ex:備註內容" disabled = true/></td>';
                             //欄數
                             for (var k = 4; k < item_value[j].length; k++) {
-                                t_p_row2 += '<td class="column_' + (k - 1) + '"><input id="value_' + id + "_" + (k - 1) + '" class="col-md-12" type="text" value=""  placeholder="Ex:內容" /></td>';
+                                t_p_row2 += '<td class="column_' + (k - 1) + '"><input id="value_' + id + "_" + (k - 1) + '" class="col-md-12" type="text" value=""  placeholder="Ex:內容" disabled = true/></td>';
                             }
                         } else {
                             //現存筆數
@@ -592,7 +595,6 @@
                 content.type = $("#a_u_group_type select").val();
                 content.checkdf = $("#a_u_group_checkdf").prop("checked");
                 
-                
                 var action = "C";
                 var url = "./added_bom_accessories_type_item.do";
                 var order = "search_update"; //指令
@@ -602,7 +604,23 @@
 	                	 group_list[0] = $("#value_i_v_id").text();
 	                	 group_list[1] = $("#value_i_v_note").val();
 	                	 for(var r = 4;r<this.now_column_n;r++){
-	                		 group_list[r-2]=$("#item_thead th div input")[r-4].value;
+             				//如果是含有NO的單詞
+             				var checkVal = $("#item_thead th div input")[r-4].value;
+             				if(checkVal.length>2){
+                				if(checkVal.search("no")>=0){
+                					checkVal = checkVal.replaceAll("no","ｎｏ")
+                				}
+                				if(checkVal.search("No")>=0){
+                					checkVal = checkVal.replaceAll("No","Ｎｏ")
+                				}
+                				if(checkVal.search("NO")>=0){
+                					checkVal = checkVal.replaceAll("NO","ＮＯ")
+                				}   
+                				if(checkVal.search("nO")>=0){
+                					checkVal = checkVal.replaceAll("nO","ｎＯ")
+                				}
+             				}
+	                		 group_list[r-2]=checkVal;
 	                	 }
 	                	 content.group_list =  group_list;
 	                }else{
@@ -630,7 +648,23 @@
 	                		id = $("#item_tbody tr .column_1")[i].textContent;//id
 	                		item_one.push(id);
                 			for(var j=0;j<$(".t_p_row"+id+" td input").length;j++){
-                				item_one.push($(".t_p_row"+id+" td input")[j].value);
+                				//如果是含有NO的單詞
+                				var checkVal = $(".t_p_row"+id+" td input")[j].value;
+                				if(checkVal.length>2){
+	                				if(checkVal.search("no")>=0){
+	                					checkVal = checkVal.replaceAll("no","ｎｏ")
+	                				}
+	                				if(checkVal.search("No")>=0){
+	                					checkVal = checkVal.replaceAll("No","Ｎｏ")
+	                				}
+	                				if(checkVal.search("NO")>=0){
+	                					checkVal = checkVal.replaceAll("NO","ＮＯ")
+	                				}   
+	                				if(checkVal.search("nO")>=0){
+	                					checkVal = checkVal.replaceAll("nO","ｎＯ")
+	                				}
+                				}
+                				item_one.push(checkVal);
                 			}
                 			item_list.push(item_one);
 	                	 }
