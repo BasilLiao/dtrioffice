@@ -525,13 +525,12 @@
 						</div>
 						<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
 							<div class="row m-0 text-muted">
-								<div class="col-1 p-0 border border-dark">類型:</div>
+								<div class="col-1 p-0 border border-dark">類型/客BOM:</div>
 								<div class="col-1 p-0 border border-dark" id="c2_bom_type"></div>
-								<div class="col-10 p-0 border border-dark text-right" id="c2_note"></div>
+								<div class="col-2 p-0 border border-dark" id="c2_bom_number"></div>
+								<div class="col-8 p-0 border border-dark text-right" id="c2_note"></div>
 							</div>
 						</div>
-
-
 					</div>
 					<div class="collapse2 mt-2" id="">
 						<div class="mb-2 text-center">
@@ -622,7 +621,7 @@
 			pr_type : "",
 			pr_w_years : "",
 			ph_wpro_id : "",
-			ph_wline_id :"",
+			ph_wline_id : "",
 			sn_all_nb : "",
 			item_nb_max : 0, //最大ID數
 			//分頁功能
@@ -660,9 +659,17 @@
 			this.sn_all_list = main.contentData.templateInfo.body["sn_all_list"];
 			this.pr_type = main.contentData.templateInfo.body["pr_type"];
 			this.pr_w_years = main.contentData.templateInfo.body["pr_w_years"];
-			this.ph_wpro_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wProgram"]);
-			this.ph_wline_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wLine"]);
-
+			//伺服器沒串接上
+			if (main.contentData.templateInfo.body["ph_wpro_id"] != null) {
+				this.ph_wpro_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wProgram"]);
+			} else {
+				this.ph_wpro_id = "";
+			}
+			if (main.contentData.templateInfo.body["ph_wpro_id"] != null) {
+				this.ph_wline_id = JSON.parse(main.contentData.templateInfo.body["ph_wpro_id"]["wLine"]);
+			} else {
+				this.ph_wline_id = "";
+			}
 			$("#group_id_0").text(this.item_nb_max);
 			$("#a_item").attr("group_id", this.item_nb_max);
 			//=====BOM 清單=====
@@ -698,10 +705,10 @@
 			}
 			//t_header
 			for (var i = 0; i < this.production_list[0].length; i++) {
-				if (i == 0 || i == 2 || i == 4 || i == 6 || i == 9 || i == 12) {
+				if (i == 0 || i == 2 || i == 4 || i == 5 || i == 7 || i == 10 || i == 13) {
 					min_width = 180;
 				}
-				if (i == 5 || i == 7 || i == 8 || i == 10) {
+				if (i == 6 || i == 8 || i == 9 || i == 11) {
 					min_width = 150;
 				}
 
@@ -772,7 +779,7 @@
 					ph_wpro_id_no.removeAttr("selected", " ");
 					ph_wpro_id_no.appendTo("#ph_wpro_id");
 				}
-				
+
 				for (var ph_wline_id_one = 0; ph_wline_id_one < this.ph_wline_id.length; ph_wline_id_one++) {
 					var ph_wline_id_no = $(".ph_wline_id_no").clone();
 					ph_wline_id_no.removeClass("ph_wline_id_no");
@@ -783,7 +790,6 @@
 					ph_wline_id_no.appendTo("#ph_wline_id");
 				}
 			}
-			
 
 			//t_body
 			this.search_update();
@@ -1204,6 +1210,7 @@
 
 				$("#group_number_0").val(1);
 				$("#c2_bom_type").text("");
+				$("#c2_bom_number").text("");
 				$("#barcodeInput").text("");
 				$("#order_id").text("");
 				$("#datepicker1 input").val("");
@@ -1268,18 +1275,20 @@
 						main.alertshow(true, "尚未比對到[產品規格]資料,Step1.請在[產品規格]的[BOM料號]查詢 後,Step2.再[製令生產]進行[預覽]!!");
 						return;
 					}
-					//項目帶入
+					//項目帶入(客戶+單據來源)
+					$("#c2_bom_number").text($(".t_row2" + id_p + " .s_5").text());
 					$("#barcodeInput").text($(".t_row2" + id_p + " .s_2").text());
-					$("#client_name").text($(".t_row2" + id_p + " .s_7").text());
-					$("#order_id").text($(".t_row2" + id_p + " .s_6").text());
-					$("#p_number").text($(".t_row2" + id_p + " .s_5").text());
+					$("#client_name").text($(".t_row2" + id_p + " .s_8").text());
+					$("#order_id").text($(".t_row2" + id_p + " .s_7").text());
+					$("#p_number").text($(".t_row2" + id_p + " .s_6").text());
+					
 					$("#barcodeInput").trigger("focusout");
 					$("#barcodeInput").attr("contenteditable", false);
 					$("#order_id").attr("contenteditable", false);
 					$("#client_name").attr("contenteditable", false);
 					$("#p_number").attr("contenteditable", true);
 
-					come_from = $(".t_row2" + id_p + " .s_10").text();
+					come_from = $(".t_row2" + id_p + " .s_11").text();
 				} else {
 					//自定義
 					$("#barcodeInput").attr("contenteditable", true);
@@ -1686,6 +1695,7 @@
 
 						content.production_quantity = quantity;
 						content.bom_product_id = $("#BOMID").text();
+						content.bom_product_c_id =  $("#c2_bom_number").text();//客戶BOM
 						//內容
 						content.bom_id = this.s_4;
 						content.product_model = $(".t_row" + this.s_4 + " .s_1").text();

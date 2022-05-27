@@ -150,22 +150,22 @@
 				<div class="collapse container" id="collapseAdded">
 					<!-- 設定[注意事項] -->
 					<div class="row m-0 p-0 pb-2">
-						<div class="col-6 row m-0 p-0 text-center font_28 border border-dark" style="height: 48px;">
-							<div class="col-md-2 p-2">限制 :</div>
+						<div class="col-md-6 row m-0 p-0 text-center font_20 border border-dark">
+							<div class="col-md-2 pt-2 p-0">限制 :</div>
 							<div class="col-md-10 p-2" id="" style="color: red;">
 								[可裝配 <b id="needUseNb">42</b> 項] [不裝配 <b id="notUseNb">28</b> 項]
 							</div>
 						</div>
 						<div class="col-2 row m-0 p-0 text-center"></div>
-						<div class="col-4 row m-0 p-0 text-center font_28 border border-dark" style="height: 48px;">
+						<div class="col-md-4 row m-0 p-0 text-center font_20 border border-dark">
 							<div class="col-md-4 p-2">類型 :</div>
 							<div class="col-md-4 p-1" id="">
-								<select id="a_u_kind" class="custom-select" id="inlineFormCustomSelect">
+								<select id="a_u_kind" class="" id="inlineFormCustomSelect">
 									<option value="0" selected>技轉中</option>
 									<option value="1">可量產</option>
 								</select>
 							</div>
-							<div class="col-md-4 p-2" id="">
+							<div class="col-md-4 p-1" id="">
 								<button class="btn-sm btn btn-primary btn-block" id="p_submit3" type="button">修正</button>
 							</div>
 						</div>
@@ -173,7 +173,7 @@
 					<!-- 生產注意事項 -->
 					<div id="collapseAddedPrint" class="border border-dark" style="background: white; height: 1455px; width: 1110px; overflow: hidden; margin: auto;">
 						<!-- [標題] -->
-						<div id="snList" class="border border-dark p-0 m-0 text-left" style="height: 280px; width: 100%">
+						<div id="snList" class="border border-dark p-0 m-0 text-left" style="height: 282px; width: 100%">
 							<div class="border border-dark h1 mb-0 p-2 text-center font-weight-bolder">生產注意事項</div>
 							<div class="row m-0 ">
 								<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">工單號</div>
@@ -201,7 +201,9 @@
 							</div>
 							<div class="row m-0">
 								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">產品BOM號</div>
-								<div id="a_u_bom_number" class="col-3 p-1 pt-2 border border-dark font_28 can_rm"></div>
+								<div id="" class="col-3 p-0 border border-dark font_28" title="可支援 公司BOM/客戶BOM">
+									<input id="a_u_bom_number" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm">
+								</div>
 								<div id="a_u_bom_id" class="d-none">632</div>
 								<div class="col-1 p-1 border border-dark h3 mb-0 font-weight-bolder">型號</div>
 								<div id="a_u_model" class="col-2 p-1 pt-2 border border-dark font_28 can_rm"></div>
@@ -210,8 +212,8 @@
 							</div>
 							<div class="row m-0">
 								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">PM備註</div>
-								<div class="col-10 p-0 border border-dark font_20" style="height: 68px">
-									<textarea id="a_u_note" rows="2" class="col-12 p-1 border border-warning rounded" style="overflow: hidden; height: 67px;"></textarea>
+								<div class="col-10 p-0 border border-dark font_20" style="height: 67px">
+									<textarea id="a_u_note" rows="2" class="col-12 p-1 border border-warning rounded" style="overflow: hidden; height: 65px;"></textarea>
 								</div>
 							</div>
 						</div>
@@ -299,9 +301,10 @@
 						<!-- 類型 -->
 						<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
 							<div class="row m-0 text-muted">
-								<div class="col-1 p-0 border border-dark">類型:</div>
+								<div class="col-1 p-0 border border-dark">類型/原BOM:</div>
 								<div class="col-1 p-0 border border-dark" id="c1_bom_type"></div>
-								<div class="col-10 p-0 border border-dark text-right" id="c1_note" title=""></div>
+								<div class="col-3 p-0 border border-dark" id="c1_bom_number"></div>
+								<div class="col-7 p-0 border border-dark text-right" id="c1_note" title=""></div>
 							</div>
 						</div>
 					</div>
@@ -382,6 +385,7 @@
 				},
 				created : function() {
 					//初始化
+
 					console.log(main.contentData.templateInfo.body);
 					this.group_list = main.contentData.templateInfo.body["group_list"];
 					this.item_list = main.contentData.templateInfo.body["item_list"];
@@ -736,7 +740,8 @@
 						this.s_0 = $(".t_row" + id + " .s_0")[0].innerText;
 						$("#a_u_model").text($(".t_row" + id + " .s_1")[0].innerText);
 						$("#a_u_version_bios").text($(".t_row" + id + " .s_2")[0].innerText);
-						$("#a_u_bom_number").text($(".t_row" + id + " .s_3")[0].innerText);
+						$("#a_u_bom_number").val($(".t_row" + id + " .s_3")[0].innerText);
+						$("#c1_bom_number").text($(".t_row" + id + " .s_3")[0].innerText);
 						$("#a_u_bom_id").text($(".t_row" + id + " .s_0")[0].innerText);
 						$("#a_u_version_motherboard").text($(".t_row" + id + " .s_4")[0].innerText);
 
@@ -967,14 +972,14 @@
 								}
 								var itme_not_null = $('#setHardware .item .content');
 								for (var i = 0; i < itme_not_null.length; i++) {
-									if(itme_not_null[i].innerText.search('No')!=-1 || itme_not_null[i].innerText.search('無')!=-1){
+									if (itme_not_null[i].innerText.search('No') != -1 || itme_not_null[i].innerText.search('無') != -1) {
 										main.alertshow(true, "[可裝配]內容 項目含[無 or No] ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
 										return false;
 									}
 								}
 								var itme_is_null = $('#setHardware_notUse .item_notUse .content');
 								for (var i = 0; i < itme_is_null.length; i++) {
-									if(itme_is_null[i].innerText.search('No')==-1 && itme_is_null[i].innerText.search('無')==-1){
+									if (itme_is_null[i].innerText.search('No') == -1 && itme_is_null[i].innerText.search('無') == -1) {
 										main.alertshow(true, "[不裝配]內容 尚未含[無 or No] ,請再通知 [規格負責人: " + $("#c1_note").attr('title') + "] 請檢查[產品規格]後存檔!!");
 										return false;
 									}
@@ -993,7 +998,14 @@
 
 								content.production_quantity = quantity;
 								content.product_model = $("#a_u_model").text();
-								content.bom_product_id = $("#a_u_bom_number").text();
+								content.bom_product_id = $("#c1_bom_number").text();
+
+								if ($("#c1_bom_number").text() == $("#a_u_bom_number").val()) {
+									content.bom_product_customer_id = "";
+								} else {
+									content.bom_product_customer_id = $("#a_u_bom_number").val();
+								}
+
 								content.bom_id = $("#a_u_bom_id").text();
 								content.version_motherboard = $("#a_u_version_bios").text();
 								content.note = "";

@@ -73,11 +73,11 @@
 		INSERT INTO
 		production_records(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
-		id,order_id,client_name,production_quantity,product_model,bom_product_id,
+		id,order_id,client_name,production_quantity,product_model,bom_product_id,bom_product_customer_id,
 		version_motherboard,note,come_from,product_status,product_progress,bom_id,bom_type)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
-		#{id},#{order_id},#{client_name},#{production_quantity},#{product_model},#{bom_product_id},
+		#{id},#{order_id},#{client_name},#{production_quantity},#{product_model},#{bom_product_id},#{bom_product_customer_id},
 		#{version_motherboard},#{note},#{come_from},#{product_status},#{product_progress},#{bom_id},#{bom_type});
 	</insert>
 
@@ -102,7 +102,9 @@
 		sys_modify_user = #{sys_modify_user} ,
 		client_name = #{client_name} ,
 		order_id = #{order_id} ,
-		production_quantity =#{production_quantity}
+		bom_product_customer_id = #{bom_product_customer_id},
+		production_quantity
+		=#{production_quantity}
 		<if test="#{new_id}!=null">
 			,id= #{new_id}
 		</if>
@@ -117,8 +119,7 @@
 		sys_modify_date = #{sys_modify_date} ,
 		sys_modify_user = #{sys_modify_user} ,
 		product_start_sn = #{product_start_sn} ,
-		production_quantity
-		=#{production_quantity},
+		production_quantity = #{production_quantity},
 		product_end_sn = #{product_end_sn}
 		WHERE id = #{id};
 	</update>
@@ -130,7 +131,8 @@
 		sys_modify_date = #{entity.sys_modify_date} ,
 		sys_modify_user = #{entity.sys_modify_user} ,
 		id = CONCAT(id,'_stop_sys')
-		WHERE product_progress != 3 AND product_progress != 4 AND product_progress != 5 AND product_status != 0 AND sys_modify_date <![CDATA[<=]]>
+		WHERE product_progress != 3 AND
+		product_progress != 4 AND product_progress != 5 AND product_status != 0 AND sys_modify_date <![CDATA[<=]]>
 		#{entity.sys_modify_date};
 	</update>
 
