@@ -111,7 +111,7 @@ public class ProductionPrintService {
 					all_where_product += "(" + product_bom_nb + ") AND ";
 				}
 			}
-			
+
 			// 如果(項目有值) / 如果只有(產品有值)
 			if (!all_where_group.equals(" ")) {
 				// 除對多餘的 OR
@@ -164,13 +164,13 @@ public class ProductionPrintService {
 				all_where_product += "product_model !=''";
 				all_where_group += "type_item_id !=0";
 				// 取得擁有條件的 群組 項目 (限制[主見/配件])
-				if (bomEntity.getBom_type().equals("product")) {//主件
+				if (bomEntity.getBom_type().equals("product")) {// 主件
 					p_list = productDao.queryProduct(all_where_product, all_limit);
 					for (BomProductEntity one : p_list) {
 						group_limit_in.add(one.getId());
 					}
 					g_list = productDao.queryGroup(all_where_group, group_limit_in);
-				} else {//配件
+				} else {// 配件
 					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
 					for (BomProductEntity one : p_list) {
 						group_limit_in.add(one.getId());
@@ -182,19 +182,18 @@ public class ProductionPrintService {
 		} else {
 			// =======無條件=======
 			// 取得擁有條件的 群組 項目 (限制[主見/配件])
-			//if (entitys.get(0).getBom_type().equals("product")) {//主件
-				p_list = productDao.queryProduct("product_model !='' ", all_limit);
-				for (BomProductEntity one : p_list) {
-					group_limit_in.add(one.getId());
-				}
-				g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
-			/*} else {//配件
-				p_list = productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit);
-				for (BomProductEntity one : p_list) {
-					group_limit_in.add(one.getId());
-				}
-				g_list = productAccDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in);
-			}*/
+			// if (entitys.get(0).getBom_type().equals("product")) {//主件
+			p_list = productDao.queryProduct("product_model !='' ", all_limit);
+			for (BomProductEntity one : p_list) {
+				group_limit_in.add(one.getId());
+			}
+			g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
+			/*
+			 * } else {//配件 p_list =
+			 * productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit); for
+			 * (BomProductEntity one : p_list) { group_limit_in.add(one.getId()); } g_list =
+			 * productAccDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in); }
+			 */
 		}
 
 		// 產品
@@ -294,6 +293,9 @@ public class ProductionPrintService {
 		// 產品料號
 		if (!content.isNull("bom_product_id") && !content.get("bom_product_id").equals(""))
 			entity.setBom_product_id(content.getString("bom_product_id"));
+		// 產品料號 客戶 BOM 
+		if (!content.isNull("bom_product_c_id") && !content.get("bom_product_c_id").equals(""))
+			entity.setBom_product_customer_id(content.getString("bom_product_c_id"));
 		// 進度? 狀態類型 完成ERP工單(準備物料)=1/完成注意事項(預約生產)=2/完成->流程卡(準備生產)=3/=4/ =5
 		if (!content.isNull("product_progress") && content.getInt("product_progress") >= 0)
 			entity.setProduct_progress(content.getInt("product_progress"));
@@ -516,7 +518,8 @@ public class ProductionPrintService {
 		jsonArray.put("建立者");
 		jsonArray.put("工單號碼");
 		jsonArray.put("BID");
-		jsonArray.put("BOM料號");
+		jsonArray.put("BOM料號(公司)");
+		jsonArray.put("BOM料號(客戶)");
 		jsonArray.put("生產數量");
 		jsonArray.put("訂單編號");
 		jsonArray.put("客戶名稱");
@@ -538,6 +541,7 @@ public class ProductionPrintService {
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getBom_id());
 			jsonArray.put(entity.getBom_product_id());
+			jsonArray.put(entity.getBom_product_customer_id() == null ? "" : entity.getBom_product_customer_id());
 			jsonArray.put(entity.getProduction_quantity());
 			jsonArray.put(entity.getOrder_id());
 			jsonArray.put(entity.getClient_name());

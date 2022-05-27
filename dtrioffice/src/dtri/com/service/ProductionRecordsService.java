@@ -63,6 +63,8 @@ public class ProductionRecordsService {
 		recordsEntity.setProduction_quantity(json.getInt("production_quantity"));
 		recordsEntity.setProduct_model(json.getString("product_model"));
 		recordsEntity.setBom_product_id(json.getString("bom_product_id"));
+		recordsEntity.setBom_product_customer_id(json.getString("bom_product_customer_id"));
+
 		recordsEntity.setBom_id(json.getInt("bom_id"));
 		recordsEntity.setVersion_motherboard(json.getString("version_motherboard"));
 		recordsEntity.setNote(json.getString("note"));
@@ -148,6 +150,10 @@ public class ProductionRecordsService {
 		if (!content.isNull("product_start_sn") && !content.getString("product_start_sn").equals(""))
 			entity.setProduct_start_sn(content.getString("product_start_sn"));
 
+		// BOM? 產品 客戶BOM號
+		if (!content.isNull("bom_product_customer_id") && !content.getString("bom_product_customer_id").equals(""))
+			entity.setBom_product_customer_id(content.getString("bom_product_customer_id"));
+
 		// 類型? 數量
 		if (!content.isNull("production_quantity") && content.getInt("production_quantity") >= 0)
 			entity.setProduction_quantity(content.getInt("production_quantity"));
@@ -172,7 +178,8 @@ public class ProductionRecordsService {
 		JSONArray jsonArray = new JSONArray();
 
 		jsonArray.put("工單號碼");
-		jsonArray.put("BOM料號");
+		jsonArray.put("(公司)BOM料號");
+		jsonArray.put("(客戶)BOM料號");
 		jsonArray.put("生產數");
 		jsonArray.put("進度");
 		jsonArray.put("狀態");
@@ -188,6 +195,7 @@ public class ProductionRecordsService {
 
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getBom_product_id());
+			jsonArray.put(entity.getBom_product_customer_id());
 			jsonArray.put(entity.getProduction_quantity());
 			jsonArray.put(entity.getProduct_progress());
 

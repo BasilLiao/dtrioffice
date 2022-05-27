@@ -122,6 +122,7 @@ public class APIService {
 			production_records.put("sys_sn_auto", sys_sn);// 是否 是系統生產
 
 			production_records.put("pr_bom_id", entity.getBom_product_id());
+			production_records.put("pr_bom_c_id", entity.getBom_product_customer_id());
 			production_records.put("pr_p_model", entity.getProduct_model());
 
 			String psl = entity.getProduct_start_sn();

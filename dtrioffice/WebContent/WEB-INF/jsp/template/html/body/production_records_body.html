@@ -249,12 +249,13 @@
 									<div class="col-md-12 ">
 										<div class="row">
 											<div class="col-md-5 p-2 pr-0 border border-secondary">
-												<b>BOM料號</b>
+												<b>BOM號(公司)</b>
 											</div>
 											<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_p_id"></div>
 										</div>
 									</div>
 								</div>
+
 
 								<div class="col-md-3 p-0">
 									<div class="col-md-12 ">
@@ -293,19 +294,19 @@
 									<div class="col-md-12 ">
 										<div class="row bg-light">
 											<div class="col-md-5 p-2 pr-0 border border-primary">
-												<b>客戶名稱</b>
+												<b>BOM號(客戶)</b>
 											</div>
-											<div class="col-md-7 p-2 pr-0 border border-primary" id="a_c_n" contenteditable="true"></div>
+											<div class="col-md-7 p-2 pr-0 border border-primary" id="a_p_c_id" contenteditable="true"></div>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-3 p-0">
 									<div class="col-md-12 ">
-										<div class="row">
-											<div class="col-md-4 p-2 pr-0 border border-secondary">
-												<b>產品型號</b>
+										<div class="row bg-light">
+											<div class="col-md-4 p-2 pr-0 border border-primary">
+												<b>客戶名稱</b>
 											</div>
-											<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_m"></div>
+											<div class="col-md-8 p-2 pr-0 border border-primary" id="a_c_n" contenteditable="true"></div>
 										</div>
 									</div>
 								</div>
@@ -320,6 +321,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="row m-0">
 								<div class="col-md-4 p-0">
 									<div class="col-md-12 ">
@@ -338,6 +340,16 @@
 												<b>(SN結束)</b>
 											</div>
 											<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_e_sn"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3 p-0">
+									<div class="col-md-12 ">
+										<div class="row">
+											<div class="col-md-4 p-2 pr-0 border border-secondary">
+												<b>產品型號</b>
+											</div>
+											<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_m"></div>
 										</div>
 									</div>
 								</div>
@@ -402,7 +414,7 @@
 			var min_width = "85px;";
 			for (var i = 0; i < this.item_list[0].length; i++) {
 				min_width = "85px;";
-				if (i == 0 || i == 1 || i == 5 || i == 7) {
+				if (i == 0 || i == 1 ||i == 2 || i == 6 || i == 8) {
 					min_width = "175px;";
 				} else if ((this.item_list[0].length - 1) == i) {
 					min_width += "width: 100%;"
@@ -457,9 +469,9 @@
 				var a_submit = "";
 				var d_submit = "";
 
-				var none = 3;//需隱藏 多餘
-				var progress = 3//進度
-				var status = 10;//單據狀態
+				var none = 4;//需隱藏 多餘
+				var progress = 4//進度
+				var status = 11;//單據狀態
 				for (var i = 1; i < this.item_list.length; i++) {
 					//頁數-每頁顯示(不再顯示範圍內則隱藏)
 					var page_group = this.change_page_btn(i);
@@ -556,6 +568,7 @@
 				//基本欄位
 				$("#a_id").text("");
 				$("#a_p_id").text("");
+				$("#a_p_c_id").text("");
 				$("#a_p_q").text("");
 				$("#a_p_s").text("");
 
@@ -564,7 +577,7 @@
 				$("#a_m_d").text("");
 				$("#a_m_u").text("");
 				$("#a_p_u").text("");
-
+				
 				$("#a_o_i").text("");
 				$("#a_c_n").text("");
 				$("#a_v_m").text("");
@@ -591,23 +604,25 @@
 
 				$("#a_id").text($(".t_row" + id + " .s_0")[0].innerText);
 				$("#a_p_id").text($(".t_row" + id + " .s_1")[0].innerText);
-				$("#a_p_q").text($(".t_row" + id + " .s_2")[0].innerText);
-				$("#a_p_s").text($(".t_row" + id + " .s_3")[0].innerText);
+				$("#a_p_c_id").text($(".t_row" + id + " .s_2")[0].innerText);
+				
+				$("#a_p_q").text($(".t_row" + id + " .s_3")[0].innerText);
+				$("#a_p_s").text($(".t_row" + id + " .s_4")[0].innerText);
 
-				$("#a_c_d").text($(".t_row" + id + " .s_13")[0].innerText);
-				$("#a_c_u").text($(".t_row" + id + " .s_14")[0].innerText);
-				$("#a_m_d").text($(".t_row" + id + " .s_15")[0].innerText);
-				$("#a_m_u").text($(".t_row" + id + " .s_16")[0].innerText);
-				$("#a_p_u").text($(".t_row" + id + " .s_10")[0].innerText);
+				$("#a_c_d").text($(".t_row" + id + " .s_14")[0].innerText);
+				$("#a_c_u").text($(".t_row" + id + " .s_15")[0].innerText);
+				$("#a_m_d").text($(".t_row" + id + " .s_16")[0].innerText);
+				$("#a_m_u").text($(".t_row" + id + " .s_17")[0].innerText);
+				$("#a_p_u").text($(".t_row" + id + " .s_11")[0].innerText);
 
-				$("#a_o_i").text($(".t_row" + id + " .s_4")[0].innerText);
-				$("#a_c_n").text($(".t_row" + id + " .s_5")[0].innerText);
-				$("#a_v_m").text($(".t_row" + id + " .s_7")[0].innerText);
-				$("#a_p_m").text($(".t_row" + id + " .s_6")[0].innerText);
+				$("#a_o_i").text($(".t_row" + id + " .s_5")[0].innerText);
+				$("#a_c_n").text($(".t_row" + id + " .s_6")[0].innerText);
+				$("#a_v_m").text($(".t_row" + id + " .s_8")[0].innerText);
+				$("#a_p_m").text($(".t_row" + id + " .s_7")[0].innerText);
 
-				$("#a_c_f").text($(".t_row" + id + " .s_9")[0].innerText);
-				$("#a_s_sn").text($(".t_row" + id + " .s_11")[0].innerText);
-				$("#a_e_sn").text($(".t_row" + id + " .s_12")[0].innerText);
+				$("#a_c_f").text($(".t_row" + id + " .s_10")[0].innerText);
+				$("#a_s_sn").text($(".t_row" + id + " .s_12")[0].innerText);
+				$("#a_e_sn").text($(".t_row" + id + " .s_13")[0].innerText);
 
 				//移動
 				setTimeout(function() {
@@ -769,9 +784,11 @@
 						content.id = this.old_id;
 						content.new_id = $('#a_id').text();
 						content.production_quantity = $('#a_p_q').text();
+						content.bom_product_customer_id = $('#a_p_c_id').text();
+						
 						content.client_name = $('#a_c_n').text();
 						content.order_id = $('#a_o_i').text();
-						
+
 						action = "U";
 						url = "./update_production_records.do";
 					} else {

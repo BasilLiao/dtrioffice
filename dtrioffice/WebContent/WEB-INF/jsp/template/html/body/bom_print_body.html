@@ -150,22 +150,22 @@
 				<div class="collapse container" id="collapseAdded">
 					<!-- 設定[注意事項] -->
 					<div class="row m-0 p-0 pb-2">
-						<div class="col-md-6 row m-0 p-0 text-center font_28 border border-dark">
+						<div class="col-md-6 row m-0 p-0 text-center font_20 border border-dark">
 							<div class="col-md-2 pt-2 p-0">限制 :</div>
 							<div class="col-md-10 p-2" id="" style="color: red;">
 								[可裝配 <b id="needUseNb">42</b> 項] [不裝配 <b id="notUseNb">28</b> 項]
 							</div>
 						</div>
 						<div class="col-2 row m-0 p-0 text-center"></div>
-						<div class="col-md-4 row m-0 p-0 text-center font_28 border border-dark">
+						<div class="col-md-4 row m-0 p-0 text-center font_20 border border-dark">
 							<div class="col-md-4 p-2">類型 :</div>
 							<div class="col-md-4 p-1" id="">
-								<select id="a_u_kind" class="custom-select" id="inlineFormCustomSelect">
+								<select id="a_u_kind" class="" id="inlineFormCustomSelect">
 									<option value="0" selected>技轉中</option>
 									<option value="1">可量產</option>
 								</select>
 							</div>
-							<div class="col-md-4 p-2" id="">
+							<div class="col-md-4 p-1" id="">
 								<button class="btn-sm btn btn-primary btn-block" id="p_submit3" type="button">修正</button>
 							</div>
 						</div>
@@ -201,7 +201,7 @@
 							</div>
 							<div class="row m-0">
 								<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">產品BOM號</div>
-								<div id="" class="col-3 p-0 border border-dark font_28">
+								<div id="" class="col-3 p-0 border border-dark font_28" title="可支援 公司BOM/客戶BOM">
 									<input id="a_u_bom_number" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm">
 								</div>
 								<div id="a_u_bom_id" class="d-none">632</div>
@@ -385,6 +385,7 @@
 				},
 				created : function() {
 					//初始化
+
 					console.log(main.contentData.templateInfo.body);
 					this.group_list = main.contentData.templateInfo.body["group_list"];
 					this.item_list = main.contentData.templateInfo.body["item_list"];
@@ -998,8 +999,13 @@
 								content.production_quantity = quantity;
 								content.product_model = $("#a_u_model").text();
 								content.bom_product_id = $("#c1_bom_number").text();
-								content.bom_product_customer_id = $("#a_u_bom_number").val();
-								
+
+								if ($("#c1_bom_number").text() == $("#a_u_bom_number").val()) {
+									content.bom_product_customer_id = "";
+								} else {
+									content.bom_product_customer_id = $("#a_u_bom_number").val();
+								}
+
 								content.bom_id = $("#a_u_bom_id").text();
 								content.version_motherboard = $("#a_u_version_bios").text();
 								content.note = "";

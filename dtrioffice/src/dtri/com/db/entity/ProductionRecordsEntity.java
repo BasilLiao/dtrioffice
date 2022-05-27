@@ -21,6 +21,8 @@ public class ProductionRecordsEntity {
 	private String product_model;
 	private Integer bom_id;
 	private String bom_product_id;
+	private String bom_product_customer_id;//客戶定義用
+	
 	private String version_motherboard;
 	private String note;
 	private String come_from;
@@ -188,6 +190,14 @@ public class ProductionRecordsEntity {
 
 	public void setBom_type(String bom_type) {
 		this.bom_type = bom_type;
+	}
+
+	public String getBom_product_customer_id() {
+		return bom_product_customer_id;
+	}
+
+	public void setBom_product_customer_id(String bom_product_customer_id) {
+		this.bom_product_customer_id = bom_product_customer_id;
 	}
 
 }
