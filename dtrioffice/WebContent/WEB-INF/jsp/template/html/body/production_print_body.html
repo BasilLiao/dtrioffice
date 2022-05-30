@@ -18,6 +18,10 @@
 	font-size: 20px;
 	line-height: 20px;
 }
+.font_16 {
+	font-size: 16px;
+	line-height: 16px;
+}
 </style>
 <div class="row border" id="production_print_body">
 	<div class="col-md-12 border">
@@ -396,7 +400,7 @@
 							</div>
 							<div class="row m-0">
 								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">訂單號</div>
-								<div class="col-3 p-1 border border-secondary rounded font_28" id="order_id" style="overflow: hidden; height: 40px"></div>
+								<div class="col-3 p-1 border border-secondary rounded font_16" id="order_id" style="overflow: hidden; height: 40px"></div>
 								<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">投現日</div>
 								<div class="col-2 p-0 border border-secondary rounded font_28" id="datepicker1" style="overflow: hidden; height: 40px">
 									<div class="d-none col-12 p-0 p-1"></div>
@@ -1030,7 +1034,7 @@
 					templateBody.event = event;
 					//自動_先檢查是否有效
 					$("#s_g_bom_type option").removeAttr("selected");
-					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_11").text() + "]").attr("selected", "selected");
+					$("#s_g_bom_type option[value=" + $(".t_row2" + id_p + " .s_12").text() + "]").attr("selected", "selected");
 
 					$("#a_c_submit2").trigger("click");
 					$("#s_c_submit").trigger("click");
