@@ -71,7 +71,6 @@
 									<div class="col-3 p-0">BOM料號:</div>
 									<input class="col-7" type="text" id="s_bom_number" name="s_bom_number" placeholder="Ex:A513-8745940-123" required autofocus />
 								</div>
-
 								<div class="row m-0 p-1 mb-2 mt-2">
 									<div class="col-md-4">
 										<button id="s_l_submit" class="col-md-12 btn btn-info btn-block m-1" type="submit">Step1.條件登記</button>
@@ -251,39 +250,57 @@
 								</div>
 								<div class="col-11 p-0">
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_1" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_1" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Power cord</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_2" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_2" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOG</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_3" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_3" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">License</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_4" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_4" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOX Label</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_5" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_5" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Bulk Pack</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_6" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_6" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Retail Pack</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_7" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_7" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">作業系統OS</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_8" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_8" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">無</div>
 									</div>
 									<div class="itemSample float-left col-md-4 row p-1 m-0">
-										<label id="cb_pkg_9" class="cb_pkg input-group-text"><input class="cb_pkg_ch" type="checkbox"></label>
+										<div id="cb_pkg_9" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+											<input class="cb_pkg_ch m-2" type="checkbox">
+										</div>
 										<div class="border col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">無</div>
 									</div>
 								</div>
@@ -312,8 +329,10 @@
 				<div class="row mb-3 mt-3 m-0" id="printBtn">
 					<div class="col-md-4">
 						<div class="mr-1 ml-1 float-right row border border-primary rounded" style="padding-right: 0px;">
-							<label id="a_u_production" class="input-group-text"> <input type="checkbox" checked="checked"></label>
-							<div class="border" style="padding: 5px;">
+							<div id="a_u_production" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+								<input type="checkbox" checked="checked" class="m-2 cb_pkg_ch">
+							</div>
+							<div class="border" style="padding:5px;">
 								<div class="" style="height: 24px;">
 									<b>登記生產</b>
 								</div>
@@ -336,7 +355,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 	<!-- 浮動電梯 -->
@@ -355,7 +373,6 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript">
 	console.log("bom_print_body");
 	templateBody = new Vue(
@@ -493,14 +510,15 @@
 					});
 					//勾選條件設定
 					$(document).on("click", ".cb_pkg", function(event) {
-						if (event.target.id != '') {
-							console.log(event.target.id);
-							if ($('#' + event.target.id + ' input').prop('checked')) {
-								$('#' + event.target.id + ' input').prop('checked', true);
-								$('#' + event.target.id + ' input').removeAttr('checked');
+						console.log(event.currentTarget.id);
+						if (event.currentTarget.id != '') {
+							var key = event.currentTarget.id;
+							if ($('#' + key + " input").attr('checked') == 'checked') {
+								$('#' + key + " input").prop('checked', false);
+								$('#' + key + " input").removeAttr('checked');
 							} else {
-								$('#' + event.target.id + ' input').prop('checked', false);
-								$('#' + event.target.id + ' input').attr('checked', 'checked');
+								$('#' + key + " input").prop('checked', true);
+								$('#' + key + " input").attr('checked', 'checked');
 							}
 						}
 					});
@@ -817,16 +835,17 @@
 						//計算
 						$("#notUseNb").text(this.notUseNb - notUse);
 						$("#needUseNb").text(this.needUseNb - needUse);
-
-						$('#collapseAdded input[type="checkbox"]').change(function() {
-							var checked = $(this).prop("checked");
-							if (checked) {
-								$(this).after('<input class="cb_pkg_ch" type="checkbox" checked="checked">');
-							} else {
-								$(this).after('<input class="cb_pkg_ch" type="checkbox">');
-							}
-							$(this).remove();
-						});
+						/*
+						 $('#collapseAdded input[type="checkbox"]').change(function() {
+						 var checked = $(this).prop("checked");
+						 if (checked) {
+						 $(this).after('<input class="cb_pkg_ch" type="checkbox" checked="checked">');
+						 } else {
+						 $(this).after('<input class="cb_pkg_ch" type="checkbox">');
+						 }
+						 $(this).remove();
+						 });
+						 */
 						$("#c1_bom_type").text($(".t_row" + id + " .s_12")[0].innerText);
 						$("#c1_note").text(
 								"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_11")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "

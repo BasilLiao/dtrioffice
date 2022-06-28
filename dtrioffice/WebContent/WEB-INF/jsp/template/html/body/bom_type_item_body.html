@@ -148,7 +148,13 @@
 							</div>
 						</div>
 						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
-						<!-- 新增 或 修改 或 刪除(內容) -->
+						<!-- 說明 -->
+						<div class="col-md-12 border border-secondary rounded-top mb-2">
+							<font class="font-weight-bold h5">注意: 設定BOM項目 須知</font>
+							<br> 1.如果 <font class="text-danger bg-warning font-weight-bold">項目(不裝配) 請用 ['No' 或是 '無'] 的單字</font>
+							<br> 2.如果 <font class="text-danger bg-warning font-weight-bold">項目(可裝配) 請勿含有 ['No' 或是 '無'] 的關鍵字</font>
+							<br> 以上 為了因應 方便PM 讓 系統自動化判別 "配置數量" 謝謝您的配合
+						</div>
 						<!-- 顯示權限 內容 -->
 						<div class="col-md-12">
 							<div class="row">
@@ -159,7 +165,7 @@
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 100px;">功能</th>
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 70px;">ID</th>
 											<th class="h5 font-weight-bold" scope="col" style="min-width: 250px;">備註說明</th>
-											<th class="h5 font-weight-bold" scope="col" id="item_lists" style="min-width: 60px; width: 100%;" colspan="25">BOM項目清單-(i01-i25) 最多25項目</th>
+											<th class="h5 font-weight-bold" scope="col" id="item_lists" style="min-width: 60px; width: 100%;" colspan="25" title="(i01-i25)">BOM項目清單</th>
 										</tr>
 										<tr id="item_thead" class="bg-white"></tr>
 									</thead>
@@ -571,7 +577,7 @@
                 for (var k = 4; k < c; k++) {
                     t_p_row2 += '<td class="column_' + (k - 1) + '"><input id="value_' + id + "_" + (k - 1) + '" class="col-md-12" type="text" value="' + $('.t_p_row1 .column_'+(k-1)+' input').val() + '"  placeholder="Ex:內容" required /></td>';
                 }
-                $("#item_tbody").append(t_p_row2);
+                $(".t_p_row1").after(t_p_row2);
                 //更筆數量
                 this.now_row_n +=1;
                 $('.t_p_row1 .column_1').text(this.now_row_n);
