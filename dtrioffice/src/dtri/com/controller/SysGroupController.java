@@ -63,7 +63,7 @@ public class SysGroupController {
 			// Step4-2 .DB 查詢 正確 資料
 			PermissionEntity entity_p = new PermissionEntity();
 			List<GroupEntity> g_Entities = groupService.searchGroup(entity);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p,false);
 			JSONObject p_Obj = groupService.entitiesToJson(g_Entities, p_Entities);
 
 			// Step4-2 .包裝資料
@@ -115,7 +115,7 @@ public class SysGroupController {
 			GroupEntity r_entity = new GroupEntity();
 			PermissionEntity entity_p = new PermissionEntity();
 			List<GroupEntity> g_Entities = groupService.searchGroup(r_entity);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p,false);
 			JSONObject p_Obj = groupService.entitiesToJson(g_Entities, p_Entities);
 
 			// Step4-2 .包裝資料
@@ -168,7 +168,7 @@ public class SysGroupController {
 			GroupEntity r_entity = new GroupEntity();
 			PermissionEntity entity_p = new PermissionEntity();
 			List<GroupEntity> g_Entities = groupService.searchGroup(r_entity);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p,false);
 			JSONObject p_Obj = groupService.entitiesToJson(g_Entities, p_Entities);
 
 			// Step4-3 .包裝資料
@@ -224,7 +224,7 @@ public class SysGroupController {
 			GroupEntity r_entity = new GroupEntity();
 			PermissionEntity entity_p = new PermissionEntity();
 			List<GroupEntity> g_Entities = groupService.searchGroup(r_entity);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity_p,false);
 			JSONObject p_Obj = groupService.entitiesToJson(g_Entities, p_Entities);
 
 			// Step4-3 .包裝資料

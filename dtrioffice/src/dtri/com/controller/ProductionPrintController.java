@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import dtri.com.bean.BomProductGroupBean;
 import dtri.com.bean.MesApiBean;
 import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.BomProductEntity;
@@ -76,29 +75,25 @@ public class ProductionPrintController {
 		// Step4.檢查許可權 & 輸入物件
 		if (checkPermission) {
 			// Step4-1 .DB 取出 正確 資料
-			List<BomProductEntity> entity = new ArrayList<BomProductEntity>();
+			// List<BomProductEntity> entity = new ArrayList<BomProductEntity>();
 			ProductionRecordsEntity entity2 = new ProductionRecordsEntity();
 			entity2.setProduct_progress(2);// 要是生產流程的
 			entity2.setProduct_status(1);// 不是作廢的
-			BomProductGroupBean bpg = new BomProductGroupBean();
 			List<ProductionRecordsEntity> bpg2 = new ArrayList<ProductionRecordsEntity>();
 			List<SoftwareVersionEntity> bpg3 = new ArrayList<SoftwareVersionEntity>();
 			ArrayList<ProductionSnEntity> bpg4 = new ArrayList<ProductionSnEntity>();
 
 			if (frontData.get("content") != null && !frontData.get("content").equals("")) {
-				entity = printService.jsonToEntities(frontData.getJSONObject("content"));
 				entity2 = printService.jsonToEntities2(frontData.getJSONObject("content"));
 
 				// 取得換頁碼 如果沒有 0
 				page_nb = printService.jsonToPageNb(frontData.getJSONObject("content"));
 				page_total = printService.jsonToPageTotal(frontData.getJSONObject("content"));
 			}
-
-			bpg = printService.search(entity, page_nb, page_total);
 			bpg2 = printService.searchProduction(entity2, page_nb, page_total);
 			bpg3 = softwareVersionService.searchSoftwareVersion(new SoftwareVersionEntity(), 0, 999999);
 			bpg4 = snService.searchAll();
-			JSONObject p_Obj = printService.entitiesToJson(bpg, bpg2, bpg3, bpg4, null, null, null,0);
+			JSONObject p_Obj = printService.entitiesToJson(bpg2, bpg3, bpg4, null, null, null, 0);
 
 			// Step4-2 .包裝資料
 			r_allData = printService.ajaxRspJson(p_Obj, frontData, "訪問成功!!");
@@ -138,7 +133,6 @@ public class ProductionPrintController {
 		// Step4.檢查許可權 & 輸入物件
 		if (checkPermission) {
 			// Step4-1 .DB 取出 正確 資料
-			BomProductGroupBean bomProGro = new BomProductGroupBean();
 			List<SoftwareVersionEntity> bpg3 = new ArrayList<SoftwareVersionEntity>();
 			ArrayList<ProductionSnEntity> bpg4 = new ArrayList<ProductionSnEntity>();
 			List<BomProductEntity> bomPreEnts = new ArrayList<BomProductEntity>();
@@ -186,7 +180,7 @@ public class ProductionPrintController {
 
 				checked = true;
 				e_code += "_3";
-			}else {
+			} else {
 				entity.setProduct_start_sn("");
 				entity.setProduct_end_sn("");
 				checked = true;
@@ -232,14 +226,12 @@ public class ProductionPrintController {
 			bomPreEnt.setId(entity.getBom_id());
 			bomPreEnt.setBom_type(entity.getBom_type());
 			bomPreEnt.setGroupEntity(new BomGroupEntity());
-			bomPreEnts.add(bomPreEnt);
-			// 規格定義
-			bomProGro = printService.search(bomPreEnts, page_nb, page_total);
+			bomPreEnts.add(bomPreEnt);	
 			// 軟體
 			bpg3 = softwareVersionService.searchSoftwareVersion(new SoftwareVersionEntity(), 0, 999999);
 			// SN
 			bpg4 = snService.searchAll();
-			JSONObject p_Obj = printService.entitiesToJson(null, p_Entities, bpg3, bpg4, sn_obj, sn_burn_fixed, sn_burn_nb,sn_burn_quantity);
+			JSONObject p_Obj = printService.entitiesToJson(p_Entities, bpg3, bpg4, sn_obj, sn_burn_fixed, sn_burn_nb, sn_burn_quantity);
 
 			// Step4-2 .包裝資料(如果有登記過了)
 			if (checked) {
@@ -256,8 +248,8 @@ public class ProductionPrintController {
 						entity.setProduct_start_sn(sn_obj.getJSONArray("sn_list").getString(0));
 						entity.setProduct_end_sn(sn_obj.getJSONArray("sn_list").getString(sn_obj.getJSONArray("sn_list").length() - 1));
 					}
-					
-					apiService.mes_production_create(entity, entity_sv, sn_obj, bomProGro, mesApi,(entity_sn.size() > 0));
+
+					apiService.mes_production_create(entity, entity_sv, sn_obj, mesApi, (entity_sn.size() > 0));
 				}
 				r_allData = printService.ajaxRspJson(p_Obj, frontData, "訪問成功!!");
 			} else {
@@ -269,7 +261,7 @@ public class ProductionPrintController {
 		}
 
 		// Step6.結果回傳
-		//System.out.println(r_allData);
+		// System.out.println(r_allData);
 		return r_allData.toString();
 	}
 

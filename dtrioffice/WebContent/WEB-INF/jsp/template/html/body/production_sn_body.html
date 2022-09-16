@@ -1,5 +1,9 @@
 <style>
-
+#search_table {
+	height: 600px;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
 /**
 預設顯示
 **/
@@ -7,157 +11,143 @@
 	content: attr(data-text);
 }
 </style>
-<div class="row border" id="production_sn_body">
-	<div class="col-md-12 border">
-		<div class="mt-3 mb-3 border">
-			<!-- 功能: 查詢 /新增 /修改 -->
-			<div class="mb-3">
-				<h3>
-					<b>產品SN 身分序號 產生器</b>
-				</h3>
+<div class="pt-4 m-0 row shadow" id="production_sn_body">
+	<div class="col-md-12 p-0">
+		<div class="mb-3 text-center">
+			<h3>
+				<b>產品規則序號 產生器</b>
+			</h3>
+		</div>
+		<!-- 項目:目前SN序號 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-success btn-sm" aria-controls="showArea" href="#showArea" data-toggle="collapse" role="button" aria-expanded="true">目前-SN序號</a>
 			</div>
-			<!-- 項目:目前SN序號 -->
-			<div class="border border-primary mb-3 shadow bg-light">
-				<div class="row m-0 mb-2">
-					<div class="col-md-5 p-0">
-						<a class="btn btn-success btn-sm" aria-controls="showArea" href="#showArea" data-toggle="collapse" role="button" aria-expanded="true">目前-SN序號</a>
+			<div id="showArea" class="collapse show col-md-12">
+				<div class="row h5">
+					<div class="p-1">
+						<b>SN為 : </b>
 					</div>
+					<div class="p-1" id="now_length"></div>
+					<div class="p-1">碼/編碼規則:</div>
+					<div class="bg-white p-1" contenteditable="false" id="now_content"></div>
 				</div>
-				<div id="showArea" class="collapse show col-md-12">
-					<div class="row h5">
-						<div class="p-1">
-							<b>SN為 : </b>
-						</div>
-						<div class="p-1" id="now_length"></div>
-						<div class="p-1">碼/編碼規則:</div>
-						<div class="bg-white p-1" contenteditable="false" id="now_content"></div>
-					</div>
-				</div>
-
 			</div>
-			<!-- 項目:規則SN設定 -->
-			<div class="border border-primary mb-1 shadow bg-light">
-				<div class="row m-0 mb-2">
-					<div class="col-md-5 p-0">
-						<a class="btn btn-success btn-sm" aria-controls="ruleArea" href="#ruleArea" data-toggle="collapse" role="button" aria-expanded="true">設定-SN規則</a>
-					</div>
-				</div>
-				<div id="ruleArea" class="m-1 border border-primary collapse show mb-1 shadow">
-					<div style="height: 500px; overflow: scroll;">
-						<table>
-							<thead>
-								<tr class="text-center m-0 bg-white" style="font-weight: bold;">
-									<td class="border border-secondary p-2" style="min-width: 85px;">說明</td>
-									<td class="border border-secondary p-2">添加規則</td>
-									<td colspan="50" class="border border-secondary p-2">規則清單</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr id="body_c" class="text-center m-0 ">
-									<!-- 標題規則 -->
-									<td valign="top" style="font-weight: bold;">
-										<div class="bg-white border border-secondary p-2" style="line-height: 31px;">功能</div>
-										<div class="bg-white border border-secondary p-2">順序</div>
-										<div class="bg-white border border-secondary p-2">項目組</div>
-										<div class="bg-white border border-secondary p-2" style="line-height: 31px;">↓項目↓</div>
-									</td>
-									<!-- 新增規則 -->
-									<td valign="top" id="g_0" class="pl-3 pb-2" style="min-width: 200px;">
-										<div class="bg-white">
-											<div class="border border-secondary text-center p-2 fn">
-												<button id="new_a_rule" type="button" class="btn btn-success btn-sm ">增加規則+</button>
+		</div>
+		<!-- 項目:規則SN設定 -->
+		<div class="border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-success btn-sm" aria-controls="ruleArea" href="#ruleArea" data-toggle="collapse" role="button" aria-expanded="true">設定-SN規則</a>
+			</div>
+			<div id="ruleArea" class="collapse show">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<table id="search_table" class="border border-secondary m-0 table table-sm table-hover table-striped table-bordered table-responsive">
+						<thead>
+							<tr class="text-center m-0 bg-primary h5" style="font-weight: bold; position: sticky; top: 0px; z-index: 5;">
+								<td class="border border-secondary p-0" style="min-width: 100px;">說明</td>
+								<td class="border border-secondary p-0">添加規則</td>
+								<td class="border border-secondary p-0" style="width: 100%;" colspan="50">規則清單</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="body_c" class="text-center m-0">
+								<!-- 標題規則 -->
+								<td valign="top" style="font-weight: bold;">
+									<div class="bg-white border border-secondary p-2" style="line-height: 31px;">功能</div>
+									<div class="bg-white border border-secondary p-2">順序</div>
+									<div class="bg-white border border-secondary p-2">項目組</div>
+									<div class="bg-white border border-secondary p-2" style="line-height: 31px;">↓項目↓</div>
+								</td>
+								<!-- 新增規則 -->
+								<td valign="top" id="g_0" class="p-1 pb-2" style="min-width: 200px;">
+									<div class="bg-white">
+										<div class="border border-secondary text-center p-2 fn">
+											<button id="new_a_rule" type="button" class="btn btn-success btn-sm ">增加規則+</button>
+										</div>
+										<div class="p-2 border border-secondary g_sort" contenteditable="true" data-text="順序(數字)"></div>
+										<div class="p-2 border border-secondary g_name" contenteditable="true" data-text="規則名稱(文字)"></div>
+										<div class="border border-secondary">
+											<div class="m-0 text-center p-2">
+												<button name="a_i_g_0" type="button" class="btn btn-success btn-sm a_i">增加項目+</button>
 											</div>
-											<div class="p-2 border border-secondary g_sort" contenteditable="true" data-text="順序(數字)"></div>
-											<div class="p-2 border border-secondary g_name" contenteditable="true" data-text="規則名稱(文字)"></div>
-											<div class="border border-secondary">
-												<div class="m-0 text-center p-2">
-													<button name="a_i_g_0" type="button" class="btn btn-success btn-sm a_i">增加項目+</button>
-												</div>
-												<div class="m-0 ">
-													<table style="width: 100%;">
-														<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
-														<thead>
-															<tr id="i_name">
-																<td class=" p-0 border border-secondary "><b>項目</b></td>
-																<td class=" p-0 border border-secondary "><b>值</b></td>
-																<td class=" p-0 border border-secondary "><b>功能</b></td>
-															</tr>
-														</thead>
-														<tbody class="items">
-															<tr id="i_g_0_i_0">
-																<td class="border border-secondary d-none i_id">0</td>
-																<td class="p-2 border border-secondary i_name" style="white-space: nowrap;" contenteditable="true"></td>
-																<td class="p-2 border border-secondary i_value" style="white-space: nowrap;" contenteditable="true"></td>
-																<td class="p-2 border-bottom border-secondary">
-																	<button name="d_g_0_i_0" type="button" class="btn btn-danger pt-0  btn-sm i_delete" style="height: 22px;">刪</button>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
+											<div class="m-0 ">
+												<table style="width: 100%;">
+													<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
+													<thead>
+														<tr id="i_name">
+															<td class=" p-0 border border-secondary "><b>項目</b></td>
+															<td class=" p-0 border border-secondary "><b>值</b></td>
+															<td class=" p-0 border border-secondary "><b>功能</b></td>
+														</tr>
+													</thead>
+													<tbody class="items">
+														<tr id="i_g_0_i_0">
+															<td class="border border-secondary d-none i_id">0</td>
+															<td class="p-2 border border-secondary i_name" style="white-space: nowrap;" contenteditable="true"></td>
+															<td class="p-2 border border-secondary i_value" style="white-space: nowrap;" contenteditable="true"></td>
+															<td class="p-2 border-bottom border-secondary">
+																<button name="d_g_0_i_0" type="button" class="btn btn-danger pt-0  btn-sm i_delete" style="height: 22px;">刪</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 										</div>
-									</td>
-									<!-- 規則清單 -->
-									<td class="pl-3 pb-2 d-none" valign="top" id="g_id" style="min-width: 200px;">
-										<!-- 範例 編輯規則 g_id=g_群組ID -->
-										<div class="bg-white">
-											<div class="border border-secondary text-center p-2 fn">
-												<!--m_g_id/d_g_id/lk_g_id = 群組ID -->
-												<button name="m_g_id" type="button" class="mr-1 btn btn-warning  btn-sm m_rule">修改</button>
-												<button name="lk_g_id" type="button" class="mr-1 btn btn-primary btn-sm lk_rule">鎖定</button>
-												<button name="d_g_id" type="button" class="mr-1 btn btn-danger   btn-sm d_rule">刪除</button>
+									</div>
+								</td>
+								<!-- 規則清單 -->
+								<td valign="top" id="g_id" class="p-1 pb-2 d-none" style="min-width: 200px;">
+									<!-- 範例 編輯規則 g_id=g_群組ID -->
+									<div class="bg-white">
+										<div class="border border-secondary text-center p-2 fn">
+											<!--m_g_id/d_g_id/lk_g_id = 群組ID -->
+											<button name="m_g_id" type="button" class="mr-1 btn btn-warning  btn-sm m_rule">修改</button>
+											<button name="lk_g_id" type="button" class="mr-1 btn btn-primary btn-sm lk_rule">鎖定</button>
+											<button name="d_g_id" type="button" class="mr-1 btn btn-danger   btn-sm d_rule">刪除</button>
+										</div>
+										<div class="p-2 border border-secondary g_sort" contenteditable="true">順序</div>
+										<div class="p-2 border border-secondary g_name" contenteditable="true">項目組名稱</div>
+										<div class="border border-secondary ">
+											<div class="m-0 text-center p-2">
+												<!--a_i_g_id = a_i_群組ID -->
+												<button name="a_i_g_id" type="button" class="btn btn-success btn-sm a_i">增加項目+</button>
 											</div>
-											<div class="p-2 border border-secondary g_sort" contenteditable="true">順序</div>
-											<div class="p-2 border border-secondary g_name" contenteditable="true">項目組名稱</div>
-											<div class="border border-secondary ">
-												<div class="m-0 text-center p-2">
-													<!--a_i_g_id = a_i_群組ID -->
-													<button name="a_i_g_id" type="button" class="btn btn-success btn-sm a_i">增加項目+</button>
-												</div>
-												<div class="m-0">
-													<table style="width: 100%;">
-														<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
-														<thead>
-															<tr id="i_name">
-																<td class=" p-0 border border-secondary "><b>項目</b></td>
-																<td class=" p-0 border border-secondary "><b>值</b></td>
-																<td class=" p-0 border border-secondary "><b>功能</b></td>
-															</tr>
-														</thead>
-														<tbody class="items">
-															<tr id="i_g_id_i_id">
-																<td class="border border-secondary d-none i_id">ID</td>
-																<td class="p-2 border border-secondary i_name" style="white-space: nowrap;" contenteditable="true"></td>
-																<td class="p-2 border border-secondary i_value" style="white-space: nowrap;" contenteditable="true"></td>
-																<td class="p-2 border-bottom border-secondary">
-																	<button name="d_g_id_i_id" type="button" class="btn btn-danger pt-0  btn-sm i_delete" style="height: 22px;">刪</button>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
+											<div class="m-0">
+												<table style="width: 100%;">
+													<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
+													<thead>
+														<tr id="i_name">
+															<td class=" p-0 border border-secondary "><b>項目</b></td>
+															<td class=" p-0 border border-secondary "><b>值</b></td>
+															<td class=" p-0 border border-secondary "><b>功能</b></td>
+														</tr>
+													</thead>
+													<tbody class="items">
+														<tr id="i_g_id_i_id">
+															<td class="border border-secondary d-none i_id">ID</td>
+															<td class="p-2 border border-secondary i_name" style="white-space: nowrap;" contenteditable="true"></td>
+															<td class="p-2 border border-secondary i_value" style="white-space: nowrap;" contenteditable="true"></td>
+															<td class="p-2 border-bottom border-secondary">
+																<button name="d_g_id_i_id" type="button" class="btn btn-danger pt-0  btn-sm i_delete" style="height: 22px;">刪</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<div class=" row m-4">
-					<div class="col-md-4"></div>
-					<div class="col-md-2">
-						<div class="col-md-10 container">
-							<button id="p_submit_save" class="btn btn-primary btn-block" type="button">儲存內容</button>
-						</div>
+				<div class="row m-0 justify-content-center">
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="p_submit_save" class="col-md-10 btn btn-primary btn-block" type="button">儲存內容</button>
 					</div>
-					<div class="col-md-2">
-						<div class="col-md-10 container">
-							<button id="p_submit_def" class="btn btn-warning btn-block" type="button">還原設定</button>
-						</div>
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="p_submit_def" class="col-md-10 btn btn-warning btn-block" type="button">還原設定</button>
 					</div>
-					<div class="col-md-4"></div>
 				</div>
 			</div>
 		</div>

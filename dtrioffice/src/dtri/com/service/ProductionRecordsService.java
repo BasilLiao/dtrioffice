@@ -56,7 +56,6 @@ public class ProductionRecordsService {
 		recordsEntity.setSys_create_user(loginService.getSessionUserBean().getAccount());
 		recordsEntity.setSys_modify_date(new Date());
 		recordsEntity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
-
 		recordsEntity.setId(json.getString("production_id"));
 		recordsEntity.setOrder_id(json.getString("order_id"));
 		recordsEntity.setClient_name(json.getString("client_name"));
@@ -68,10 +67,25 @@ public class ProductionRecordsService {
 		recordsEntity.setBom_id(json.getInt("bom_id"));
 		recordsEntity.setVersion_motherboard(json.getString("version_motherboard"));
 		recordsEntity.setNote(json.getString("note"));
+		recordsEntity.setPm_note(json.getString("pm_note"));
 		recordsEntity.setCome_from(json.getString("come_from"));
 		recordsEntity.setProduct_status(p_status);
 		recordsEntity.setProduct_progress(json.getInt("product_progress"));
 		recordsEntity.setBom_type(json.getString("bom_type"));
+		recordsEntity.setBom_principal(json.getString("bom_principal"));// bom 負責人
+		recordsEntity.setProduct_hope_date(Fm_Time_Model.toDate(json.getString("product_hope_date")));// 期望出貨時間
+		/*
+		 * Ex:"cb_pkg_all": { "cb_pkg_2": { "cb_pkg": "", "cb_pkg_name": "BOG" },
+		 * "cb_pkg_1": { "cb_pkg": "", "cb_pkg_name": "Power cord" },
+		 */
+		recordsEntity.setProduct_package(json.getJSONObject("cb_pkg_all") + "");// 包裝型態
+		/*
+		 * "bom_product_content": { "not": [ { "amount": "", "name": "LCDBrightness:",
+		 * "content": "Normal" }, "have": [ { "amount": "", "name": "CPU:",
+		 * "content":"intel I7-6600U_VPRO" },
+		 **/
+		recordsEntity.setBom_product_content(json.getJSONObject("bom_product_content") + "");// 產品規格
+		recordsEntity.setProduct_type(json.getString("product_type"));// 技轉中 可量產
 
 		if (dao.beforeCheckAddOne(json.getString("production_id")) == null) {
 			dao.addOne(recordsEntity);
@@ -149,11 +163,9 @@ public class ProductionRecordsService {
 		// 類型? 產品SN序號
 		if (!content.isNull("product_start_sn") && !content.getString("product_start_sn").equals(""))
 			entity.setProduct_start_sn(content.getString("product_start_sn"));
-
 		// BOM? 產品 客戶BOM號
-		if (!content.isNull("bom_product_customer_id") && !content.getString("bom_product_customer_id").equals(""))
+		if (!content.isNull("bom_product_customer_id"))
 			entity.setBom_product_customer_id(content.getString("bom_product_customer_id"));
-
 		// 類型? 數量
 		if (!content.isNull("production_quantity") && content.getInt("production_quantity") >= 0)
 			entity.setProduction_quantity(content.getInt("production_quantity"));
@@ -166,23 +178,28 @@ public class ProductionRecordsService {
 		// 主附件?
 		if (!content.isNull("bom_type") && !content.getString("bom_type").equals(""))
 			entity.setBom_type(content.getString("bom_type"));
+		// 備註
+		if (!content.isNull("note") && !content.getString("note").equals(""))
+			entity.setNote(content.getString("note"));
+		// 包裝
+		if (content.has("cb_pkg_all") && !content.isNull("cb_pkg_all"))
+			entity.setProduct_package(content.getJSONObject("cb_pkg_all") + "");
 		return entity;
 	}
 
 	/** 清單 to JSON **/
-	public JSONObject entitiesToJson(List<ProductionRecordsEntity> bpg) {
+	public JSONObject entitiesToJson(List<ProductionRecordsEntity> prs) {
 		JSONObject list = new JSONObject();
 		JSONArray jsonAll = new JSONArray();
-
 		// 標題
 		JSONArray jsonArray = new JSONArray();
-
 		jsonArray.put("工單號碼");
 		jsonArray.put("(公司)BOM料號");
 		jsonArray.put("(客戶)BOM料號");
 		jsonArray.put("生產數");
 		jsonArray.put("進度");
 		jsonArray.put("狀態");
+		jsonArray.put("預計出貨時間");
 
 		jsonArray.put("建立時間");
 		jsonArray.put("建立者");
@@ -190,32 +207,38 @@ public class ProductionRecordsService {
 		jsonArray.put("修改者");
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
-		for (ProductionRecordsEntity entity : bpg) {
+		for (ProductionRecordsEntity entity : prs) {
 			jsonArray = new JSONArray();
 
-			jsonArray.put(entity.getId());
+			jsonArray.put(entity.getId());// 0
 			jsonArray.put(entity.getBom_product_id());
 			jsonArray.put(entity.getBom_product_customer_id());
 			jsonArray.put(entity.getProduction_quantity());
 			jsonArray.put(entity.getProduct_progress());
-
-			jsonArray.put(entity.getOrder_id());
-			jsonArray.put(entity.getClient_name());
-			jsonArray.put(entity.getProduct_model());
-			jsonArray.put(entity.getVersion_motherboard());
-			jsonArray.put(entity.getNote());
-			jsonArray.put(entity.getCome_from());
-			jsonArray.put(entity.getProduct_status());
-			jsonArray.put(entity.getProduct_start_sn());
-			jsonArray.put(entity.getProduct_end_sn());
-
+			jsonArray.put(entity.getProduct_status());// 5
+			jsonArray.put(entity.getProduct_hope_date() == null ? "" : Fm_Time_Model.to_yyMMdd(entity.getProduct_hope_date()));
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-			jsonArray.put(entity.getSys_create_user());
+			jsonArray.put(entity.getSys_create_user());// 8
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-			jsonArray.put(entity.getSys_modify_user());
+			jsonArray.put(entity.getSys_modify_user());// 10
+
+			// 多餘的隱藏
+			jsonArray.put(entity.getCome_from());// 11
+			jsonArray.put(entity.getProduct_package());// 12
+			jsonArray.put(entity.getVersion_motherboard());// 13
+			jsonArray.put(entity.getNote());// 14
+			jsonArray.put(entity.getOrder_id());// 15
+			jsonArray.put(entity.getClient_name());// 16
+			jsonArray.put(entity.getProduct_model());// 17
+			jsonArray.put(entity.getProduct_start_sn());// 18
+			jsonArray.put(entity.getProduct_end_sn());// 19
+			jsonArray.put(entity.getBom_product_content());// 20
+			jsonArray.put(entity.getProduct_type());// 21
+			jsonArray.put(entity.getPm_note());// 22
+			jsonArray.put(entity.getBom_type());// 23
+			jsonArray.put(entity.getBom_principal());// 24-負責人
 			jsonAll.put(jsonArray);
 		}
-
 		list.put("item_list", jsonAll);
 		return list;
 	}

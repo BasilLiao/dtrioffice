@@ -52,6 +52,7 @@ public class ErpBomController {
 		// Step3.建立回傳元素
 		JSONObject r_allData = new JSONObject();
 		int page_nb = 0, page_total = 100;
+		int bom_qty = 1;
 		// Step4.檢查許可權 & 輸入物件
 		if (checkPermission) {
 			// Step4-1 .DB 取出 正確 資料
@@ -67,6 +68,9 @@ public class ErpBomController {
 
 				page_nb = bomService.jsonToPageNb(frontData.getJSONObject("content"));
 				page_total = bomService.jsonToPageTotal(frontData.getJSONObject("content"));
+				if (frontData.getJSONObject("content").has("bom_qty") && frontData.getJSONObject("content").getInt("bom_qty") > 1) {
+					bom_qty = frontData.getJSONObject("content").getInt("bom_qty");
+				}
 			}
 			List<ERP_INVMB_Entity> p_Entities = new ArrayList<ERP_INVMB_Entity>();
 			List<ERP_INVMC_Entity> p_Entities2 = new ArrayList<ERP_INVMC_Entity>();
@@ -95,7 +99,7 @@ public class ErpBomController {
 			}
 			JSONObject p_Obj = bomService.entitiesToJson(p_Entities);
 			p_Obj = bomService.entitiesToJson2(p_Entities2, p_Obj);
-			p_Obj = bomService.entitiesToJson3(p_Entities3, p_Obj);
+			p_Obj = bomService.entitiesToJson3(p_Entities3, p_Obj,bom_qty);
 			p_Obj = bomService.entitiesToJson4(p_Entities4, p_Obj);
 
 			// Step4-2 .包裝資料

@@ -6,123 +6,120 @@
 [contenteditable="true"]:empty:not(:focus):before {
 	content: attr(data-text);
 }
+
+#content_excel {
+	height: 485px;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
 </style>
 <script src="./thirdparty/js/jquery.table2excel.js"></script>
-<div class="row border" id="production_sn_list_body">
-	<div class="col-md-12 border">
-		<div class="mt-3 mb-3 border">
-			<!-- 功能: 查詢 /新增 /修改 -->
-			<div class="mb-3">
-				<h3>
-					<b>產品SN 身分序號 總表</b>
-				</h3>
+<div class="pt-4 m-0 row shadow" id="production_sn_list_body">
+	<div class="col-md-12 p-0">
+		<div class="mb-3 text-center">
+			<h3>
+				<b>產品序號清單 總表</b>
+			</h3>
+		</div>
+		<!-- 項目:目前SN序號 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-success btn-sm" aria-controls="showArea" href="#showArea" data-toggle="collapse" role="button" aria-expanded="true">查詢SN</a>
 			</div>
-			<!-- 項目:目前SN序號 -->
-			<div class="border border-primary mb-3 shadow bg-light">
-				<div class="row m-0 mb-2">
-					<div class="col-md-5 p-0">
-						<a class="btn btn-success btn-sm" aria-controls="showArea" href="#showArea" data-toggle="collapse" role="button" aria-expanded="true">查詢SN</a>
+			<div id="showArea" class="h5 collapse show m-0">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<div class="col-md-2 p-1">
+						<div class="col p-1">產品SN身分:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_sn" placeholder="Ex:13BB12102A888" required autofocus />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">製令單號:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_p_id" placeholder="Ex:A513-00123456789" required />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">起始日期:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_s_d" placeholder="Ex:2021-01-13" />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">結束日期:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_e_d" placeholder="Ex:2021-01-13" />
+						</div>
 					</div>
 				</div>
-				<div id="showArea" class="collapse show col-md-12">
-					<div class="row mb-2 h5">
-						<div class="col-md-3 text-left mb-2 mt-2">
-							產品SN身分: <input class="col-md-7" type="text" id="s_sn" placeholder="Ex:13BB12102A888" required autofocus />
-						</div>
-						<div class="col-md-3 text-left mb-2 mt-2">
-							製令單號: <input class="col-md-7" type="text" id="s_p_id" placeholder="Ex:A513-00123456789" required />
-						</div>
-						<div class="col-md-3 text-left mb-2 mt-2">
-							起始日期: <input class="col-md-7" type="text" id="s_s_d" placeholder="Ex:2021-01-13" />
-						</div>
-						<div class="col-md-3 text-left mb-2 mt-2">
-							結束日期: <input class="col-md-7" type="text" id="s_e_d" placeholder="Ex:2021-01-13" />
-						</div>
-					</div>
-					<div class="row mb-2">
-						<div class="col-md-5"></div>
-						<div class="col-md-2">
-							<div class="col-md-10">
-								<button id="s_submit" type="submit" class="col-md-12 btn btn-primary btn-block">查詢</button>
-							</div>
-						</div>
-						<div class="col-md-5"></div>
+				<div class="row m-0 justify-content-center">
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="s_submit" type="submit" class="col-md-10 btn btn-primary btn-block">查詢</button>
 					</div>
 				</div>
 			</div>
-			<!-- 項目:規則SN設定 -->
-			<div class="border border-primary mb-1 shadow bg-light">
-				<div class="row m-0 mb-2">
-					<div class="col-md-5 p-0">
-						<a class="btn btn-success btn-sm" aria-controls="ruleArea" href="#ruleArea" data-toggle="collapse" role="button" aria-expanded="true">查詢清單</a>
-					</div>
+		</div>
+		<!-- 項目:規則SN設定 -->
+		<div class="border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-success btn-sm" aria-controls="ruleArea" href="#ruleArea" data-toggle="collapse" role="button" aria-expanded="true">查詢清單</a>
+			</div>
+			<div id="ruleArea" class="collapse show">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
+					<table id="content_excel" class="m-0 bg-white border border-secondary table table-sm table-hover table-striped table-bordered table-responsive" style="width: 100%;">
+						<thead>
+							<tr id="i_name" class="h5 bg-primary" style="position: sticky; top: 0px; z-index: 5;">
+								<td class=" p-0 border border-secondary no_show_excel" style="min-width: 70px;"><b>功能</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 200px;"><b>日期</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 200px;"><b>客戶</b></td>
+								<td class=" p-0 border border-secondary" style="width: 100%;"><b>製令</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 200px;"><b>S/N起始</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 200px;"><b>S/N結束</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 80px;"><b>數量</b></td>
+								<td class=" p-0 border border-secondary" style="min-width: 150px;"><b>機種</b></td>
+							</tr>
+						</thead>
+						<tbody class="items">
+							<tr class="border border-primary no_show_excel" id="i_new_sn">
+								<td class="p-1 border border-secondary i_date">
+									<button id="i_added_new" type="button" class="col-12 btn btn-success btn-sm p-1">新增</button>
+								</td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" id="i_date_new"><input class="col-md-12 p-1" type="text" placeholder="Ex:2021-01-13" /></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_client_new"></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_id_new"></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_sn_start_new"></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_sn_end_new"></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_sn_number_new"></td>
+								<td class="p-1 border border-warning" style="white-space: nowrap;" contenteditable="true" id="i_sn_model_new"></td>
+							</tr>
+							<!-- 樣本 -->
+							<tr id="i_demo" class="d-none no_show_excel">
+								<td class="p-1 border border-secondary i_function no_show_excel">
+									<button name="i_delete_new" type="button" class="btn btn-danger col-12 p-0 btn-sm i_delete" style="height: 22px;">(刪)</button>
+								</td>
+								<td class="p-1 border border-secondary i_date"></td>
+								<td class="p-1 border border-secondary i_client"></td>
+								<td class="p-1 border border-secondary i_id"></td>
+								<td class="p-1 border border-secondary i_sn_start"></td>
+								<td class="p-1 border border-secondary i_sn_end"></td>
+								<td class="p-1 border border-secondary i_sn_number"></td>
+								<td class="p-1 border border-secondary i_sn_model"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<div id="ruleArea" class="m-1 border border-primary collapse show mb-1 shadow">
-					<div style="height: 500px; overflow: scroll;">
-						<div class="m-0">
-							<table id="content_excel" class="bg-white text-center" style="width: 100%;">
-								<!--(個項目) i_g_id_i_id = i_群組ID_項目ID -->
-								<thead>
-									<tr id="i_name" class="h5">
-										<td class=" p-0 border border-secondary no_show_excel" style="width: 80px;"><b>功能</b></td>
-										<td class=" p-0 border border-secondary " style="min-width: 170px;"><b>日期</b></td>
-										<td class=" p-0 border border-secondary "><b>客戶</b></td>
-										<td class=" p-0 border border-secondary "><b>製令</b></td>
-										<td class=" p-0 border border-secondary "><b>S/N起始</b></td>
-										<td class=" p-0 border border-secondary "><b>S/N結束</b></td>
-										<td class=" p-0 border border-secondary "><b>數量</b></td>
-										<td class=" p-0 border border-secondary "><b>機種</b></td>
-									</tr>
-								</thead>
-								<tbody class="items">
-									<tr class="border border-primary no_show_excel" id="i_new_sn">
-										<td class="p-1 border border-secondary i_date">
-											<button id="i_added_new" type="button" class="mr-1 btn  btn-success btn-sm p-1">新增</button>
-										</td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" id="i_date_new"><input class="col-md-12 p-1" type="text" placeholder="Ex:2021-01-13" /></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_client_new"></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_id_new"></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_sn_start_new"></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_sn_end_new"></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_sn_number_new"></td>
-										<td class="p-1 border border-primary" style="white-space: nowrap;" contenteditable="true" id="i_sn_model_new"></td>
-									</tr>
-									<!-- 樣本 -->
-									<tr id="i_demo" class="d-none no_show_excel">
-										<td class="p-1 border border-secondary i_function no_show_excel">
-											<button name="i_delete_new" type="button" class="btn btn-danger pt-0 btn-sm i_delete" style="height: 22px;">(刪)</button>
-										</td>
-										<td class="p-1 border border-secondary i_date"></td>
-										<td class="p-1 border border-secondary i_client"></td>
-										<td class="p-1 border border-secondary i_id"></td>
-										<td class="p-1 border border-secondary i_sn_start"></td>
-										<td class="p-1 border border-secondary i_sn_end"></td>
-										<td class="p-1 border border-secondary i_sn_number"></td>
-										<td class="p-1 border border-secondary i_sn_model"></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
+			</div>
+			<div class="row m-0 justify-content-center">
+				<div class="row m-0 justify-content-center col-md-2 p-2">
+					<button id="p_submit_export" class="col-md-10 btn btn-primary btn-block" type="button">Excel 匯出</button>
 				</div>
-				<div class=" row m-4">
-					<div class="col-md-3"></div>
-					<div class="col-md-2">
-						<div class="col-md-10">
-							<button id="p_submit_export" class="btn btn-primary btn-block" type="button">Excel 匯出</button>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="col-md-10">
-							<button id="p_submit_def" class="btn btn-warning btn-block" type="button">取消還原</button>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="col-md-10">
-							<button id="p_submit_save" class="btn btn-success btn-block" type="button">儲存資料</button>
-						</div>
-					</div>
-					<div class="col-md-3"></div>
+				<div class="row m-0 justify-content-center col-md-2 p-2">
+					<button id="p_submit_def" class="col-md-10 btn btn-warning btn-block" type="button">取消還原</button>
+				</div>
+				<div class="row m-0 justify-content-center col-md-2 p-2">
+					<button id="p_submit_save" class="col-md-10 btn btn-success btn-block" type="button">儲存資料</button>
 				</div>
 			</div>
 		</div>
@@ -257,9 +254,23 @@
 				//重製(清除舊資料)
 				$('.old_sn_list').remove();
 				$('.new_sn_list').remove();
-
+				//重複提醒
+				var i_sn_start = "";
+				var i_sn_end = "";
+				var repeat = false;
 				for (var i = (this.search_list.length - 1); i > 0; i--) {
 					i_c = this.search_list[i];
+					//console.log(i_c);
+					//重複?
+					if (i_sn_start != "" && i_sn_end != "") {
+						repeat = false;
+						if (i_c[15] >= i_sn_start && i_c[15] <= i_sn_end) {
+							repeat = true;
+						}
+					}
+					i_sn_start = i_c[15];
+					i_sn_end = i_c[16];
+					//資料
 					i_demo = $('#i_demo').clone();
 					i_demo.removeClass("d-none");
 					i_demo.removeClass("no_show_excel");
@@ -278,6 +289,9 @@
 					} else {
 						i_demo.find('.i_delete').attr('name', 'old_' + i_c[4]);
 						i_demo.attr("id", i_c[4]);
+					}
+					if (repeat) {
+						i_demo.addClass('bg-warning');
 					}
 					i_demo.insertAfter($('#i_demo'));
 				}

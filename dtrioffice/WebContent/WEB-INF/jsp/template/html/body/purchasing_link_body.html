@@ -1,202 +1,153 @@
-<div class="row border" id="purchasing_link_body">
-	<div class="col-md-12 border">
-		<!-- 功能: 查詢 /新增 /修改 -->
-		<div class="mt-3 mb-3 border">
-			<div class="mb-3">
-				<h3>
-					<b>物料關連與人員分配</b>
-				</h3>
+<style>
+#search_table {
+	height: 485px;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
+</style>
+<div class="pt-4 m-0 row shadow" id="purchasing_link_body">
+	<div class="col-md-12 p-0">
+		<div class="mb-3 text-center">
+			<h3>
+				<b>物料人員綁定</b>
+			</h3>
+		</div>
+		<!-- 查詢功能 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 			</div>
-			<!-- 查詢功能 -->
-			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="row mb-2 m-0">
-					<div class="col-md-5 p-0">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
+			<div class="h5 collapse show m-0" id="collapseSearch">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<div class="col-md-2 p-1">
+						<div class="col p-1">關鍵字(料號) :</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_key_word" placeholder="Ex:0800092000" required autofocus />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">關鍵字(品號) :</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_key_item_word" placeholder="Ex:螺絲釘" required />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">使用者(人名) :</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_user_name" placeholder="Ex:無名氏" required />
+						</div>
 					</div>
 				</div>
-				<div class="mb-3 collapse show" id="collapseSearch">
-					<div class="row mb-5 m-0 h5">
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									關鍵字(料號) : <input class="col-md-7" type="text" id="s_key_word" placeholder="Ex:0800092000" required autofocus />
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									關鍵字(品號) : <input class="col-md-7" type="text" id="s_key_item_word" placeholder="Ex:螺絲釘" required />
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									使用者(人名) : <input class="col-md-7" type="text" id="s_user_name" placeholder="Ex:無名氏" required />
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row mb-2 m-0">
-						<div class="col-md-5"></div>
-						<div class="col-md-2">
-							<button id="s_submit" class="col-md-12 btn btn-primary btn-block" type="submit">查詢</button>
-						</div>
-						<div class="col-md-5"></div>
+				<div class="row m-0 justify-content-center">
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="s_submit" class="col-md-10 btn btn-primary btn-block" type="submit">查詢</button>
 					</div>
 				</div>
 			</div>
-			<!-- 功能:查詢結果  /修改 -->
-			<div class="mb-3 border border-primary shadow bg-light">
-				<div class="border">
-					<div class="row mb-2 m-0">
-						<div class="col-md-5 p-0">
-							<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
+		</div>
+		<!-- 功能:查詢結果  /修改 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
+			</div>
+			<div class="collapse show" id="collapseFinish">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<div id="search_choose" class="row m-0">
+						<div class="text-left">
+							<b>顯示名稱-></b>
 						</div>
 					</div>
-					<div class="collapse show" id="collapseFinish">
-						<div class="col-md-12">
-							<div id="search_choose" class="row mb-2">
-								<div class="text-left">
-									<b>顯示名稱-></b>
-								</div>
-							</div>
-							<!-- 顯示內容 -->
-							<div class="row">
-								<table style="min-height: 480px;" class="table table-sm table-hover table-striped table-bordered table-responsive">
-									<thead>
-										<tr id="search_thead" class="bg-primary">
-											<th scope="col" style="min-width: 90px;">功能</th>
-											<th scope="col" style="min-width: 30px;">筆</th>
-										</tr>
-									</thead>
-									<tbody id="search_tbody"></tbody>
-								</table>
-							</div>
-						</div>
-					</div>
+					<!-- 顯示內容 -->
+					<table id="search_table" class="m-0 border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
+						<thead>
+							<tr id="search_thead" class="h5 bg-primary">
+								<th scope="col" style="min-width: 90px;">功能</th>
+								<th scope="col" style="min-width: 30px;">筆</th>
+							</tr>
+						</thead>
+						<tbody id="search_tbody"></tbody>
+					</table>
 				</div>
 			</div>
-			<!-- 新增/修改功能 -->
-			<div class="border border-primary shadow bg-light">
-				<div class="row mb-2">
-					<div class="col-md-5">
-						<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
-					</div>
-				</div>
-				<form onsubmit="return templateBody.send_added_or_update_save();">
-					<div class="collapse show" id="collapseAdded">
-						<!-- 新增 或 修改(分辨) -->
-						<div class="row mb-2">
-							<div class="col-md-2 pr-0">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										<div class="col-md-12">狀態 :</div>
-										<div class="col-md-12" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-4 pr-0">ID :</div>
-										<div class="col-md-8 pr-0" id="a_p_id">0</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-4 pr-0">選擇使用者 :</div>
-										<div class="col-md-8 pr-0">
-											<select id="c_u_id">
-												<option>請選擇使用者</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+		</div>
 
-						<div class="row mb-2">
-							<div class="col-md-2">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-7 pr-0">使用者ID :</div>
-										<div class="col-md-5 pr-0" id="a_u_id">0</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-5 pr-0">Name :</div>
-										<div class="col-md-7 pr-0" id="a_u_name">伍華</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-4 pr-0">E_Name :</div>
-										<div class="col-md-8 pr-0" id="a_e_u_name">Whoami</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-5">
-								<div class="col-md-12 pr-0">
-									<div class="row">
-										<div class="col-md-2 pr-0">Email :</div>
-										<div class="col-md-10 pr-0" id="a_u_email">examp@dtri.com.tw</div>
-									</div>
-								</div>
-							</div>
+		<!-- 新增/修改功能 -->
+		<div class="border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/修改/刪除 功能 : </a>
+			</div>
+			<form onsubmit="return templateBody.send_added_or_update_save();">
+				<div class="h5 collapse show m-0" id="collapseAdded">
+					<!-- 新增 或 修改(分辨) -->
+					<div class="p-1 row m-0 mb-2 mt-2">
+						<div class="row m-0 col-md-3 p-1">
+							<div class="col-md-4 p-0">狀態 :</div>
+							<div class="col-md-8 p-0" id="a_u_type" style="font-size: 25px; color: red;">新增資料</div>
 						</div>
-						<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
-						<!-- 新增 或 修改 或 刪除(內容) -->
-						<div class="row mb-3 mt-3">
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										料號關鍵 : <input class="col-md-7" type="text" id="a_key_word" placeholder="Ex:01" required />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										品號關鍵 : <input class="col-md-7" type="text" id="a_key_item_word" placeholder="Ex:電桿" />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row">
-									<div class="col-md-12 text-left">
-										說明備註 : <input class="col-md-10" type="text" id="a_note" placeholder="Ex:可不寫" />
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- 設定 內容 -->
-
-						<div class="row mb-3">
-							<div class="col-md-4"></div>
-							<div class="col-md-2">
-								<div class="">
-									<button id="a_u_submit" class="btn btn-primary btn-block" type="submit">存入資料</button>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<div class="">
-									<button id="a_c_submit" class="btn btn-warning btn-block" type="button">清除內容</button>
-								</div>
-							</div>
-							<div class="col-md-4"></div>
+						<div class="row m-0 col-md-3 p-1">
+							<div class="col-md-4 p-0">ID :</div>
+							<div class="col-md-8 p-0" id="a_p_id">0</div>
 						</div>
 					</div>
-				</form>
-			</div>
+					<div class="dropdown-divider" style="border-top: 1px solid green;"></div>
+					<!-- 新增 或 修改 或 刪除(內容) -->
+					<div class="p-1 row m-0 mb-2 mt-2">
+						<div class="row m-0 col-md-3 p-1">
+							<div class="col-md-4 p-0">選擇使用者 :</div>
+							<div class="col-md-8 p-0">
+								<select id="c_u_id" class="col">
+									<option>請選擇使用者</option>
+								</select>
+							</div>
+						</div>
+						<div class="row m-0 col-md-2 p-1">
+							<div class="col-md-7 p-0">使用者ID :</div>
+							<div class="col-md-5 p-0" id="a_u_id">0</div>
+						</div>
+						<div class="row m-0 col-md-2 p-1">
+							<div class="col-md-5 p-0">Name :</div>
+							<div class="col-md-7 p-0" id="a_u_name">伍華</div>
+						</div>
+						<div class="row m-0 col-md-2 p-1">
+							<div class="col-md-5 p-0">E_Name :</div>
+							<div class="col-md-7 p-0" id="a_e_u_name">Whoami</div>
+						</div>
+						<div class="row m-0 col-md-3 p-1">
+							<div class="col-md-5 p-0">Email :</div>
+							<div class="col-md-7 p-0" id="a_u_email">examp@dtri.com.tw</div>
+						</div>
+					</div>
+					<div class="p-1 row m-0 mb-2 mt-2">
+						<div class="row m-0 col-md-3 p-1">
+							<div class="col-md-4 p-0">料號關鍵 :</div>
+							<div class="col-md-8 p-0">
+								<input class="col" type="text" id="a_key_word" placeholder="Ex:01" required />
+							</div>
+						</div>
+						<div class="row m-0 col-md-4 p-1">
+							<div class="col-md-4 p-0">品號關鍵 :</div>
+							<div class="col-md-8 p-0">
+								<input class="col-md-12" type="text" id="a_key_item_word" placeholder="Ex:電桿" />
+							</div>
+						</div>
+						<div class="row m-0 col-md-5 p-1">
+							<div class="col-md-2 p-0">說明備註 :</div>
+							<div class="col-md-10 p-0">
+								<input class="col-md-12" type="text" id="a_note" placeholder="Ex:可不寫" />
+							</div>
+						</div>
+					</div>
+					<!-- 設定 按鈕 -->
+					<div class="row m-0 justify-content-center">
+						<div class="row m-0 justify-content-center col-md-2 p-2">
+							<button id="a_u_submit" class="col-10 btn btn-primary btn-block" type="submit">存入資料</button>
+						</div>
+						<div class="row m-0 justify-content-center col-md-2 p-2">
+							<button id="a_c_submit" class="col-10 btn btn-warning btn-block" type="button">清除內容</button>
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -229,9 +180,9 @@
 			$("#search_choose").append(t_choose);
 			//t_header_group
 			var t_header_group = "";
-			var min_width = "85px";
+			var min_width = "120px";
 			for (var i = 0; i < this.link_item[0].length; i++) {
-				min_width = "85px";
+				min_width = "120px";
 				if (i == 4 || i == 5 || i == 6 || i == 7) {
 					min_width = "175px";
 				} else if (i == 8 || i == 10) {

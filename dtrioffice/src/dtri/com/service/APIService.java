@@ -16,11 +16,10 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dtri.com.bean.BomProductGroupBean;
 import dtri.com.bean.MesApiBean;
-import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.entity.SoftwareVersionEntity;
+import dtri.com.tools.Fm_Time_Model;
 
 /**
  * 串接服務 MES
@@ -62,7 +61,7 @@ public class APIService {
 
 		} catch (Exception e) {
 			System.out.println(e);
-			check_connect = false;
+			//check_connect = false;
 		}
 
 		return content;
@@ -87,8 +86,7 @@ public class APIService {
 	 * 
 	 * @param sys_sn 系統自訂號?
 	 **/
-	public boolean mes_production_create(ProductionRecordsEntity entity, SoftwareVersionEntity software, JSONObject sn_obj, BomProductGroupBean bomProGro,
-			MesApiBean mesApi, boolean sys_sn) {
+	public boolean mes_production_create(ProductionRecordsEntity entity, SoftwareVersionEntity software, JSONObject sn_obj, MesApiBean mesApi, boolean sys_sn) {
 
 		// API 串接至 MES (暫時寫死)
 		// HttpClient httpClient = HttpClientBuilder.create().build();
@@ -96,35 +94,38 @@ public class APIService {
 		SSLContextBuilder builder = new SSLContextBuilder();
 		SSLConnectionSocketFactory sslConnectionFactory;
 		// 連線失敗不再連線
-		if (!check_connect) {
-			return false;
-		}
+//		if (!check_connect) {
+//			return false;
+//		}
 		try {// 使用HTTPS 加密連線
 			JSONObject mes_obj = new JSONObject();
 			JSONObject production_records = new JSONObject();// 規格+製令單
 
-			// 規格+製令單
-			production_records.put("pr_c_name", entity.getClient_name());
-			production_records.put("sys_note", entity.getNote());
+			// [包裝]製令單
+			production_records.put("ph_c_name", entity.getClient_name());
 			production_records.put("ph_type", mesApi.getPr_type());// 製令單類型
 			production_records.put("ph_pb_g_id", "");
-			production_records.put("sys_m_user", "");
 			production_records.put("ph_schedule", "");
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
-			production_records.put("pr_wl_id", mesApi.getPr_wline_id());// 產線-程序
 			production_records.put("ph_p_number", mesApi.getPh_p_number());// 產品 認證/編號
+			production_records.put("ph_wl_id", mesApi.getPr_wline_id());// 產線-程序
 			production_records.put("ph_p_name", mesApi.getPh_p_name());// 產品 認證/編號
-			production_records.put("sys_c_user", "");
+			production_records.put("ph_s_date", "");
 			production_records.put("ph_id", "");
+			production_records.put("ph_p_ok_qty", "0");
+			production_records.put("ph_order_id", entity.getOrder_id());
+			production_records.put("ph_pr_id", entity.getId());
+			production_records.put("ph_e_s_date", entity.getProduct_hope_date() != null ? Fm_Time_Model.to_yyMMdd(entity.getProduct_hope_date()) : "");
+			production_records.put("ph_c_from", "DTR ERP");
+			production_records.put("ph_p_qty", entity.getProduction_quantity());
+			production_records.put("sys_note", entity.getNote());
+			production_records.put("sys_m_user", "");
+			production_records.put("sys_c_user", "");
 			production_records.put("sys_ver", "0");
 			production_records.put("sys_status", "0");
-			production_records.put("ph_s_date", "");
 			production_records.put("sys_sn_auto", sys_sn);// 是否 是系統生產
 
-			production_records.put("pr_bom_id", entity.getBom_product_id());
-			production_records.put("pr_bom_c_id", entity.getBom_product_customer_id());
-			production_records.put("pr_p_model", entity.getProduct_model());
-
+			// [包裝]產品序號
 			String psl = entity.getProduct_start_sn();
 			production_records.put("ps_sn_1", sys_sn ? psl.substring(0, 3) : "000");
 			production_records.put("ps_sn_2", sys_sn ? psl.substring(3, 4) : "0");
@@ -132,25 +133,44 @@ public class APIService {
 			production_records.put("ps_sn_4", sys_sn ? psl.substring(5, 9) : "0000");
 			production_records.put("ps_sn_5", sys_sn ? psl.substring(9, 10) : "0");
 			production_records.put("ps_sn_6", sys_sn ? psl.substring(10, 13) : "000");
-
 			production_records.put("ps_b_f_sn", mesApi.getPs_b_f_sn());// 客製化 & 燒入流水號
 			production_records.put("ps_b_sn", mesApi.getPs_b_sn());// 客製化 & 燒入流水號
 
 			JSONObject prbitem = new JSONObject();
-			for (int bg = 0; bg < bomProGro.getBomGroupEntities().size(); bg++) {
-				BomGroupEntity bge_one = bomProGro.getBomGroupEntities().get(bg);
-				// System.out.println(bge_one);
-				String value1 = bge_one.getI01() == null ? "" : bge_one.getI01();
-				String value2 = bge_one.getI02() == null ? "" : bge_one.getI02();
-				String value3 = bge_one.getI03() == null ? "" : bge_one.getI03();
-				String value4 = bge_one.getI04() == null ? "" : bge_one.getI04();
-				prbitem.put(bge_one.getGroup_name(), new JSONObject()//
-						.put("Is", value1 + value2 + value3 + value4)//
-						.put("Qty", bge_one.getNumber()));//
+			try {
+				new JSONObject(entity.getBom_product_content());
+				JSONObject bom_pc = new JSONObject(entity.getBom_product_content());
+				JSONArray bom_have = bom_pc.getJSONArray("have");
+				JSONArray bom_not = bom_pc.getJSONArray("not");
+				for (int bg = 0; bg < bom_have.length(); bg++) {
+					JSONObject one = (JSONObject) bom_have.get(bg);
+					String qty = one.getString("amount").replace(")", "").replace("(", "").replace("x", "");
+					if (qty.equals("")) {
+						qty = "1";
+					}
+					prbitem.put(one.getString("name"), new JSONObject()//
+							.put("Is", one.getString("content")).put("Qty", Integer.parseInt(qty)));//
 
+				}
+				for (int bg = 0; bg < bom_not.length(); bg++) {
+					JSONObject one = (JSONObject) bom_not.get(bg);
+					String qty = one.getString("amount").replace(")", "").replace("(", "").replace("x", "");
+					if (qty.equals("")) {
+						qty = "0";
+					}
+					prbitem.put(one.getString("name"), new JSONObject()//
+							.put("Is", one.getString("content")).put("Qty", Integer.parseInt(qty)));//
+
+				}
+			} catch (Exception ex) {
+				System.out.println(ex.toString());
 			}
+
+			// [包裝]製令規格
+			production_records.put("pr_bom_id", entity.getBom_product_id());
+			production_records.put("pr_bom_c_id", entity.getBom_product_customer_id());
+			production_records.put("pr_p_model", entity.getProduct_model());
 			production_records.put("pr_b_item", prbitem);// 規格
-			production_records.put("pr_p_quantity", entity.getProduction_quantity());
 			production_records.put("pr_s_item", new JSONObject()// 軟體定義
 					.put("OS ", new JSONObject().put("Is", software.getOs()))//
 					.put("BIOS ", new JSONObject().put("Is", software.getBios()))//
@@ -162,18 +182,12 @@ public class APIService {
 					.put("USER_Note2", new JSONObject().put("Is", software.getNote2()))//
 					.put("M/B_Ver_ECN", new JSONObject().put("Is", software.getMb_ver_ecn())));
 
-			production_records.put("pr_c_from", "DTR ERP");
-			production_records.put("sys_m_date", "");
-
-			production_records.put("pr_order_id", entity.getOrder_id());
-			production_records.put("pr_w_years", mesApi.getPr_w_years());// 保固年分
-			production_records.put("ph_pr_id", entity.getId());
-
+			production_records.put("ph_w_years", mesApi.getPr_w_years());// 保固年分
 			production_records.put("pr_s_sn", entity.getProduct_start_sn());
+			production_records.put("pr_e_sn", entity.getProduct_end_sn());// 結束
+			production_records.put("sys_m_date", "");
 			production_records.put("sys_sort", "0");
 			production_records.put("sys_c_date", "");
-			production_records.put("pr_e_sn", entity.getProduct_end_sn());// 結束
-			production_records.put("pr_p_ok_quantity", "0");
 
 			if (sn_obj.length() > 0 && sn_obj.has("sn_list")) {
 				production_records.put("sn_list", sn_obj.getJSONArray("sn_list"));
@@ -186,6 +200,7 @@ public class APIService {
 			mes_obj.put("action", "production_create");
 			mes_obj.put("create", new JSONArray().put(production_records));
 
+			// [傳送準備] MES資訊
 			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
 			sslConnectionFactory = new SSLConnectionSocketFactory(builder.build());
 			CloseableHttpClient httpclient = HttpClients.custom()//
@@ -205,7 +220,7 @@ public class APIService {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
-			check_connect = false;
+			//check_connect = false;
 			return false;
 		} finally {
 

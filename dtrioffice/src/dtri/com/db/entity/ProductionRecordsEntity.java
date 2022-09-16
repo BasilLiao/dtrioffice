@@ -21,16 +21,49 @@ public class ProductionRecordsEntity {
 	private String product_model;
 	private Integer bom_id;
 	private String bom_product_id;
-	private String bom_product_customer_id;//客戶定義用
-	
+	private String bom_product_content;// bom規格json{}
+	private String bom_product_customer_id;// 客戶定義用
+
 	private String version_motherboard;
 	private String note;
+	private String pm_note;
 	private String come_from;
 	private Integer product_progress;
 	private Integer product_status;
 	private String product_start_sn;
 	private String product_end_sn;
 	private String bom_type;// BOM 類型 product = 產品BOM /accessories = 配件BOM
+	private String bom_principal;//負責人
+
+	private Date product_hope_date;// 期望日
+	private Date product_check_date;// 檢核日
+	private Date product_finish_date;// 完工日
+	private String product_package;// 包裝json{}
+	private String product_type;// 產品狀態 技轉中 /可量產
+
+	public Date getProduct_hope_date() {
+		return product_hope_date;
+	}
+
+	public void setProduct_hope_date(Date product_hope_date) {
+		this.product_hope_date = product_hope_date;
+	}
+
+	public Date getProduct_check_date() {
+		return product_check_date;
+	}
+
+	public void setProduct_check_date(Date product_check_date) {
+		this.product_check_date = product_check_date;
+	}
+
+	public Date getProduct_finish_date() {
+		return product_finish_date;
+	}
+
+	public void setProduct_finish_date(Date product_finish_date) {
+		this.product_finish_date = product_finish_date;
+	}
 
 	public Date getSys_create_date() {
 		return sys_create_date;
@@ -198,6 +231,46 @@ public class ProductionRecordsEntity {
 
 	public void setBom_product_customer_id(String bom_product_customer_id) {
 		this.bom_product_customer_id = bom_product_customer_id;
+	}
+
+	public String getProduct_package() {
+		return product_package;
+	}
+
+	public void setProduct_package(String product_package) {
+		this.product_package = product_package;
+	}
+
+	public String getBom_product_content() {
+		return bom_product_content;
+	}
+
+	public void setBom_product_content(String bom_product_content) {
+		this.bom_product_content = bom_product_content;
+	}
+
+	public String getProduct_type() {
+		return product_type;
+	}
+
+	public void setProduct_type(String product_type) {
+		this.product_type = product_type;
+	}
+
+	public String getBom_principal() {
+		return bom_principal;
+	}
+
+	public void setBom_principal(String bom_principal) {
+		this.bom_principal = bom_principal;
+	}
+
+	public String getPm_note() {
+		return pm_note;
+	}
+
+	public void setPm_note(String pm_note) {
+		this.pm_note = pm_note;
 	}
 
 }

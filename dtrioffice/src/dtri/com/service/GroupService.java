@@ -27,19 +27,19 @@ public class GroupService {
 	private LoginService loginService;
 
 	/**
-	 * @param entity 
-	
+	 * @param entity
+	 * 
 	 * @return 查詢後清單
 	 * 
 	 **/
 	public List<GroupEntity> searchGroup(GroupEntity entity) {
 		// who 顯示內內容限制 除了 true = admin(ID 固定1)/ false = 一般查詢
-		Boolean whoCheck = loginService.getSessionUserBean().getId()==1;
-		Integer useful= 3;
-		if(whoCheck) {
+		Boolean whoCheck = loginService.getSessionUserBean().getId() == 1;
+		Integer useful = 3;
+		if (whoCheck) {
 			useful = 0;
 		}
-		
+
 		// 防止輸入為空 或 null
 		String checkName = "LIKE";
 		if (entity.getName() == null || entity.getName().equals("")) {
@@ -47,8 +47,8 @@ public class GroupService {
 			checkName = "NOT LIKE";
 		}
 
-		//後讀取
-		List<GroupEntity> list = groupDao.queryAll(checkName, "%" + entity.getName() + "%",useful);
+		// 後讀取
+		List<GroupEntity> list = groupDao.queryAll(checkName, "%" + entity.getName() + "%", useful);
 		return list;
 	}
 
@@ -62,9 +62,9 @@ public class GroupService {
 	public Boolean addedGroup(List<GroupEntity> entitys, int id) {
 		Boolean check = false;
 		for (GroupEntity entity : entitys) {
-			// 如果ID 是 0 是新增群組 /反之 新增權限 
+			// 如果ID 是 0 是新增群組 /反之 新增權限
 			if (entity.getId() == 0 && id == 0) {
-				//新增 不可與作業系統 admin 名稱一致
+				// 新增 不可與作業系統 admin 名稱一致
 				if (entity.getName().equals("admin")) {
 					continue;
 				}
@@ -75,7 +75,7 @@ public class GroupService {
 		}
 		return check;
 	}
-	
+
 	/** 更新 **/
 	public Boolean updateGroup(List<GroupEntity> entitys) {
 		Boolean check = false;
@@ -193,7 +193,7 @@ public class GroupService {
 		jsonArray.put("修改者");
 		jsonArray.put("群組ID");
 		jsonArray.put("群組名稱");
-		jsonArray.put("是否使用");
+		jsonArray.put("啟用?");
 		jsonArray.put("備註");
 		group_list.put(jsonArray);
 		// 權限 標題
@@ -280,7 +280,7 @@ public class GroupService {
 	 * @param p_Obj     回傳查詢資料
 	 * @param frontData 前端傳入的"控制"資訊 回傳 成功
 	 **/
-	public JSONObject ajaxRspJson(JSONObject p_Obj, JSONObject frontData,String r_Message) {
+	public JSONObject ajaxRspJson(JSONObject p_Obj, JSONObject frontData, String r_Message) {
 		JsonDataModel data = new JsonDataModel();
 		JSONObject r_allData = new JSONObject();
 		JsonObjBean objBean = new JsonObjBean();

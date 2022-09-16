@@ -11,6 +11,8 @@ public interface PermissionDao {
 	 * @return List<PermissionEntity>
 	 */
 	List<PermissionEntity> queryAll(PermissionEntity entity);
+	
+	List<PermissionEntity> queryAllById(PermissionEntity entity);
 
 	Boolean addedOne(PermissionEntity entity);
 

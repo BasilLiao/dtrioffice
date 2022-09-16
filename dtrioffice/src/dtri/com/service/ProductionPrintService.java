@@ -1,13 +1,7 @@
 package dtri.com.service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,19 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dtri.com.bean.BomProductGroupBean;
 import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
-import dtri.com.db.entity.BomGroupEntity;
-import dtri.com.db.entity.BomProductEntity;
-import dtri.com.db.entity.BomTypeItemEntity;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.entity.ProductionSnEntity;
 import dtri.com.db.entity.SoftwareVersionEntity;
-import dtri.com.db.pgsql.dao.BomAccessoriesProductDao;
-import dtri.com.db.pgsql.dao.BomAccessoriesTypeItemDao;
-import dtri.com.db.pgsql.dao.BomProductDao;
-import dtri.com.db.pgsql.dao.BomTypeItemDao;
 import dtri.com.db.pgsql.dao.ProductionRecordsDAO;
 import dtri.com.tools.Fm_Time_Model;
 import dtri.com.tools.JsonDataModel;
@@ -36,178 +22,9 @@ import dtri.com.tools.JsonDataModel;
 @Service
 public class ProductionPrintService {
 	@Autowired
-	private BomProductDao productDao;
-	@Autowired
-	private BomTypeItemDao itemDao;
-	@Autowired
-	private BomAccessoriesProductDao productAccDao;
-	@Autowired
-	private BomAccessoriesTypeItemDao itemAccDao;
-	@Autowired
 	private ProductionRecordsDAO productionDao;
 	@Autowired
 	private APIService apiService;
-	@Autowired
-	private LoginService loginService;
-
-	/**
-	 * @param entitys    查詢條件
-	 * @param offset     幾頁
-	 * @param page_total 數量
-	 * @return 查詢後清單
-	 * 
-	 **/
-	public BomProductGroupBean search(List<BomProductEntity> entitys, int offset, int page_total) {
-		// 防止輸入為空 或 null
-		BomProductGroupBean bpg = new BomProductGroupBean();
-		String product_model = "  ";// 產品 型號
-		String type_item_group_id = "  ";// 群組ID
-		String type_item_id = " ";// 項目ID
-		String product_bom_nb = " ";// 對應的BOM
-		String all_where_product = " ";// SQL BOM 條件
-		String all_where_group = " ";// SQL 群組 條件
-		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
-		List<Integer> group_limit_in = new ArrayList<Integer>();
-
-		List<BomProductEntity> p_list = new ArrayList<BomProductEntity>();
-		ArrayList<BomGroupEntity> g_list = new ArrayList<BomGroupEntity>();
-		List<BomTypeItemEntity> i_list = new ArrayList<BomTypeItemEntity>();
-		List<BomTypeItemEntity> i_listAcc = new ArrayList<BomTypeItemEntity>();
-		int select_nb = 0;// 查詢條件
-		// =======有條件=======
-		if (entitys.size() > 0 && //
-				(entitys.get(0).getBom_number() != null || // BOM 料號
-						entitys.get(0).getProduct_model() != null || // 產品型號
-						entitys.get(0).getBom_type() != null || // 類型(主產品/副產品)
-						entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {// 產品內規格
-			BomProductEntity bomEntity = entitys.get(0);
-			for (BomProductEntity entity : entitys) {
-				// 組
-				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
-					select_nb++;
-					all_where_group += "(";
-					type_item_group_id = " type_item_group_id = " + entity.getGroupEntity().getType_item_group_id();
-					all_where_group += type_item_group_id + " AND ";
-				} else {
-					continue;
-				}
-				// 子
-				if (entity.getGroupEntity().getType_item_id() != null) {
-					type_item_id = " type_item_id = " + entity.getGroupEntity().getType_item_id();
-					all_where_group += type_item_id + ") OR ";
-				} else {
-					all_where_group += "type_item_id !=0 ) OR ";
-				}
-			}
-			// ----------產品----------
-			for (BomProductEntity entity : entitys) {
-				// 查詢名稱 條件不能與 項目衝突
-				if (entity.getProduct_model() != null && !entity.getProduct_model().equals("")) {
-					product_model = " product_model LIKE '%" + entity.getProduct_model() + "%' ";
-					all_where_product += "(" + product_model + ") AND ";
-				}
-				if (entity.getBom_number() != null && !entity.getBom_number().equals("")) {
-					product_bom_nb = " bom_number LIKE '%" + entity.getBom_number() + "%' ";
-					all_where_product += "(" + product_bom_nb + ") AND ";
-				}
-			}
-
-			// 如果(項目有值) / 如果只有(產品有值)
-			if (!all_where_group.equals(" ")) {
-				// 除對多餘的 OR
-				all_where_group = all_where_group.substring(0, all_where_group.length() - 3);
-				// 取得傭有條件的 群組 項目
-				if (bomEntity.getBom_type().equals("product")) {
-					g_list = productDao.queryGroup(all_where_group, null);
-				} else {
-					g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
-				}
-
-				// 過濾 重複 產品清單
-				Map<Integer, Integer> g_m_list = new HashMap<Integer, Integer>();
-				for (BomGroupEntity bomG : g_list) {
-					if (g_m_list.containsKey(bomG.getProduct_id())) {
-						g_m_list.put(bomG.getProduct_id(), g_m_list.get(bomG.getProduct_id()) + 1);
-					} else {
-						g_m_list.put(bomG.getProduct_id(), 1);
-					}
-				}
-				// 取得產品條件後 再次取得資料 項目-群組
-				all_where_group = " product_id in(";
-				for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
-					if (select_nb <= item.getValue()) {
-						all_where_group += item.getKey() + ",";
-					}
-				}
-				all_where_group += "0)";
-				if (bomEntity.getBom_type().equals("product")) {
-					g_list = productDao.queryGroup(all_where_group, null);
-				} else {
-					g_list = productAccDao.queryAccessoriesGroup(all_where_group, null);
-				}
-
-				// ID 條件
-				all_where_product += "product_model !='' AND id in(";
-				for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
-					if (select_nb <= item.getValue()) {
-						all_where_product += item.getKey() + ",";
-					}
-				}
-				all_where_product += "0)";
-				// 產品-清單(主件/附件)?
-				if (bomEntity.getBom_type().equals("product")) {
-					p_list = productDao.queryProduct(all_where_product, all_limit);
-				} else {
-					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
-				}
-			} else {
-				all_where_product += "product_model !=''";
-				all_where_group += "type_item_id !=0";
-				// 取得擁有條件的 群組 項目 (限制[主見/配件])
-				if (bomEntity.getBom_type().equals("product")) {// 主件
-					p_list = productDao.queryProduct(all_where_product, all_limit);
-					for (BomProductEntity one : p_list) {
-						group_limit_in.add(one.getId());
-					}
-					g_list = productDao.queryGroup(all_where_group, group_limit_in);
-				} else {// 配件
-					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
-					for (BomProductEntity one : p_list) {
-						group_limit_in.add(one.getId());
-					}
-					g_list = productAccDao.queryAccessoriesGroup(all_where_group, group_limit_in);
-				}
-			}
-
-		} else {
-			// =======無條件=======
-			// 取得擁有條件的 群組 項目 (限制[主見/配件])
-			// if (entitys.get(0).getBom_type().equals("product")) {//主件
-			p_list = productDao.queryProduct("product_model !='' ", all_limit);
-			for (BomProductEntity one : p_list) {
-				group_limit_in.add(one.getId());
-			}
-			g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
-			/*
-			 * } else {//配件 p_list =
-			 * productAccDao.queryAccessoriesProduct("product_model !='' ", all_limit); for
-			 * (BomProductEntity one : p_list) { group_limit_in.add(one.getId()); } g_list =
-			 * productAccDao.queryAccessoriesGroup("type_item_id !=0", group_limit_in); }
-			 */
-		}
-
-		// 產品
-		bpg.setBomProductEntities(p_list);
-		// 規格
-		bpg.setBomGroupEntities(g_list);
-		// 項目(主件)-清單
-		i_list = itemDao.queryAll("!= ' '");
-		bpg.setBomTypeItemEntities(i_list);
-		// 項目(配件)-清單
-		i_listAcc = itemAccDao.queryAll("!= ' '");
-		bpg.setBomAccessoriesTypeItemEntities(i_listAcc);
-		return bpg;
-	}
 
 	public List<ProductionRecordsEntity> searchProduction(ProductionRecordsEntity entity, int offset, int page_total) {
 		String all_limit = " OFFSET " + offset + " LIMIT " + page_total;
@@ -231,48 +48,6 @@ public class ProductionPrintService {
 		return 100;
 	}
 
-	/** JSON to 清單 **/
-	public List<BomProductEntity> jsonToEntities(JSONObject content) {
-		List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
-
-		// 查詢?(BOM 表單)
-		if (!content.isNull("search_list") && !content.get("search_list").equals("")) {
-			JSONArray search = content.getJSONArray("search_list");
-			for (Object object : search) {
-				BomProductEntity p_entity = new BomProductEntity();
-				BomGroupEntity g_entity = new BomGroupEntity();
-				g_entity.setSys_create_date(new Date());
-				g_entity.setSys_create_user(loginService.getSessionUserBean().getAccount());
-				g_entity.setSys_modify_date(new Date());
-				g_entity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
-				JSONObject one = new JSONObject(object.toString());
-				// 產品?
-				if (!one.isNull("p_model") && !one.get("p_model").equals(""))
-					p_entity.setProduct_model(one.getString("p_model"));
-				// 項目組?
-				if (!one.isNull("g_item") && !one.get("g_item").equals(""))
-					g_entity.setType_item_group_id(one.getInt("g_item"));
-				// 項目?->複數 站存在note內
-				if (!one.isNull("i_item") && !one.get("i_item").equals(""))
-					g_entity.setType_item_id(one.getInt("i_item"));
-				// 項目?->BOM料號
-				if (!one.isNull("p_bom_number") && !one.get("p_bom_number").equals(""))
-					p_entity.setBom_number(one.getString("p_bom_number"));
-
-				// 項目?->BOM_id
-				if (!one.isNull("p_bom_id") && !one.get("p_bom_id").equals(""))
-					p_entity.setId(one.getInt("p_bom_id"));
-				// 主附件
-				if (!one.isNull("bom_type") && !one.get("bom_type").equals(""))
-					p_entity.setBom_type(one.getString("bom_type"));
-
-				p_entity.setGroupEntity(g_entity);
-				entitys.add(p_entity);
-			}
-		}
-		return entitys;
-	}
-
 	/** JSON to 清單(解析 製令單) **/
 	public ProductionRecordsEntity jsonToEntities2(JSONObject content) {
 		ProductionRecordsEntity entity = new ProductionRecordsEntity();
@@ -293,7 +68,7 @@ public class ProductionPrintService {
 		// 產品料號
 		if (!content.isNull("bom_product_id") && !content.get("bom_product_id").equals(""))
 			entity.setBom_product_id(content.getString("bom_product_id"));
-		// 產品料號 客戶 BOM 
+		// 產品料號 客戶 BOM
 		if (!content.isNull("bom_product_c_id") && !content.get("bom_product_c_id").equals(""))
 			entity.setBom_product_customer_id(content.getString("bom_product_c_id"));
 		// 進度? 狀態類型 完成ERP工單(準備物料)=1/完成注意事項(預約生產)=2/完成->流程卡(準備生產)=3/=4/ =5
@@ -318,9 +93,15 @@ public class ProductionPrintService {
 		} else {
 			entity.setProduct_status(1);
 		}
-
+		//規格
+		if (!content.isNull("bom_product_content") && !content.get("bom_product_content").equals(""))
+			entity.setBom_product_content(content.getString("bom_product_content"));
+		
+		//預計出貨日
+		if (!content.isNull("product_hope_date") && !content.get("product_hope_date").equals(""))
+		entity.setProduct_hope_date(Fm_Time_Model.toDate(content.getString("product_hope_date")));
+		
 		return entity;
-
 	}
 
 	/** JSON to 清單(解析 SN 序號版本) **/
@@ -341,175 +122,13 @@ public class ProductionPrintService {
 	}
 
 	/** 清單 to JSON **/
-	public JSONObject entitiesToJson(BomProductGroupBean bpg, List<ProductionRecordsEntity> bpg2, List<SoftwareVersionEntity> bpg3,
-			ArrayList<ProductionSnEntity> bpg4, JSONObject sn_obj, String sn_burn_fixed, String sn_burn_nb, int sn_burn_quantity) {
+	public JSONObject entitiesToJson(List<ProductionRecordsEntity> bpg2, List<SoftwareVersionEntity> bpg3, ArrayList<ProductionSnEntity> bpg4,
+			JSONObject sn_obj, String sn_burn_fixed, String sn_burn_nb, int sn_burn_quantity) {
 		JSONObject list = new JSONObject();
 		JSONObject item_All = new JSONObject();
 		JSONArray jsonAll = new JSONArray();
-		JSONArray item_listAll = new JSONArray();
-		JSONArray item_acc_listAll = new JSONArray();
-		JSONArray groupList = new JSONArray();
-		JSONArray groupOne = new JSONArray();
 		JSONArray jsonArray = new JSONArray();
-		if (bpg != null) {
-			// 標題
-			jsonArray.put("產品ID");
-			jsonArray.put("產品型號");
-			jsonArray.put("主機板(硬體)-版本");
 
-			jsonArray.put("對應BOM表 單號");
-			jsonArray.put("狀態");
-			jsonArray.put("備註");
-			jsonArray.put("上次建單人");
-			jsonArray.put("類型");
-			jsonArray.put("主/配件");
-
-			jsonArray.put("建立時間");
-			jsonArray.put("建立者");
-			jsonArray.put("修改時間");
-			jsonArray.put("修改者");
-			jsonAll.put(jsonArray);
-			// 內容 產品清單
-			for (BomProductEntity entity : bpg.getBomProductEntities()) {
-				jsonArray = new JSONArray();
-				jsonArray.put(entity.getId());
-				jsonArray.put(entity.getProduct_model());
-				jsonArray.put(entity.getVersion_motherboard());
-
-				jsonArray.put(entity.getBom_number());
-				jsonArray.put(entity.getUseful());
-				jsonArray.put(entity.getNote());
-				jsonArray.put(entity.getChecked());
-				jsonArray.put(entity.getKind());
-				jsonArray.put(entity.getBom_type());
-
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-				jsonArray.put(entity.getSys_create_user());
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-				jsonArray.put(entity.getSys_modify_user());
-				jsonAll.put(jsonArray);
-			}
-			list.put("list", jsonAll);
-			// 細項 群組清單
-			boolean checkf = false;
-			for (BomGroupEntity entity : bpg.getBomGroupEntities()) {
-
-				// 第一次不算
-				if (entity.getType_item_group_id() == 1 && checkf) {
-					groupList.put(groupOne);
-				}
-				jsonArray = new JSONArray();
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
-				jsonArray.put(entity.getSys_create_user());
-				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
-				jsonArray.put(entity.getSys_modify_user());
-
-				jsonArray.put(entity.getId());
-				jsonArray.put(entity.getProduct_id());
-				jsonArray.put(entity.getType_item_id());
-				jsonArray.put(entity.getType_item_group_id());
-				jsonArray.put(entity.getNumber());
-				jsonArray.put(entity.getType_order());
-
-				jsonArray.put(entity.getUseful());
-				jsonArray.put(entity.getGroup_name());
-
-				for (int i = 1; i <= 25; i++) {
-					Method method;
-					try {
-						method = entity.getClass().getMethod("getI" + String.format("%02d", i));
-						String value = (String) method.invoke(entity);
-						if (value == null || value.equals("")) {
-							continue;
-						}
-						jsonArray.put(value);
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-
-				groupOne.put(jsonArray);
-				checkf = true;
-			}
-			// groupList.put(groupOne);
-			list.put("group_list", groupOne);
-			// 項目清單
-			// 項目資料+標題(sn 規範)
-			for (BomTypeItemEntity entity : bpg.getBomTypeItemEntities()) {
-				jsonArray = new JSONArray();
-				jsonArray.put(entity.getGroup_id());
-				jsonArray.put(entity.getGroup_name());
-				jsonArray.put(entity.getId());
-				jsonArray.put(entity.getType_order());
-
-				for (int i = 1; i <= 25; i++) {
-					Method method;
-					try {
-						method = entity.getClass().getMethod("getI" + String.format("%02d", i));
-						String value = (String) method.invoke(entity);
-						if (value == null || value.equals("")) {
-							continue;
-						}
-						jsonArray.put(value);
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-				jsonArray.put(entity.getNote());
-				item_listAll.put(jsonArray);
-			}
-			list.put("item_list", item_listAll);
-			// ACC 項目清單
-			// ACC 項目資料+標題
-			for (BomTypeItemEntity entity : bpg.getBomAccessoriesTypeItemEntities()) {
-				jsonArray = new JSONArray();
-				jsonArray.put(entity.getGroup_id());
-				jsonArray.put(entity.getGroup_name());
-				jsonArray.put(entity.getId());
-				jsonArray.put(entity.getType_order());
-
-				for (int i = 1; i <= 25; i++) {
-					Method method;
-					try {
-						method = entity.getClass().getMethod("getI" + String.format("%02d", i));
-						String value = (String) method.invoke(entity);
-						if (value == null || value.equals("")) {
-							continue;
-						}
-						jsonArray.put(value);
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-				jsonArray.put(entity.getNote());
-				item_acc_listAll.put(jsonArray);
-			}
-			list.put("item_acc_list", item_acc_listAll);
-		}
 		// 需生產製令單
 		// 標題
 		jsonArray = new JSONArray();
@@ -546,13 +165,17 @@ public class ProductionPrintService {
 			jsonArray.put(entity.getOrder_id());
 			jsonArray.put(entity.getClient_name());
 			jsonArray.put(entity.getProduct_model());
-
-			jsonArray.put(entity.getVersion_motherboard());
+			jsonArray.put(entity.getVersion_motherboard());// s_10
 			jsonArray.put(entity.getCome_from());
 			jsonArray.put(entity.getBom_type());
-
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
+			// 隱藏
+			jsonArray.put(entity.getProduct_hope_date() != null ? Fm_Time_Model.to_yyMMdd(entity.getProduct_hope_date()) : "");// s_15 產品-預計時間
+			jsonArray.put(entity.getBom_product_content());// s_16 產品規格-規格
+			jsonArray.put(entity.getProduct_type());// s_17 產品-狀態
+			jsonArray.put(entity.getBom_principal());// s_18 產品規格-負責人
+
 			jsonAll.put(jsonArray);
 		}
 
@@ -617,10 +240,7 @@ public class ProductionPrintService {
 		}
 		list.put("sn_all_list", r_list);
 		list.put("sn_all_nb", sn_obj);
-		/*
-		 * String pr_e_b_sn = data.getString("ps_b_f_sn") + String.format("%0" +
-		 * data.getString("ps_b_sn").length() + "d", (data.getInt("ps_b_sn") + i));
-		 */
+
 		// 製令單類型
 		JSONArray a_val = new JSONArray();
 		a_val.put((new JSONObject()).put("value", "一般製令_No(sn)").put("key", "A511_no_sn"));

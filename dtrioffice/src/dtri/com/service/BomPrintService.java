@@ -1,6 +1,5 @@
 package dtri.com.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -312,7 +311,6 @@ public class BomPrintService {
 		// 內容 產品清單
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
 			jsonArray = new JSONArray();
-
 			jsonArray.put(entity.getId());
 			jsonArray.put(entity.getProduct_model());
 			jsonArray.put(entity.getVersion_motherboard());
@@ -334,13 +332,11 @@ public class BomPrintService {
 		// ======== 細項 群組清單========
 		boolean checkf = false;
 		for (BomGroupEntity entity : bpg.getBomGroupEntities()) {
-
 			// 第一次不算
 			if (entity.getType_item_group_id() == 1 && checkf) {
 				groupList.put(groupOne);
 			}
 			jsonArray = new JSONArray();
-
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
@@ -364,22 +360,12 @@ public class BomPrintService {
 						continue;
 					}
 					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 			groupOne.put(jsonArray);
 		}
-
 		checkf = true;
 		list.put("group_list", groupOne);
 		// 項目清單
@@ -400,15 +386,7 @@ public class BomPrintService {
 						continue;
 					}
 					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -435,15 +413,7 @@ public class BomPrintService {
 						continue;
 					}
 					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

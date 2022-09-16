@@ -33,8 +33,7 @@ public class SysPermissionController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/sys_permission", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/sys_permission", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String search_sys_permission(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - sys_permission");
 		// Step1.取出 session 訊息 & 檢查權限
@@ -58,11 +57,11 @@ public class SysPermissionController {
 
 			}
 			entity.setGroup_id(0);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity, false);
 			JSONObject p_Obj = permissionService.entitiesToJson(p_Entities);
 
 			// Step4-2 .包裝資料
-			r_allData = permissionService.ajaxRspJson(p_Obj, frontData,"訪問成功!!");
+			r_allData = permissionService.ajaxRspJson(p_Obj, frontData, "訪問成功!!");
 		} else {
 			// Step4-1 .登出 && 包裝 錯誤 資料
 			r_allData = permissionService.fail_ajaxRspJson(frontData);
@@ -79,8 +78,7 @@ public class SysPermissionController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/added_sys_permission", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/added_sys_permission", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String added_sys_permission(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - added_sys_permission");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -107,7 +105,7 @@ public class SysPermissionController {
 				entitycheck = permissionService.jsonToEntities(frontData.getJSONObject("content"));
 				entitycheck.setName("");
 				entitycheck.setControl("");
-				List<PermissionEntity> p_Entities = permissionService.searchPermission(entitycheck);
+				List<PermissionEntity> p_Entities = permissionService.searchPermission(entitycheck, false);
 				// 有重複(同個群組 將ID 一樣)?
 				if (p_Entities.size() > 0) {
 					entity.setGroup_id(p_Entities.get(0).getGroup_id());
@@ -121,13 +119,13 @@ public class SysPermissionController {
 			// Step4-2 .DB 查詢 正確 資料
 			entity = new PermissionEntity();
 			entity.setGroup_id(0);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity, false);
 			JSONObject p_Obj = permissionService.entitiesToJson(p_Entities);
 
 			// Step4-2 .包裝資料
-			r_allData = permissionService.ajaxRspJson(p_Obj, frontData,"新增成功!!");
+			r_allData = permissionService.ajaxRspJson(p_Obj, frontData, "新增成功!!");
 		} else {
-			
+
 			// Step4-1 .登出 && 包裝 錯誤 資料
 			r_allData = permissionService.fail_ajaxRspJson(frontData);
 		}
@@ -143,8 +141,7 @@ public class SysPermissionController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/update_sys_permission", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/update_sys_permission", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String update_sys_permission(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - update_sys_permission");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -161,52 +158,39 @@ public class SysPermissionController {
 
 		// Step4.檢查許可權 & 輸入物件
 		if (checkPermission) {
-
 			// Step4-1 .DB 取出 正確 資料
 			PermissionEntity entity = new PermissionEntity();
+			PermissionEntity search_entity = new PermissionEntity();
 			if (frontData.get("content") != null && !frontData.get("content").equals("")) {
 				entity = permissionService.jsonToEntities(frontData.getJSONObject("content"));
-				//取出相同 群組ID(或是新增群組 移除舊資料)
-				if(permissionService.searchPermission(entity).size()>=1) {
-					entity.setGroup_name(frontData.getJSONObject("content").getString("group_name"));					
-					Integer g_id =  permissionService.searchPermission(entity).get(0).getGroup_id();
+				search_entity.setGroup_name(entity.getGroup_name());
+				// 取出相同 群組ID
+				List<PermissionEntity> pEntities = permissionService.searchPermission(search_entity, false);
+				// 有相同群組?
+				if (pEntities.size() >= 1) {
+					entity.setGroup_name(pEntities.get(0).getGroup_name());
+					entity.setGroup_id(pEntities.get(0).getGroup_id());
 					// Step4-1 .DB 更新 正確 資料
-					entity = new PermissionEntity();
-					entity = permissionService.jsonToEntities(frontData.getJSONObject("content"));
-					entity.setGroup_id(g_id);
 					permissionService.updatePermission(entity);
-				}else {
-					// Step4-0 .DB 更新 正確 資料
-					// 檢查 群組名稱 是否有重複 群組
-					PermissionEntity entitycheck = new PermissionEntity();
-					entitycheck = permissionService.jsonToEntities(frontData.getJSONObject("content"));
-					entitycheck.setName("");
-					entitycheck.setControl("");
-					List<PermissionEntity> p_Entities = permissionService.searchPermission(entitycheck);
+				} else {
+					// 不同群組
+					// 移除舊資料
 					permissionService.deletePermission(entity);
-					// 有重複(同個群組 將ID 一樣)?
-					if (p_Entities.size() > 0) {
-						// Step4-1 .DB 新增 正確 資料(群組有重複)
-						entity.setGroup_id(p_Entities.get(0).getGroup_id());
-						entity.setId(null);
-						permissionService.addedRepeatGroupPermission(entity);
-					} else {
-						// Step4-1 .DB 新增 正確 資料(群組沒重複)
-						entity.setId(null);
-						entity.setGroup_id(null);
-						permissionService.addedPermission(entity);
-					}
-				}	
+					// Step4-1 .DB 新增 正確 資料(群組沒重複)
+					entity.setId(null);
+					entity.setGroup_id(null);
+					permissionService.addedPermission(entity);
+				}
 			}
 
 			// Step4-2 .DB 查詢 正確 資料
 			entity = new PermissionEntity();
 			entity.setGroup_id(0);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity, false);
 			JSONObject p_Obj = permissionService.entitiesToJson(p_Entities);
 
 			// Step4-3 .包裝資料
-			r_allData = permissionService.ajaxRspJson(p_Obj, frontData,"更新成功!!");
+			r_allData = permissionService.ajaxRspJson(p_Obj, frontData, "更新成功!!");
 		} else {
 
 			// Step4-1 .登出 && 包裝 錯誤 資料
@@ -224,8 +208,7 @@ public class SysPermissionController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/delete_sys_permission", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/delete_sys_permission", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String delete_sys_permission(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - delete_sys_permission");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -255,13 +238,13 @@ public class SysPermissionController {
 			// Step4-2 .DB 查詢 正確 資料
 			entity = new PermissionEntity();
 			entity.setGroup_id(0);
-			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity);
+			List<PermissionEntity> p_Entities = permissionService.searchPermission(entity, false);
 			JSONObject p_Obj = permissionService.entitiesToJson(p_Entities);
 
 			// Step4-3 .包裝資料
-			r_allData = permissionService.ajaxRspJson(p_Obj, frontData,"移除成功!!");
+			r_allData = permissionService.ajaxRspJson(p_Obj, frontData, "移除成功!!");
 		} else {
-			
+
 			// Step4-1 .登出 && 包裝 錯誤 資料
 			r_allData = permissionService.fail_ajaxRspJson(frontData);
 		}

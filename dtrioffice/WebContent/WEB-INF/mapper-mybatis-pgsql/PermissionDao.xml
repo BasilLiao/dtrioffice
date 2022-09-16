@@ -21,6 +21,17 @@
 		</where>
 		ORDER by group_id,nbdesc,id;
 	</select>
+	<!-- 指查詢 ID -->
+	<select id="queryAllById" resultType="PermissionEntity">
+		SELECT * FROM system_permission
+		<where>
+			<if test="id !=''">
+				id = #{id}
+			</if>
+		</where>
+		ORDER by group_id,nbdesc,id;
+	</select>
+	
 	<!-- 如果 沒 重複 -->
 	<insert id="addedOne" parameterType="PermissionEntity">
 		INSERT INTO

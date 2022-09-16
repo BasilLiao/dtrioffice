@@ -14,7 +14,7 @@
 <link rel="icon" type="image/svg" href="./emoji.svg" />
 <style type="text/css">
 #header_nav, body {
-	background-image: url("./thirdparty/images/bg.png");
+	/*background-image: url("./thirdparty/images/bg.png");*/
 	font-family: Microsoft JhengHei;
 }
 

@@ -35,12 +35,13 @@ public class PermissionService {
 	 * @param byName      單元名稱
 	 * @param byGroupName 群組名稱
 	 * @param byControl   控制單元名稱
+	 * @param onlyPid	  指查詢ID?
 	 * @return 查詢後清單
 	 * 
 	 **/
-	public List<PermissionEntity> searchPermission(PermissionEntity entity) {
+	public List<PermissionEntity> searchPermission(PermissionEntity entity,Boolean onlyPid) {
 		// 防止輸入為空 或 null
-
+		List<PermissionEntity> list = new ArrayList<PermissionEntity>();
 		if (entity.getName() == null) {
 			entity.setName("");
 		}
@@ -50,15 +51,20 @@ public class PermissionService {
 		if (entity.getControl() == null) {
 			entity.setControl("");
 		}
-		//不能看到最高管理者單元
-		Boolean whoCheck = loginService.getSessionUserBean().getId()==1;
-		if(!whoCheck) {
+		// 不能看到最高管理者單元
+		Boolean whoCheck = loginService.getSessionUserBean().getId() == 1;
+		if (!whoCheck) {
 			entity.setUseful(3);
 		}
-		
-		//矯正 
-		groupDao.updateAll();	
-		List<PermissionEntity> list = permissionDao.queryAll(entity);
+		/////////////////////////////////有問題
+		//如果只查詢ID
+		groupDao.updateAll();
+		if(onlyPid) {
+			list = permissionDao.queryAllById(entity);
+		}else {
+			// 矯正
+			list = permissionDao.queryAll(entity);			
+		}
 		return list;
 	}
 
@@ -67,7 +73,7 @@ public class PermissionService {
 		Boolean check = false;
 		permissionDao.addedOne(entity);
 
-		updateAdminPermission(entity,"G");
+		updateAdminPermission(entity, "G");
 		return check;
 	}
 
@@ -77,47 +83,81 @@ public class PermissionService {
 		// 添加一筆
 		permissionDao.addedRepeatGroupOne(entity);
 
-		updateAdminPermission(entity,"G");
+		updateAdminPermission(entity, "G");
 		return check;
 	}
-	/**自動創建權限 入 Admin**/
-	private void updateAdminPermission(PermissionEntity entity ,String type) {
-		
-		//查詢ID -正確輸入
+
+	/** 自動創建權限 入 Admin **/
+	private void updateAdminPermission(PermissionEntity entity, String type) {
+
+		// 查詢ID -正確輸入
 		PermissionEntity entitycheck = new PermissionEntity();
-		if((entity.getId()==null || entity.getId()==0) && !type.equals("D")) {
+		if ((entity.getId() == null || entity.getId() == 0) && !type.equals("D")) {
 			entitycheck.setName(entity.getName());
 			entitycheck.setControl(entity.getControl());
-			entitycheck = searchPermission(entitycheck).get(0);
+			entitycheck = searchPermission(entitycheck,false).get(0);
 			entity = entitycheck;
 		}
-		
+
 		// 因Admin 群組自動登記-
 		GroupEntity one = new GroupEntity();
 		one.setSys_create_date(new Date());
 		one.setSys_create_user(loginService.getSessionUserBean().getAccount());
 		one.setSys_modify_date(new Date());
 		one.setSys_modify_user(loginService.getSessionUserBean().getAccount());
-		
+
 		one.setId(1);
 		one.setName(loginService.getSessionUserBean().getAccount());
 		one.setNote("");
-		one.setUseful(3);//3=只給Admin看
+		one.setUseful(3);// 3=只給Admin看
 		one.setPermission(entity.getPermission());
 		one.setPermission_control(entity.getControl());
 		one.setPermission_group(entity.getGroup_name());
 		one.setPermission_id(entity.getId());
 		one.setPermission_name(entity.getName());
 		one.setPermission_type(type);
-		//新增 or 修改 or 移除 admin權限
+		// 新增 or 修改 or 移除 admin權限
 		List<GroupEntity> lge = new ArrayList<GroupEntity>();
 		lge.add(one);
 		grService.updateGroup(lge);
-	}	
+	}
+
 	/** 更新 **/
 	public Boolean updatePermission(PermissionEntity entity) {
 		Boolean check = false;
+		// Step1.更新權限單元資料
+		PermissionEntity entity_old = new PermissionEntity();
+		entity_old.setGroup_name(entity.getGroup_name());
+		entity_old.setName("");
+		entity_old.setControl("");
+		entity_old.setGroup_id(0);
+		List<PermissionEntity> entities_old = permissionDao.queryAll(entity_old);
+		// 查詢舊資料 權限群族是否存在
+		if (entities_old.size() > 0) {
+			entity.setGroup_id(entities_old.get(0).getGroup_id());
+		}
 		permissionDao.updateOne(entity);
+
+		// Step2.更新群組權限
+		Boolean whoCheck = loginService.getSessionUserBean().getId() == 1;
+		Integer useful = 3;
+		if (whoCheck) {
+			useful = 0;
+		}
+		String checkName = "NOT LIKE";
+		List<GroupEntity> all_group = groupDao.queryAll(checkName, "% %", useful);
+		for (int i = 0; i < all_group.size(); i++) {
+			if (all_group.get(i).getPermission_control().equals(entity.getControl())) {
+				GroupEntity one = all_group.get(i);
+				groupDao.deletePermissionOne(one);
+				one.setPermission_id(entity.getId());// ID
+				one.setPermission_control(entity.getControl());// 控制名稱
+				one.setPermission_group(entity.getGroup_name());// 群組名稱
+				one.setPermission_name(entity.getName());// 功能名稱
+				one.setNbdesc(entity.getNbdesc());// 順序
+				groupDao.addedOne(one);
+			}
+		}
 		return check;
 	}
 
@@ -125,7 +165,7 @@ public class PermissionService {
 	public Boolean deletePermission(PermissionEntity entity) {
 		Boolean check = false;
 		permissionDao.deleteOne(entity);
-		updateAdminPermission(entity,"D");
+		updateAdminPermission(entity, "D");
 		return check;
 
 	}
@@ -206,7 +246,7 @@ public class PermissionService {
 	 * @param p_Obj     回傳查詢資料
 	 * @param frontData 前端傳入的"控制"資訊 回傳 成功
 	 **/
-	public JSONObject ajaxRspJson(JSONObject p_Obj, JSONObject frontData,String r_Message) {
+	public JSONObject ajaxRspJson(JSONObject p_Obj, JSONObject frontData, String r_Message) {
 		JsonDataModel data = new JsonDataModel();
 		JSONObject r_allData = new JSONObject();
 		JsonObjBean objBean = new JsonObjBean();

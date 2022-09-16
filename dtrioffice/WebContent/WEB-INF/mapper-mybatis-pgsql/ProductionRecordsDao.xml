@@ -73,12 +73,16 @@
 		INSERT INTO
 		production_records(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
-		id,order_id,client_name,production_quantity,product_model,bom_product_id,bom_product_customer_id,
-		version_motherboard,note,come_from,product_status,product_progress,bom_id,bom_type)
+		id,order_id,client_name,production_quantity,product_type,
+		product_model,bom_product_id,bom_product_customer_id,
+		version_motherboard,note,pm_note,come_from,product_status,bom_product_content,bom_principal,
+		product_progress,bom_id,bom_type,product_hope_date,product_package)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
-		#{id},#{order_id},#{client_name},#{production_quantity},#{product_model},#{bom_product_id},#{bom_product_customer_id},
-		#{version_motherboard},#{note},#{come_from},#{product_status},#{product_progress},#{bom_id},#{bom_type});
+		#{id},#{order_id},#{client_name},#{production_quantity},#{product_type},
+		#{product_model},#{bom_product_id},#{bom_product_customer_id},
+		#{version_motherboard},#{note},#{pm_note},#{come_from},#{product_status},#{bom_product_content},#{bom_principal},
+		#{product_progress},#{bom_id},#{bom_type},#{product_hope_date},#{product_package});
 	</insert>
 
 	<!-- 更新 狀態 內容 -->
@@ -102,9 +106,12 @@
 		sys_modify_user = #{sys_modify_user} ,
 		client_name = #{client_name} ,
 		order_id = #{order_id} ,
-		bom_product_customer_id = #{bom_product_customer_id},
-		production_quantity
-		=#{production_quantity}
+		note = #{note} ,
+		product_package =
+		#{product_package},
+		bom_product_customer_id
+		=#{bom_product_customer_id},
+		production_quantity=#{production_quantity}
 		<if test="#{new_id}!=null">
 			,id= #{new_id}
 		</if>

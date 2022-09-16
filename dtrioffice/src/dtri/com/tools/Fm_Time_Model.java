@@ -18,6 +18,10 @@ public class Fm_Time_Model {
 	public static String to_yMd(Date date) {
 		return format_yyyyMMdd.format(date);
 	}
+	/**格式:yyyy-MM-dd**/
+	public static String to_yyMMdd(Date date) {
+		return sdf.format(date);
+	}
 	/**計算:加/減 天數**/
 	public static Date to_count(Integer n,Date dt) {
 		Calendar c = Calendar.getInstance(); 
@@ -28,7 +32,6 @@ public class Fm_Time_Model {
 	}
 	/**yyyy-MM-dd to Date**/
 	public static Date toDate(String dt) {
-		
 		try {
 			return sdf.parse(dt);
 		} catch (ParseException e) {

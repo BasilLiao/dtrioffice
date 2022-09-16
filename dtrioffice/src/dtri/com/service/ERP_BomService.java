@@ -209,7 +209,7 @@ public class ERP_BomService {
 	 * 
 	 * @param p_Entities BOM 庫別清單資料
 	 **/
-	public JSONObject entitiesToJson3(List<ERP_BOMMD_Entity> p_Entities, JSONObject list) {
+	public JSONObject entitiesToJson3(List<ERP_BOMMD_Entity> p_Entities, JSONObject list, int bom_qty) {
 		JSONArray jsonAll = new JSONArray();
 		// 標題
 		JSONArray jsonArray = new JSONArray();
@@ -220,7 +220,8 @@ public class ERP_BomService {
 		jsonArray.put("元件-品名");
 		// 內容
 		jsonArray.put("元件-描述");
-		jsonArray.put("元件-數");
+		jsonArray.put("元件-個數");
+		jsonArray.put("元件-套數");
 		jsonArray.put("元件-生效日");
 		jsonArray.put("元件-失效日");
 		jsonArray.put("備註");
@@ -237,8 +238,17 @@ public class ERP_BomService {
 			jsonArray.put(entity.getMd003());
 			jsonArray.put(entity.getMd009());
 			jsonArray.put(entity.getMb002());
+
 			jsonArray.put(entity.getMb003());
 			jsonArray.put(entity.getMd006().equals("") ? "" : entity.getMd006().split("\\.")[0]);
+			// 套數
+			String s_qty = entity.getMd006().equals("") ? "" : entity.getMd006().split("\\.")[0];
+			if (!s_qty.equals("")) {
+				int i_qty = Integer.parseInt(s_qty);
+				i_qty = i_qty * bom_qty;
+				jsonArray.put(i_qty + "");
+			}
+
 			jsonArray.put(entity.getMd011());
 			jsonArray.put(entity.getMd012());
 			jsonArray.put(entity.getMd016());

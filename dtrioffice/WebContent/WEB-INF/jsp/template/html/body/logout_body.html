@@ -1,26 +1,40 @@
-<div class="row" id="logout_body">
-	<div class="col-md-4"></div>
-	<div class="col-md-4 mt-2 mb-3">
-		<div class="row mb-3">
-			<h1 class="h3">Logout ERP</h1>
+<div class="pt-4 m-0 row shadow" id="logout_body">
+	<div class="col-md-12 p-0">
+		<div class="mb-3 text-center">
+			<h3>
+				<b>Logout ERP</b>
+			</h3>
 		</div>
-		<div class="row mb-3">
-			<div class="col-md-5">Check</div>
-			<div class="col-md-7" id="logout_check"></div>
-		</div>
-
-		<div class="row mb-3">
-			<div class="col-md-5">Account is</div>
-			<div class="col-md-7" id="logout_account"></div>
-		</div>
-		<div class="row mb-3">
-			<div class="col-md-5">
-				<a href="login.jsp" title="點我跳過">跳過 回登入</a>
+		<!-- 登出功能 -->
+		<div class="h5 mb-0 border border-primary rounded shadow bg-light" style="min-height: 600px;">
+			<div class="p-1 mb-2 mt-2 m-0 row">
+				<div class="row m-0 col-md-5 p-1"></div>
+				<div class="row m-0 col-md-2 p-1">
+					<div class="col-md-6 p-0">Check:</div>
+					<div class="col-md-6 p-0" id="logout_check">false</div>
+				</div>
+				<div class="row m-0 col-md-5 p-1"></div>
 			</div>
-			<div class="col-md-7" id="time">5</div>
+			<div class="p-1 mb-2 mt-2 m-0 row">
+				<div class="row m-0 col-md-5 p-1"></div>
+				<div class="row m-0 col-md-2 p-1">
+					<div class="col-md-6 p-0">Account is:</div>
+					<div class="col-md-6 p-0" id="logout_account"></div>
+				</div>
+				<div class="row m-0 col-md-5 p-1"></div>
+			</div>
+			<div class="p-1 mb-2 mt-2 m-0 row">
+				<div class="row m-0 col-md-5 p-1"></div>
+				<div class="row m-0 col-md-2 p-1">
+					<div class="col-md-6 p-0">
+						<a href="login.jsp" title="點我跳過">跳過 回登入</a>
+					</div>
+					<div class="col-md-6 p-0" id="time">7</div>
+				</div>
+				<div class="row m-0 col-md-5 p-1"></div>
+			</div>
 		</div>
 	</div>
-	<div class="col-md-4"></div>
 </div>
 <script type="text/javascript">
 	console.log("logout_body");
