@@ -121,6 +121,9 @@ public class UserService {
 			entity.setUseful(content.getInt("useful"));
 		if (!content.isNull("note"))
 			entity.setNote(content.getString("note"));
+
+		if (!content.isNull("a_agent"))
+			entity.setAccount_agent(content.getString("a_agent"));
 		return entity;
 	}
 
@@ -151,6 +154,7 @@ public class UserService {
 		jsonArray.put("群組名稱");
 		jsonArray.put("使用狀態");
 		jsonArray.put("備註");
+		jsonArray.put("代理");
 		jsonAll.put(jsonArray);
 		// 內容
 		for (UserEntity entity : p_Entities) {
@@ -171,6 +175,7 @@ public class UserService {
 			jsonArray.put(entity.getGroup_name());
 			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getNote());
+			jsonArray.put(entity.getAccount_agent());
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);

@@ -15,6 +15,7 @@ public class UserEntity {
 	private String e_name;
 	private String position;
 	private String account;
+	private String account_agent;
 	private String password;
 	private String email;
 	private Integer group_id;
@@ -120,5 +121,10 @@ public class UserEntity {
 	public void setE_name(String e_name) {
 		this.e_name = e_name;
 	}
-	
+	public String getAccount_agent() {
+		return account_agent;
+	}
+	public void setAccount_agent(String account_agent) {
+		this.account_agent = account_agent;
+	}
 }

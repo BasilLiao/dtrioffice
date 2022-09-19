@@ -36,8 +36,7 @@ public class BomProductController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/bom_product", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bom_product", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String search_bom_product(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - bom_product");
 		// Step1.取出 session 訊息 & 檢查權限
@@ -59,14 +58,13 @@ public class BomProductController {
 			List<BomProductEntity> entity = new ArrayList<BomProductEntity>();
 			BomProductGroupBean bpg = new BomProductGroupBean();
 			if (frontData.get("content") != null && !frontData.get("content").equals("")) {
-				entity = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"),
-						frontData.getString("action"));
+				entity = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"), frontData.getString("action"));
 				// 取得換頁碼 如果沒有 0
 				page_nb = productService.jsonToPageNb(frontData.getJSONObject("content"));
 				page_total = productService.jsonToPageTotal(frontData.getJSONObject("content"));
 			}
 			bpg = productService.search(entity, page_nb, page_total);
-			
+
 			// 查詢過後 沒資料
 			if (bpg.getBomProductEntities().size() < 1) {
 				r_allData = productService.fail_ajaxRspJson(frontData, "無資料!!");
@@ -92,8 +90,7 @@ public class BomProductController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/added_bom_product", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/added_bom_product", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String added_bom_type_item(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - added_bom_product");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -115,8 +112,7 @@ public class BomProductController {
 			BomProductEntity entity = new BomProductEntity();
 
 			if (frontData.get("content") != null && !frontData.get("content").equals("")) {
-				entity = productService
-						.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action")).get(0);
+				entity = productService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action")).get(0);
 				// 取得換頁碼 如果沒有 0
 				page_nb = productService.jsonToPageNb(frontData.getJSONObject("content"));
 				page_total = productService.jsonToPageTotal(frontData.getJSONObject("content"));
@@ -125,8 +121,7 @@ public class BomProductController {
 
 				// Step4-2 .DB 查詢 正確 資料
 				List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
-				entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"),
-						frontData.getString("action"));
+				entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"), frontData.getString("action"));
 				BomProductGroupBean bpg = new BomProductGroupBean();
 				bpg = productService.search(entitys, page_nb, page_total);
 				JSONObject p_Obj = productService.entitiesToJson(bpg);
@@ -150,8 +145,7 @@ public class BomProductController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/update_bom_product", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/update_bom_product", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String update_bom_type_item(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - update_bom_product");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -176,8 +170,9 @@ public class BomProductController {
 			entitys = productService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductEntity one = productService.searchById(entitys.get(0).getId());
 			System.out.println(entitys.get(0).getSys_modify_user());
-			if (loginService.checkPermission(group, SYS_F, "11111111")
-					|| user.getAccount().equals(one.getSys_create_user())) {
+			if (loginService.checkPermission(group, SYS_F, "11111111") || //
+					user.getAccount().equals(one.getSys_create_user()) || //
+					user.getAccount_agent().equals(one.getSys_create_user())) {
 			} else {
 				checkPermission = false;
 			}
@@ -196,8 +191,7 @@ public class BomProductController {
 			// Step4-2 .DB 查詢 正確 資料
 			entitys = new ArrayList<BomProductEntity>();
 			BomProductGroupBean bpg = new BomProductGroupBean();
-			entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"),
-					frontData.getString("action"));
+			entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"), frontData.getString("action"));
 			bpg = productService.search(entitys, page_nb, page_total);
 			JSONObject p_Obj = productService.entitiesToJson(bpg);
 
@@ -220,8 +214,7 @@ public class BomProductController {
 	 * @param ajaxJSON 限定用JSON
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/delete_bom_product", method = {
-			RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/delete_bom_product", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
 	public String delete_bom_type_item(@RequestBody String ajaxJSON) {
 		System.out.println("---controller - delete_bom_product");
 		// Step2.取出 session 訊息 & 檢查權限( 新增 更新 )
@@ -246,8 +239,7 @@ public class BomProductController {
 			entitys = productService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductEntity one = productService.searchById(entitys.get(0).getId());
 			System.out.println(entitys.get(0).getSys_modify_user());
-			if (loginService.checkPermission(group, SYS_F, "11111111")
-					|| user.getAccount().equals(one.getSys_create_user())) {
+			if (loginService.checkPermission(group, SYS_F, "11111111") || user.getAccount().equals(one.getSys_create_user())) {
 			} else {
 				checkPermission = false;
 			}
@@ -266,8 +258,7 @@ public class BomProductController {
 
 			// Step4-2 .DB 查詢 正確 資料
 			entitys = new ArrayList<BomProductEntity>();
-			entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"),
-					frontData.getString("action"));
+			entitys = productService.jsonToEntitiesSearch(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductGroupBean bpg = new BomProductGroupBean();
 			bpg = productService.search(entitys, page_nb, page_total);
 			JSONObject p_Obj = productService.entitiesToJson(bpg);

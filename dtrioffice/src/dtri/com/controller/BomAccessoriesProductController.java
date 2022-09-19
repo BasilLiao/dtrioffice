@@ -171,7 +171,9 @@ public class BomAccessoriesProductController {
 			entitys = accessoriesProductService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductEntity one = accessoriesProductService.searchById(entitys.get(0).getId());
 			System.out.println(entitys.get(0).getSys_modify_user());
-			if (loginService.checkPermission(group, SYS_F, "11111111") || user.getAccount().equals(one.getSys_create_user())) {
+			if (loginService.checkPermission(group, SYS_F, "11111111") || //
+					user.getAccount().equals(one.getSys_create_user()) || //
+					user.getAccount_agent().equals(one.getSys_create_user())) {
 			} else {
 				checkPermission = false;
 			}

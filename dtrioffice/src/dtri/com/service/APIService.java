@@ -61,7 +61,7 @@ public class APIService {
 
 		} catch (Exception e) {
 			System.out.println(e);
-			//check_connect = false;
+			// check_connect = false;
 		}
 
 		return content;
@@ -73,8 +73,9 @@ public class APIService {
 		MesApiBean mesApi = new MesApiBean();
 		mesApi.setPh_p_number(mes.has("ph_p_number") ? mes.getString("ph_p_number") : "");// 產品 認證/號/名稱
 		mesApi.setPh_wpro_id(mes.has("ph_wpro_id") ? mes.getString("ph_wpro_id") : "");// 工作程序
-		mesApi.setPr_wline_id(mes.has("pr_wline_id") ? mes.getString("pr_wline_id") : "");// 產線線別
+		mesApi.setPh_wc_line(mes.has("ph_wc_line") ? mes.getString("ph_wc_line") : "");// 產線線別
 		mesApi.setPr_type(mes.has("pr_type") ? mes.getString("pr_type") : "");// 製令單類型
+		mesApi.setPr_p_v(mes.has("pr_p_v") ? mes.getString("pr_p_v") : "");// 產品版本
 		mesApi.setPr_w_years(mes.has("pr_w_years") ? mes.getString("pr_w_years") : "");// 保固年分
 		mesApi.setPs_b_f_sn(mes.has("ps_sn_burn_fixed") ? mes.getString("ps_sn_burn_fixed") : "");// 特殊SN 固定
 		mesApi.setPh_p_name(mes.has("ph_p_name") ? mes.getString("ph_p_name") : "");// 產品編號名稱
@@ -108,7 +109,7 @@ public class APIService {
 			production_records.put("ph_schedule", "");
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
 			production_records.put("ph_p_number", mesApi.getPh_p_number());// 產品 認證/編號
-			production_records.put("ph_wl_id", mesApi.getPr_wline_id());// 產線-程序
+			production_records.put("ph_wc_line", mesApi.getPh_wc_line());// 產線-程序
 			production_records.put("ph_p_name", mesApi.getPh_p_name());// 產品 認證/編號
 			production_records.put("ph_s_date", "");
 			production_records.put("ph_id", "");
@@ -170,6 +171,7 @@ public class APIService {
 			production_records.put("pr_bom_id", entity.getBom_product_id());
 			production_records.put("pr_bom_c_id", entity.getBom_product_customer_id());
 			production_records.put("pr_p_model", entity.getProduct_model());
+			production_records.put("pr_p_v", mesApi.getPr_p_v());
 			production_records.put("pr_b_item", prbitem);// 規格
 			production_records.put("pr_s_item", new JSONObject()// 軟體定義
 					.put("OS ", new JSONObject().put("Is", software.getOs()))//
@@ -220,7 +222,7 @@ public class APIService {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
-			//check_connect = false;
+			// check_connect = false;
 			return false;
 		} finally {
 

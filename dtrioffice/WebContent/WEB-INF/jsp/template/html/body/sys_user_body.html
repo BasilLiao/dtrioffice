@@ -249,6 +249,14 @@
 			$(document).on("click", "#a_c_submit", function(event) {
 				templateBody.rm_added();
 			});
+			//修改監聽
+			$(document).on("click", ".a_submit", function(event) {
+				templateBody.choose_update("修改資料", event);
+			});
+			//刪除監聽
+			$(document).on("click", ".d_submit", function(event) {
+				templateBody.choose_delete(event);
+			});
 		},
 		methods : {
 			search_choose : function(event) {
@@ -290,14 +298,8 @@
 						$("#search_tbody .t_row" + s_list).append("<td class=s_" + j + ">" + this.search_list[i][j] + "</td>");
 					}
 				}
-				//修改監聽
-				$(document).on("click", ".a_submit", function(event) {
-					templateBody.choose_update("修改資料", event);
-				});
-				//刪除監聽
-				$(document).on("click", ".d_submit", function(event) {
-					templateBody.choose_delete(event);
-				});
+				
+				
 			},
 			//選擇群組-並建立監聽
 			group_choose : function() {
@@ -329,6 +331,8 @@
 				$("#a_email").val("");
 				$("#a_useful").val("");
 				$("#a_note").val("");
+				$("#a_agent").val("");
+				
 
 				this.choose_disabled(false);
 			},
@@ -344,6 +348,8 @@
 				$("#a_email").val($(".t_row" + id + " .s_9")[0].innerText);
 				$("#a_useful").val($(".t_row" + id + " .s_12")[0].innerText);
 				$("#a_note").val($(".t_row" + id + " .s_13")[0].innerText);
+				$("#a_agent").val($(".t_row" + id + " .s_14")[0].innerText);
+				
 
 				$("#a_u_type").text(a_u_type);
 				$("#a_u_id").text($(".t_row" + id + " .s_4")[0].innerText);
@@ -352,6 +358,13 @@
 
 				// a_u_group_name
 				this.choose_disabled(false);
+				//移動
+                clearTimeout(this.moveT);
+                this.moveT = setTimeout(function() {
+					$("html,body").animate({
+						scrollTop : 900
+					}, 'slow');
+				}, 200);
 			},
 			//選擇 刪除
 			choose_delete : function(event) {
@@ -363,6 +376,13 @@
 
 				this.choose_update(a_u_type, event);
 				this.choose_disabled("disabled");
+				 //移動
+                clearTimeout(this.moveT);
+                this.moveT = setTimeout(function() {
+					$("html,body").animate({
+						scrollTop : 900
+					}, 'slow');
+				}, 200);
 			},
 			//鎖定資料
 			choose_disabled : function(disabled) {
@@ -374,6 +394,8 @@
 				$("#a_email").attr("disabled", disabled);
 				$("#a_useful").attr("disabled", disabled);
 				$("#a_note").attr("disabled", disabled);
+				$("#a_agent").attr("disabled", disabled);
+				
 
 				$("#a_u_group_name select").attr("disabled", disabled);
 			},
@@ -389,13 +411,15 @@
 				content.email = $("#a_email").val();
 				content.useful = $("#a_useful").val();
 				content.note = $("#a_note").val();
+				content.a_agent = $("#a_agent").val();
+				
 				content.id = $("#a_u_id").text();
 				content.group_id = $("#a_u_group_id").text();
 				content.group_name = $("#a_u_group_name select:selected").text();
 
 				var action = "C";
 				var url = "./added_sys_user.do";
-				var order = "search_update"; //指令
+				var order = "update_body_nav"; //指令
 				if ($("#a_u_type").text() == "修改資料") {
 					action = "U";
 					url = "./update_sys_user.do";
@@ -579,8 +603,16 @@
 					}
 					break;
 				case "update_body_nav":
+					this.send_search();
 					break;
 				}
+				//移動
+                clearTimeout(this.moveT);
+                this.moveT = setTimeout(function() {
+					$("html,body").animate({
+						scrollTop : 50
+					}, 'slow');
+				}, 200);
 			},
 		},
 		//移除監聽事件

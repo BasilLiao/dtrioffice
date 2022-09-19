@@ -21,22 +21,22 @@
 		FROM system_user
 		<where>
 			<if test="useful>=0">
-				useful != #{useful} 
+				useful != #{useful}
 			</if>
 			<if test="account !=''">
-				AND account like '%' || #{account} || '%' 
+				AND account like '%' || #{account} || '%'
 			</if>
 			<if test="name !=''">
-				AND name like '%' || #{name} || '%' 
+				AND name like '%' || #{name} || '%'
 			</if>
 			<if test="e_name !=''">
-				AND e_name like '%' || #{e_name} || '%' 
+				AND e_name like '%' || #{e_name} || '%'
 			</if>
 			<if test="email !=''">
-				AND email like '%' || #{email} || '%' 
+				AND email like '%' || #{email} || '%'
 			</if>
 			<if test="position !=''">
-				AND position like '%' || #{position} || '%' 
+				AND position like '%' || #{position} || '%'
 			</if>
 		</where>
 
@@ -53,19 +53,19 @@
 		system_user(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		name,position,account,password,email,
-		group_id,group_name,note,useful,e_name)
+		group_id,group_name,note,useful,e_name,account_agent)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
 		#{name},#{position},#{account},#{password},#{email},
-		#{group_id},#{group_name},#{note},#{useful},#{e_name});
+		#{group_id},#{group_name},#{note},#{useful},#{e_name},#{account_agent});
 	</insert>
 	<!-- 依照 侷限自動 權限矯正 使用者群組 -->
 	<update id="updateAll">
 		UPDATE system_user
 		SET
 		group_name = system_group.name
-		FROM
-		system_group
+		FROM 
+		system_group 
 		WHERE system_group.id = system_user.group_id;
 	</update>
 	<update id="updateOne" parameterType="UserEntity">
@@ -73,20 +73,17 @@
 		system_user
 		SET
 		sys_modify_date = #{sys_modify_date},
-		sys_modify_user =
-		#{sys_modify_user},
+		sys_modify_user = #{sys_modify_user},
 		name = #{name},
 		position = #{position},
-		account =
-		#{account},
+		account = #{account},
 		password = #{password},
 		email = #{email},
-		group_id =
-		#{group_id},
+		group_id = #{group_id},
 		group_name = #{group_name},
 		note = #{note},
-		e_name =
-		#{e_name},
+		e_name = #{e_name},
+		account_agent = #{account_agent},
 		useful = #{useful}
 		WHERE id = #{id};
 	</update>

@@ -1193,10 +1193,11 @@
 						content.note2 = $("#note2").text();
 						content.software_id = 0;
 						//MES 補充資訊
+						content.pr_p_v = "";
 						content.pr_type = $("#pr_type").val();
 						content.pr_w_years = $("#pr_w_years").val();
 						content.ph_wpro_id = $("#ph_wpro_id").val();
-						content.pr_wline_id = $("#ph_wline_id").val();
+						content.ph_wc_line = $("#ph_wc_line").val();
 						//SN 登記演算
 						var sn_array = [];
 						if ($("#production_sn_ok").prop("checked")) {
