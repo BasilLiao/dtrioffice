@@ -677,6 +677,7 @@
 			//查詢監聽
 			$(document).on("click", "#s_submit", function(event) {
 				//頁數-重製分頁
+				templateBody.change_page_init();
 				templateBody.send_search("production");
 			});
 			//清除修改
@@ -780,7 +781,7 @@
 					a_submit += '<button user_id="' + s_list + '" class="btn btn-warning btn-sm btn-block a_submit">';
 					a_submit += "預覽</button></div>";
 					//筆數
-					shty2 = '<tr class=" page_all2  t_row' + s_list + " " + page_group + ' " style="white-space: nowrap;">';
+					shty2 = '<tr class=" page_all  t_row' + s_list + " " + page_group + ' " style="white-space: nowrap;">';
 					shty2 += '<th class="ml-0 col-md-12 row">';
 					shty2 += a_submit + "</th></tr>"
 					$("#search_tbody").append(shty2);

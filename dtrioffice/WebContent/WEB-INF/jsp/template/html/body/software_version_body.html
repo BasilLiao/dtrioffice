@@ -14,34 +14,27 @@
 		</div>
 		<!-- 查詢功能 -->
 		<div class="mb-3 border border-primary rounded shadow bg-light">
-			<div class="row mb-2 m-0">
-				<div class="col-md-5 p-0">
-					<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
-				</div>
+			<div class="col p-0">
+				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch"> 查詢功能 : </a>
 			</div>
-			<div class="collapse show" id="collapseSearch">
-				<div class="col-md-12 mb-5">
-					<div class="row p-0 h5">
-						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									客戶稱名: <input class="col-md-8" type="text" id="s_c_n" name="s_c_n" placeholder="Ex:Radarteam Sweden AB" required autofocus />
-								</div>
-							</div>
+			<div class="h5 collapse show m-0" id="collapseSearch">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<div class="col-md-2 p-1">
+						<div class="col p-1">客戶稱名:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_c_n" name="s_c_n" placeholder="Ex:北京" required autofocus />
 						</div>
-						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									BOM料號: <input class="col-md-8" type="text" id="s_b" name="s_b" placeholder="Ex:90-311-Y10KJ07" required />
-								</div>
-							</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">BOM料號:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_b" name="s_b" placeholder="Ex:90-311-Y10KJ07" required />
 						</div>
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									產品型號(場內): <input class="col-md-7" type="text" id="s_p" name="s_p" placeholder="Ex:311KY" required />
-								</div>
-							</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">產品型號(場內):</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_p" name="s_p" placeholder="Ex:311KY" required />
 						</div>
 					</div>
 				</div>
@@ -268,6 +261,8 @@
 			});
 			//查詢監聽
 			$(document).on("click", "#s_submit", function(event) {
+				//頁數-重製分頁
+				templateBody.change_page_init();
 				templateBody.send_search();
 			});
 			//清除修改
@@ -452,14 +447,14 @@
 				for (var re_page = 1; re_page <= 10; re_page++) {
 					var now_page = re_page + (this.page_batch * 10);
 					//如果就在第一頁 不需更換
-					if (!$(".p" + now_page).hasClass("p" + re_page)) {
-						$(".p" + now_page).addClass("p" + re_page);
-						$(".p" + re_page).removeClass("p" + now_page);
-						$(".p" + re_page + " a").text(re_page);
-						$(".p" + re_page + " a").attr("id", "p" + re_page);
+					if (!$("#page-items .p" + now_page).hasClass("p" + re_page)) {
+						$("#page-items .p" + now_page).addClass("p" + re_page);
+						$("#page-items .p" + re_page).removeClass("p" + now_page);
+						$("#page-items .p" + re_page + " a").text(re_page);
+						$("#page-items .p" + re_page + " a").attr("id", "p" + re_page);
 					}
 					if (re_page == 1) {
-						$(".p" + now_page).addClass(a);
+						$("#page-items .p" + re_page).addClass(a);
 					}
 				}
 				//分頁功能
@@ -469,7 +464,6 @@
 				this.page_batch_total = 100;//每批間格值
 				this.page_every = 10;//當前每頁筆數
 				this.page_stay = 1;//當前頁數
-
 			},
 			//頁數-刷新
 			change_page_update : function() {
@@ -485,7 +479,6 @@
 				}
 				//頁數-隱藏多於頁數
 				$(".p_nb").addClass("disabled");
-
 			},
 			//頁數-換頁按鈕建置(頁數-每頁顯示)
 			change_page_btn : function(i) {
@@ -598,6 +591,7 @@
 					},
 				});
 				main.ajaxSend(url, data);
+
 				return false; //防止真傳送
 			},
 			//傳送 查詢

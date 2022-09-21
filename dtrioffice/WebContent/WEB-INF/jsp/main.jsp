@@ -11,6 +11,9 @@
 <script src="./thirdparty/js/bootstrap-4.4.1.min.js"></script>
 <script src="./thirdparty/js/jquery-table2excel.js"></script>
 <script src="./thirdparty/js/vue-2.6.11.min.js"></script>
+<script src="./thirdparty/js/websocket-sockjs.min.js"></script>
+<script src="./thirdparty/js/websocket-stomp.min.js"></script>
+
 <link rel="icon" type="image/svg" href="./emoji.svg" />
 <style type="text/css">
 #header_nav, body {

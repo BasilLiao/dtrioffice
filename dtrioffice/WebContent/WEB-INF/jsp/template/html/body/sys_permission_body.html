@@ -214,6 +214,7 @@
 			});
 			//查詢監聽
 			$(document).on("click", "#s_submit", function(event) {
+				templateBody.change_page_init();
 				templateBody.send_search();
 			});
 			//清除修改

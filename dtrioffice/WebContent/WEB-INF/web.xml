@@ -20,6 +20,7 @@
 		<url-pattern>*.js</url-pattern>
 		<url-pattern>*.html</url-pattern>
 		<url-pattern>*.map</url-pattern>
+		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

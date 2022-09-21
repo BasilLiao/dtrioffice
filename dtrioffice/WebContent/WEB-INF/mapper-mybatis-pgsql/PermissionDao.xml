@@ -19,7 +19,7 @@
 				AND useful != #{useful}
 			</if>
 		</where>
-		ORDER by group_id,nbdesc,id;
+		ORDER by nbdesc,group_id,id;
 	</select>
 	<!-- 指查詢 ID -->
 	<select id="queryAllById" resultType="PermissionEntity">
