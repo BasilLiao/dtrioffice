@@ -191,24 +191,24 @@
 						<div class="row m-0 ">
 							<div class="col-1 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">工單</div>
 							<div class="col-3 p-0 border border-warning font_28">
-								<input id="a_u_id" value="" type="text" class="col-12 p-1 border border-warning rounded" placeholder="製令單">
+								<input id="a_u_id" value="" type="text" class="col-12 p-1 border border-warning rounded" title="製令單">
 							</div>
 							<div class="col-1 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">訂單</div>
 							<div class="col-3 p-0 border border-warning font_28">
-								<input id="a_u_o_id" value="" type="text" class="col-12 p-1 border border-warning rounded" placeholder="客戶訂單">
+								<input id="a_u_o_id" value="" type="text" class="col-12 p-1 border border-warning rounded" title="客戶訂單">
 							</div>
 							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">預計出貨</div>
 							<div class="col-2 p-0 border border-warning font_28">
-								<input id="a_u_o_date" value="" type="text" class="col-12 p-1 border border-warning rounded" placeholder="預計出貨日期">
+								<input id="a_u_o_date" value="" type="text" class="col-12 p-1 border border-warning rounded" title="預計出貨日期">
 							</div>
 						</div>
 						<div class="row m-0">
 							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">客戶 / 國家</div>
 							<div class="col-2 p-0 border border-warning font_28">
-								<input id="a_u_c" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" placeholder="客戶名稱">
+								<input id="a_u_c" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" title="客戶名稱">
 							</div>
 							<div class="col-2 p-0 border border-warning font_28">
-								<input id="a_u_country" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" placeholder="客戶國家">
+								<input id="a_u_country" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" title="客戶國家">
 							</div>
 							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">數量</div>
 							<div class="col-2 p-0 border border-warning font_28">
@@ -222,7 +222,7 @@
 								<p class="text-muted small m-0">(公司BOM號/客戶BOM號)</p>
 							</div>
 							<div class="col-3 p-0 border border-warning font_28" title="可支援 公司BOM/客戶BOM">
-								<input id="a_u_bom_number" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" placeholder="公司/客戶(BOM)">
+								<input id="a_u_bom_number" value="" type="text" class="col-12 p-1 border border-warning rounded can_rm" title="公司/客戶(BOM)">
 							</div>
 							<div id="a_u_bom_id" class="d-none">632</div>
 							<div class="col-1 p-1 border border-dark h3 mb-0 font-weight-bolder">型號</div>
@@ -232,8 +232,8 @@
 						</div>
 						<div class="row m-0">
 							<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">PM備註</div>
-							<div class="col-10 p-0 border border-warning font_20" style="height: 67px">
-								<textarea id="a_u_note" rows="2" class="col-12 p-1 border border-warning rounded" style="overflow: hidden; height: 65px;"></textarea>
+							<div class="col-10 p-0 border border-dark font_20" style="height: 67px">
+								<div id="a_u_note" class="col-12 p-1 border border-dark rounded" style="overflow: hidden; height: 65px;"></div>
 							</div>
 						</div>
 					</div>
@@ -730,7 +730,7 @@
 
 				//輸入清除
 				$('#a_u_country').val("");
-				$('#a_u_note').val("");
+				$('#a_u_note').text("");
 				$('#a_u_note2').val("");
 
 				$('#a_u_id').val("");
@@ -797,7 +797,7 @@
 				$("#a_u_bom_id").text($(".t_row" + id + " .s_0")[0].innerText);
 				$("#a_u_version_motherboard").text($(".t_row" + id + " .s_4")[0].innerText);
 
-				$("#a_u_note").val($(".t_row" + id + " .s_5")[0].innerText);
+				$("#a_u_note").text($(".t_row" + id + " .s_5")[0].innerText);
 				$("#a_u_kind").val($(".t_row" + id + " .s_7")[0].innerText).change();
 
 				if ($(".t_row" + id + " .s_7")[0].innerText == 1) {
@@ -1120,7 +1120,7 @@
 						content.bom_id = $("#a_u_bom_id").text();
 						content.bom_principal = $("#a_u_bom_principal").text();
 						content.version_motherboard = $("#a_u_version_bios").text();
-						content.pm_note = $("#a_u_note").val();
+						content.pm_note = $("#a_u_note").text();
 						content.note = $("#a_u_note2").val();
 						content.come_from = "生產注意事項";
 						content.product_progress = 2;
@@ -1183,7 +1183,7 @@
 				newWin.document.getElementById('a_u_o_date').value = $("#a_u_o_date").val();
 				newWin.document.getElementById('a_u_country').value = $("#a_u_country").val();
 				newWin.document.getElementById('a_u_bom_number').value = $("#a_u_bom_number").val();
-				newWin.document.getElementById('a_u_note').value = $("#a_u_note").val();
+				newWin.document.getElementById('a_u_note').text = $("#a_u_note").text();
 				newWin.document.getElementById('a_u_note2').value = $('#a_u_note2').val();
 				newWin.document.getElementById('a_u_c').value = $("#a_u_c").val();
 				newWin.document.getElementById('a_u_nb').value = $("#a_u_nb").val();
