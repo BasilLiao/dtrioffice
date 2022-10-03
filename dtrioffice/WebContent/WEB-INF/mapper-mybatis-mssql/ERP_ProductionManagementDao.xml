@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dtri.com.db.mssql.dao.ERP_ProductionManagementDao">
+
+
+	<!-- 同步 工單 -->
+	<select id="getERP_PM_List" resultType="ERP_PM_Entity">
+		SELECT
+		CTA.TA001+'-'+CTA.TA002 AS moc_id,--製令單號
+		CTA.TA006 AS moc_ta006,--產品品號
+		CTA.TA034 AS moc_ta034,--產品品名
+		CTA.TA035 AS moc_ta035,--產品規格
+		CTA.TA015 AS moc_ta015,--預計生產數
+		CTA.TA017 AS moc_ta017,--目前生產數
+		CTA.TA009 AS moc_ta009,--預計開工日
+		CTA.TA010 AS moc_ta010,--預計完工日
+		CTA.TA011 AS moc_ta011,--狀態碼
+		'|' AS '|',
+		PTC.TC012 AS cop_tc012,--客戶-訂單單號
+		PTC.TC015 AS cop_tc015,--客戶-訂單備註
+		PTC.TC001+'-'+PTC.TC002 AS order_id --公司-訂單單號
+		FROM MOCTA CTA LEFT JOIN COPTC PTC
+		ON (CTA.TA026+'-'+CTA.TA027 = PTC.TC001+'-'+PTC.TC002)
+		WHERE (CTA.TA011 = '1' OR CTA.TA011 = '2' OR CTA.TA011 = '3')
+		AND (CTA.TA013 = 'Y')
+		AND( (CTA.TA001 = 'A511') OR (CTA.TA001= 'A521')) -- 廠內 一般製令單/ 廠內 重工製令單
+		ORDER BY CTA.TA009 ASC
+	</select>
+</mapper>

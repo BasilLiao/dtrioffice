@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dtri.com.bean.PMTempBean;
+import dtri.com.db.entity.ERP_PM_Entity;
 import dtri.com.db.entity.GroupEntity;
-import dtri.com.db.entity.SoftwareVersionEntity;
+import dtri.com.service.ERP_ProductionManagementService;
 import dtri.com.service.LoginService;
-import dtri.com.service.ProductionManagementService;
 import dtri.com.tools.JsonDataModel;
 
 @Controller
@@ -31,10 +33,12 @@ public class ProductionManagementController {
 	// 功能
 	final static String SYS_F = "production_management.do";
 	@Autowired
-	ProductionManagementService managementService;
+	ERP_ProductionManagementService managementService;
+
 	final Logger logger = LogManager.getLogger();
 
-	private SimpMessagingTemplate template;
+	@Autowired
+	private SimpMessagingTemplate template;// 後臺主動發送訊息
 
 	@Autowired
 	public ProductionManagementController(SimpMessagingTemplate template) {
@@ -62,17 +66,14 @@ public class ProductionManagementController {
 
 		// Step3.建立回傳元素
 		JSONObject r_allData = new JSONObject();
-		int page_nb = 0, page_total = 100;
 		// Step4.檢查許可權 & 輸入物件
 
 		if (checkPermission) { // Step4-1 .DB 取出 正確 資料
-			SoftwareVersionEntity entity = new SoftwareVersionEntity();
+			ERP_PM_Entity entity = new ERP_PM_Entity();
 			if (frontData.get("content") != null && !frontData.get("content").equals("")) {
 				entity = managementService.jsonToEntities(frontData.getJSONObject("content"));
-				page_nb = managementService.jsonToPageNb(frontData.getJSONObject("content"));
-				page_total = managementService.jsonToPageTotal(frontData.getJSONObject("content"));
 			}
-			List<SoftwareVersionEntity> p_Entities = managementService.searchSoftwareVersion(entity, page_nb, page_total);
+			List<ERP_PM_Entity> p_Entities = managementService.searchProductionManagement(entity);
 			JSONObject p_Obj = managementService.entitiesToJson(p_Entities);
 
 			// Step4-2 .包裝資料
@@ -89,18 +90,79 @@ public class ProductionManagementController {
 	/**
 	 * 同步(syn_pnmt)
 	 * 
-	 * @param 限定用JSON
+	 * @param 限定用JSON 對象all/client/userName{"userName":XXXX,}
+	 * 
+	 * 
 	 */
 	@MessageMapping("/synPnmt") // 接收管道
 	@SendTo("/toAllClient/synPnmt") // (回給有 [訂閱/連上] 的使用者)回傳管道
-	public String synchronize_production_management(String ajaxJSON) {
-		System.out.println("--webSocket-controller - synchronize_production_management");
+	public String synchronize_pm_from_client(String ajaxJSON) {
+		System.out.println("--webSocket-controller - " + ajaxJSON);
 		logger.info("receive msg from client: {}", ajaxJSON);
+		String action = "";
+		String re_action = "nothing";
+		String ms = "";
+		String moc_data = "";
+		String moc_user = "";
+		boolean check = false;
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("message", ajaxJSON);
-		map.put("from", "server");
-		map.put("now", new Date().getTime());
-		return "OK";
+		try {
+			JSONObject content = new JSONObject(ajaxJSON);
+			PMTempBean pmNewTempBean = new PMTempBean();
+			Map<String, String> lockPmID = new HashMap<String, String>();
+			Map<String, Long> lockPmTime = new HashMap<String, Long>();
+			action = content.getString("action");
+			moc_user = content.getString("userName");
+			// step1.資料判斷 action
+			switch (action) {
+			case "only_lock":// 單獨選取
+				re_action = "only_lock_modify";
+				break;
+			case "only_unlock":// 單獨取消
+				re_action = "only_unlock_modify";
+				break;
+			case "only_unlock_save":// 單獨存入內容
+				
+				pmNewTempBean.setUpdate_cell(content.getString("note_cell"));// 哪一格
+				pmNewTempBean.setUpdate_value(content.getString("note_value"));// 內容物
+				pmNewTempBean.setMoc_priority(content.getInt("moc_priority"));
+				pmNewTempBean.setMpr_date(content.getString("mpr_date"));
+				pmNewTempBean.setExcel_json(new JSONArray(content.getString("excel_json")));
+				// 請求->成功
+				re_action = "only_unlock_save_modify";
+				break;
+			default:
+				break;
+			}
+			// step2. 通知伺服器-> 回傳給所有人
+			lockPmID.put(content.getString("moc_id"), moc_user);
+			lockPmTime.put(content.getString("moc_id"), new Date().getTime());
+			pmNewTempBean.setLockPmID(lockPmID);
+			pmNewTempBean.setLockPmTime(lockPmTime);
+			pmNewTempBean.setUserName("all");
+			check = managementService.doDataProductionManagement(action, pmNewTempBean);
+			// step3. 回傳給當事人
+			if (check) {
+				ms = "OK";// 請求->成功
+			} else {
+				ms = "Fail";// 請求->失敗
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			ms = "Fail";
+		}
+		// step4. 包裝回復
+		JSONObject resq = new JSONObject();
+		resq.put("message", ms);
+		resq.put("action", re_action);
+		resq.put("moc_user", moc_user);
+		resq.put("moc_data", moc_data);
+		return resq.toString();
+	}
+
+	// 伺服器回傳
+	public void synchronize_pm_from_server(JSONObject date) {
+		template.convertAndSend("/toAllClient/synPnmt", "" + date.toString());
+
 	}
 }

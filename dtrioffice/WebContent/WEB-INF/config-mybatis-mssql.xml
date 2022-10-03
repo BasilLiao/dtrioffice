@@ -16,6 +16,6 @@
 		<typeAlias alias="ERP_INVMC_Entity" type="dtri.com.db.entity.ERP_INVMC_Entity" />
 		<typeAlias alias="ERP_BOMMD_Entity" type="dtri.com.db.entity.ERP_BOMMD_Entity" />
 		<typeAlias alias="ERP_MOC_PUR_Entity" type="dtri.com.db.entity.ERP_MOC_PUR_Entity" />
-
+		<typeAlias alias="ERP_PM_Entity" type="dtri.com.db.entity.ERP_PM_Entity" />
 	</typeAliases>
 </configuration>

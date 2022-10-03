@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dtri.com.bean.FtpUtilBean;
+import dtri.com.bean.PMTempBean;
 import dtri.com.bean.SendMailBean;
 import dtri.com.db.entity.ERP_PURTC_PURTD_Entity;
 import dtri.com.db.entity.PurchasingEntity;
@@ -73,6 +74,8 @@ public class ScheduleTaskService {
 	private PurchasingService p_service;
 	@Autowired
 	private ERP_PurchasingListService erp_service;
+	@Autowired
+	ERP_ProductionManagementService managementService;
 	@Autowired
 	private LoginService loginService;
 	// log 訊息
@@ -136,9 +139,9 @@ public class ScheduleTaskService {
 		StringBuffer mail_Obj_content = new StringBuffer();
 		String table_s = "<table border=\"1\">";
 		String table_e = "</tbody></table>";
-		String tableheader = "<thead><tr>" + "<td>Order No.<br> 採購單號</td>" + "<td>Item No.<br> 品    號</td>"
-				+ "<td>Part Name<br> 品    名</td>" + "<td>Delivery<br>Date<br> 預交日</td>" + "<td>Vendor<br> 廠商簡稱</td>"
-				+ "<td>Q'ty<br> 採購數量</td>" + "<td>Not delivered <br> Q'ty<br> 未交數量</td>" + "</tr></thead><tbody>";
+		String tableheader = "<thead><tr>" + "<td>Order No.<br> 採購單號</td>" + "<td>Item No.<br> 品    號</td>" + "<td>Part Name<br> 品    名</td>"
+				+ "<td>Delivery<br>Date<br> 預交日</td>" + "<td>Vendor<br> 廠商簡稱</td>" + "<td>Q'ty<br> 採購數量</td>" + "<td>Not delivered <br> Q'ty<br> 未交數量</td>"
+				+ "</tr></thead><tbody>";
 		StringBuffer tablebody = new StringBuffer();
 		Map<Integer, StringBuffer> userId_tablebody = new HashMap<Integer, StringBuffer>();
 		// 採購人區隔(必須是排序性質)
@@ -188,12 +191,10 @@ public class ScheduleTaskService {
 					if (check_key_word) {
 						System.out.println(pattern + " VS " + erp_Entity.getTC011());
 						erp_order_item.put(erp_Entity);
-						tablebody.append("<tr>\r\n" + "<td>" + erp_Entity.getTC001_TC002() + "&ensp;-"
-								+ erp_Entity.getTD003() + "</td>\r\n" + "<td>" + erp_Entity.getTD004() + "</td>\r\n"
-								+ "<td>" + erp_Entity.getTD005() + "</td>\r\n" + "<td>" + erp_Entity.getTD012()
-								+ "</td>\r\n" + "<td>" + erp_Entity.getMA002() + "</td>\r\n" + "<td>"
-								+ erp_Entity.getTD008() + "</td>\r\n" + "<td>" + erp_Entity.getTD008_TD015()
-								+ "</td>\r\n" + "</tr>\r\n");
+						tablebody.append("<tr>\r\n" + "<td>" + erp_Entity.getTC001_TC002() + "&ensp;-" + erp_Entity.getTD003() + "</td>\r\n" + "<td>"
+								+ erp_Entity.getTD004() + "</td>\r\n" + "<td>" + erp_Entity.getTD005() + "</td>\r\n" + "<td>" + erp_Entity.getTD012()
+								+ "</td>\r\n" + "<td>" + erp_Entity.getMA002() + "</td>\r\n" + "<td>" + erp_Entity.getTD008() + "</td>\r\n" + "<td>"
+								+ erp_Entity.getTD008_TD015() + "</td>\r\n" + "</tr>\r\n");
 
 					}
 				}
@@ -269,10 +270,8 @@ public class ScheduleTaskService {
 					e1.printStackTrace();
 				}
 				// Step 6. 信件紀錄
-				System.out.println("mail (採購通知)傳送：" + mail_Obj.getString("s_mail") + " to " + one_link.getUser_email()
-						+ " " + new Date());
-				logger.info("mail (採購通知)傳送：" + mail_Obj.getString("s_mail") + " to " + one_link.getUser_email() + " "
-						+ new Date());
+				System.out.println("mail (採購通知)傳送：" + mail_Obj.getString("s_mail") + " to " + one_link.getUser_email() + " " + new Date());
+				logger.info("mail (採購通知)傳送：" + mail_Obj.getString("s_mail") + " to " + one_link.getUser_email() + " " + new Date());
 			} else {
 				System.out.println("mail (採購通知)無信件 傳送 :" + new Date());
 				logger.info("mail (採購通知)無信件 傳送 ：" + new Date());
@@ -293,14 +292,13 @@ public class ScheduleTaskService {
 		System.out.println("備份資料庫:" + new Date());
 		logger.info("備份資料庫：" + new Date());
 
-		//Runtime rt = Runtime.getRuntime();
+		// Runtime rt = Runtime.getRuntime();
 		Process p;
 		ProcessBuilder pb;
-		//rt = Runtime.getRuntime();
+		// rt = Runtime.getRuntime();
 		// 備份指令-postgres
-		pb = new ProcessBuilder("" + pg_dump, "--dbname=" + dbName, "--port=" + port, "--verbose", "--format=p",
-				"--clean", "--section=pre-data", "--section=data", "--section=post-data", "--no-privileges",
-				"--no-tablespaces", "--no-unlogged-table-data", "--inserts", "--encoding=UTF8",
+		pb = new ProcessBuilder("" + pg_dump, "--dbname=" + dbName, "--port=" + port, "--verbose", "--format=p", "--clean", "--section=pre-data",
+				"--section=data", "--section=post-data", "--no-privileges", "--no-tablespaces", "--no-unlogged-table-data", "--inserts", "--encoding=UTF8",
 				"--file=" + apachePath + folderName + fileName + "_" + backupDay + ".sql");
 		try {
 			// final Map<String, String> env = pb.environment();
@@ -334,5 +332,15 @@ public class ScheduleTaskService {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	// 等待上次完成後 每60秒後執行-同步資料庫
+	@Scheduled(fixedDelay = 60000)
+	public void synchronize_PM() {
+		System.out.println("每60秒 執行一次：" + new Date());
+		PMTempBean pmNewTempBean = new PMTempBean();
+		pmNewTempBean.setUserName("server");
+		managementService.doDataProductionManagement("all_update", pmNewTempBean);
+
 	}
 }

@@ -103,7 +103,7 @@
 					<!-- 顯示內容 -->
 					<table id="search_table" class="border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
 						<thead>
-							<tr id="search_thead" class="bg-primary h5">
+							<tr id="search_thead" class="table-primary h5">
 								<th scope="col" style="min-width: 80px;">功能</th>
 								<th scope="col" style="min-width: 40px;">筆</th>
 							</tr>
@@ -189,8 +189,8 @@
 						</select>
 					</div>
 					<div class="col-md-1 p-1">
-						<select id="ph_wline_id" class="col-12">
-							<option class="ph_wline_id_no" value="" selected="selected">生產線</option>
+						<select id="ph_wc_line" class="col-12">
+							<option class="ph_wc_line_no" value="" selected="selected">生產線</option>
 						</select>
 					</div>
 				</div>
@@ -516,7 +516,7 @@
 			pr_type : "",
 			pr_w_years : "",
 			ph_wpro_id : "",
-			ph_wline_id : "",
+			ph_wc_line : "",
 			sn_all_nb : "",
 			item_nb_max : 0, //最大ID數
 			//分頁功能
@@ -552,9 +552,9 @@
 				this.ph_wpro_id = "";
 			}
 			if (pd_we != null) {
-				this.ph_wline_id = JSON.parse(pd_we);
+				this.ph_wc_line = JSON.parse(pd_we);
 			} else {
-				this.ph_wline_id = "";
+				this.ph_wc_line = "";
 			}
 
 			//=====製令 清單=====
@@ -638,14 +638,14 @@
 					ph_wpro_id_no.appendTo("#ph_wpro_id");
 				}
 
-				for (var ph_wline_id_one = 0; ph_wline_id_one < this.ph_wline_id.length; ph_wline_id_one++) {
-					var ph_wline_id_no = $(".ph_wline_id_no").clone();
-					ph_wline_id_no.removeClass("ph_wline_id_no");
-					ph_wline_id_no.attr("id", this.ph_wline_id[ph_wline_id_one]);
-					ph_wline_id_no.attr("value", this.ph_wline_id[ph_wline_id_one]);
-					ph_wline_id_no.text(this.ph_wline_id[ph_wline_id_one]);
-					ph_wline_id_no.removeAttr("selected", " ");
-					ph_wline_id_no.appendTo("#ph_wline_id");
+				for (var ph_wc_line_one = 0; ph_wc_line_one < this.ph_wc_line.length; ph_wc_line_one++) {
+					var ph_wc_line_no = $(".ph_wc_line_no").clone();
+					ph_wc_line_no.removeClass("ph_wc_line_no");
+					ph_wc_line_no.attr("id", this.ph_wc_line[ph_wc_line_one]);
+					ph_wc_line_no.attr("value", this.ph_wc_line[ph_wc_line_one]);
+					ph_wc_line_no.text(this.ph_wc_line[ph_wc_line_one]);
+					ph_wc_line_no.removeAttr("selected", " ");
+					ph_wc_line_no.appendTo("#ph_wc_line");
 				}
 			}
 			//t_body

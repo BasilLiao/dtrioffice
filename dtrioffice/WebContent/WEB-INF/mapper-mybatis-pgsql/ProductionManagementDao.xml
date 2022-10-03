@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dtri.com.db.pgsql.dao.ProductionManagementDao">
+
+
+	<!-- 查詢 工單 -->
+	<select id="searchERP_PM_List" resultType="ERP_PM_Entity">
+		SELECT *
+		FROM production_management
+		<where>
+			<if test="useful !=null">
+				useful = #{useful}
+			</if>
+			<if test="useful ==null">
+				useful = 1
+			</if>
+			<if test="moc_id !=null">
+				AND moc_id = #{moc_id}
+			</if>
+			<if test="moc_ta011 !=null">
+				AND moc_ta011 = #{moc_ta011}
+			</if>
+		</where>
+		ORDER BY moc_priority desc, moc_ta009 asc,moc_id asc
+	</select>
+	<!-- 更新 檢查點=1 為 3 -->
+	<update id="updateToUseful3From1">
+		UPDATE
+		production_management
+		SET useful= 3
+		WHERE useful = 1;
+	</update>
+	<!-- 更新 檢查點=3 為 2 -->
+	<update id="updateToUseful2From3">
+		UPDATE
+		production_management
+		SET useful= 2
+		WHERE useful = 3;
+	</update>
+	<!-- 只更新部分 -->
+	<update id="updateOneFromERP">
+		UPDATE
+		production_management
+		SET
+		bom_kind = #{bom_kind},
+		moc_note = #{moc_note}, moc_status = #{moc_status}, moc_priority = #{moc_priority},
+		ivn_note = #{ivn_note}, ivn_status =
+		#{ivn_status}, ivn_items = #{ivn_items},
+		mpr_note = #{mpr_note}, mpr_date = #{mpr_date}, mes_note = #{mes_note},note = #{note},
+
+		moc_ta006= #{moc_ta006},moc_ta034= #{moc_ta034},moc_ta035= #{moc_ta035},
+		moc_ta015= #{moc_ta015},moc_ta017= #{moc_ta017},moc_ta009= #{moc_ta009},
+		moc_ta010= #{moc_ta010},moc_ta011= #{moc_ta011},cop_tc012= #{cop_tc012},
+		cop_tc015= #{cop_tc015},order_id= #{order_id},
+
+		sys_check_sum= #{sys_check_sum},useful= #{useful},
+		sys_modify_date= #{sys_modify_date}, sys_modify_user= #{sys_modify_user}
+		WHERE moc_id = #{moc_id};
+	</update>
+	<!-- 如果沒有資料 則新增 -->
+	<insert id="addedOne" parameterType="ERP_PM_Entity">
+		INSERT INTO
+		production_management(
+		bom_kind, moc_id,
+		moc_ta006, moc_ta034, moc_ta035, moc_ta015, moc_ta017,
+		moc_ta009, moc_ta010, moc_ta011, cop_tc012,
+		cop_tc015,
+		order_id,
+		moc_note, moc_status, moc_priority,
+		ivn_note, ivn_status, ivn_items,
+		mpr_note, mpr_date, mes_note, note,
+		sys_check_sum, sys_create_date, sys_create_user, sys_modify_date,
+		sys_modify_user, useful)
+		VALUES (#{bom_kind}, #{moc_id},
+		#{moc_ta006}, #{moc_ta034}, #{moc_ta035}, #{moc_ta015}, #{moc_ta017},
+		#{moc_ta009}, #{moc_ta010}, #{moc_ta011}, #{cop_tc012}, #{cop_tc015},
+		#{order_id},
+		#{moc_note}, #{moc_status}, #{moc_priority},
+		#{ivn_note}, #{ivn_status}, #{ivn_items},
+		#{mpr_note}, #{mpr_date}, #{mes_note},#{note},
+		#{sys_check_sum}, #{sys_create_date},
+		#{sys_create_user}, #{sys_modify_date}, #{sys_modify_user}, #{useful});
+	</insert>
+
+
+</mapper>

@@ -73,9 +73,9 @@
 					<!-- 顯示內容 -->
 					<table id="search_table" class="border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
 						<thead>
-							<tr id="search_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
-								<th class="fixed_cell bg-primary" scope="col" style="min-width: 170px; left: 1px;">功能</th>
-								<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 171px;">筆</th>
+							<tr id="search_thead" class="table-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+								<th class="fixed_cell " scope="col" style="min-width: 170px; left: 1px;">功能</th>
+								<th class="fixed_cell " scope="col" style="min-width: 40px; left: 171px;">筆</th>
 							</tr>
 						</thead>
 						<tbody id="search_tbody"></tbody>
@@ -147,9 +147,9 @@
 								<div class="col-md-12 p-0 bg-light border-top border-primary">
 									<table id="stock_table" class="m-0 table table-sm table-hover table-striped table-bordered table-responsive">
 										<thead>
-											<tr id="stock_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											<tr id="stock_thead" class="table-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell " scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell " scope="col" style="min-width: 40px; left: 101px;">筆</th>
 											</tr>
 										</thead>
 										<tbody id="stock_tbody"></tbody>
@@ -184,9 +184,9 @@
 								<div class="col-md-12 p-0 bg-light border-top border-primary">
 									<table id="stock_c_table" class="m-0 table table-sm table-hover table-striped table-bordered table-responsive">
 										<thead>
-											<tr id="stock_c_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											<tr id="stock_c_thead" class="table-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell" scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell" scope="col" style="min-width: 40px; left: 101px;">筆</th>
 											</tr>
 										</thead>
 										<tbody id="stock_c_tbody"></tbody>
@@ -234,9 +234,9 @@
 								<div class="col-md-12 p-0 bg-light border-top border-primary">
 									<table id="bom_table" class="m-0 table table-sm table-hover table-striped table-bordered table-responsive">
 										<thead>
-											<tr id="bom_thead" class="bg-primary h5" style="position: sticky; top: 0px; z-index: 5;">
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 100px; left: 1px;">功能</th>
-												<th class="fixed_cell bg-primary" scope="col" style="min-width: 40px; left: 101px;">筆</th>
+											<tr id="bom_thead" class="table-primary h5" style="position: sticky; top: 0px; z-index: 5;">
+												<th class="fixed_cell " scope="col" style="min-width: 100px; left: 1px;">功能</th>
+												<th class="fixed_cell " scope="col" style="min-width: 40px; left: 101px;">筆</th>
 											</tr>
 										</thead>
 										<tbody id="bom_tbody"></tbody>
@@ -295,7 +295,7 @@
 						if (i == 0) {
 							//固定
 							$("#search_thead").append(
-									'<th style="' + min_width + 'px;  left: 211px;" class="s_' + i + ' fixed_cell bg-primary" scope="col">'
+									'<th style="' + min_width + 'px;  left: 211px;" class="s_' + i + ' fixed_cell " scope="col">'
 											+ this.search_list[0][i] + "</th>");
 						} else {
 							$("#search_thead").append('<th style="' + min_width + 'px;" class="s_' + i + '" scope="col">' + this.search_list[0][i] + "</th>");
@@ -310,7 +310,7 @@
 							min_width = "min-width: 200px;";
 							if (i == 0) {
 								min_width += "left: 141px;";
-								fixed_cell = " fixed_cell bg-primary";
+								fixed_cell = " fixed_cell";
 							}
 						}
 						//最後
@@ -329,7 +329,7 @@
 							min_width = "min-width: 180px;";
 							if (i == 1) {
 								min_width += "left: 141px;";
-								fixed_cell = " fixed_cell bg-primary";
+								fixed_cell = " fixed_cell ";
 							}
 						}
 						//最後
@@ -347,7 +347,7 @@
 							min_width = "min-width: 200px;";
 							if (i == 0) {
 								min_width += "left: 141px;";
-								fixed_cell = " fixed_cell bg-primary";
+								fixed_cell = " fixed_cell ";
 							}
 						}
 						if (i == 6) {

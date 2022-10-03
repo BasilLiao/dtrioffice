@@ -6,16 +6,16 @@ import java.util.Date;
  * 生管排程資料
  * 
  **/
-public class ProductionManagementEntity {
+public class ERP_PM_Entity {
 	// 系統基本資料
 	private Date sys_create_date;
 	private String sys_create_user;
 	private Date sys_modify_date;
 	private String sys_modify_user;
+	private String sys_check_sum;// 資料異動?
 	private Integer useful;
 	private String note;
 	// 主要資料 ERP
-	private Integer id;// 流水號
 	private String moc_id;// 製令單(TA001+TA002)
 	private String moc_ta006;// 產品品號
 	private String moc_ta034;// 產品品名
@@ -29,6 +29,7 @@ public class ProductionManagementEntity {
 	private String cop_tc015;// 客戶:訂單備註
 	private String order_id;// 廠內:訂單單號A222-123456789
 	// 主要資料 ERP Expansion
+	private Integer id;// 流水號
 	private String bom_kind;// 技轉中 or 可量產
 	/*
 	 * [{"date":"2022-01-02 10:20:59", "user":"admin", "ms":"XXXX"}, {}]
@@ -36,12 +37,23 @@ public class ProductionManagementEntity {
 	private String moc_note;// 生管 備註事項 json格式
 	private String moc_status;// 生管 開單狀態 0=未開注意事項1=已開注意事項2=已核准流程卡
 	private Integer moc_priority;// 生管 優先權
-	private String inv_note;// 倉庫 備注事項 json格式
+	private String ivn_note;// 倉庫 備注事項 json格式
 	private Integer ivn_status;// 倉庫 備料狀況1=齊料 2=未齊 3=未備
+	private Integer ivn_items;// 倉庫 缺幾項 物料(共)
 	private String mpr_note;// 物控 備註事項 json格式
 	private String mpr_date;// 物控 (預計)齊料日
-	private Integer mpr_items;// 物控 缺幾項 物料(共)
 	private String mes_note;// 製造 備註事項 json格式
+
+	@Override
+	public String toString() {
+		return "ProductionManagementEntity [sys_create_date=" + sys_create_date + ", sys_create_user=" + sys_create_user + ", sys_modify_date="
+				+ sys_modify_date + ", sys_modify_user=" + sys_modify_user + ", sys_check_sum=" + sys_check_sum + ", useful=" + useful + ", note=" + note
+				+ ", id=" + id + ", moc_id=" + moc_id + ", moc_ta006=" + moc_ta006 + ", moc_ta034=" + moc_ta034 + ", moc_ta035=" + moc_ta035 + ", moc_ta015="
+				+ moc_ta015 + ", moc_ta017=" + moc_ta017 + ", moc_ta009=" + moc_ta009 + ", moc_ta010=" + moc_ta010 + ", moc_ta011=" + moc_ta011 + ", cop_tc012="
+				+ cop_tc012 + ", cop_tc015=" + cop_tc015 + ", order_id=" + order_id + ", bom_kind=" + bom_kind + ", moc_note=" + moc_note + ", moc_status="
+				+ moc_status + ", moc_priority=" + moc_priority + ", ivn_note=" + ivn_note + ", ivn_status=" + ivn_status + ", ivn_items=" + ivn_items
+				+ ", mpr_note=" + mpr_note + ", mpr_date=" + mpr_date + ", mes_note=" + mes_note + "]";
+	}
 
 	public Date getSys_create_date() {
 		return sys_create_date;
@@ -227,12 +239,12 @@ public class ProductionManagementEntity {
 		this.moc_priority = moc_priority;
 	}
 
-	public String getInv_note() {
-		return inv_note;
+	public String getIvn_note() {
+		return ivn_note;
 	}
 
-	public void setInv_note(String inv_note) {
-		this.inv_note = inv_note;
+	public void setIvn_note(String ivn_note) {
+		this.ivn_note = ivn_note;
 	}
 
 	public Integer getIvn_status() {
@@ -259,12 +271,12 @@ public class ProductionManagementEntity {
 		this.mpr_date = mpr_date;
 	}
 
-	public Integer getMpr_items() {
-		return mpr_items;
+	public Integer getIvn_items() {
+		return ivn_items;
 	}
 
-	public void setMpr_items(Integer mpr_items) {
-		this.mpr_items = mpr_items;
+	public void setIvn_items(Integer ivn_items) {
+		this.ivn_items = ivn_items;
 	}
 
 	public String getMes_note() {
@@ -273,6 +285,14 @@ public class ProductionManagementEntity {
 
 	public void setMes_note(String mes_note) {
 		this.mes_note = mes_note;
+	}
+
+	public String getSys_check_sum() {
+		return sys_check_sum;
+	}
+
+	public void setSys_check_sum(String sys_check_sum) {
+		this.sys_check_sum = sys_check_sum;
 	}
 
 }

@@ -24,5 +24,6 @@
 		<typeAlias alias="ProductionRecordsEntity" type="dtri.com.db.entity.ProductionRecordsEntity" />
 		<typeAlias alias="ProductionSnEntity" type="dtri.com.db.entity.ProductionSnEntity" />
 		<typeAlias alias="SoftwareVersionEntity" type="dtri.com.db.entity.SoftwareVersionEntity" />
+		<typeAlias alias="ERP_PM_Entity" type="dtri.com.db.entity.ERP_PM_Entity" />
 	</typeAliases>
 </configuration>

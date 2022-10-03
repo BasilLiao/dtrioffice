@@ -13,6 +13,8 @@
 <script src="./thirdparty/js/vue-2.6.11.min.js"></script>
 <script src="./thirdparty/js/websocket-sockjs.min.js"></script>
 <script src="./thirdparty/js/websocket-stomp.min.js"></script>
+<script src="./thirdparty/js/jszip-0.8.0.js"></script>
+<script src="./thirdparty/js/xlsx-0.8.0.js"></script>
 
 <link rel="icon" type="image/svg" href="./emoji.svg" />
 <style type="text/css">
