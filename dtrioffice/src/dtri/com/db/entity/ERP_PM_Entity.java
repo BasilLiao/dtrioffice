@@ -25,8 +25,9 @@ public class ERP_PM_Entity {
 	private String moc_ta009;// (預計)開工日
 	private String moc_ta010;// (預計)完工日
 	private String moc_ta011;// 狀態碼 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
+	private String moc_ta029;// 製令單備注(取消 cop_tc015 訂單備注->改製令單備注)
+	private String moc_cuser;// 建立製令單人
 	private String cop_tc012;// 客戶:訂單單號
-	private String cop_tc015;// 客戶:訂單備註
 	private String order_id;// 廠內:訂單單號A222-123456789
 	// 主要資料 ERP Expansion
 	private Integer id;// 流水號
@@ -50,7 +51,7 @@ public class ERP_PM_Entity {
 				+ sys_modify_date + ", sys_modify_user=" + sys_modify_user + ", sys_check_sum=" + sys_check_sum + ", useful=" + useful + ", note=" + note
 				+ ", id=" + id + ", moc_id=" + moc_id + ", moc_ta006=" + moc_ta006 + ", moc_ta034=" + moc_ta034 + ", moc_ta035=" + moc_ta035 + ", moc_ta015="
 				+ moc_ta015 + ", moc_ta017=" + moc_ta017 + ", moc_ta009=" + moc_ta009 + ", moc_ta010=" + moc_ta010 + ", moc_ta011=" + moc_ta011 + ", cop_tc012="
-				+ cop_tc012 + ", cop_tc015=" + cop_tc015 + ", order_id=" + order_id + ", bom_kind=" + bom_kind + ", moc_note=" + moc_note + ", moc_status="
+				+ cop_tc012 + ", moc_ta029=" + moc_ta029 + ", order_id=" + order_id + ", bom_kind=" + bom_kind + ", moc_note=" + moc_note + ", moc_status="
 				+ moc_status + ", moc_priority=" + moc_priority + ", ivn_note=" + ivn_note + ", ivn_status=" + ivn_status + ", ivn_items=" + ivn_items
 				+ ", mpr_note=" + mpr_note + ", mpr_date=" + mpr_date + ", mes_note=" + mes_note + "]";
 	}
@@ -191,14 +192,6 @@ public class ERP_PM_Entity {
 		this.cop_tc012 = cop_tc012;
 	}
 
-	public String getCop_tc015() {
-		return cop_tc015;
-	}
-
-	public void setCop_tc015(String cop_tc015) {
-		this.cop_tc015 = cop_tc015;
-	}
-
 	public String getOrder_id() {
 		return order_id;
 	}
@@ -293,6 +286,22 @@ public class ERP_PM_Entity {
 
 	public void setSys_check_sum(String sys_check_sum) {
 		this.sys_check_sum = sys_check_sum;
+	}
+
+	public String getMoc_ta029() {
+		return moc_ta029;
+	}
+
+	public void setMoc_ta029(String moc_ta029) {
+		this.moc_ta029 = moc_ta029;
+	}
+
+	public String getMoc_cuser() {
+		return moc_cuser;
+	}
+
+	public void setMoc_cuser(String moc_cuser) {
+		this.moc_cuser = moc_cuser;
 	}
 
 }

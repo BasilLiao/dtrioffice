@@ -16,10 +16,13 @@
 				useful = 1
 			</if>
 			<if test="moc_id !=null">
-				AND moc_id = #{moc_id}
+				AND moc_id Like #{moc_id}
 			</if>
 			<if test="moc_ta011 !=null">
-				AND moc_ta011 = #{moc_ta011}
+				AND moc_ta011 Like #{moc_ta011}
+			</if>
+			<if test="moc_ta006 !=null">
+				AND moc_ta006 Like #{moc_ta006}
 			</if>
 		</where>
 		ORDER BY moc_priority desc, moc_ta009 asc,moc_id asc
@@ -52,7 +55,7 @@
 		moc_ta006= #{moc_ta006},moc_ta034= #{moc_ta034},moc_ta035= #{moc_ta035},
 		moc_ta015= #{moc_ta015},moc_ta017= #{moc_ta017},moc_ta009= #{moc_ta009},
 		moc_ta010= #{moc_ta010},moc_ta011= #{moc_ta011},cop_tc012= #{cop_tc012},
-		cop_tc015= #{cop_tc015},order_id= #{order_id},
+		moc_ta029= #{moc_ta029},order_id= #{order_id},
 
 		sys_check_sum= #{sys_check_sum},useful= #{useful},
 		sys_modify_date= #{sys_modify_date}, sys_modify_user= #{sys_modify_user}
@@ -65,7 +68,7 @@
 		bom_kind, moc_id,
 		moc_ta006, moc_ta034, moc_ta035, moc_ta015, moc_ta017,
 		moc_ta009, moc_ta010, moc_ta011, cop_tc012,
-		cop_tc015,
+		moc_ta029,
 		order_id,
 		moc_note, moc_status, moc_priority,
 		ivn_note, ivn_status, ivn_items,
@@ -74,7 +77,7 @@
 		sys_modify_user, useful)
 		VALUES (#{bom_kind}, #{moc_id},
 		#{moc_ta006}, #{moc_ta034}, #{moc_ta035}, #{moc_ta015}, #{moc_ta017},
-		#{moc_ta009}, #{moc_ta010}, #{moc_ta011}, #{cop_tc012}, #{cop_tc015},
+		#{moc_ta009}, #{moc_ta010}, #{moc_ta011}, #{cop_tc012}, #{moc_ta029},
 		#{order_id},
 		#{moc_note}, #{moc_status}, #{moc_priority},
 		#{ivn_note}, #{ivn_status}, #{ivn_items},

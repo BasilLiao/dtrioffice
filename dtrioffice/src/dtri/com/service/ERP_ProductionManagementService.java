@@ -74,6 +74,7 @@ public class ERP_ProductionManagementService {
 		try {
 			// Step1. 取得(ERP) 資料 (僅侷限 A521+A511)
 			List<ERP_PM_Entity> erp_entities = erp_pm_Dao.getERP_PM_List();
+
 			int update_check = 0;
 			ERP_PM_Entity pmTemp = new ERP_PM_Entity();
 			LinkedHashMap<String, ERP_PM_Entity> all_temp = new LinkedHashMap<String, ERP_PM_Entity>();
@@ -132,6 +133,26 @@ public class ERP_ProductionManagementService {
 					one.setIvn_status(pmTemp.getIvn_status());// 1=齊料 2=未齊 3=未備
 					// 產線
 					one.setMes_note(pmTemp.getMes_note());
+					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
+					switch (one.getMoc_ta011()) {
+					case "1":
+						one.setMoc_ta011("未生產");
+						break;
+					case "2":
+						one.setMoc_ta011("已發料");
+						break;
+					case "3":
+						one.setMoc_ta011("生產中");
+						break;
+					case "Y":
+						one.setMoc_ta011("已完工");
+						break;
+					case "y":
+						one.setMoc_ta011("指定完工");
+						break;
+					default:
+						break;
+					}
 					// 系統
 					one.setNote("");
 					one.setUseful(1);
@@ -163,6 +184,26 @@ public class ERP_ProductionManagementService {
 					one.setSys_create_user("System");
 					one.setSys_modify_date(new Date());
 					one.setSys_modify_user("System");
+					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
+					switch (one.getMoc_ta011()) {
+					case "1":
+						one.setMoc_ta011("未生產");
+						break;
+					case "2":
+						one.setMoc_ta011("已發料");
+						break;
+					case "3":
+						one.setMoc_ta011("生產中");
+						break;
+					case "Y":
+						one.setMoc_ta011("已完工");
+						break;
+					case "y":
+						one.setMoc_ta011("指定完工");
+						break;
+					default:
+						break;
+					}
 				}
 				try {
 					byte bytes[] = one.toString().getBytes("UTF-8");
@@ -180,11 +221,47 @@ public class ERP_ProductionManagementService {
 					pm_Dao.addedOne(one);
 				}
 			}
-			// Step6. 暫時標記3 標記成已 結束
+			ERP_PM_Entity search_data = new ERP_PM_Entity();
+			search_data.setUseful(3);// 有效=1 無效=2
+			// 取得不再活耀 製令單
+			List<ERP_PM_Entity> erp_entities_end = pm_Dao.searchERP_PM_List(search_data);
+			// Step6. 標記成已 結束->更新最後一次
+			for (ERP_PM_Entity one : erp_entities_end) {
+				ERP_PM_Entity erp_end = erp_pm_Dao.getERP_PM_End_List(one);
+				one.setMoc_ta015(erp_end.getMoc_ta015());
+				one.setMoc_ta017(erp_end.getMoc_ta017());
+				one.setMoc_ta009(erp_end.getMoc_ta009());
+				one.setMoc_ta010(erp_end.getMoc_ta010());
+				one.setMoc_ta029(erp_end.getMoc_ta029());
+				one.setCop_tc012(erp_end.getCop_tc012());
+				one.setOrder_id(erp_end.getOrder_id());
+				switch (erp_end.getMoc_ta011()) {
+				case "1":
+					one.setMoc_ta011("未生產");
+					break;
+				case "2":
+					one.setMoc_ta011("已發料");
+					break;
+				case "3":
+					one.setMoc_ta011("生產中");
+					break;
+				case "Y":
+					one.setMoc_ta011("已完工");
+					break;
+				case "y":
+					one.setMoc_ta011("指定完工");
+					break;
+				default:
+					break;
+				}
+				update_check = pm_Dao.updateOneFromERP(one);
+			}
+
+			// Step7. 暫時標記3 標記成已 結束
 			pm_Dao.updateToUseful2From3();
 
 			// 取得(延展系統) 資料(僅 有效=1)
-			ERP_PM_Entity search_data = new ERP_PM_Entity();
+			search_data = new ERP_PM_Entity();
 			search_data.setUseful(1);// 有效=1 無效=2
 			List<ERP_PM_Entity> entities = pm_Dao.searchERP_PM_List(search_data);
 			// Step7. 更新Temp
@@ -278,7 +355,7 @@ public class ERP_ProductionManagementService {
 					pmTempBean.getMapPmEntity().put(new_id, upd_pm);
 				}
 				// 物控
-				if (pmNewTempBean.getUpdate_cell().equals("mpr_note")) {
+				else if (pmNewTempBean.getUpdate_cell().equals("mpr_note")) {
 					// 多筆資料
 					if (pmNewTempBean.getExcel_json().length() > 0) {
 						pmNewTempBean.getExcel_json().forEach(jys -> {
@@ -318,10 +395,11 @@ public class ERP_ProductionManagementService {
 						pmTempBean.getMapPmEntity().put(new_id, upd_pm);
 					}
 				}
-				if (pmNewTempBean.getUpdate_cell().equals("ivn_note")) {
+				// 倉庫
+				else if (pmNewTempBean.getUpdate_cell().equals("ivn_note")) {
 					if (!pmNewTempBean.getUpdate_value().equals("")) {
 						JSONObject new_note = new JSONObject();
-						JSONArray new_notes = new JSONArray(upd_pm.getMpr_note());
+						JSONArray new_notes = new JSONArray(upd_pm.getIvn_note());
 						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
 						new_note.put("user", new_name);
 						new_note.put("ms", pmNewTempBean.getUpdate_value());
@@ -330,10 +408,11 @@ public class ERP_ProductionManagementService {
 					}
 					pmTempBean.getMapPmEntity().put(new_id, upd_pm);
 				}
-				if (pmNewTempBean.getUpdate_cell().equals("mes_note")) {
+				// 製造
+				else if (pmNewTempBean.getUpdate_cell().equals("mes_note")) {
 					if (!pmNewTempBean.getUpdate_value().equals("")) {
 						JSONObject new_note = new JSONObject();
-						JSONArray new_notes = new JSONArray(upd_pm.getMpr_note());
+						JSONArray new_notes = new JSONArray(upd_pm.getMes_note());
 						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
 						new_note.put("user", new_name);
 						new_note.put("ms", pmNewTempBean.getUpdate_value());
@@ -391,8 +470,8 @@ public class ERP_ProductionManagementService {
 				jsonArray.put(entity.getMoc_ta017()); // 已生產量
 				jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 				// 10
+				jsonArray.put(entity.getMoc_ta029()); // 製令備註
 				jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
-				jsonArray.put(entity.getCop_tc015()); // 客戶備註
 				jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
 				jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 				jsonArray.put(entity.getMoc_note()); // 生管-備註
@@ -458,9 +537,11 @@ public class ERP_ProductionManagementService {
 		entity.setSys_modify_user(loginService.getSessionUserBean().getAccount());
 		// 查詢
 		if (!content.isNull("moc_id") && !content.getString("moc_id").equals(""))// 製令單號
-			entity.setMoc_id(content.getString("moc_id"));
+			entity.setMoc_id('%' + content.getString("moc_id") + '%');
 		if (!content.isNull("order_id") && !content.getString("order_id").equals(""))// 訂單
-			entity.setOrder_id(content.getString("order_id"));
+			entity.setOrder_id('%' + content.getString("order_id") + '%');
+		if (!content.isNull("moc_ta006") && !content.getString("moc_ta006").equals(""))// 產品品號
+			entity.setMoc_ta006('%' + content.getString("moc_ta006") + '%');
 		if (!content.isNull("useful"))// 單據狀態
 			entity.setUseful(content.getInt("useful"));
 
@@ -489,18 +570,18 @@ public class ERP_ProductionManagementService {
 		jsonArray.put("已生產量");
 		jsonArray.put("製令狀態");
 		//
+		jsonArray.put("製令備註");
 		jsonArray.put("客戶訂單");
-		jsonArray.put("客戶備註");
 		jsonArray.put("產品狀態");
 		jsonArray.put("延展開單");
-		jsonArray.put("備註");
+		jsonArray.put("生管-備註");
 		//
 		jsonArray.put("預計齊料");
-		jsonArray.put("備註");
+		jsonArray.put("物控-備註");
 		jsonArray.put("備料狀態");
 		jsonArray.put("缺料項數");
-		jsonArray.put("備註");
-		jsonArray.put("備註");
+		jsonArray.put("倉庫-備註");
+		jsonArray.put("製造-備註");
 
 		jsonAll.put(jsonArray);
 		// 內容
@@ -518,8 +599,8 @@ public class ERP_ProductionManagementService {
 			jsonArray.put(entity.getMoc_ta017()); // 已生產量
 			jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 			// 10
+			jsonArray.put(entity.getMoc_ta029()); // 製令單備註
 			jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
-			jsonArray.put(entity.getCop_tc015()); // 客戶備註
 			jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
 			jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 			jsonArray.put(entity.getMoc_note()); // 生管-備註

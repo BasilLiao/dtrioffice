@@ -9,6 +9,11 @@
 	border-collapse: separate;
 	border-spacing: 0px;
 }
+
+#search_tbody tr td {
+	word-break: break-all;
+	white-space: pre-line;
+}
 </style>
 <div class="pt-4 m-0 row shadow" id="production_management_body">
 	<div class="col-md-12 p-0">
@@ -28,6 +33,12 @@
 						<div class="col p-1">製令單號:</div>
 						<div class="col p-1">
 							<input class="col-md-12" type="text" id="s_moc_id" name="moc_id" placeholder="Ex:A511-9999" required autofocus />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">產品品號:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_moc_ta006" name="moc_ta006" placeholder="Ex:81-105-340143" required />
 						</div>
 					</div>
 					<div class="col-md-2 p-1">
@@ -80,8 +91,8 @@
 					<table id="search_table" class="m-0 border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
 						<thead>
 							<tr id="search_thead_kind" class=" exc-no h5 text-center" style="position: sticky; top: 0px; z-index: 5;">
-								<th colspan="6" class="fixed_cell table-success" scope="col" style="width: 610px; left: 1px; z-index: 3;">功能/固定</th>
-								<th colspan="8" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
+								<th colspan="7" class="fixed_cell table-success" scope="col" style="width: 610px; left: 1px; z-index: 3;">功能/固定</th>
+								<th colspan="7" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
 								<th colspan="3" class="fixed_cell table-info" scope="col">生管</th>
 								<th colspan="2" class="fixed_cell table-warning" scope="col">物控</th>
 								<th colspan="3" class="fixed_cell table-light" scope="col">倉庫</th>
@@ -240,18 +251,21 @@
 				if (i == 1 || i == 2) {
 					min_width = 120;
 				}
-				if (i == 3 || i == 4) {
+				if (i == 3 || i == 4 || i == 11 || i == 13 || i == 15) {
 					min_width = 150;
 				}
 				if (i == 5 || i == 6) {
 					min_width = 300;
+				}
+				if (i == 10) {
+					min_width = 450;
 				}
 				if (i == 14 || i == 16 || i == 19 || i == 20) {
 					min_width = 500;
 				}
 				//固定
 				var sta = "";
-				if (i == 0 || i == 1 || i == 2 || i == 3) {
+				if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4) {
 					sta = '<th style="min-width: ' + min_width + 'px; left: '+fixed_left+'px;"';
 					sta +='class="s_' + i + ' fixed_cell" scope="col">';
 					sta += this.search_list[0][i] + "</th>";
@@ -511,13 +525,9 @@
 							class_val += " modfiy_note  border border-warning rounded shadow-sm";
 							b_row_id = "mes_note";
 						}
-						//換行限制
-						if (class_val == 's_5' || class_val == 's_6') {
-							css_val += " word-break: break-all;";
-							css_val += " white-space: pre-line;";
-						}
+
 						//固定
-						if (j < 4) {
+						if (j < 5) {
 							class_val += " fixed_cell";
 							css_val += " left: " + css_left + "px;";
 							if (j == 0)
@@ -527,7 +537,9 @@
 							if (j == 2)
 								css_left += 120;
 							if (j == 3)
-								css_left += 180;
+								css_left += 150;
+							if (j == 4)
+								css_left += 150;
 
 						}
 						$("#search_tbody .t_row_" + ex_list).append("<td b_row_id='"+b_row_id+"' class='" + class_val +"' style='"+css_val+"'></td>");
@@ -566,9 +578,12 @@
 							for (var k = 0; k < json_v.length; k++) {
 								var ex_note = $($('#ex_note_format').clone()[0]);
 								//只顯示最新的
-								if (json_v.length==1 || k != 0) {
+								if (k + 1 == json_v.length) {
 									ex_note.removeClass('d-none');
 									ex_note.addClass('newest');
+									//顏色
+									ex_note.removeClass('border-secondary');
+									ex_note.addClass('border-primary');
 								}
 								ex_note.addClass('note_list');
 								ex_note.attr("id", "");
@@ -640,9 +655,12 @@
 			},
 			//查詢清除
 			rm_search : function() {
-				$("#s_c_n").val("");
-				$("#s_b").val("");
-				$("#s_p").val("");
+
+				$("#s_moc_id").val("");
+				$("#s_moc_ta006").val("");
+				$("#s_order_id").val("");
+				$("#s_useful").val("1");
+				$("#s_auto").val("auto");
 			},
 			//選擇  登記
 			choose_sign : function() {
@@ -700,6 +718,7 @@
 			send_search : function() {
 				var content = new Object();
 				content.moc_id = $("#s_moc_id").val();
+				content.moc_ta006 = $("#s_moc_ta006").val();
 				content.order_id = $("#s_order_id").val();
 				content.useful = $("#s_useful").val();
 
