@@ -122,10 +122,11 @@ public class ProductionManagementController {
 				re_action = "only_unlock_modify";
 				break;
 			case "only_unlock_save":// 單獨存入內容
-				
+
 				pmNewTempBean.setUpdate_cell(content.getString("note_cell"));// 哪一格
 				pmNewTempBean.setUpdate_value(content.getString("note_value"));// 內容物
 				pmNewTempBean.setMoc_priority(content.getInt("moc_priority"));
+				pmNewTempBean.setMoc_week(content.getString("moc_week"));
 				pmNewTempBean.setMpr_date(content.getString("mpr_date"));
 				pmNewTempBean.setExcel_json(new JSONArray(content.getString("excel_json")));
 				// 請求->成功

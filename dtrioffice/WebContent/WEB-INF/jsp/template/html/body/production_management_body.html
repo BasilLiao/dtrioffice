@@ -42,6 +42,12 @@
 						</div>
 					</div>
 					<div class="col-md-2 p-1">
+						<div class="col p-1">產品品號-排除(開頭):</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_moc_ta006_not" name="_moc_ta006_not" placeholder="Ex:90-311 90-322" required />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
 						<div class="col p-1">客戶-訂單號:</div>
 						<div class="col p-1">
 							<input class="col-md-12" type="text" id="s_order_id" name="order_id" placeholder="Ex:CD76543" required />
@@ -91,8 +97,8 @@
 					<table id="search_table" class="m-0 border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
 						<thead>
 							<tr id="search_thead_kind" class=" exc-no h5 text-center" style="position: sticky; top: 0px; z-index: 5;">
-								<th colspan="7" class="fixed_cell table-success" scope="col" style="width: 610px; left: 1px; z-index: 3;">功能/固定</th>
-								<th colspan="7" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
+								<th colspan="7" class="fixed_cell table-success" scope="col" style="width: 620px; left: 1px; z-index: 3;">功能/固定</th>
+								<th colspan="8" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
 								<th colspan="3" class="fixed_cell table-info" scope="col">生管</th>
 								<th colspan="2" class="fixed_cell table-warning" scope="col">物控</th>
 								<th colspan="3" class="fixed_cell table-light" scope="col">倉庫</th>
@@ -100,10 +106,26 @@
 							</tr>
 							<tr id="search_thead" class="table-primary h5 text-center" style="position: sticky; top: 0px; z-index: 5;">
 								<th class="fixed_cell exc-no" scope="col" style="min-width: 50px; left: 1px;">能</th>
-								<th class="fixed_cell exc-no" scope="col" style="min-width: 40px; left: 51px;">筆</th>
+								<th class="fixed_cell exc-no" scope="col" style="min-width: 50px; left: 51px;">筆</th>
 							</tr>
 						</thead>
-						<tbody id="search_tbody"></tbody>
+						<tbody id="search_tbody">
+							<tr class="d-none page_all t_row_week_ex exc-no" style="white-space: nowrap;">
+								<td colspan="7" class=" bg-warning fixed_cell" style="position: sticky; left: 1px; top: 0px; z-index: 4;">
+									<div class="row m-0 small col-8 p-0">
+										<div class="col-2 p-0">
+											<b>年-週期:</b>
+										</div>
+										<div class="col-2 p-0 week_nb text-danger"></div>
+										<div class="col-2 p-0">
+											<b>周-未產總數:</b>
+										</div>
+										<div class="col-2 p-0 week_qty"></div>
+									</div>
+								</td>
+								<td colspan="17" class=" bg-warning"></td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -113,7 +135,7 @@
 </div>
 <!-- 添加畫面 -->
 <div id="show_details" class="fixed-top row m-0 justify-content-center align-items-center d-none" style="background: #00000066; height: 100%">
-	<div class="col-6 p-1 border border-primary rounded shadow bg-light h5">
+	<div class="col-8 p-1 border border-primary rounded shadow bg-light h5">
 		<div class="col-12 p-0">
 			<form onsubmit="return templateBody.send_added_or_update_save();">
 				<div class="row m-0 border">
@@ -124,13 +146,17 @@
 					<div class="col-4 p-1" id="new_name"></div>
 				</div>
 				<div class="row m-0 border">
-					<div class="col-2 p-1">優先權:</div>
-					<div class="col-4 p-1" id="new_moc_priority">
-						<input size="2" max="99" min="0" type="number" placeholder="Ex:0-99" required="required" class="col-md-12 p-1">
+					<div class="col-1 p-1 pt-2">每週期:</div>
+					<div class="col-3 p-1" id="new_moc_week">
+						<input type="text" placeholder="Ex:2001-W33" required="required" class="col-md-10 p-1">
 					</div>
-					<div class="col-2 p-1">齊料日:</div>
-					<div class="col-4 p-1" id="new_mpr_date">
-						<input type="text" placeholder="Ex:2001-01-01" required="required" class="col-md-12 p-1">
+					<div class="col-1 p-1 pt-2">優先權:</div>
+					<div class="col-3 p-1" id="new_moc_priority">
+						<input size="2" max="99" min="0" type="number" placeholder="Ex:0-99" required="required" class="col-md-10 p-1">
+					</div>
+					<div class="col-1 p-1 pt-2">齊料日:</div>
+					<div class="col-3 p-1" id="new_mpr_date">
+						<input type="text" placeholder="Ex:2001-01-01" required="required" class="col-md-10 p-1">
 					</div>
 				</div>
 				<div class="row m-0 border">
@@ -193,26 +219,30 @@
 		<div class="note_name col-4 border p-1"></div>
 		<div class="note_date col-8 border p-1"></div>
 	</div>
+	<div class="d-none">nextline</div>
 	<div class="row m-0">
 		<div class="note_content col-12 border p-1"></div>
 	</div>
+	<div class="d-none">nextline</div>
 </div>
 <!-- 格式範例 匯出Excel  -->
 <div id="ex_export_excel" class="d-none">
 	<table>
 		<thead>
 			<tr>
-				<th colspan="4">請務必存檔.xlsx/請勿填入特殊 (字元或格式)</th>
+				<th colspan="5">請務必存檔.xlsx/請勿填入特殊 (字元或格式)</th>
 			</tr>
 			<tr>
-				<th>製令單(必填)</th>
-				<th>備註(選填)</th>
+				<th>製令單(必填 Ex: A512-123456789)</th>
+				<th>備註(選填 Ex:已備齊料,請生產)</th>
 				<th>預計齊料日[格式:2001-01-05](選填)</th>
-				<th>優先權(選填)</th>
+				<th>優先權(選填Ex:0-999越大越前面)</th>
+				<th>週期(選填 Ex:2022-W40)</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -243,7 +273,7 @@
 			this.moc_id_lock = main.contentData.templateInfo.body["moc_id_lock"];
 			var min_width = 100;
 			//t_header
-			var fixed_left = 91;
+			var fixed_left = 101;
 			for (var i = 0; i < this.search_list[0].length; i++) {
 				if (i == 0) {
 					min_width = 60;
@@ -251,7 +281,7 @@
 				if (i == 1 || i == 2) {
 					min_width = 120;
 				}
-				if (i == 3 || i == 4 || i == 11 || i == 13 || i == 15) {
+				if (i == 3 || i == 4 || i == 11 || i == 14 || i == 16) {
 					min_width = 150;
 				}
 				if (i == 5 || i == 6) {
@@ -260,7 +290,7 @@
 				if (i == 10) {
 					min_width = 450;
 				}
-				if (i == 14 || i == 16 || i == 19 || i == 20) {
+				if (i == 15 || i == 17 || i == 20 || i == 21) {
 					min_width = 500;
 				}
 				//固定
@@ -325,16 +355,16 @@
 				//s_20->mes_note->製程
 				switch (moc_id_type) {
 				case 'moc_note':
-					$('.t_row_' + moc_id + ' .s_14 .note_list').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_15 .note_list').removeClass('d-none');
 					break;
 				case 'mpr_note':
-					$('.t_row_' + moc_id + ' .s_16 .note_list').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_17 .note_list').removeClass('d-none');
 					break;
 				case 'ivn_note':
-					$('.t_row_' + moc_id + ' .s_19 .note_list').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_20 .note_list').removeClass('d-none');
 					break;
 				case 'mes_note':
-					$('.t_row_' + moc_id + ' .s_20 .note_list').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_21 .note_list').removeClass('d-none');
 					break;
 
 				default:
@@ -353,20 +383,20 @@
 				//s_20->mes_note->製程
 				switch (moc_id_type) {
 				case 'moc_note':
-					$('.t_row_' + moc_id + ' .s_14 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_14 .newest').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_15 .note_list').addClass('d-none');
+					$('.t_row_' + moc_id + ' .s_15 .newest').removeClass('d-none');
 					break;
 				case 'mpr_note':
-					$('.t_row_' + moc_id + ' .s_16 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_16 .newest').removeClass('d-none');
+					$('.t_row_' + moc_id + ' .s_17 .note_list').addClass('d-none');
+					$('.t_row_' + moc_id + ' .s_17 .newest').removeClass('d-none');
 					break;
 				case 'ivn_note':
-					$('.t_row_' + moc_id + ' .s_19 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_19 .newest').removeClass('d-none');
-					break;
-				case 'mes_note':
 					$('.t_row_' + moc_id + ' .s_20 .note_list').addClass('d-none');
 					$('.t_row_' + moc_id + ' .s_20 .newest').removeClass('d-none');
+					break;
+				case 'mes_note':
+					$('.t_row_' + moc_id + ' .s_21 .note_list').addClass('d-none');
+					$('.t_row_' + moc_id + ' .s_21 .newest').removeClass('d-none');
 					break;
 				default:
 					break;
@@ -412,6 +442,9 @@
 									sheet['D' + check_nb] = (sheet['D' + check_nb] == null ? {
 										v : ""
 									} : sheet['D' + check_nb]);//優先權
+									sheet['E' + check_nb] = (sheet['E' + check_nb] == null ? {
+										v : ""
+									} : sheet['E' + check_nb]);//週期
 
 									//新增筆數
 									excel_json.push({
@@ -419,7 +452,8 @@
 										'moc_id' : sheet['A' + check_nb]['v'],
 										'ms' : sheet['B' + check_nb]['v'],
 										'mpr_date' : sheet['C' + check_nb]['v'],
-										'priority' : sheet['D' + check_nb]['v']
+										'priority' : sheet['D' + check_nb]['v'],
+										'week' : sheet['E' + check_nb]['v']
 									})
 								} else {
 									check_have = false;
@@ -451,8 +485,9 @@
 				templateBody.lock_websocket_req(moc_id);
 				$('#new_moc_id').text($('.t_row_' + moc_id + ' .s_3').text());
 				$('#new_name').text($('#nav_account').text());
-				$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());
-				$('#new_mpr_date input').val($('.t_row_' + moc_id + ' .s_15').text());
+				$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());				
+				$('#new_mpr_date input').val($('.t_row_' + moc_id + ' .s_16').text());
+				$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_30').text());
 				$('#new_note textarea').val('');
 				$('#excel_json').text('[]');
 				$('#excel_file').val('');
@@ -480,9 +515,9 @@
 					r_submit += '<button user_id="' + ex_list + '" class="btn btn-success btn-sm btn-block r_submit">';
 					r_submit += "登</button></div>";
 
-					var fn = '<tr class=" page_all t_row_' + ex_list + '" style="white-space: nowrap;">';
+					var fn = '<tr class="exc-no page_all t_row_' + ex_list + '" style="white-space: nowrap;">';
 					fn += '<td class=" exc-no p-2 col-md-12 fixed_cell" style="min-width: 50px; left: 1px;">' + r_submit + ' ';
-					fn += "</td></tr>";
+					fn += '</td></tr>';
 					$("#search_tbody").append(fn);
 					//計數量
 					var fn_nb = '<td class=" exc-no fixed_cell list_nb" style="min-width: 40px; left: 51px;">0</td>';
@@ -492,36 +527,36 @@
 					var css_val = "";
 					var b_row_id = "";
 					var b_row_div = "";
-					var css_left = 91;
+					var css_left = 101;
 					for (var j = 0; j < this.search_list[1].length; j++) {
 						//多餘隱藏
 						class_val = "";
 						css_val = "";
 						b_row_id = "";//每筆資料ID
 						b_div = "";
-						if (j > 20) {
+						if (j > 21) {
 							class_val = " exc-no d-none s_" + j;
 						} else {
 							class_val = "s_" + j;
 						}
 						//可填入[生管備註]
-						if (class_val == 's_14') {
+						if (class_val == 's_15') {
 							class_val += " modfiy_note border border-warning rounded shadow-sm";
 							b_row_id = "moc_note";
 						}
 						//可填入[物控備註]
-						if (class_val == 's_16') {
+						if (class_val == 's_17') {
 							class_val += " modfiy_note border border-warning rounded shadow-sm";
 							b_row_id = "mpr_note";
 						}
 						//可填入[倉庫備註]
-						if (class_val == 's_19') {
+						if (class_val == 's_20') {
 							class_val += " modfiy_note  border border-warning rounded shadow-sm";
 							b_row_id = "ivn_note";
 							b_div = "";
 						}
 						//可填入[製造備註]
-						if (class_val == 's_20') {
+						if (class_val == 's_21') {
 							class_val += " modfiy_note  border border-warning rounded shadow-sm";
 							b_row_id = "mes_note";
 						}
@@ -552,6 +587,8 @@
 				//t_body
 				var id_key = 3;
 				var fixed_cell_color = false;
+				var week_key = '';
+				var week_qty = 0;
 				for (var i = 1; i < this.search_list.length; i++) {
 					//功能
 					var s_list = this.search_list[i][id_key];
@@ -559,11 +596,13 @@
 					var new_one = $($("#search_tbody .t_row_" + ex_list).clone()[0]);
 					new_one.removeClass("t_row_ex_0");
 					new_one.removeClass("d-none");
+					new_one.removeClass("exc-no");
 					new_one.addClass('t_row_' + s_list);
 					new_one.addClass('show');
 					new_one.css('height', 60);
 					new_one.find(".r_submit").attr("id", s_list);
 					new_one.find(".list_nb").text(i);
+
 					//欄位資料
 					for (var j = 0; j < this.search_list[i].length; j++) {
 
@@ -589,7 +628,7 @@
 								ex_note.attr("id", "");
 								ex_note.find('.note_name').text(json_v[k]['user']);
 								ex_note.find('.note_date').text(json_v[k]['date']);
-								json_v[k]['ms'] = json_v[k]['ms'].replaceAll('&#10;', '<br>');
+								json_v[k]['ms'] = json_v[k]['ms'].replaceAll('&#10;', '<br>');//換行
 								ex_note.find('.note_content').html(json_v[k]['ms']);
 								new_one.find('.s_' + j).append(ex_note);
 							}
@@ -598,6 +637,33 @@
 							new_one.find(".s_" + j).text(this.search_list[i][j]);
 						}
 					}
+					//週期
+					if (week_key != this.search_list[i][30]) {
+						var new_week_one = $($('.t_row_week_ex').clone()[0]);
+						new_week_one.removeClass('t_row_week_ex');
+						new_week_one.removeClass('exc-no');
+						new_week_one.attr('id', this.search_list[i][30]);
+						new_week_one.removeClass('d-none');
+						new_week_one.addClass('show');
+						new_week_one.find('.week_nb').text(this.search_list[i][30]);
+						//數量
+						if (week_key != '') {
+							$('#' + week_key).find('.week_qty').text(week_qty);
+							//換色
+							if (fixed_cell_color) {
+								fixed_cell_color = false;
+							} else {
+								fixed_cell_color = true;
+
+							}
+						}
+						$("#search_tbody").append(new_week_one);
+						week_qty = 0;
+
+					}
+					week_qty += (this.search_list[i][7] - this.search_list[i][8]);
+					week_key = this.search_list[i][30];
+
 					$("#search_tbody").append(new_one);
 					//換色
 					if (fixed_cell_color) {
@@ -641,6 +707,7 @@
 					name : "Worksheet Name",
 					filename : "生產排程_Export_" + $.datepicker.formatDate('yy-mm-dd', new Date()) + ".xls",//do not include extension
 					fileext : ".xls" // file extension
+
 				});
 			},
 			//Export
@@ -720,6 +787,7 @@
 				content.moc_id = $("#s_moc_id").val();
 				content.moc_ta006 = $("#s_moc_ta006").val();
 				content.order_id = $("#s_order_id").val();
+				content.moc_ta006_not = $("#s_moc_ta006_not").val();
 				content.useful = $("#s_useful").val();
 
 				var url = "./production_management.do";
@@ -797,8 +865,9 @@
 					'userName' : $('#nav_account').text(),
 					'moc_id' : $('#new_moc_id').text(),
 					'note_cell' : $('#new_note_type').text(),
-					'note_value' : $('#new_note textarea').val(),
+					'note_value' : $('#new_note textarea').val().replaceAll('\n', '&#10;'),
 					'moc_priority' : $('#new_moc_priority input').val(),
+					'moc_week' : $('#new_moc_week input').val(),
 					'mpr_date' : $('#new_mpr_date input').val(),
 					'excel_json' : $('#excel_json').text()
 				}));
@@ -841,6 +910,7 @@
 						$('#new_note_type').text('');
 						$('#new_note textarea').val('');
 						$('#new_moc_priority input').val('');
+						$('#new_moc_week input').val('');
 						$('#new_mpr_date input').val('');
 						break;
 					default:

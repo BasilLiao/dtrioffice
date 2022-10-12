@@ -15,6 +15,7 @@
         name: "Table2Excel",
         filename: "table2excel",
         fileext: ".xls",
+        exclude_div: true,
         exclude_img: true,
         exclude_links: true,
         exclude_inputs: true,
@@ -117,6 +118,11 @@
                     tempRows += "</tr>";
 
                 });
+                // exclude linefix tags 2022-10-12 Basil
+                if(e.settings.exclude_div) {
+                tempRows = exclude_linefix(tempRows);
+                 }
+                 
                 // exclude img tags
                 if(e.settings.exclude_img) {
                     tempRows = exclude_img(tempRows);
@@ -131,6 +137,9 @@
                 if(e.settings.exclude_inputs) {
                     tempRows = exclude_inputs(tempRows);
                 }
+                
+
+                
                 e.tableRows.push(tempRows);
             });
 
@@ -250,6 +259,13 @@
                 return "";
             }
         });
+    }
+    //Removes div Next line fix 
+    function exclude_linefix(string) {
+	
+ 		console.log(string);
+	 return string.replaceAll('<div class="d-none">nextline</div>','&#10;').replaceAll('<div>','').replaceAll('</div>','').replaceAll('<br>','&#10;');
+	
     }
 
     $.fn[ pluginName ] = function ( options ) {

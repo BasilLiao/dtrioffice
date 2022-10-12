@@ -54,6 +54,32 @@ public class Fm_Time_Model {
 			e.printStackTrace();
 		}
 		return null;
-
 	}
+
+	/** get Date to week **/
+	public static int getWeek(Date date) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int week = cal.get(Calendar.WEEK_OF_YEAR);
+			return week;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	/** get Date to Year **/
+	public static int getYear(Date date) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			return year;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }

@@ -1064,7 +1064,7 @@
 						var bom_sfn = $('.listLeft .item');
 						//左邊
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text();
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							have.push({
@@ -1076,7 +1076,7 @@
 						bom_sfn = $('.listRight .item');
 						//右邊
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text();
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							have.push({
@@ -1088,7 +1088,7 @@
 						//不使用
 						bom_sfn = $('.item_notUse');
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text();
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							not.push({

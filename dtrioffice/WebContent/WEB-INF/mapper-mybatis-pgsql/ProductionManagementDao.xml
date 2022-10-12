@@ -24,8 +24,11 @@
 			<if test="moc_ta006 !=null">
 				AND moc_ta006 Like #{moc_ta006}
 			</if>
+			<if test="moc_ta006_not !=null">
+				AND moc_ta006 not LIKE ALL(array[${moc_ta006_not}])
+			</if>
 		</where>
-		ORDER BY moc_priority desc, moc_ta009 asc,moc_id asc
+		ORDER BY moc_week asc, moc_priority desc, moc_ta009 asc,moc_id asc
 	</select>
 	<!-- 更新 檢查點=1 為 3 -->
 	<update id="updateToUseful3From1">
@@ -55,7 +58,7 @@
 		moc_ta006= #{moc_ta006},moc_ta034= #{moc_ta034},moc_ta035= #{moc_ta035},
 		moc_ta015= #{moc_ta015},moc_ta017= #{moc_ta017},moc_ta009= #{moc_ta009},
 		moc_ta010= #{moc_ta010},moc_ta011= #{moc_ta011},cop_tc012= #{cop_tc012},
-		moc_ta029= #{moc_ta029},order_id= #{order_id},
+		moc_ta029= #{moc_ta029},order_id= #{order_id},moc_week= #{moc_week},
 
 		sys_check_sum= #{sys_check_sum},useful= #{useful},
 		sys_modify_date= #{sys_modify_date}, sys_modify_user= #{sys_modify_user}
@@ -74,17 +77,16 @@
 		ivn_note, ivn_status, ivn_items,
 		mpr_note, mpr_date, mes_note, note,
 		sys_check_sum, sys_create_date, sys_create_user, sys_modify_date,
-		sys_modify_user, useful)
+		sys_modify_user, useful,moc_cuser, moc_week)
 		VALUES (#{bom_kind}, #{moc_id},
 		#{moc_ta006}, #{moc_ta034}, #{moc_ta035}, #{moc_ta015}, #{moc_ta017},
-		#{moc_ta009}, #{moc_ta010}, #{moc_ta011}, #{cop_tc012}, #{moc_ta029},
+		#{moc_ta009}, #{moc_ta010}, #{moc_ta011}, #{cop_tc012},
+		#{moc_ta029},
 		#{order_id},
 		#{moc_note}, #{moc_status}, #{moc_priority},
 		#{ivn_note}, #{ivn_status}, #{ivn_items},
 		#{mpr_note}, #{mpr_date}, #{mes_note},#{note},
 		#{sys_check_sum}, #{sys_create_date},
-		#{sys_create_user}, #{sys_modify_date}, #{sys_modify_user}, #{useful});
+		#{sys_create_user}, #{sys_modify_date}, #{sys_modify_user}, #{useful}, #{moc_cuser},#{moc_week});
 	</insert>
-
-
 </mapper>

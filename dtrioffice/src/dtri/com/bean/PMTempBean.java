@@ -23,6 +23,7 @@ public class PMTempBean {
 	private String update_cell;
 	private String update_value;
 	private int moc_priority;
+	private String moc_week;
 	private String mpr_date;
 	private JSONArray excel_json;
 	
@@ -118,5 +119,13 @@ public class PMTempBean {
 
 	public void setExcel_json(JSONArray excel_json) {
 		this.excel_json = excel_json;
+	}
+
+	public String getMoc_week() {
+		return moc_week;
+	}
+
+	public void setMoc_week(String moc_week) {
+		this.moc_week = moc_week;
 	}
 }

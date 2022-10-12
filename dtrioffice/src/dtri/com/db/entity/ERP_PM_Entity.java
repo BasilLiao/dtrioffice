@@ -15,9 +15,11 @@ public class ERP_PM_Entity {
 	private String sys_check_sum;// 資料異動?
 	private Integer useful;
 	private String note;
+	
 	// 主要資料 ERP
 	private String moc_id;// 製令單(TA001+TA002)
 	private String moc_ta006;// 產品品號
+	private String moc_ta006_not;// 不包含-產品品號(非Table)
 	private String moc_ta034;// 產品品名
 	private String moc_ta035;// 產品規格
 	private Integer moc_ta015;// 預計生產數
@@ -38,6 +40,7 @@ public class ERP_PM_Entity {
 	private String moc_note;// 生管 備註事項 json格式
 	private String moc_status;// 生管 開單狀態 0=未開注意事項1=已開注意事項2=已核准流程卡
 	private Integer moc_priority;// 生管 優先權
+	private String moc_week;//週期
 	private String ivn_note;// 倉庫 備注事項 json格式
 	private Integer ivn_status;// 倉庫 備料狀況1=齊料 2=未齊 3=未備
 	private Integer ivn_items;// 倉庫 缺幾項 物料(共)
@@ -302,6 +305,22 @@ public class ERP_PM_Entity {
 
 	public void setMoc_cuser(String moc_cuser) {
 		this.moc_cuser = moc_cuser;
+	}
+
+	public String getMoc_ta006_not() {
+		return moc_ta006_not;
+	}
+
+	public void setMoc_ta006_not(String moc_ta006_not) {
+		this.moc_ta006_not = moc_ta006_not;
+	}
+
+	public String getMoc_week() {
+		return moc_week;
+	}
+
+	public void setMoc_week(String moc_week) {
+		this.moc_week = moc_week;
 	}
 
 }

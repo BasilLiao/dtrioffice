@@ -94,6 +94,13 @@ public class ERP_ProductionManagementService {
 			// Step3. 暫時標記3
 			pm_Dao.updateToUseful3From1();
 			// Step4. 更新資料矯正
+			int now_year = Fm_Time_Model.getYear(new Date());
+			int now_week = Fm_Time_Model.getWeek(new Date());
+			int old_week = 0;
+			int old_year = 0;
+			int erp_week = 0;
+			int erp_year = 0;
+
 			for (ERP_PM_Entity one : erp_entities) {
 				one.setMoc_id(one.getMoc_id().replaceAll(" ", ""));
 				one.setMoc_ta009(Fm_Time_Model.to_yyMMdd(one.getMoc_ta009())); // 預計開工
@@ -133,6 +140,14 @@ public class ERP_ProductionManagementService {
 					one.setIvn_status(pmTemp.getIvn_status());// 1=齊料 2=未齊 3=未備
 					// 產線
 					one.setMes_note(pmTemp.getMes_note());
+					old_week = Integer.parseInt(pmTemp.getMoc_week().split("-W")[1]);
+					old_year = Integer.parseInt(pmTemp.getMoc_week().split("-W")[0]);
+					// 如果(同一年含去年)且(週期小於本周)
+					if (old_year <= now_year && old_week < now_week) {
+						one.setMoc_week(now_year + "-W" + now_week);
+					} else {
+						one.setMoc_week(pmTemp.getMoc_week());
+					}
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
 					case "1":
@@ -184,6 +199,15 @@ public class ERP_ProductionManagementService {
 					one.setSys_create_user("System");
 					one.setSys_modify_date(new Date());
 					one.setSys_modify_user("System");
+
+					erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
+					erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
+					// 如果(同一年含去年)且(週期小於本周)
+					if (erp_year <= now_year && erp_week < now_week) {
+						erp_week = now_week;
+						erp_year = now_year;
+					}
+					one.setMoc_week(erp_year + "-W" + erp_week);
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
 					case "1":
@@ -223,9 +247,9 @@ public class ERP_ProductionManagementService {
 			}
 			ERP_PM_Entity search_data = new ERP_PM_Entity();
 			search_data.setUseful(3);// 有效=1 無效=2
-			// 取得不再活耀 製令單
+			// Step6.取得不再活耀 製令單
 			List<ERP_PM_Entity> erp_entities_end = pm_Dao.searchERP_PM_List(search_data);
-			// Step6. 標記成已 結束->更新最後一次
+			// 標記成已 結束->更新最後一次
 			for (ERP_PM_Entity one : erp_entities_end) {
 				ERP_PM_Entity erp_end = erp_pm_Dao.getERP_PM_End_List(one);
 				one.setMoc_ta015(erp_end.getMoc_ta015());
@@ -341,18 +365,49 @@ public class ERP_ProductionManagementService {
 				LinkedHashMap<String, ERP_PM_Entity> upd_pms = pmTempBean.getMapPmEntity();
 				ERP_PM_Entity upd_pm = upd_pms.get(new_id);
 				if (pmNewTempBean.getUpdate_cell().equals("moc_note")) {
-					// 單一資料
-					if (!pmNewTempBean.getUpdate_value().equals("")) {
-						JSONObject new_note = new JSONObject();
-						JSONArray new_notes = new JSONArray(upd_pm.getMoc_note());
-						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
-						new_note.put("user", new_name);
-						new_note.put("ms", pmNewTempBean.getUpdate_value());
-						new_notes.put(new_note);
-						upd_pm.setMoc_note(new_notes.toString());
+					// 多筆資料
+					if (pmNewTempBean.getExcel_json().length() > 0) {
+						pmNewTempBean.getExcel_json().forEach(jys -> {
+							// 如果[pmTempBean]沒有製令單->不更新
+							JSONObject one = (JSONObject) jys;
+							if (pmTempBean.getMapPmEntity().containsKey(one.getString("moc_id"))) {
+								JSONObject new_note = new JSONObject();
+								ERP_PM_Entity upd_pm_one = pmTempBean.getMapPmEntity().get(one.getString("moc_id"));
+								JSONArray new_notes = new JSONArray(upd_pm_one.getMpr_note());
+								// 資訊(ms)
+								if (!one.getString("ms").equals("")) {
+									new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+									new_note.put("user", one.getString("user"));
+									new_note.put("ms", one.getString("ms"));
+									new_notes.put(new_note);
+									upd_pm_one.setMoc_note(new_notes.toString());
+								}
+								// 優先權(priority)
+								if (one.getInt("priority") != 0) {
+									upd_pm_one.setMoc_priority(one.getInt("priority"));
+								}
+								// 周排(week)
+								if (!one.getString("week").equals("")) {
+									upd_pm_one.setMoc_week(one.getString("week"));
+								}
+								pmTempBean.getMapPmEntity().put(one.getString("moc_id"), upd_pm_one);
+							}
+						});
+					} else {
+						// 單一資料
+						if (!pmNewTempBean.getUpdate_value().equals("")) {
+							JSONObject new_note = new JSONObject();
+							JSONArray new_notes = new JSONArray(upd_pm.getMoc_note());
+							new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+							new_note.put("user", new_name);
+							new_note.put("ms", pmNewTempBean.getUpdate_value());
+							new_notes.put(new_note);
+							upd_pm.setMoc_note(new_notes.toString());
+						}
+						upd_pm.setMoc_priority(pmNewTempBean.getMoc_priority());// 優先權
+						upd_pm.setMoc_week(pmNewTempBean.getMoc_week());//
+						pmTempBean.getMapPmEntity().put(new_id, upd_pm);
 					}
-					upd_pm.setMoc_priority(pmNewTempBean.getMoc_priority());// 優先權
-					pmTempBean.getMapPmEntity().put(new_id, upd_pm);
 				}
 				// 物控
 				else if (pmNewTempBean.getUpdate_cell().equals("mpr_note")) {
@@ -365,11 +420,14 @@ public class ERP_ProductionManagementService {
 								JSONObject new_note = new JSONObject();
 								ERP_PM_Entity upd_pm_one = pmTempBean.getMapPmEntity().get(one.getString("moc_id"));
 								JSONArray new_notes = new JSONArray(upd_pm_one.getMpr_note());
-								new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
-								new_note.put("user", one.getString("user"));
-								new_note.put("ms", one.getString("ms"));
-								new_notes.put(new_note);
-								upd_pm_one.setMpr_note(new_notes.toString());
+								// 資訊(ms)
+								if (!one.getString("ms").equals("")) {
+									new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+									new_note.put("user", one.getString("user"));
+									new_note.put("ms", one.getString("ms"));
+									new_notes.put(new_note);
+									upd_pm_one.setMpr_note(new_notes.toString());
+								}
 								// 齊料日(mpr_date)
 								if (!one.getString("mpr_date").equals("")) {
 									upd_pm_one.setMpr_date(one.getString("mpr_date"));
@@ -472,28 +530,29 @@ public class ERP_ProductionManagementService {
 				// 10
 				jsonArray.put(entity.getMoc_ta029()); // 製令備註
 				jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
+				jsonArray.put(entity.getMoc_cuser());// 負責人
 				jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
 				jsonArray.put(entity.getMoc_status()); // 生管-延展開單
-				jsonArray.put(entity.getMoc_note()); // 生管-備註
 				// 15
+				jsonArray.put(entity.getMoc_note()); // 生管-備註
 				jsonArray.put(entity.getMpr_date()); // 物控-預計齊料
 				jsonArray.put(entity.getMpr_note()); // 物控-備註
 				jsonArray.put(entity.getIvn_items()); // 倉庫-備料狀態
 				jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
-				jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 				// 20
+				jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 				jsonArray.put(entity.getMes_note()); // 倉庫-備註
-				// 21 隱藏 系統
+				// 22 隱藏 系統
 				jsonArray.put(entity.getId());
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 				jsonArray.put(entity.getSys_create_user());
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 				jsonArray.put(entity.getSys_modify_user());
-				// 25
+				// 27
 				jsonArray.put(entity.getNote());
 				jsonArray.put(entity.getUseful());
 				jsonArray.put(entity.getSys_check_sum());
-
+				jsonArray.put(entity.getMoc_week());
 				moc_data.put(jsonArray);
 			});
 		}
@@ -544,6 +603,15 @@ public class ERP_ProductionManagementService {
 			entity.setMoc_ta006('%' + content.getString("moc_ta006") + '%');
 		if (!content.isNull("useful"))// 單據狀態
 			entity.setUseful(content.getInt("useful"));
+		if (!content.isNull("moc_ta006_not") && !content.getString("moc_ta006_not").equals("")) {// 產品品號
+			String ta006[] = content.getString("moc_ta006_not").split(" ");
+			String ta006_not = "";
+			for (int i = 0; i < ta006.length; i++) {
+				ta006_not += "'"+ta006[i] + "%',";
+			}
+			ta006_not += "'null%'";
+			entity.setMoc_ta006_not(ta006_not);
+		}
 
 		return entity;
 	}
@@ -563,23 +631,25 @@ public class ERP_ProductionManagementService {
 		jsonArray.put("預計完工");
 		jsonArray.put("製令單號");
 		jsonArray.put("產品品號");
-		//
+		// 5
 		jsonArray.put("產品品名");
 		jsonArray.put("產品規格");
 		jsonArray.put("預計產量");
 		jsonArray.put("已生產量");
 		jsonArray.put("製令狀態");
-		//
+		// 10
 		jsonArray.put("製令備註");
 		jsonArray.put("客戶訂單");
+		jsonArray.put("負責人");
 		jsonArray.put("產品狀態");
 		jsonArray.put("延展開單");
+		// 15
 		jsonArray.put("生管-備註");
-		//
 		jsonArray.put("預計齊料");
 		jsonArray.put("物控-備註");
 		jsonArray.put("備料狀態");
 		jsonArray.put("缺料項數");
+		// 20
 		jsonArray.put("倉庫-備註");
 		jsonArray.put("製造-備註");
 
@@ -601,28 +671,30 @@ public class ERP_ProductionManagementService {
 			// 10
 			jsonArray.put(entity.getMoc_ta029()); // 製令單備註
 			jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
+			jsonArray.put(entity.getMoc_cuser()); // 負責人(開單人)
 			jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
 			jsonArray.put(entity.getMoc_status()); // 生管-延展開單
-			jsonArray.put(entity.getMoc_note()); // 生管-備註
 			// 15
+			jsonArray.put(entity.getMoc_note()); // 生管-備註
 			jsonArray.put(entity.getMpr_date()); // 物控-預計齊料
 			jsonArray.put(entity.getMpr_note()); // 物控-備註
 			jsonArray.put(entity.getIvn_items()); // 倉庫-備料狀態
 			jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
-			jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 			// 20
+			jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 			jsonArray.put(entity.getMes_note()); // 產線-備註
 
-			// 21 隱藏 系統
+			// 22 隱藏 系統
 			jsonArray.put(entity.getId());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
-			// 26
+			// 27
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getSys_check_sum());
+			jsonArray.put(entity.getMoc_week());
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);
