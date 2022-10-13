@@ -7,277 +7,280 @@
  *  Under MIT License
  */
 //table2excel.js
-(function ( $, window, document, undefined ) {
-    var pluginName = "table2excel",
+(function($, window, document, undefined) {
+	var pluginName = "table2excel",
 
-    defaults = {
-        exclude: ".noExl",
-        name: "Table2Excel",
-        filename: "table2excel",
-        fileext: ".xls",
-        exclude_div: true,
-        exclude_img: true,
-        exclude_links: true,
-        exclude_inputs: true,
-        preserveColors: false
-    };
+		defaults = {
+			exclude: ".noExl",
+			name: "Table2Excel",
+			filename: "table2excel",
+			fileext: ".xls",
+			exclude_div: true,
+			exclude_img: true,
+			exclude_links: true,
+			exclude_inputs: true,
+			preserveColors: false
+		};
 
-    // The actual plugin constructor
-    function Plugin ( element, options ) {
-            this.element = element;
-            // jQuery has an extend method which merges the contents of two or
-            // more objects, storing the result in the first object. The first object
-            // is generally empty as we don't want to alter the default options for
-            // future instances of the plugin
-            //
-            this.settings = $.extend( {}, defaults, options );
-            this._defaults = defaults;
-            this._name = pluginName;
-            this.init();
-    }
+	// The actual plugin constructor
+	function Plugin(element, options) {
+		this.element = element;
+		// jQuery has an extend method which merges the contents of two or
+		// more objects, storing the result in the first object. The first object
+		// is generally empty as we don't want to alter the default options for
+		// future instances of the plugin
+		//
+		this.settings = $.extend({}, defaults, options);
+		this._defaults = defaults;
+		this._name = pluginName;
+		this.init();
+	}
 
-    Plugin.prototype = {
-        init: function () {
-            var e = this;
+	Plugin.prototype = {
+		init: function() {
+			var e = this;
 
-            var utf8Heading = "<meta http-equiv=\"content-type\" content=\"application/vnd.ms-excel; charset=UTF-8\">";
-            e.template = {
-                head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">" + utf8Heading + "<head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
-                sheet: {
-                    head: "<x:ExcelWorksheet><x:Name>",
-                    tail: "</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>"
-                },
-                mid: "</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>",
-                table: {
-                    head: "<table>",
-                    tail: "</table>"
-                },
-                foot: "</body></html>"
-            };
+			var utf8Heading = "<meta http-equiv=\"content-type\" content=\"application/vnd.ms-excel; charset=UTF-8\">";
+			e.template = {
+				head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">" + utf8Heading + "<head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
+				sheet: {
+					head: "<x:ExcelWorksheet><x:Name>",
+					tail: "</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>"
+				},
+				mid: "</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>",
+				table: {
+					head: "<table>",
+					tail: "</table>"
+				},
+				foot: "</body></html>"
+			};
 
-            e.tableRows = [];
-	
+			e.tableRows = [];
+
 			// Styling variables
 			var additionalStyles = "";
 			var compStyle = null;
 
-            // get contents of table except for exclude
-            $(e.element).each( function(i,o) {
-                var tempRows = "";
-                $(o).find("tr").not(e.settings.exclude).each(function (i,p) {
-					
+			// get contents of table except for exclude
+			$(e.element).each(function(i, o) {
+				var tempRows = "";
+				$(o).find("tr").not(e.settings.exclude).each(function(i, p) {
+
 					// Reset for this row
 					additionalStyles = "";
-					
+
 					// Preserve background and text colors on the row
-					if(e.settings.preserveColors){
+					if (e.settings.preserveColors) {
 						compStyle = getComputedStyle(p);
 						additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
 						additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
 					}
 
 					// Create HTML for Row
-                    tempRows += "<tr style='" + additionalStyles + "'>";
-                    
-                    // Loop through each TH and TD
-                    $(p).find("td,th").not(e.settings.exclude).each(function (i,q) { // p did not exist, I corrected
-						
+					tempRows += "<tr style='" + additionalStyles + "'>";
+
+					// Loop through each TH and TD
+					$(p).find("td,th").not(e.settings.exclude).each(function(i, q) { // p did not exist, I corrected
+
 						// Reset for this column
 						additionalStyles = "";
-						
+
 						// Preserve background and text colors on the row
-						if(e.settings.preserveColors){
+						if (e.settings.preserveColors) {
 							compStyle = getComputedStyle(q);
 							additionalStyles += (compStyle && compStyle.backgroundColor ? "background-color: " + compStyle.backgroundColor + ";" : "");
 							additionalStyles += (compStyle && compStyle.color ? "color: " + compStyle.color + ";" : "");
 						}
 
-                        var rc = {
-                            rows: $(this).attr("rowspan"),
-                            cols: $(this).attr("colspan"),
-                            flag: $(q).find(e.settings.exclude)
-                        };
+						var rc = {
+							rows: $(this).attr("rowspan"),
+							cols: $(this).attr("colspan"),
+							flag: $(q).find(e.settings.exclude)
+						};
 
-                        if( rc.flag.length > 0 ) {
-                            tempRows += "<td> </td>"; // exclude it!!
-                        } else {
-                            tempRows += "<td";
-                            if( rc.rows > 0) {
-                                tempRows += " rowspan='" + rc.rows + "' ";
-                            }
-                            if( rc.cols > 0) {
-                                tempRows += " colspan='" + rc.cols + "' ";
-                            }
-                            if(additionalStyles){
+						if (rc.flag.length > 0) {
+							tempRows += "<td> </td>"; // exclude it!!
+						} else {
+							tempRows += "<td";
+							if (rc.rows > 0) {
+								tempRows += " rowspan='" + rc.rows + "' ";
+							}
+							if (rc.cols > 0) {
+								tempRows += " colspan='" + rc.cols + "' ";
+							}
+							if (additionalStyles) {
 								tempRows += " style='" + additionalStyles + "'";
 							}
-                            tempRows += ">" + $(q).html() + "</td>";
-                        }
-                    });
+							tempRows += ">" + $(q).html() + "</td>";
+						}
+					});
 
-                    tempRows += "</tr>";
+					tempRows += "</tr>";
 
-                });
-                // exclude linefix tags 2022-10-12 Basil
-                if(e.settings.exclude_div) {
-                tempRows = exclude_linefix(tempRows);
-                 }
-                 
-                // exclude img tags
-                if(e.settings.exclude_img) {
-                    tempRows = exclude_img(tempRows);
-                }
+				});
+				// exclude linefix tags 2022-10-12 Basil
+				if (e.settings.exclude_div) {
+					tempRows = exclude_linefix(tempRows);
+				}
 
-                // exclude link tags
-                if(e.settings.exclude_links) {
-                    tempRows = exclude_links(tempRows);
-                }
+				// exclude img tags
+				if (e.settings.exclude_img) {
+					tempRows = exclude_img(tempRows);
+				}
 
-                // exclude input tags
-                if(e.settings.exclude_inputs) {
-                    tempRows = exclude_inputs(tempRows);
-                }
-                
+				// exclude link tags
+				if (e.settings.exclude_links) {
+					tempRows = exclude_links(tempRows);
+				}
 
-                
-                e.tableRows.push(tempRows);
-            });
+				// exclude input tags
+				if (e.settings.exclude_inputs) {
+					tempRows = exclude_inputs(tempRows);
+				}
 
-            e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
-        },
 
-        tableToExcel: function (table, name, sheetName) {
-            var e = this, fullTemplate="", i, link, a;
 
-            e.format = function (s, c) {
-                return s.replace(/{(\w+)}/g, function (m, p) {
-                    return c[p];
-                });
-            };
+				e.tableRows.push(tempRows);
+			});
 
-            sheetName = typeof sheetName === "undefined" ? "Sheet" : sheetName;
+			e.tableToExcel(e.tableRows, e.settings.name, e.settings.sheetName);
+		},
 
-            e.ctx = {
-                worksheet: name || "Worksheet",
-                table: table,
-                sheetName: sheetName
-            };
+		tableToExcel: function(table, name, sheetName) {
+			var e = this, fullTemplate = "", i, link, a;
 
-            fullTemplate= e.template.head;
+			e.format = function(s, c) {
+				return s.replace(/{(\w+)}/g, function(m, p) {
+					return c[p];
+				});
+			};
 
-            if ( $.isArray(table) ) {
-                 Object.keys(table).forEach(function(i){
-                      //fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
-                      fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
-                });
-            }
+			sheetName = typeof sheetName === "undefined" ? "Sheet" : sheetName;
 
-            fullTemplate += e.template.mid;
+			e.ctx = {
+				worksheet: name || "Worksheet",
+				table: table,
+				sheetName: sheetName
+			};
 
-            if ( $.isArray(table) ) {
-                 Object.keys(table).forEach(function(i){
-                    fullTemplate += e.template.table.head + "{table" + i + "}" + e.template.table.tail;
-                });
-            }
+			fullTemplate = e.template.head;
 
-            fullTemplate += e.template.foot;
+			if ($.isArray(table)) {
+				Object.keys(table).forEach(function(i) {
+					//fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
+					fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
+				});
+			}
 
-            for (i in table) {
-                e.ctx["table" + i] = table[i];
-            }
-            delete e.ctx.table;
+			fullTemplate += e.template.mid;
 
-            var isIE = navigator.appVersion.indexOf("MSIE 10") !== -1 || (navigator.userAgent.indexOf("Trident") !== -1 && navigator.userAgent.indexOf("rv:11") !== -1); // this works with IE10 and IE11 both :)
-            //if (typeof msie !== "undefined" && msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // this works ONLY with IE 11!!!
-            if (isIE) {
-                if (typeof Blob !== "undefined") {
-                    //use blobs if we can
-                    fullTemplate = e.format(fullTemplate, e.ctx); // with this, works with IE
-                    fullTemplate = [fullTemplate];
-                    //convert to array
-                    var blob1 = new Blob(fullTemplate, { type: "text/html" });
-                    window.navigator.msSaveBlob(blob1, getFileName(e.settings) );
-                } else {
-                    //otherwise use the iframe and save
-                    //requires a blank iframe on page called txtArea1
-                    txtArea1.document.open("text/html", "replace");
-                    txtArea1.document.write(e.format(fullTemplate, e.ctx));
-                    txtArea1.document.close();
-                    txtArea1.focus();
-                    sa = txtArea1.document.execCommand("SaveAs", true, getFileName(e.settings) );
-                }
+			if ($.isArray(table)) {
+				Object.keys(table).forEach(function(i) {
+					fullTemplate += e.template.table.head + "{table" + i + "}" + e.template.table.tail;
+				});
+			}
 
-            } else {
-                var blob = new Blob([e.format(fullTemplate, e.ctx)], {type: "application/vnd.ms-excel"});
-                window.URL = window.URL || window.webkitURL;
-                link = window.URL.createObjectURL(blob);
-                a = document.createElement("a");
-                a.download = getFileName(e.settings);
-                a.href = link;
+			fullTemplate += e.template.foot;
 
-                document.body.appendChild(a);
+			for (i in table) {
+				e.ctx["table" + i] = table[i];
+			}
+			delete e.ctx.table;
 
-                a.click();
+			var isIE = navigator.appVersion.indexOf("MSIE 10") !== -1 || (navigator.userAgent.indexOf("Trident") !== -1 && navigator.userAgent.indexOf("rv:11") !== -1); // this works with IE10 and IE11 both :)
+			//if (typeof msie !== "undefined" && msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // this works ONLY with IE 11!!!
+			if (isIE) {
+				if (typeof Blob !== "undefined") {
+					//use blobs if we can
+					fullTemplate = e.format(fullTemplate, e.ctx); // with this, works with IE
+					fullTemplate = [fullTemplate];
+					//convert to array
+					var blob1 = new Blob(fullTemplate, { type: "text/html" });
+					window.navigator.msSaveBlob(blob1, getFileName(e.settings));
+				} else {
+					//otherwise use the iframe and save
+					//requires a blank iframe on page called txtArea1
+					txtArea1.document.open("text/html", "replace");
+					txtArea1.document.write(e.format(fullTemplate, e.ctx));
+					txtArea1.document.close();
+					txtArea1.focus();
+					sa = txtArea1.document.execCommand("SaveAs", true, getFileName(e.settings));
+				}
 
-                document.body.removeChild(a);
-            }
+			} else {
+				var blob = new Blob([e.format(fullTemplate, e.ctx)], { type: "application/vnd.ms-excel" });
+				window.URL = window.URL || window.webkitURL;
+				link = window.URL.createObjectURL(blob);
+				a = document.createElement("a");
+				a.download = getFileName(e.settings);
+				a.href = link;
 
-            return true;
-        }
-    };
+				document.body.appendChild(a);
 
-    function getFileName(settings) {
-        return ( settings.filename ? settings.filename : "table2excel" );
-    }
+				a.click();
 
-    // Removes all img tags
-    function exclude_img(string) {
-        var _patt = /(\s+alt\s*=\s*"([^"]*)"|\s+alt\s*=\s*'([^']*)')/i;
-        return string.replace(/<img[^>]*>/gi, function myFunction(x){
-            var res = _patt.exec(x);
-            if (res !== null && res.length >=2) {
-                return res[2];
-            } else {
-                return "";
-            }
-        });
-    }
+				document.body.removeChild(a);
+			}
 
-    // Removes all link tags
-    function exclude_links(string) {
-        return string.replace(/<a[^>]*>|<\/a>/gi, "");
-    }
+			return true;
+		}
+	};
 
-    // Removes input params
-    function exclude_inputs(string) {
-        var _patt = /(\s+value\s*=\s*"([^"]*)"|\s+value\s*=\s*'([^']*)')/i;
-        return string.replace(/<input[^>]*>|<\/input>/gi, function myFunction(x){
-            var res = _patt.exec(x);
-            if (res !== null && res.length >=2) {
-                return res[2];
-            } else {
-                return "";
-            }
-        });
-    }
-    //Removes div Next line fix 
-    function exclude_linefix(string) {
-	
- 		console.log(string);
-	 return string.replaceAll('<div class="d-none">nextline</div>','&#10;').replaceAll('<div>','').replaceAll('</div>','').replaceAll('<br>','&#10;');
-	
-    }
+	function getFileName(settings) {
+		return (settings.filename ? settings.filename : "table2excel");
+	}
 
-    $.fn[ pluginName ] = function ( options ) {
-        var e = this;
-            e.each(function() {
-                if ( !$.data( e, "plugin_" + pluginName ) ) {
-                    $.data( e, "plugin_" + pluginName, new Plugin( this, options ) );
-                }
-            });
+	// Removes all img tags
+	function exclude_img(string) {
+		var _patt = /(\s+alt\s*=\s*"([^"]*)"|\s+alt\s*=\s*'([^']*)')/i;
+		return string.replace(/<img[^>]*>/gi, function myFunction(x) {
+			var res = _patt.exec(x);
+			if (res !== null && res.length >= 2) {
+				return res[2];
+			} else {
+				return "";
+			}
+		});
+	}
 
-        // chain jQuery functions
-        return e;
-    };
+	// Removes all link tags
+	function exclude_links(string) {
+		return string.replace(/<a[^>]*>|<\/a>/gi, "");
+	}
 
-})( jQuery, window, document );
+	// Removes input params
+	function exclude_inputs(string) {
+		var _patt = /(\s+value\s*=\s*"([^"]*)"|\s+value\s*=\s*'([^']*)')/i;
+		return string.replace(/<input[^>]*>|<\/input>/gi, function myFunction(x) {
+			var res = _patt.exec(x);
+			if (res !== null && res.length >= 2) {
+				return res[2];
+			} else {
+				return "";
+			}
+		});
+	}
+	//Removes div Next line fix 
+	function exclude_linefix(string) {
+		console.log('in');
+		string = string.replaceAll('<div class="d-none">nextline</div>', '&#10;');
+		string = string.replaceAll(/<div[^>]*>|<\/div>/gi, '');
+		string = string.replaceAll('</div>', '');
+		string = string.replaceAll('<br>', '&#10;');
+		console.log(string);
+		return string;
+	}
+
+	$.fn[pluginName] = function(options) {
+		var e = this;
+		e.each(function() {
+			if (!$.data(e, "plugin_" + pluginName)) {
+				$.data(e, "plugin_" + pluginName, new Plugin(this, options));
+			}
+		});
+
+		// chain jQuery functions
+		return e;
+	};
+
+})(jQuery, window, document);

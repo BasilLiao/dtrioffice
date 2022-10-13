@@ -121,8 +121,10 @@ public class ProductionManagementController {
 			case "only_unlock":// 單獨取消
 				re_action = "only_unlock_modify";
 				break;
+			case "moc_tag":// 單獨-標記已讀
+				re_action = "only_moc_tag";
+				break;
 			case "only_unlock_save":// 單獨存入內容
-
 				pmNewTempBean.setUpdate_cell(content.getString("note_cell"));// 哪一格
 				pmNewTempBean.setUpdate_value(content.getString("note_value"));// 內容物
 				pmNewTempBean.setMoc_priority(content.getInt("moc_priority"));

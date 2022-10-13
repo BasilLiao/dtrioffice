@@ -15,10 +15,12 @@ public class PMTempBean {
 	private LinkedHashMap<String, ERP_PM_Entity> mapPmEntity;
 
 	// 鎖定物件
-	// MOC_ID, 使用者名稱
-	// MOC_ID, 使用時間(限制1分鐘?)
+	// lockPmID: MOC_ID, 使用者名稱
+	// lockPmTime: MOC_ID, 使用時間(限制5分鐘?)
+	// mocTagId: MOC_ID, 使用者名稱
 	private Map<String, String> lockPmID;
 	private Map<String, Long> lockPmTime;
+	private Map<String, String> mocTagID; // 顯示-有修改標記
 	// 更新欄位
 	private String update_cell;
 	private String update_value;
@@ -26,7 +28,6 @@ public class PMTempBean {
 	private String moc_week;
 	private String mpr_date;
 	private JSONArray excel_json;
-	
 
 	// 推播對象
 	private String userName;
@@ -36,6 +37,7 @@ public class PMTempBean {
 	public PMTempBean() {
 		lockPmID = new HashMap<String, String>();
 		lockPmTime = new HashMap<String, Long>();
+		mocTagID = new HashMap<String, String>();
 	}
 
 	public LinkedHashMap<String, ERP_PM_Entity> getMapPmEntity() {
@@ -128,4 +130,13 @@ public class PMTempBean {
 	public void setMoc_week(String moc_week) {
 		this.moc_week = moc_week;
 	}
+
+	public Map<String, String> getMocTagId() {
+		return mocTagID;
+	}
+
+	public void setMocTagId(Map<String, String> mocTagID) {
+		this.mocTagID = mocTagID;
+	}
+
 }

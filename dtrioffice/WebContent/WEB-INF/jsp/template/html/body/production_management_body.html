@@ -54,6 +54,22 @@
 						</div>
 					</div>
 					<div class="col-md-2 p-1">
+						<div class="col p-1">製令-負責人:</div>
+						<div class="col p-1">
+							<input class="col-md-12" type="text" id="s_moc_cuser" name="moc_cuser" placeholder="Ex:APPLE" required />
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
+						<div class="col p-1">物控-齊料日:</div>
+						<div class="col p-1">
+							<select id="s_mpr_date_have" name="s_mpr_date_have" class="col-md-12">
+								<option value="0">請選擇</option>
+								<option value="1">尚未回覆</option>
+								<option value="2">已經回覆</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
 						<div class="col p-1">排程狀態:</div>
 						<div class="col p-1">
 							<select id="s_useful" name="s_useful" class="col-md-12">
@@ -71,7 +87,21 @@
 							</select>
 						</div>
 					</div>
-
+					<div class="col-md-2 p-1">
+						<div class="col p-1">動態下移:</div>
+						<div class="col p-1">
+							<select id="s_auto_down" name="s_auto_down" class="col-md-12">
+								<option value="donot">預設-不下移</option>
+								<option value="auto">循環-自動下移</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-12 p-1">
+						<div class="col p-1">簡易說明:</div>
+						<div class="col p-1">
+							<b>紅色:</b>其他人正在使用中／<b>藍色:</b>已有修改／<b>黃框:</b>可編輯區塊／<b>藍框:</b>最後修改資訊／<b>操作:</b>Shift+滾輪=左右移動
+						</div>
+					</div>
 				</div>
 				<div class="row m-0 justify-content-center">
 					<div class="row m-0 justify-content-center col-md-2 p-2">
@@ -88,8 +118,12 @@
 		</div>
 		<!-- 功能:查詢結果  /修改 -->
 		<div class="mb-3 border border-primary rounded shadow bg-light">
-			<div class="col p-0">
+			<div class="col row m-0 p-0">
 				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
+				<div class="col-11 row m-0 p-1" style="background-color: #dee2e6;">
+					<div class="h5 m-0 text-primary">捷報:</div>
+					<div class="h5 m-0 col" id="news_ms" style="overflow: hidden; white-space: nowrap;"></div>
+				</div>
 			</div>
 			<div class="collapse show" id="collapseFinish">
 				<div class="p-1 mb-2 mt-2 m-0 row">
@@ -111,19 +145,50 @@
 						</thead>
 						<tbody id="search_tbody">
 							<tr class="d-none page_all t_row_week_ex exc-no" style="white-space: nowrap;">
-								<td colspan="7" class=" bg-warning fixed_cell" style="position: sticky; left: 1px; top: 0px; z-index: 4;">
-									<div class="row m-0 small col-8 p-0">
-										<div class="col-2 p-0">
+								<td class="exc-no bg-warning fixed_cell" style="position: sticky; left: 1px; top: 0px; z-index: 4;"></td>
+								<td class="exc-no bg-warning fixed_cell" style="position: sticky; left: 51px; top: 0px; z-index: 4;"></td>
+								<td class=" bg-warning fixed_cell" style="position: sticky; left: 101px; top: 0px; z-index: 4;"></td>
+								<td class=" bg-warning fixed_cell" style="position: sticky; left: 161px; top: 0px; z-index: 4;">
+									<div class="row m-0 small col-12 p-0">
+										<div class="p-0">
 											<b>年-週期:</b>
 										</div>
-										<div class="col-2 p-0 week_nb text-danger"></div>
-										<div class="col-2 p-0">
-											<b>周-未產總數:</b>
-										</div>
-										<div class="col-2 p-0 week_qty"></div>
 									</div>
 								</td>
-								<td colspan="17" class=" bg-warning"></td>
+								<td class=" bg-warning fixed_cell" style="position: sticky; left: 281px; top: 0px; z-index: 4;">
+									<div class="row m-0 small col-12 p-0">
+										<div class="p-0 week_nb text-danger"></div>
+									</div>
+								</td>
+								<td class=" bg-warning fixed_cell" style="position: sticky; left: 401px; top: 0px; z-index: 4;">
+									<div class="row m-0 small col-12 p-0">
+										<div class="p-0">
+											<b>周-未產總數:</b>
+										</div>
+									</div>
+								</td>
+								<td class=" bg-warning fixed_cell" style="position: sticky; left: 551px; top: 0px; z-index: 4;">
+									<div class="row m-0 small col-12 p-0">
+										<div class="p-0 week_qty"></div>
+									</div>
+								</td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
+								<td class=" bg-warning"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -137,61 +202,64 @@
 <div id="show_details" class="fixed-top row m-0 justify-content-center align-items-center d-none" style="background: #00000066; height: 100%">
 	<div class="col-8 p-1 border border-primary rounded shadow bg-light h5">
 		<div class="col-12 p-0">
-			<form onsubmit="return templateBody.send_added_or_update_save();">
-				<div class="row m-0 border">
-					<div class="d-none col-4 p-1 " id="new_note_type"></div>
-					<div class="col-2 p-1">製令單號:</div>
-					<div class="col-4 p-1" id="new_moc_id"></div>
-					<div class="col-2 p-1">人名:</div>
-					<div class="col-4 p-1" id="new_name"></div>
+
+			<div class="row m-0 border">
+				<div class="d-none col-4 p-1 " id="new_note_type"></div>
+				<div class="col-2 p-1">製令單號:</div>
+				<div class="col-4 p-1" id="new_moc_id"></div>
+				<div class="col-2 p-1">人名:</div>
+				<div class="col-4 p-1" id="new_name"></div>
+			</div>
+			<div class="row m-0 border">
+				<div class="col-1 p-1 pt-2">每週期:</div>
+				<div class="col-3 p-1" id="new_moc_week">
+					<input type="text" placeholder="Ex:2001-W33" required="required" class="col-md-10 p-1">
 				</div>
-				<div class="row m-0 border">
-					<div class="col-1 p-1 pt-2">每週期:</div>
-					<div class="col-3 p-1" id="new_moc_week">
-						<input type="text" placeholder="Ex:2001-W33" required="required" class="col-md-10 p-1">
-					</div>
-					<div class="col-1 p-1 pt-2">優先權:</div>
-					<div class="col-3 p-1" id="new_moc_priority">
-						<input size="2" max="99" min="0" type="number" placeholder="Ex:0-99" required="required" class="col-md-10 p-1">
-					</div>
-					<div class="col-1 p-1 pt-2">齊料日:</div>
-					<div class="col-3 p-1" id="new_mpr_date">
-						<input type="text" placeholder="Ex:2001-01-01" required="required" class="col-md-10 p-1">
-					</div>
+				<div class="col-1 p-1 pt-2">優先權:</div>
+				<div class="col-3 p-1" id="new_moc_priority">
+					<input size="2" max="99" min="0" type="number" placeholder="Ex:0-99" required="required" class="col-md-10 p-1">
 				</div>
-				<div class="row m-0 border">
-					<div class="col-2 p-1">內容:</div>
-					<div class="col-10 p-1" id="new_note">
-						<textarea class="col-12 p-1" rows="3" cols=""></textarea>
-					</div>
+				<div class="col-1 p-1 pt-2">齊料日:</div>
+				<div class="col-3 p-1" id="new_mpr_date">
+					<input type="text" placeholder="Ex:2001-01-01" required="required" class="col-md-10 p-1">
 				</div>
-				<div class="row m-0 border justify-content-center">
-					<div class="col-2 p-1">匯入:</div>
-					<div class="col-md-6 p-1">
-						<input class="col m-0 p-1" type="file" id="excel_file" accept=".xlsx" />
-					</div>
-					<div class="col-md-2 p-1">
-						<button id="rd_clear_file_btn" class="col m-0 btn btn-warning btn-sm" type="button">清除檔案</button>
-					</div>
-					<div class="col-md-2 p-1">
-						<button id="rd_sample_file_btn" class="col m-0 btn btn-info btn-sm" type="button">範例檔案</button>
-					</div>
+			</div>
+			<div class="row m-0 border">
+				<div class="col-2 p-1">內容:</div>
+				<div class="col-10 p-1" id="new_note">
+					<textarea class="col-12 p-1" rows="3" cols=""></textarea>
 				</div>
-				<div class="row m-0 border justify-content-center">
-					<div class="col-2 p-1">解析:</div>
-					<div class="col-md-10 p-1">
-						<div id="excel_json" style="max-height: 80px; overflow: auto;">[]</div>
-					</div>
+			</div>
+			<div class="row m-0 border justify-content-center">
+				<div class="col-2 p-1">匯入:</div>
+				<div class="col-md-6 p-1">
+					<input class="col m-0 p-1" type="file" id="excel_file" accept=".xlsx" />
 				</div>
-				<div class="row m-0 justify-content-center">
-					<div class="row m-0 justify-content-center col-md-4 p-2">
-						<button id="up_save_submit" class="col-md-10 btn btn-primary btn-block" type="button">存入</button>
-					</div>
-					<div class="row m-0 justify-content-center col-md-4 p-2">
-						<button id="up_clear_submit" class="col-md-10 btn btn-warning btn-block" type="button">取消</button>
-					</div>
+				<div class="col-md-2 p-1">
+					<button id="rd_clear_file_btn" class="col m-0 btn btn-warning btn-sm" type="button">清除檔案</button>
 				</div>
-			</form>
+				<div class="col-md-2 p-1">
+					<button id="rd_sample_file_btn" class="col m-0 btn btn-info btn-sm" type="button">範例檔案</button>
+				</div>
+			</div>
+			<div class="row m-0 border justify-content-center">
+				<div class="col-2 p-1">解析:</div>
+				<div class="col-md-10 p-1">
+					<div id="excel_json" style="max-height: 80px; overflow: auto;">[]</div>
+				</div>
+			</div>
+			<div class="row m-0 justify-content-center">
+				<div class="row m-0 justify-content-center col-md-4 p-2">
+					<button id="up_tag_submit" class="col-md-8 btn btn-info btn-block" type="button">已讀標記</button>
+				</div>
+				<div class="row m-0 justify-content-center col-md-4 p-2">
+					<button id="up_save_submit" class="col-md-8 btn btn-primary btn-block" type="button">存入</button>
+				</div>
+				<div class="row m-0 justify-content-center col-md-4 p-2">
+					<button id="up_clear_submit" class="col-md-8 btn btn-warning btn-block" type="button">取消</button>
+				</div>
+			</div>
+
 		</div>
 		<div class="col-md-12 dropdown-divider" style="border-top: 1px solid green;"></div>
 		<div class="col-12 p-1 text-center">(編輯狀態:超過5分鐘會失效!!)紀錄</div>
@@ -264,6 +332,9 @@
 			output : null,
 			stompClient : null,
 			moc_id_lock : [],
+			moc_id_tag : [],//標記有更新
+			s_auto_down : null,
+			s_auto_down_loop : null,
 
 		},
 		created : function() {
@@ -331,6 +402,18 @@
 				$("#show_details").addClass("d-none");
 				templateBody.unlock_websocket_req($('#new_moc_id').text());
 			});
+
+			//自動下移
+			$(document).on("change", "#s_auto_down", function(event) {
+				templateBody.auto_down_loop();
+			});
+
+			//標記已讀
+			$(document).on("click", "#up_tag_submit", function(event) {
+				$("#show_details").addClass("d-none");
+				templateBody.tag_websocket_req($('#new_moc_id').text());
+			});
+
 			//存入紀錄
 			$(document).on("click", "#up_save_submit", function(event) {
 				templateBody.unlock_save_websocket_req();
@@ -345,14 +428,14 @@
 			});
 			//滑鼠事件
 			$(document).on("mouseover", ".modfiy_note", function(event) {
-				console.log("in modfiy_note");
+				//console.log("in modfiy_note");
 				var b_row_id = $(event.currentTarget).attr("b_row_id");
 				var moc_id = b_row_id.split('<_>')[1];
 				var moc_id_type = b_row_id.split('<_>')[0];
-				//s_14->moc_note->生管
-				//s_16->mpr_note->物控
-				//s_19->ivn_note->倉庫
-				//s_20->mes_note->製程
+				//s_15->moc_note->生管
+				//s_17->mpr_note->物控
+				//s_20->ivn_note->倉庫
+				//s_21->mes_note->製程
 				switch (moc_id_type) {
 				case 'moc_note':
 					$('.t_row_' + moc_id + ' .s_15 .note_list').removeClass('d-none');
@@ -372,15 +455,15 @@
 				}
 			});
 			$(document).on("mouseout", ".modfiy_note", function(event) {
-				console.log("out modfiy_note");
+				//console.log("out modfiy_note");
 				var b_row_id = $(event.currentTarget).attr("b_row_id");
 				var moc_id = b_row_id.split('<_>')[1];
 				var moc_id_type = b_row_id.split('<_>')[0];
 
-				//s_14->moc_note->生管
-				//s_16->mpr_note->物控
-				//s_19->ivn_note->倉庫
-				//s_20->mes_note->製程
+				//s_15->moc_note->生管
+				//s_17->mpr_note->物控
+				//s_20->ivn_note->倉庫
+				//s_21->mes_note->製程
 				switch (moc_id_type) {
 				case 'moc_note':
 					$('.t_row_' + moc_id + ' .s_15 .note_list').addClass('d-none');
@@ -450,7 +533,7 @@
 									excel_json.push({
 										'user' : $('#nav_account').text(),
 										'moc_id' : sheet['A' + check_nb]['v'],
-										'ms' : sheet['B' + check_nb]['v'],
+										'ms' : sheet['B' + check_nb]['v'] + "",
 										'mpr_date' : sheet['C' + check_nb]['v'],
 										'priority' : sheet['D' + check_nb]['v'],
 										'week' : sheet['E' + check_nb]['v']
@@ -485,7 +568,7 @@
 				templateBody.lock_websocket_req(moc_id);
 				$('#new_moc_id').text($('.t_row_' + moc_id + ' .s_3').text());
 				$('#new_name').text($('#nav_account').text());
-				$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());				
+				$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());
 				$('#new_mpr_date input').val($('.t_row_' + moc_id + ' .s_16').text());
 				$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_30').text());
 				$('#new_note textarea').val('');
@@ -616,6 +699,7 @@
 							//note類-放入到 jQuery 物件內使用
 							for (var k = 0; k < json_v.length; k++) {
 								var ex_note = $($('#ex_note_format').clone()[0]);
+
 								//只顯示最新的
 								if (k + 1 == json_v.length) {
 									ex_note.removeClass('d-none');
@@ -688,6 +772,21 @@
 					$("#search_table").css('backgroundColor', '');
 				});
 			},
+			//自動迴圈移動
+			auto_down_loop : function() {
+				if ($("#s_auto_down").val() == "auto") {
+					templateBody.s_auto_down = $("#search_table").animate({
+						scrollTop : 6000
+					}, 100000, function() {
+						$('#search_table').animate({
+							scrollTop : '0px'
+						}, 300);
+						templateBody.auto_down_loop();
+					});
+				} else {
+					templateBody.s_auto_down.stop();
+				}
+			},
 			//鎖住?
 			lock_update : function() {
 				$("#search_tbody .show").css("background-color", "");
@@ -699,6 +798,22 @@
 					$("#search_tbody .t_row_" + key).addClass('lock');
 				}
 			},
+			//未讀標記 
+			tag_update : function() {
+				$("#search_tbody .show .s_3").css("background-image", "");
+				$("#search_tbody .show .s_3").removeClass('tag');
+				$('#news_ms').text('');
+				var news_ms = '';
+				for (var i = 0; i < this.moc_id_tag.length; i++) {
+					var key = Object.keys(this.moc_id_tag[i]);
+					$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
+					$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
+					news_ms += '[' + key + ']已修改 ,';
+				}
+				//A511-123456789]已修改 ,
+				$('#news_ms').text(news_ms);
+			},
+
 			//Export
 			ex_export : function() {
 				$("#search_table").table2excel({
@@ -726,60 +841,16 @@
 				$("#s_moc_id").val("");
 				$("#s_moc_ta006").val("");
 				$("#s_order_id").val("");
+				$("#s_moc_cuser").val("");
 				$("#s_useful").val("1");
+				$("#s_mpr_date_have").val("0");
 				$("#s_auto").val("auto");
+				$("#s_auto_down").val("donot");
+
 			},
 			//選擇  登記
 			choose_sign : function() {
 
-			},
-
-			//傳送 新增 or 修改 or 刪除
-			send_added_or_update_save : function() {
-				var content = new Object();
-				content.id = $("#a_id").text();
-				content.bom_id = $("#a_bom_id").text();
-				content.bom_product_id = $("#a_bom_product_id").val();
-
-				content.client_name = $("#a_c_name").val();
-				content.mb_ver = $("#a_mb_ver").val();
-				content.mb_ver_ecn = $("#a_mb_ver_ecn").val();
-				content.nvram = $("#a_nveram").val();
-				content.bios = $("#a_bios").val();
-
-				content.product_model_in = $("#a_model").val();
-				content.ec = $("#a_ec").val();
-				content.os = $("#a_os").val();
-				content.note = $("#a_note").val();
-				content.note1 = $("#a_note1").val();
-				content.note2 = $("#a_note2").val();
-
-				var action = "C";
-				var url = "./added_production_management.do";
-				var order = "search_update"; //指令
-				if ($("#a_u_type").text() == "修改資料") {
-					action = "U";
-					url = "./update_production_management.do";
-				}
-				if ($("#a_u_type").text() == "移除資料") {
-					action = "D";
-					url = "./delete_production_management.do";
-				}
-				content.page_nb = this.page_batch * this.page_batch_total;//批次(起始數)
-				content.page_total = this.page_batch_total;//(每次要的最大數量)
-				var data = JSON.stringify({
-					data : {
-						datetime : "",
-						action : action,
-						whoami : main.loginData.account,
-						cellBackName : "bodyAfter",
-						cellBackOrder : order,
-						content : content,
-					},
-				});
-				main.ajaxSend(url, data);
-
-				return false; //防止真傳送
 			},
 			//傳送 查詢
 			send_search : function() {
@@ -787,8 +858,10 @@
 				content.moc_id = $("#s_moc_id").val();
 				content.moc_ta006 = $("#s_moc_ta006").val();
 				content.order_id = $("#s_order_id").val();
+				content.moc_cuser = $("#s_moc_cuser").val();
 				content.moc_ta006_not = $("#s_moc_ta006_not").val();
 				content.useful = $("#s_useful").val();
+				content.mpr_date_have = $("#s_mpr_date_have").val();
 
 				var url = "./production_management.do";
 				var order = "search_update"; //指令
@@ -847,7 +920,14 @@
 					'moc_id' : moc_id,
 				}));
 			},
-
+			//標記已讀-傳送訊息方法
+			tag_websocket_req : function(moc_id) {
+				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
+					'action' : 'moc_tag',
+					'userName' : $('#nav_account').text(),
+					'moc_id' : moc_id,
+				}));
+			},
 			//解鎖定-傳送訊息方法
 			unlock_websocket_req : function(moc_id) {
 				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
@@ -888,6 +968,8 @@
 						}
 						templateBody.moc_id_lock = data_resp.moc_id_lock;
 						templateBody.lock_update();
+						templateBody.moc_id_tag = data_resp.moc_id_tag;
+						templateBody.tag_update();
 						break;
 
 					case "only_lock":
@@ -927,7 +1009,9 @@
 			$(document).off("click", "#e_excel");
 
 			$(document).off("click", "#up_save_submit");
+			$(document).off("click", "#up_tag_submit");
 			$(document).off("click", "#up_clear_submit");
+			$(document).off("change", "#s_auto_down");
 
 			$(document).off("click", "#rd_clear_file_btn");
 			$(document).off("click", "#rd_sample_file_btn");
