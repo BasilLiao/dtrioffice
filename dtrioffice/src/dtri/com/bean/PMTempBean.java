@@ -20,7 +20,13 @@ public class PMTempBean {
 	// mocTagId: MOC_ID, 使用者名稱
 	private Map<String, String> lockPmID;
 	private Map<String, Long> lockPmTime;
-	private Map<String, String> mocTagID; // 顯示-有修改標記
+	private Map<String, String> mocTagID; // 顯示-有修改標記(工單:藍色)
+	/**
+	 * 顯示-有修改標記(欄位 綠色?) {"s_15","s_16",...}欄位位置
+	 */
+	private Map<String, JSONArray> mocTagAllID;
+	private Map<String, String> mocTagAllTime;// 時間
+
 	// 更新欄位
 	private String update_cell;
 	private String update_value;
@@ -38,6 +44,8 @@ public class PMTempBean {
 		lockPmID = new HashMap<String, String>();
 		lockPmTime = new HashMap<String, Long>();
 		mocTagID = new HashMap<String, String>();
+		mocTagAllID = new HashMap<String, JSONArray>();
+		mocTagAllTime = new HashMap<String, String>();
 	}
 
 	public LinkedHashMap<String, ERP_PM_Entity> getMapPmEntity() {
@@ -137,6 +145,22 @@ public class PMTempBean {
 
 	public void setMocTagId(Map<String, String> mocTagID) {
 		this.mocTagID = mocTagID;
+	}
+
+	public Map<String, JSONArray> getMocTagAllID() {
+		return mocTagAllID;
+	}
+
+	public void setMocTagAllID(Map<String, JSONArray> mocTagAllID) {
+		this.mocTagAllID = mocTagAllID;
+	}
+
+	public Map<String, String> getMocTagAllTime() {
+		return mocTagAllTime;
+	}
+
+	public void setMocTagAllTime(Map<String, String> mocTagAllTime) {
+		this.mocTagAllTime = mocTagAllTime;
 	}
 
 }

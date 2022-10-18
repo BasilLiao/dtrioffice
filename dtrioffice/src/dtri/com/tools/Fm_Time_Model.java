@@ -56,6 +56,16 @@ public class Fm_Time_Model {
 		return null;
 	}
 
+	/** yyyy-MM-dd HH:mm:ss to Date **/
+	public static Date toDateHHmmss(String dt) {
+		try {
+			return format_yyyyMMdd_HHmmss.parse(dt);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/** get Date to week **/
 	public static int getWeek(Date date) {
 		try {

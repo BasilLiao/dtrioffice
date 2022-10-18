@@ -36,6 +36,9 @@
 			<if test="moc_ta006_not !=null">
 				AND moc_ta006 not LIKE ALL(array[${moc_ta006_not}])
 			</if>
+			<if test="sys_modify_date !=null">
+				AND sys_modify_date >= #{sys_modify_date}
+			</if>
 		</where>
 		ORDER BY moc_week asc, moc_priority desc, moc_ta009 asc,moc_id asc
 	</select>

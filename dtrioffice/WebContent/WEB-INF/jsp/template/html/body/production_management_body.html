@@ -79,6 +79,15 @@
 						</div>
 					</div>
 					<div class="col-md-2 p-1">
+						<div class="col p-1">今日修改資料:</div>
+						<div class="col p-1">
+							<select id="s_today_modify" name="s_today_modify" class="col-md-12">
+								<option value="0">請選擇</option>
+								<option value="1">異動資料</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2 p-1">
 						<div class="col p-1">動態更新:</div>
 						<div class="col p-1">
 							<select id="s_auto" name="s_auto" class="col-md-12">
@@ -99,7 +108,7 @@
 					<div class="col-md-12 p-1">
 						<div class="col p-1">簡易說明:</div>
 						<div class="col p-1">
-							<b>紅色:</b>其他人正在使用中／<b>藍色:</b>已有修改／<b>黃框:</b>可編輯區塊／<b>藍框:</b>最後修改資訊／<b>操作:</b>Shift+滾輪=左右移動
+							<b>紅色:</b>其他人正在使用中／<b>藍色:</b>已有修改／<b>綠色:</b>資訊異動／<b>黃框:</b>可編輯區塊／<b>藍框:</b>最後編輯／<b>操作:</b>Shift+滾輪=左右移動
 						</div>
 					</div>
 				</div>
@@ -298,7 +307,7 @@
 	<table>
 		<thead>
 			<tr>
-				<th colspan="5">請務必存檔.xlsx/請勿填入特殊 (字元或格式)</th>
+				<th colspan="5">最多一次50筆資料,請務必存檔.xlsx/請勿填入特殊 (字元或格式)</th>
 			</tr>
 			<tr>
 				<th>製令單(必填 Ex: A512-123456789)</th>
@@ -333,6 +342,7 @@
 			stompClient : null,
 			moc_id_lock : [],
 			moc_id_tag : [],//標記有更新
+			moc_id_tag_all : [],//標記 欄位有更新
 			s_auto_down : null,
 			s_auto_down_loop : null,
 
@@ -511,8 +521,10 @@
 							var check_have = true;
 							var check_nb = 3;
 							var excel_json = [];
+							var max_qty = 50;
 							while (check_have) {
-								if (sheet['A' + check_nb] && sheet['A' + check_nb]['v'] != "") {
+								if (max_qty > 0 && sheet['A' + check_nb] && sheet['A' + check_nb]['v'] != "") {
+									max_qty--;
 									sheet['A' + check_nb] = (sheet['A' + check_nb] == null ? {
 										v : ""
 									} : sheet['A' + check_nb]);//工單號
@@ -813,6 +825,23 @@
 				//A511-123456789]已修改 ,
 				$('#news_ms').text(news_ms);
 			},
+			//只要有異動欄位 標記 
+			tag_all_update : function() {
+				//linear-gradient(30deg, #59ffba8f 0%, #ff7c7c9e 100%)
+				$("#search_tbody .show .tags_all").css("background-image", "");
+				$("#search_tbody .show .tags_all").removeClass('tags_all');
+				for (var i = 0; i < this.moc_id_tag_all.length; i++) {
+					var key = Object.keys(this.moc_id_tag_all[i]);
+					var v_cells = JSON.parse(this.moc_id_tag_all[i][key]);
+					for (var s = 0; s < v_cells.length; s++) {
+						var html_c = $("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML;
+						$("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML = '<b><u>' + html_c + '</u></b>';
+						console.log(html_c);
+						$("#search_tbody .t_row_" + key + " ." + v_cells[s]).css("background-image", "linear-gradient(30deg, #07ff1a40 0%, #6eff000d 100%)");
+						$("#search_tbody .t_row_" + key + " ." + v_cells[s]).addClass('tags_all');
+					}
+				}
+			},
 
 			//Export
 			ex_export : function() {
@@ -822,7 +851,6 @@
 					name : "Worksheet Name",
 					filename : "生產排程_Export_" + $.datepicker.formatDate('yy-mm-dd', new Date()) + ".xls",//do not include extension
 					fileext : ".xls" // file extension
-
 				});
 			},
 			//Export
@@ -844,6 +872,7 @@
 				$("#s_moc_cuser").val("");
 				$("#s_useful").val("1");
 				$("#s_mpr_date_have").val("0");
+				$("#s_today_modify").val("0");
 				$("#s_auto").val("auto");
 				$("#s_auto_down").val("donot");
 
@@ -861,6 +890,7 @@
 				content.moc_cuser = $("#s_moc_cuser").val();
 				content.moc_ta006_not = $("#s_moc_ta006_not").val();
 				content.useful = $("#s_useful").val();
+				content.today_modify = $("#s_today_modify").val();
 				content.mpr_date_have = $("#s_mpr_date_have").val();
 
 				var url = "./production_management.do";
@@ -954,11 +984,12 @@
 			},
 			//顯示接收回來的訊息方法
 			websocket_resp : function(resp) {
-				if ($("#s_auto").val() == "auto") {
-					var data_resp = JSON.parse(resp['body']);
-					console.log(data_resp);
-					switch (data_resp.action) {
-					case "all_update":
+				var data_resp = JSON.parse(resp['body']);
+				console.log(data_resp);
+				switch (data_resp.action) {
+				case "all_update":
+
+					if ($("#s_auto").val() == "auto") {
 						console.log("all_update");
 						if (data_resp.moc_data != null && data_resp.moc_data.length > 0) {
 							templateBody.search_list = data_resp.moc_data;
@@ -966,39 +997,44 @@
 							//避免登出
 							main.timeOut(false);
 						}
-						templateBody.moc_id_lock = data_resp.moc_id_lock;
-						templateBody.lock_update();
-						templateBody.moc_id_tag = data_resp.moc_id_tag;
-						templateBody.tag_update();
-						break;
-
-					case "only_lock":
-						console.log("only_lock");
-						console.log(data_resp.moc_id_lock);
-						templateBody.moc_id_lock = data_resp.moc_id_lock;
-						templateBody.lock_update();
-						break;
-					case "only_lock_modify":
-						console.log("only_lock_modify");
-						if (data_resp.message == "OK" && data_resp.moc_user == $("#nav_account").text()) {
-							console.log(data_resp.moc_data);
-							$("#show_details").removeClass("d-none");
-						}
-						break;
-					case "only_unlock_save_modify":
-						$("#show_details").addClass("d-none");
-						$('#new_name').text('');
-						$('#new_moc_id').text('');
-						$('#new_note_type').text('');
-						$('#new_note textarea').val('');
-						$('#new_moc_priority input').val('');
-						$('#new_moc_week input').val('');
-						$('#new_mpr_date input').val('');
-						break;
-					default:
-						break;
+					} else {
+						templateBody.send_search();
 					}
+					templateBody.moc_id_lock = data_resp.moc_id_lock;
+					templateBody.lock_update();
+					templateBody.moc_id_tag_all = data_resp.moc_id_tag_all;
+					templateBody.tag_all_update();
+					templateBody.moc_id_tag = data_resp.moc_id_tag;
+					templateBody.tag_update();
+					break;
+
+				case "only_lock":
+					console.log("only_lock");
+					console.log(data_resp.moc_id_lock);
+					templateBody.moc_id_lock = data_resp.moc_id_lock;
+					templateBody.lock_update();
+					break;
+				case "only_lock_modify":
+					console.log("only_lock_modify");
+					if (data_resp.message == "OK" && data_resp.moc_user == $("#nav_account").text()) {
+						console.log(data_resp.moc_data);
+						$("#show_details").removeClass("d-none");
+					}
+					break;
+				case "only_unlock_save_modify":
+					$("#show_details").addClass("d-none");
+					$('#new_name').text('');
+					$('#new_moc_id').text('');
+					$('#new_note_type').text('');
+					$('#new_note textarea').val('');
+					$('#new_moc_priority input').val('');
+					$('#new_moc_week input').val('');
+					$('#new_mpr_date input').val('');
+					break;
+				default:
+					break;
 				}
+
 			}
 		},
 		//移除監聽事件
