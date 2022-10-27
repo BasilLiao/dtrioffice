@@ -2,6 +2,7 @@ package dtri.com.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,10 @@ public class ERP_ProductionManagementService {
 			List<ERP_PM_Entity> erp_entities = erp_pm_Dao.getERP_PM_List();
 			Map<String, JSONArray> tag_all_id = pmTempBean.getMocTagAllID();
 			Map<String, String> tag_all_time = pmTempBean.getMocTagAllTime();
+			if (Fm_Time_Model.to_Hms(new Date()).equals("12:30:00") || Fm_Time_Model.to_Hms(new Date()).equals("12:31:00")) {
+				pmTempBean.setMocTagAllID(new HashMap<String, JSONArray>());
+				pmTempBean.setMocTagAllTime(new HashMap<String, String>());
+			}
 
 			int update_check = 0;
 			ERP_PM_Entity pmTemp = new ERP_PM_Entity();
@@ -104,15 +109,13 @@ public class ERP_ProductionManagementService {
 			int old_year = 0;
 			int erp_week = 0;
 			int erp_year = 0;
-			String old_time = "";
-			String now_time = "";
 			boolean same_check = false;
 			for (ERP_PM_Entity one : erp_entities) {
 				one.setMoc_id(one.getMoc_id().replaceAll(" ", ""));
 				one.setMoc_ta009(Fm_Time_Model.to_yyMMdd(one.getMoc_ta009())); // 預計開工
 				one.setMoc_ta010(Fm_Time_Model.to_yyMMdd(one.getMoc_ta010())); // 預計完工
 				same_check = false;
-				
+
 				// Step5.是否要同 pmTempBean 一起更新
 				if (all_temp != null && all_temp.containsKey(one.getMoc_id())) {// 工單號
 					// [是]-更新舊資料
@@ -121,22 +124,13 @@ public class ERP_ProductionManagementService {
 					// 取得暫存
 					pmTemp = null;
 					pmTemp = all_temp.get(one.getMoc_id());
-					
+
 					// Step5-2. 如果有變化ERP 資料(預計生產數 預計開工 預計完工 產品品號 生產備註 )
 					tag_all_arr = new JSONArray();
 					tag_all_str = "";
 					if (tag_all_id.containsKey(one.getMoc_id())) {
 						tag_all_arr = tag_all_id.get(one.getMoc_id());
 						tag_all_str = tag_all_arr.toString();
-						// 超時+同一個製令單
-						if (tag_all_time.containsKey(one.getMoc_id())) {
-							old_time = tag_all_time.get(one.getMoc_id());
-							now_time = Fm_Time_Model.to_yyMMdd(new Date());
-							if (!old_time.equals(now_time)) {
-								tag_all_time.remove(one.getMoc_id());
-								tag_all_id.remove(one.getMoc_id());
-							}
-						}
 					}
 					// 預計開工
 					if (!pmTemp.getMoc_ta009().equals(one.getMoc_ta009()) && tag_all_str.indexOf("s_1") < 0) {
@@ -207,11 +201,13 @@ public class ERP_ProductionManagementService {
 					one.setMes_note(pmTemp.getMes_note());
 					old_week = Integer.parseInt(pmTemp.getMoc_week().split("-W")[1]);
 					old_year = Integer.parseInt(pmTemp.getMoc_week().split("-W")[0]);
+					erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
+					erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
 					// 如果(同一年含去年)且(週期小於本周)
 					if (old_year <= now_year && old_week < now_week) {
-						one.setMoc_week(now_year + "-W" + now_week);
-					} else {
-						one.setMoc_week(pmTemp.getMoc_week());
+						one.setMoc_week(now_year + "-W" + String.format("%02d", now_week));
+					}else {
+						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
 					}
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
@@ -242,7 +238,15 @@ public class ERP_ProductionManagementService {
 					// [否]-新增資料
 					one.setBom_kind("");// (查)BOM 類型
 					// 生管-製令單
-					one.setMoc_note("[]");
+					JSONArray new_notes = new JSONArray();
+					if (one.getMoc_ta054() != null && !one.getMoc_ta054().equals("")) {
+						JSONObject new_note = new JSONObject();
+						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+						new_note.put("user", one.getMoc_cuser());
+						new_note.put("ms", one.getMoc_ta054());
+						new_notes.put(new_note);
+					}
+					one.setMoc_note(new_notes.toString());
 					one.setMoc_status("");// (查)開單狀態
 					one.setMoc_priority(100);
 					// 物控-物料
@@ -269,7 +273,7 @@ public class ERP_ProductionManagementService {
 						erp_week = now_week;
 						erp_year = now_year;
 					}
-					one.setMoc_week(erp_year + "-W" + erp_week);
+					one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
 					case "1":
@@ -837,7 +841,7 @@ public class ERP_ProductionManagementService {
 		if (!content.isNull("mpr_date_have") && content.getInt("mpr_date_have") != 0)// 齊料日?
 			entity.setMpr_date(content.getInt("mpr_date_have") + "");
 		if (!content.isNull("today_modify") && content.getInt("today_modify") != 0) { // 異動日?
-			entity.setSys_modify_date(Fm_Time_Model.toDateHHmmss(Fm_Time_Model.to_yyMMdd(new Date())+" 00:00:00"));
+			entity.setSys_modify_date(Fm_Time_Model.toDateHHmmss(Fm_Time_Model.to_yyMMdd(new Date()) + " 00:00:00"));
 		} else {
 			entity.setSys_modify_date(null);
 		}

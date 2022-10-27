@@ -173,7 +173,8 @@ public class BomAccessoriesProductController {
 			System.out.println(entitys.get(0).getSys_modify_user());
 			if (loginService.checkPermission(group, SYS_F, "11111111") || //
 					user.getAccount().equals(one.getSys_create_user()) || //
-					user.getAccount_agent().equals(one.getSys_create_user())) {
+					(user.getAccount_agent() != null && user.getAccount_agent().equals(one.getSys_create_user()))) {
+				checkPermission = true;
 			} else {
 				checkPermission = false;
 			}

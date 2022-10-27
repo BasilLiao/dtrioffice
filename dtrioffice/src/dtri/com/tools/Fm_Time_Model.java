@@ -8,12 +8,19 @@ import java.util.Date;
 public class Fm_Time_Model {
 
 	private static SimpleDateFormat format_yyyyMMdd_HHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat format_HHmm = new SimpleDateFormat("HH:mm");
 	private static SimpleDateFormat format_yyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	/** 格式:yyyy-MM-dd HH:mm:ss **/
 	public static String to_yMd_Hms(Date date) {
 		return format_yyyyMMdd_HHmmss.format(date);
+	}
+
+	/** 格式:HH:mm:ss **/
+	public static String to_Hms(Date date) {
+		String Hms = format_HHmm.format(date) + ":00";
+		return Hms;
 	}
 
 	/** 格式:yyyyMMdd **/
@@ -31,7 +38,6 @@ public class Fm_Time_Model {
 		try {
 			date = sdf.format(format_yyyyMMdd.parse(date));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return date;
@@ -70,6 +76,7 @@ public class Fm_Time_Model {
 	public static int getWeek(Date date) {
 		try {
 			Calendar cal = Calendar.getInstance();
+			cal.setMinimalDaysInFirstWeek(7);
 			cal.setTime(date);
 			int week = cal.get(Calendar.WEEK_OF_YEAR);
 			return week;

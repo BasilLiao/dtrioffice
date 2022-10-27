@@ -15,7 +15,7 @@ public class ERP_PM_Entity {
 	private String sys_check_sum;// 資料異動?
 	private Integer useful;
 	private String note;
-	
+
 	// 主要資料 ERP
 	private String moc_id;// 製令單(TA001+TA002)
 	private String moc_ta006;// 產品品號
@@ -28,6 +28,7 @@ public class ERP_PM_Entity {
 	private String moc_ta010;// (預計)完工日
 	private String moc_ta011;// 狀態碼 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 	private String moc_ta029;// 製令單備注(取消 cop_tc015 訂單備注->改製令單備注)
+	private String moc_ta054;// 製令單-自訂義備注
 	private String moc_cuser;// 建立製令單人
 	private String cop_tc012;// 客戶:訂單單號
 	private String order_id;// 廠內:訂單單號A222-123456789
@@ -40,7 +41,7 @@ public class ERP_PM_Entity {
 	private String moc_note;// 生管 備註事項 json格式
 	private String moc_status;// 生管 開單狀態 0=未開注意事項1=已開注意事項2=已核准流程卡
 	private Integer moc_priority;// 生管 優先權
-	private String moc_week;//週期
+	private String moc_week;// 週期
 	private String ivn_note;// 倉庫 備注事項 json格式
 	private Integer ivn_status;// 倉庫 備料狀況1=齊料 2=未齊 3=未備
 	private Integer ivn_items;// 倉庫 缺幾項 物料(共)
@@ -321,6 +322,14 @@ public class ERP_PM_Entity {
 
 	public void setMoc_week(String moc_week) {
 		this.moc_week = moc_week;
+	}
+
+	public String getMoc_ta054() {
+		return moc_ta054;
+	}
+
+	public void setMoc_ta054(String moc_ta054) {
+		this.moc_ta054 = moc_ta054;
 	}
 
 }

@@ -11,19 +11,21 @@
 		CTA.TA006 AS moc_ta006,--產品品號
 		CTA.TA034 AS moc_ta034,--產品品名
 		CTA.TA035 AS moc_ta035,--產品規格
-		CTA.TA015 AS 
+		CTA.TA015 AS
 		moc_ta015,--預計生產數
 		CTA.TA017 AS moc_ta017,--目前生產數
 		CTA.TA009 AS moc_ta009,--預計開工日
 		CTA.TA010 AS moc_ta010,--預計完工日
 		CTA.TA011 AS moc_ta011,--狀態碼
 		CTA.TA029 AS moc_ta029,--製令備註
+		CTA.TA054 AS moc_ta054,--製令-自訂義備註
 		'|' AS '|',
 		CTA.CREATOR AS moc_cuser,--創建工單使用者
 		PTC.TC012 AS cop_tc012,--客戶-訂單單號
 		PTC.TC001+'-'+PTC.TC002 AS order_id --公司-訂單單號
 		FROM MOCTA CTA LEFT JOIN COPTC PTC
-		ON (CTA.TA026+'-'+CTA.TA027 = PTC.TC001+'-'+PTC.TC002)
+		ON (CTA.TA026+'-'+CTA.TA027 =
+		PTC.TC001+'-'+PTC.TC002)
 		WHERE
 		(CTA.TA011 = '1' OR CTA.TA011 = '2' OR
 		CTA.TA011 = '3')
@@ -38,15 +40,17 @@
 		CTA.TA006 AS moc_ta006,--產品品號
 		CTA.TA034 AS moc_ta034,--產品品名
 		CTA.TA035 AS moc_ta035,--產品規格
-		CTA.TA015 AS 
+		CTA.TA015 AS
 		moc_ta015,--預計生產數
 		CTA.TA017 AS moc_ta017,--目前生產數
 		CTA.TA009 AS moc_ta009,--預計開工日
 		CTA.TA010 AS moc_ta010,--預計完工日
 		CTA.TA011 AS moc_ta011,--狀態碼
 		CTA.TA029 AS moc_ta029,--製令備註
+		CTA.TA054 AS moc_ta054,--製令-自訂義備註
 		'|' AS '|',
-		CTA.CREATOR AS moc_cuser,--創建工單使用者
+		CTA.CREATOR AS
+		moc_cuser,--創建工單使用者
 		PTC.TC012 AS cop_tc012,--客戶-訂單單號
 		PTC.TC001+'-'+PTC.TC002 AS order_id --公司-訂單單號
 		FROM MOCTA CTA LEFT JOIN COPTC PTC
