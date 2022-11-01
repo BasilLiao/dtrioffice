@@ -799,8 +799,7 @@
 						fixed_cell_color = true;
 					}
 				}
-				//===動態顏色===
-				this.change_colors();
+				
 			},
 			change_colors : function() {
 				$("#search_table").css({
@@ -847,9 +846,10 @@
 				var news_ms = '';
 				for (var i = 0; i < this.moc_id_tag.length; i++) {
 					var key = Object.keys(this.moc_id_tag[i]);
+					var name = $("#search_tbody .t_row_" + key + " .s_12").text();
 					$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
 					$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
-					news_ms += '[' + key + ']已修改 ,';
+					news_ms += '[' + key + '('+name+')] ,';
 				}
 				//A511-123456789]已修改 ,
 				$('#news_ms').text(news_ms);
@@ -954,6 +954,8 @@
 						this.moc_id_lock = event.r_content.templateInfo.body["moc_id_lock"];
 						this.search_update();
 						this.lock_update();
+						this.tag_all_update();
+						this.tag_update();
 					}
 					break;
 				case "update_body_nav":
@@ -1054,9 +1056,11 @@
 							templateBody.search_update();
 							//避免登出
 							main.timeOut(false);
+							//===動態顏色===
+							this.change_colors();
 						}
 					} else {
-						templateBody.send_search();
+						//templateBody.send_search();
 					}
 					templateBody.moc_id_lock = data_resp.moc_id_lock;
 					templateBody.lock_update();

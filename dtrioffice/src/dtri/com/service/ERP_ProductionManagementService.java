@@ -77,10 +77,6 @@ public class ERP_ProductionManagementService {
 			List<ERP_PM_Entity> erp_entities = erp_pm_Dao.getERP_PM_List();
 			Map<String, JSONArray> tag_all_id = pmTempBean.getMocTagAllID();
 			Map<String, String> tag_all_time = pmTempBean.getMocTagAllTime();
-			if (Fm_Time_Model.to_Hms(new Date()).equals("12:30:00") || Fm_Time_Model.to_Hms(new Date()).equals("12:31:00")) {
-				pmTempBean.setMocTagAllID(new HashMap<String, JSONArray>());
-				pmTempBean.setMocTagAllTime(new HashMap<String, String>());
-			}
 
 			int update_check = 0;
 			ERP_PM_Entity pmTemp = new ERP_PM_Entity();
@@ -148,7 +144,7 @@ public class ERP_ProductionManagementService {
 						same_check = true;
 					}
 					// 預計產量
-					if (pmTemp.getMoc_ta015() != one.getMoc_ta015() && tag_all_str.indexOf("s_7") < 0) {
+					if ((!("" + pmTemp.getMoc_ta015()).equals(one.getMoc_ta015() + "")) && tag_all_str.indexOf("s_7") < 0) {
 						tag_all_arr.put("s_7");
 						same_check = true;
 					}
@@ -201,13 +197,15 @@ public class ERP_ProductionManagementService {
 					one.setMes_note(pmTemp.getMes_note());
 					old_week = Integer.parseInt(pmTemp.getMoc_week().split("-W")[1]);
 					old_year = Integer.parseInt(pmTemp.getMoc_week().split("-W")[0]);
-					erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
-					erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
 					// 如果(同一年含去年)且(週期小於本周)
 					if (old_year <= now_year && old_week < now_week) {
 						one.setMoc_week(now_year + "-W" + String.format("%02d", now_week));
-					}else {
+					} else if (!pmTemp.getMoc_ta009().equals(one.getMoc_ta009())) {// 週期有修改
+						erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
+						erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
 						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
+					} else {
+						one.setMoc_week(pmTemp.getMoc_week());
 					}
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
@@ -350,6 +348,10 @@ public class ERP_ProductionManagementService {
 					break;
 				}
 				update_check = pm_Dao.updateOneFromERP(one);
+				// 生管標記-關閉
+				if (pmTempBean.getMocTagId().containsKey(erp_end.getMoc_id())) {
+					pmTempBean.getMocTagId().remove(erp_end.getMoc_id());
+				}
 			}
 
 			// Step7. 暫時標記3 標記成已 結束
@@ -367,6 +369,12 @@ public class ERP_ProductionManagementService {
 			pmTempBean.setMapPmEntity(all_temp_new);
 			pmTempBean.setMocTagAllID(tag_all_id);
 			pmTempBean.setMocTagAllTime(tag_all_time);
+			// Step8. 如果時間到 清除資料
+			String hms = Fm_Time_Model.to_Hms(new Date());
+			if (hms.equals("12:30:00") || hms.equals("12:31:00") || hms.equals("12:32:00")) {
+				pmTempBean.setMocTagAllID(new HashMap<String, JSONArray>());
+				pmTempBean.setMocTagAllTime(new HashMap<String, String>());
+			}
 		} catch (Exception e) {
 			System.out.print(e.toString());
 		}
