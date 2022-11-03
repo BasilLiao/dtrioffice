@@ -1037,7 +1037,10 @@
 								return false;
 							}
 						}
-
+						if ($("#a_u_o_id").val().length>20) {
+							main.alertshow(true, "[訂單欄位]資料過長,請填入[備註欄位]內!!");
+							return false;
+						}
 						content.production_id = $("#a_u_id").val();
 						content.order_id = $("#a_u_o_id").val();
 						content.product_hope_date = $("#a_u_o_date").val();
