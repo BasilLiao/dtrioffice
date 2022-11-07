@@ -263,10 +263,10 @@
 	//Removes div Next line fix 
 	function exclude_linefix(string) {
 		console.log('in');
-		string = string.replaceAll('<div class="d-none">nextline</div>', '&#10;');
+		string = string.replaceAll('<div class="d-none">nextline</div>', '&#10; ^n ');
 		string = string.replaceAll(/<div[^>]*>|<\/div>/gi, '');
 		string = string.replaceAll('</div>', '');
-		string = string.replaceAll('<br>', '&#10;');
+		string = string.replaceAll('<br>', '&#10; ^n ');
 		console.log(string);
 		return string;
 	}

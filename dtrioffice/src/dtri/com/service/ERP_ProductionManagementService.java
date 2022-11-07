@@ -318,6 +318,7 @@ public class ERP_ProductionManagementService {
 			search_data.setUseful(3);// 有效=1 無效=2
 			// Step6.取得不再活耀 製令單
 			List<ERP_PM_Entity> erp_entities_end = pm_Dao.searchERP_PM_List(search_data);
+			Map<String, String> mocTagId = pmTempBean.getMocTagId();
 			// 標記成已 結束->更新最後一次
 			for (ERP_PM_Entity one : erp_entities_end) {
 				ERP_PM_Entity erp_end = erp_pm_Dao.getERP_PM_End_List(one);
@@ -349,8 +350,9 @@ public class ERP_ProductionManagementService {
 				}
 				update_check = pm_Dao.updateOneFromERP(one);
 				// 生管標記-關閉
-				if (pmTempBean.getMocTagId().containsKey(erp_end.getMoc_id())) {
-					pmTempBean.getMocTagId().remove(erp_end.getMoc_id());
+				if (mocTagId.containsKey(one.getMoc_id())) {
+					mocTagId.remove(one.getMoc_id());
+					pmTempBean.setMocTagId(mocTagId);
 				}
 			}
 

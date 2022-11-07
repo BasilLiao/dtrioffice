@@ -181,6 +181,7 @@
 										<div class="p-0 week_qty"></div>
 									</div>
 								</td>
+								<td class="small bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
@@ -197,7 +198,7 @@
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
-								<td class=" bg-warning"></td>
+								<td class=" bg-warning d-none">說明:匯出時(備註欄位 請使用 '^n' 取代 '換行')</td>
 							</tr>
 						</tbody>
 					</table>
@@ -542,9 +543,9 @@
 										v : ""
 									} : sheet['E' + check_nb]);//週期
 
-									var mpr_date = sheet['C' + check_nb]['v']+"";
-									var moc_priority = sheet['D' + check_nb]['v']+"";
-									var moc_week = sheet['E' + check_nb]['v']+"";
+									var mpr_date = sheet['C' + check_nb]['v'] + "";
+									var moc_priority = sheet['D' + check_nb]['v'] + "";
+									var moc_week = sheet['E' + check_nb]['v'] + "";
 									//檢核-期料日
 									if (mpr_date != '') {
 										if (mpr_date.match(/^[0-9]{8}$/) < 1) {
@@ -563,6 +564,8 @@
 									if (moc_week.match(/^[0-9]{4}[-][W][0-9]{2}$/) < 1) {
 										sheet['E' + check_nb]['v'] = "";
 									}
+									//換行
+									sheet['B' + check_nb]['w'] = sheet['B' + check_nb]['w'].replaceAll('\r\n', '&#10;');
 
 									//新增筆數
 									excel_json.push({
@@ -570,7 +573,7 @@
 										'moc_id' : sheet['A' + check_nb]['v'] + "",
 										'ms' : sheet['B' + check_nb]['w'] + "",
 										'mpr_date' : sheet['C' + check_nb]['v'] + "",
-										'priority' : sheet['D' + check_nb]['v']+"",
+										'priority' : sheet['D' + check_nb]['v'] + "",
 										'week' : sheet['E' + check_nb]['v'] + ""
 									})
 								} else {
@@ -799,7 +802,7 @@
 						fixed_cell_color = true;
 					}
 				}
-				
+
 			},
 			change_colors : function() {
 				$("#search_table").css({
@@ -849,7 +852,7 @@
 					var name = $("#search_tbody .t_row_" + key + " .s_12").text();
 					$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
 					$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
-					news_ms += '[' + key + '('+name+')] ,';
+					news_ms += '[' + key + '(' + name + ')] ,';
 				}
 				//A511-123456789]已修改 ,
 				$('#news_ms').text(news_ms);
@@ -880,7 +883,29 @@
 
 			//Export
 			ex_export : function() {
-				$("#search_table").table2excel({
+				var search_t = $("#search_table").clone();
+				//修正格式
+				search_t.find("#search_tbody tr .modfiy_note ").each(function() {
+					$(this).html(function(index, text) {
+						if ($(this).find('.note_list') != null) {
+							//每個備註內容
+							$(this).find('.note_list').each(function(index, text) {
+								var note_all = '<div>';
+								note_all += $(this).find('.note_name')[0].innerHTML;
+								note_all += '(' + $(this).find('.note_date')[0].innerHTML + ')';
+								note_all += '<div class="d-none">nextline</div>';//換行
+								note_all += $(this).find('.note_content')[0].innerHTML;
+								note_all += '<div class="d-none">nextline</div>';//換行
+								note_all += '</div>';
+								note_all += '<div class="d-none">nextline</div>';//換行
+								$(this).html($(note_all));
+								//console.log(index + ": " + $(this).html());
+							});
+						}
+					});
+				});
+
+				$(search_t).table2excel({
 					// exclude CSS class
 					exclude : ".exc-no",//忽略項目
 					name : "Worksheet Name",
