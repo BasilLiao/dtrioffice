@@ -155,6 +155,7 @@ public class ProductionSnService {
 	// 規則 取得年周
 	public String getYYWW(String old_YYWW) {
 		Calendar cal = Calendar.getInstance();
+		cal.setMinimalDaysInFirstWeek(7);
 		cal.setTime(new Date());
 		// 如果發現 舊的大於 新的 年週期 ,則保持舊的周期數 ,反之在使用新的周期數
 		String week = String.format("%02d", (cal.get(Calendar.WEEK_OF_YEAR)-1));
