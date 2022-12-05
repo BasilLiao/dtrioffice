@@ -111,6 +111,11 @@ public class ERP_ProductionManagementService {
 				one.setMoc_ta009(Fm_Time_Model.to_yyMMdd(one.getMoc_ta009())); // 預計開工
 				one.setMoc_ta010(Fm_Time_Model.to_yyMMdd(one.getMoc_ta010())); // 預計完工
 				same_check = false;
+				// 測試用
+//				if(one.getMoc_id().equals("A511-220617001")) {
+//					System.out.println("in:"+one.getMoc_ta015());
+//					System.out.println("in");
+//				}
 
 				// Step5.是否要同 pmTempBean 一起更新
 				if (all_temp != null && all_temp.containsKey(one.getMoc_id())) {// 工單號
@@ -232,66 +237,76 @@ public class ERP_ProductionManagementService {
 					one.setUseful(1);
 
 				} else {
+					ERP_PM_Entity pm_Old = new ERP_PM_Entity();
+					pm_Old.setMoc_id(one.getMoc_id());
+					pm_Old.setUseful(2);
+					List<ERP_PM_Entity> pm_olds = pm_Dao.searchERP_PM_List(pm_Old);
+					if (pm_olds.size() > 0) {
+						// 1.可能 [資料庫已經有了]
+						one = pm_olds.get(0);
+						one.setUseful(1);
+					} else {
+						// 2.可能 [否]-新增資料
+						one.setBom_kind("");// (查)BOM 類型
+						// 生管-製令單
+						JSONArray new_notes = new JSONArray();
+						if (one.getMoc_ta054() != null && !one.getMoc_ta054().equals("")) {
+							JSONObject new_note = new JSONObject();
+							new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+							new_note.put("user", one.getMoc_cuser());
+							new_note.put("ms", one.getMoc_ta054());
+							new_notes.put(new_note);
+						}
+						one.setMoc_note(new_notes.toString());
+						one.setMoc_status("");// (查)開單狀態
+						one.setMoc_priority(100);
+						// 物控-物料
+						one.setMpr_note("[]");
+						one.setMpr_date("");// 最後交齊日
+						// 倉庫-撿料
+						one.setIvn_note("[]");
+						one.setIvn_items(0);
+						one.setIvn_status(3);// 1=齊料 2=未齊 3=未備
+						// 產線
+						one.setMes_note("[]");
+						// 系統
+						one.setNote("");
+						one.setUseful(1);
+						one.setSys_create_date(new Date());
+						one.setSys_create_user("System");
+						one.setSys_modify_date(new Date());
+						one.setSys_modify_user("System");
 
-					// [否]-新增資料
-					one.setBom_kind("");// (查)BOM 類型
-					// 生管-製令單
-					JSONArray new_notes = new JSONArray();
-					if (one.getMoc_ta054() != null && !one.getMoc_ta054().equals("")) {
-						JSONObject new_note = new JSONObject();
-						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
-						new_note.put("user", one.getMoc_cuser());
-						new_note.put("ms", one.getMoc_ta054());
-						new_notes.put(new_note);
+						erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
+						erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
+						// 如果(同一年含去年)且(週期小於本周)
+						if (erp_year <= now_year && erp_week < now_week) {
+							erp_week = now_week;
+							erp_year = now_year;
+						}
+						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
+						// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
+						switch (one.getMoc_ta011()) {
+						case "1":
+							one.setMoc_ta011("未生產");
+							break;
+						case "2":
+							one.setMoc_ta011("已發料");
+							break;
+						case "3":
+							one.setMoc_ta011("生產中");
+							break;
+						case "Y":
+							one.setMoc_ta011("已完工");
+							break;
+						case "y":
+							one.setMoc_ta011("指定完工");
+							break;
+						default:
+							break;
+						}
 					}
-					one.setMoc_note(new_notes.toString());
-					one.setMoc_status("");// (查)開單狀態
-					one.setMoc_priority(100);
-					// 物控-物料
-					one.setMpr_note("[]");
-					one.setMpr_date("");// 最後交齊日
-					// 倉庫-撿料
-					one.setIvn_note("[]");
-					one.setIvn_items(0);
-					one.setIvn_status(3);// 1=齊料 2=未齊 3=未備
-					// 產線
-					one.setMes_note("[]");
-					// 系統
-					one.setNote("");
-					one.setUseful(1);
-					one.setSys_create_date(new Date());
-					one.setSys_create_user("System");
-					one.setSys_modify_date(new Date());
-					one.setSys_modify_user("System");
 
-					erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
-					erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
-					// 如果(同一年含去年)且(週期小於本周)
-					if (erp_year <= now_year && erp_week < now_week) {
-						erp_week = now_week;
-						erp_year = now_year;
-					}
-					one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
-					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
-					switch (one.getMoc_ta011()) {
-					case "1":
-						one.setMoc_ta011("未生產");
-						break;
-					case "2":
-						one.setMoc_ta011("已發料");
-						break;
-					case "3":
-						one.setMoc_ta011("生產中");
-						break;
-					case "Y":
-						one.setMoc_ta011("已完工");
-						break;
-					case "y":
-						one.setMoc_ta011("指定完工");
-						break;
-					default:
-						break;
-					}
 				}
 				try {
 					byte bytes[] = one.toString().getBytes("UTF-8");

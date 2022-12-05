@@ -926,10 +926,31 @@
             },
             //傳送 新增 or 修改 or 刪除 or 另存
             send_added_or_update_save: function () {
+            	//1.檢核
             	if ($('#needUseNb').text()<0 || $('#notUseNb').text()<0) {
 					main.alertshow(true, "[可裝配 or 不裝配]項目數量異常 ,請再次檢查清楚!!");
 					return false;
 				}
+            	//2.檢核
+            	var a_i_item = $(".a_i_item");
+				for (var i = 0; i < a_i_item.length; i++) {
+					//除了開頭
+					if(a_i_item[i].name!='0'){
+						//console.log(a_i_item[i].name);
+						var qty_id = $("#group_number_"+a_i_item[i].name);
+						var item_c =$("#"+a_i_item[i].id).children("option:selected");
+						//數量是0 
+		            	if( (qty_id.val()>0 && item_c.text().indexOf("無")>0)||
+		            		(qty_id.val()>0 && item_c.text().indexOf("No")>0)||
+		            		(qty_id.val()==0 && (item_c.text().indexOf("無")<0 && item_c.text().indexOf("No")<0))||
+	            			(item_c.val()=="")||
+	            			(qty_id.val()=='')){
+		            		main.alertshow(true, "[項目數量]異常 ,請再次[檢查清楚]!! 或 使用[系統矯正]!!");
+							return false;
+		    			}
+					}
+				}
+            	
             	//移動
             	 setTimeout(function(){
                   	 $("html,body").animate({ scrollTop: 350 }, 'slow'); 
