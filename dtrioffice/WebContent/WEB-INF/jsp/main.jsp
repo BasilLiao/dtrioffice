@@ -86,6 +86,28 @@
     //控制端
     var main = new Vue({
         el: "#main",
+    	tempAutoBomPrint : {
+        	orderId:"",//製令單號
+        	orderEndDate:"",//預計出貨
+        	orderBomId:"",//產品ID
+        	orderQty:0,//數量
+        	orderNo:"",//訂單號
+        	orderer:"",//訂購人
+        	orderCountry:"",//訂單國家
+        	packagePC:"",//Power cord
+        	packageBOG:"",//說明書-有客戶訂單則需要有
+        	packageL:"",
+        	packageBL:"",
+        	packageBP:"",
+        	packageRP:"",
+        	packageOS:"",
+        	noteMoc:"",
+        	autoStepCheck:false,
+        	autoStep1:false,
+        	autoStep2:false,
+        	autoStep3:false,
+        	autoStep4:false,
+        },
         data: {
             //每次回傳資料
             allData: ${ allData },

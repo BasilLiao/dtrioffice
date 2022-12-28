@@ -166,13 +166,15 @@ public class BomProductController {
 		List<BomProductEntity> entitys = new ArrayList<BomProductEntity>();
 		if (frontData.get("content") != null && !frontData.get("content").equals("")) {
 
-			// Step3-2 .DB 修改類只有本人 建立 可改(如果:不是 全部權限 或 不是本人)=沒修改 權限
+			// Step3-2 .DB 修改類只有本人 or 特定權限 or 代理人 or 轉讓人
 			entitys = productService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductEntity one = productService.searchById(entitys.get(0).getId());
 			System.out.println(entitys.get(0).getSys_modify_user());
-			if (loginService.checkPermission(group, SYS_F, "11111111") || //
-					user.getAccount().equals(one.getSys_create_user()) || //
-					(user.getAccount_agent() != null && user.getAccount_agent().equals(one.getSys_create_user()))) {
+			if (loginService.checkPermission(group, SYS_F, "11000101") || // (特定+訪問+修改+查詢)權限人
+					user.getAccount().equals(one.getSys_modify_user()) || // (是本人)
+					(user.getAccount_agent() != null && user.getAccount_agent().equals(one.getSys_modify_user())) || // (是代理人)
+					(one.getTransfer_user() != null && user.getAccount().equals(one.getTransfer_user())))// (轉讓對象)
+			{
 				checkPermission = true;
 			} else {
 				checkPermission = false;

@@ -171,9 +171,11 @@ public class BomAccessoriesProductController {
 			entitys = accessoriesProductService.jsonToEntities(frontData.getJSONObject("content"), frontData.getString("action"));
 			BomProductEntity one = accessoriesProductService.searchById(entitys.get(0).getId());
 			System.out.println(entitys.get(0).getSys_modify_user());
-			if (loginService.checkPermission(group, SYS_F, "11111111") || //
-					user.getAccount().equals(one.getSys_create_user()) || //
-					(user.getAccount_agent() != null && user.getAccount_agent().equals(one.getSys_create_user()))) {
+			if (loginService.checkPermission(group, SYS_F, "11000101") || // (特定+訪問+修改+查詢)權限人
+					user.getAccount().equals(one.getSys_modify_user()) || // (是本人)
+					(user.getAccount_agent() != null && user.getAccount_agent().equals(one.getSys_modify_user())) || // (是代理人)
+					(one.getTransfer_user() != null && user.getAccount().equals(one.getTransfer_user())))// (轉讓對象)
+			{
 				checkPermission = true;
 			} else {
 				checkPermission = false;

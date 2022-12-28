@@ -343,4 +343,12 @@ public class ScheduleTaskService {
 		managementService.doDataProductionManagement("all_update", pmNewTempBean);
 
 	}
+
+	// 每周五 清除掉 生管顏色暫存
+	@Async
+	@Scheduled(cron = "0 0 23 ? * 5")
+	public void pmTempBeanClear() {
+		ERP_ProductionManagementService.pmTempBean.setMocTagId(new HashMap<String, String>());
+
+	}
 }

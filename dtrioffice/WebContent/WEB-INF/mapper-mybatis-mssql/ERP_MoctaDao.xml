@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dtri.com.db.mssql.dao.ERP_MoctaDao">
+
+	<!-- 查詢 資料 製令單物料 -->
+	<select id="queryErpMocta" resultType="ERP_MoctaEntity">
+		SELECT
+		(MOCTA.TA001+'-'+MOCTA.TA002)AS TA001_TA002,
+		MOCTA.TA009,
+		MOCTA.TA010,
+		MOCTA.TA050,
+		MOCTA.TA054,
+		(TB004 - TB005) AS TB004_TB005,
+		INVMB.MB001,
+		INVMB.MB002,
+		INVMB.MB003,
+		INVMB.MB017,
+		INVMB.MB032,
+		COALESCE(CMSMC.MC002,'') AS MC002,
+		COALESCE(PURMA.MA002,'') AS MA002,
+		'製令單' AS TK000
+		FROM
+		[DTR_TW].[dbo].MOCTA AS MOCTA
+		LEFT
+		JOIN
+		[DTR_TW].[dbo].MOCTB AS MOCTB
+		ON (MOCTA.TA001 + MOCTA.TA002) = (MOCTB.TB001
+		+ MOCTB.TB002)
+		LEFT JOIN
+		[DTR_TW].[dbo].INVMB AS INVMB
+		ON MOCTB.TB003 = INVMB.MB001
+		LEFT JOIN
+		[DTR_TW].[dbo].CMSMC AS CMSMC
+		ON INVMB.MB017 = CMSMC.MC001
+		LEFT JOIN
+		[DTR_TW].[dbo].PURMA AS PURMA
+		ON PURMA.MA001
+		= INVMB.MB032
+
+		<where>
+			(TA011 = '1' OR TA011 = '2' OR TA011 = '3')
+			AND (MOCTB.TB004 - MOCTB.TB005) != 0
+			AND MOCTB.TB018 = 'Y'
+			<if test="TA001_TA002 !=null">
+				AND (MOCTA.TA001+'-'+MOCTA.TA002) like concat('%',#{TA001_TA002,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="MB001 !=null">
+				AND INVMB.MB001 like concat('%',#{MB001,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="MB002 !=null">
+				AND INVMB.MB002 like concat('%',#{MB002,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+		ORDER BY
+		INVMB.MB001 ASC,
+		MOCTA.TA009 ASC,
+		MOCTA.TA001+MOCTA.TA002 ASC
+	</select>
+</mapper>

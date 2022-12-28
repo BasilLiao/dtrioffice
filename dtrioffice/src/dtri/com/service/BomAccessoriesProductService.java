@@ -298,6 +298,10 @@ public class BomAccessoriesProductService {
 			p_entity.setKind(product.getInt("kind"));
 			p_entity.setNote(product.getString("note"));
 			p_entity.setBom_type("accessories");
+			p_entity.setTransfer_user(product.getString("transfer_user"));
+			if (!product.getString("transfer_user").equals("")) {
+				p_entity.setUseful(3);// 轉讓中
+			}
 
 			// 取得ID
 			p_entity.setId(product.getInt("id"));

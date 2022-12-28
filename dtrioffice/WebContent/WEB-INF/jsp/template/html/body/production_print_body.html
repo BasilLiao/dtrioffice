@@ -298,7 +298,7 @@
 						<div class="row m-0">
 							<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">訂單號</div>
 							<div class="col-3 p-1 border border-secondary rounded font_16" id="order_id" style="overflow: hidden; height: 40px"></div>
-							<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">投現日</div>
+							<div class="col-1 p-0 pt-1 pb-1 mb-0 border border-dark font-weight-bolder h4">投線日</div>
 							<div class="col-2 p-0 border border-secondary rounded font_28" id="datepicker1" style="overflow: hidden; height: 40px">
 								<div class="d-none col-12 p-0 p-1"></div>
 								<input type="text" value="" placeholder="填寫(投線日期)" class="col-12 p-0 pl-1">
@@ -379,7 +379,7 @@
 							<div class="listRight2 col-6 p-1"></div>
 						</div>
 					</div>
-					<div id="setHardware_notUse" class="border border-dark p-0 m-0" style="height: 131px; width: 100%; overflow: hidden;">
+					<div id="setHardware_notUse" class="border border-dark p-0 m-0" style="height: 111px; width: 100%; overflow: hidden;">
 						<div class="row m-0 list_notUse">
 							<div class=" row m-1 font_24">
 								<div class="name font-weight-bolder pr-1">注意!!不裝配 :</div>
@@ -422,6 +422,15 @@
 							<div class="col p-1 border border-dark"></div>
 							<div class="col p-1 border border-dark"></div>
 							<div class="col p-1 border border-dark"></div>
+						</div>
+					</div>
+					<div id="workstation_inf" class="border border-dark p-0 m-0" style="height: 20px; width: 100%; font-size: 12px;">
+						<div class="row m-0 text-muted">
+							<div class="col-1 p-0 border border-dark">產線:</div>
+							<div class="col-1 p-0 border border-dark" id="wk_inf"></div>
+							<div class="col-1 p-0 border border-dark">工作程序:</div>
+							<div class="col-3 p-0 border border-dark" id="wk_inf2"></div>
+							<div class="col-6 p-0 border border-dark text-right" id=""></div>
 						</div>
 					</div>
 					<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
@@ -718,6 +727,14 @@
 			//產品SN選單
 			$(document).on("change", ".select_sn", function(event) {
 				templateBody.select_sn();
+			});
+			//生產線
+			$(document).on("change", "#ph_wc_line", function(event) {
+				$('#wk_inf').text($('#ph_wc_line').find("option:selected").text());
+			});
+			//工作站
+			$(document).on("change", "#ph_wpro_id", function(event) {
+				$('#wk_inf2').text($('#ph_wpro_id').find("option:selected").text());
 			});
 
 			//barcode 觸發(工單號)
@@ -1431,6 +1448,8 @@
 			$(document).off("click", ".from_move");
 			$(document).off("click", ".production_ok");
 
+			$(document).off("change", ".ph_wc_line");
+			$(document).off("change", ".ph_wpro_id");
 			$(document).off("change", ".select_sn");
 			$(document).off("focusout", "#client_name");
 			$(document).off("focusout", "#barcodeInput");

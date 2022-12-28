@@ -89,7 +89,13 @@
 						<div class="col-md-3 p-1">
 							<div class="col p-0">BOM料號:</div>
 							<div class="col p-0">
-								<input class="col-12" type="text" id="s_bom_number" name="s_bom_number" placeholder="Ex:A513-8745940-123" required autofocus />
+								<input class="col-12" type="text" id="s_bom_number" name="s_bom_number" placeholder="Ex:10-901-123456" required autofocus />
+							</div>
+						</div>
+						<div class="col-md-6 p-1">
+							<div class="col p-0">製令單號:</div>
+							<div class="col p-0">
+								<input class="col-12" type="text" id="s_order_id" name="s_order_id" placeholder="Ex:A513-8745940-123" disabled="disabled" />
 							</div>
 						</div>
 						<div class="col-md-12 p-0 row m-0 justify-content-center">
@@ -156,7 +162,7 @@
 			</div>
 		</div>
 		<!-- 生產注意事項 -->
-		<div class="border border-primary rounded shadow bg-light">
+		<div class="mb-3 border border-primary rounded shadow bg-light">
 			<div class="col p-0">
 				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="false" aria-controls="collapseAdded">生產注意事項 列印預覽 : </a>
 			</div>
@@ -350,7 +356,7 @@
 				</div>
 			</div>
 			<div class="row mb-3 mt-3 m-0" id="printBtn">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="mr-1 ml-1 float-right row border border-primary rounded" style="padding-right: 0px;">
 						<div id="a_u_production" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
 							<input type="checkbox" checked="checked" class="m-2 cb_pkg_ch">
@@ -364,7 +370,12 @@
 				</div>
 				<div class="col-md-2">
 					<div class="col-md-8 p-1 container">
-						<button id="p_submit" class="btn btn-primary btn-block" type="button">列印內容</button>
+						<button id="p_submit" class="btn btn-info btn-block" type="button">列印內容</button>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="col-md-8 p-1 container">
+						<button id="m_s_submit" class="btn btn-primary btn-block" type="button">回生管排程</button>
 					</div>
 				</div>
 				<div class="col-md-2">
@@ -372,10 +383,39 @@
 						<button id="a_c_submit" class="btn btn-warning btn-block" type="button">清除內容</button>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<b class="text-danger">注意 : [登記生產]過4個月後<br>製令單 將自動 [標記廢止]!!
 					</b>
 				</div>
+			</div>
+		</div>
+		<!-- 生產注意事項-說明 -->
+		<div class="border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseEx" role="button" aria-expanded="false" aria-controls="collapseEx">生產注意事項 (一鍵化)說明: </a>
+			</div>
+			<div class="collapse container" id="collapseEx">
+				<p>***(一鍵)建立注意事項***</p>
+				<p>生產注意事項</p>
+				<p>工單號 : [來源]生管排程->工單號</p>
+				<p>訂單 : [來源]C.生管排程->製令備註,[來源]D.鼎新ERP備註 ,使用/區分:訂單/客戶/國家 ,</p>
+
+				<p>預計出貨 : [來源]C.生管排程->預計完工日</p>
+				<p>客戶 : [同上]</p>
+				<p>國家 : [同上]</p>
+				<p>數量 : [來源]C.生管排程->預計產量</p>
+				<p>產品BOM號 : [來源]C.生管排程->產品品號[匹配]A.產品BOM規格->產品BOM號</p>
+				<p>包裝型態 :</p>
+				<p>1.Power cord [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有:POWER CORD & 數量0以上</p>
+				<p>2.BOG [來源]D.鼎新ERP->製令工單與訂單號 [條件](訂單號) 不為空 說明書</p>
+				<p>3.License [來源]D.鼎新ERP->製令工單內 [條件](料號)含有:50-100- & 數量0以上</p>
+				<p>4.BOX Lable [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有: BOX label & 數量0以上</p>
+				<p>5.Bulk Pack [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有: BULK CARTON & 數量0以上</p>
+				<p>6.Retail Pack [來源]與Bulk Pack 相反</p>
+				<p>7.作業系統OS [來源]不確定</p>
+
+				<p>備註 : [來源]D.鼎新ERP->製令工單內 [條件]訂單生產加工組裝包裝備註+生產注意事項</p>
+
 			</div>
 		</div>
 	</div>
@@ -420,6 +460,7 @@
 			needUseNb : 42,//限制 可裝配
 			notUseNb : 28,//限制 不裝配
 			current_report : "自訂",//當前報表來源
+			a_u_note2_def : "NPI_EE/NPI_ME及PLT人員須到場確認技轉狀況，產線須提出技轉報告!",//預設值(如果 為技轉中)
 		},
 		created : function() {
 			//初始化
@@ -484,6 +525,11 @@
 				templateBody.change_page_init();
 				templateBody.send_search("checked");
 			});
+			//回排程
+			$(document).on("click", "#m_s_submit", function(event) {
+				templateNav.jsonSend("./production_management.do", "update_body");
+			});
+
 			//移動
 			$(document).on("click", ".from_move", function(event) {
 				templateBody.from_move(event);
@@ -550,6 +596,21 @@
 				});
 			});
 			var lastContent = "";
+
+		},
+		//網頁掛載完後自動呼叫
+		mounted : function() {
+			//===自動化===
+			if (main.tempAutoBomPrint.autoStepCheck == true) {
+				setTimeout(function() {
+					$('#s_bom_number').val(main.tempAutoBomPrint.orderBomId);
+					$('#s_order_id').val(main.tempAutoBomPrint.orderId);
+
+					$('#s_l_submit').trigger("click");
+					$('#s_submit').trigger("click");
+					main.tempAutoBomPrint.autoStep1 = true;
+				}, 500);
+			}
 		},
 		methods : {
 			search_choose : function(event) {
@@ -606,16 +667,85 @@
 				$(document).off("click", ".a_submit");
 				$(document).on("click", ".a_submit", function(event) {
 					templateBody.choose_show("資料顯示", event);
-					if ($("#collapse_btn a").attr("aria-expanded") == "false") {
-						$("#collapse_btn a").trigger("click");
-						$("#collapse2_btn a").trigger("click");
-					}
+
 					setTimeout(function() {
 						$("html,body").animate({
 							scrollTop : 1020
 						}, 'slow');
 					}, 500);
 				});
+				//===自動化===
+				setTimeout(function() {
+					if (templateBody.search_list.length == 2 && //有資料
+					main.tempAutoBomPrint.autoStepCheck && //有自動化
+					main.tempAutoBomPrint.autoStep1 && //有來自 生管排程
+					main.tempAutoBomPrint.autoStep2) {//有該製令單 配對
+						console.log(main.tempAutoBomPrint);
+						$("#search_tbody .a_submit").trigger("click");
+						$('#a_u_id').val(main.tempAutoBomPrint.orderId);//工單號
+						$('#a_u_o_date').val(main.tempAutoBomPrint.orderEndDate);//預計出貨日
+						$('#a_u_o_id').val(main.tempAutoBomPrint.orderNo);//訂單
+						$('#a_u_c').val(main.tempAutoBomPrint.orderer);//客戶
+						$('#a_u_country').val(main.tempAutoBomPrint.orderCountry);//國家
+						$('#a_u_nb').val(main.tempAutoBomPrint.orderQty);//數量
+
+						//packagePC = Power cord
+						if (main.tempAutoBomPrint.packagePC != null) {
+							$('#pkg_1 .cb_pkg').trigger("click");
+							$('#pkg_1 .cb_pkg_name').text(main.tempAutoBomPrint.packagePC);
+						}
+						//packageBOG = BOG
+						if (main.tempAutoBomPrint.packageBOG != null) {
+							$('#pkg_2 .cb_pkg').trigger("click");
+						}
+						//packageL = License
+						if (main.tempAutoBomPrint.packageL != null) {
+							$('#pkg_3 .cb_pkg').trigger("click");
+							$('#pkg_3 .cb_pkg_name').text(main.tempAutoBomPrint.packageL);
+						}
+						//packageBL = BOX Label
+						if (main.tempAutoBomPrint.packageBL != null) {
+							$('#pkg_4 .cb_pkg').trigger("click");
+							$('#pkg_4 .cb_pkg_name').text(main.tempAutoBomPrint.packageBL);
+						}
+						//packageBP = Bulk Pack
+						if (main.tempAutoBomPrint.packageBP != null) {
+							$('#pkg_5 .cb_pkg').trigger("click");
+						}
+						//packageBP = Retail Pack
+						if (main.tempAutoBomPrint.packageRP != null) {
+							$('#pkg_6 .cb_pkg').trigger("click");
+						}
+						if ($('#a_u_note2').val() != "") {
+							$('#a_u_note2').val($('#a_u_note2').val() + "\n" + main.tempAutoBomPrint.noteMoc);
+						} else {
+							$('#a_u_note2').val(main.tempAutoBomPrint.noteMoc);
+						}
+					}
+					//初始化
+					main.tempAutoBomPrint = {
+						orderId : "",//製令單號
+						orderEndDate : "",//預計出貨
+						orderBomId : "",//產品ID
+						orderQty : 0,//數量
+						orderNo : "",//訂單號
+						orderer : "",//訂購人
+						orderCountry : "",//訂單國家
+						packagePC : "",//Power cord
+						packageBOG : "",//說明書-有客戶訂單則需要有
+						packageL : "",
+						packageBL : "",
+						packageBP : "",
+						packageRP : "",
+						packageOS : "",
+						noteMoc : "",
+						autoStepCheck : false,
+						autoStep1 : false,
+						autoStep2 : false,
+						autoStep3 : false,
+						autoStep4 : false,
+					}
+				}, 1500);
 			},
 			//選擇群組-並建立監聽
 			group_choose : function() {
@@ -634,13 +764,6 @@
 			//移動電梯
 			from_move : function(event) {
 				console.log(event.currentTarget.id);
-				if ($("#collapse_btn a").attr("aria-expanded") == "false") {
-					$("#collapse_btn a").trigger("click");
-				}
-				if ($("#collapse2_btn a").attr("aria-expanded") == "false") {
-					$("#collapse2_btn a").trigger("click");
-				}
-
 				switch (event.currentTarget.id) {
 				case "top":
 					setTimeout(function() {
@@ -753,6 +876,7 @@
 				$("#s_l_list").append('<div class="text-left mb-2 mt-2">條件清單:</div>');
 				$("#s_model").val("");
 				$("#s_bom_number").val("");
+				$("#s_order_id").val("");
 				$("#s_g_item").val("").trigger("change");
 			},
 			//鎖定~
@@ -762,6 +886,7 @@
 				lk += "'g_item':'" + $("#s_g_item").val() + "',";
 				lk += "'i_item':'" + $("#s_i_item").val() + "',";
 				lk += "'p_model':'" + $("#s_model").val() + "',";
+				lk += "'order_id':'" + $("#s_order_id").val() + "',";
 				if ($("#s_l_list div").length < 2) {
 					lk += "'bom_type':'" + $("#s_g_bom_type").val() + "',";
 				}
@@ -772,6 +897,7 @@
 				lkp += $("#s_i_item").val() == "" ? "" : "<'項目規格':'" + $("#s_i_item").find('option:selected').text() + "'>";
 				lkp += $("#s_model").val() == "" ? "" : "<'產品型號':'" + $("#s_model").val() + "'>";
 				lkp += $("#s_bom_number").val() == "" ? "" : "<'BOM編號':'" + $("#s_bom_number").val() + "'>";
+				lkp += $("#s_order_id").val() == "" ? "" : "<'製令單':'" + $("#s_order_id").val() + "'>";
 
 				$("#s_l_list").append('<div class="text-left m-0 d-none">' + lk + '</div><p class="mb-1 mt-1  small">' + lkp + '</p>');
 				//清除選擇
@@ -868,17 +994,6 @@
 				//計算
 				$("#notUseNb").text(this.notUseNb - notUse);
 				$("#needUseNb").text(this.needUseNb - needUse);
-				/*
-				 $('#collapseAdded input[type="checkbox"]').change(function() {
-				 var checked = $(this).prop("checked");
-				 if (checked) {
-				 $(this).after('<input class="cb_pkg_ch" type="checkbox" checked="checked">');
-				 } else {
-				 $(this).after('<input class="cb_pkg_ch" type="checkbox">');
-				 }
-				 $(this).remove();
-				 });
-				 */
 				$("#c1_bom_type").text($(".t_row" + id + " .s_12")[0].innerText);
 				$("#c1_note").text(
 						"表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_11")[0].innerText + " / 建單日期 : " + currentDate + " / 建單人 : "
@@ -886,6 +1001,12 @@
 				$("#c1_note").attr('title', $(".t_row" + id + " .s_11")[0].innerText);
 				$("#a_u_bom_principal").text($(".t_row" + id + " .s_11")[0].innerText);
 
+				//可能是是 技轉單
+				if ($("#a_u_kind").val() == "0") {
+					$("#a_u_note2").val(this.a_u_note2_def);
+				} else {
+					$("#a_u_note2").val("");
+				}
 			},
 			//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
 			change_page_init : function() {
@@ -1037,7 +1158,7 @@
 								return false;
 							}
 						}
-						if ($("#a_u_o_id").val().length>20) {
+						if ($("#a_u_o_id").val().length > 20) {
 							main.alertshow(true, "[訂單欄位]資料過長,請填入[備註欄位]內!!");
 							return false;
 						}
@@ -1067,7 +1188,7 @@
 						var bom_sfn = $('.listLeft .item');
 						//左邊
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":", "");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							have.push({
@@ -1079,7 +1200,7 @@
 						bom_sfn = $('.listRight .item');
 						//右邊
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":", "");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							have.push({
@@ -1091,7 +1212,7 @@
 						//不使用
 						bom_sfn = $('.item_notUse');
 						for (var bpc = 0; bpc < bom_sfn.length; bpc++) {
-							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":","");
+							s_name = $(bom_sfn[bpc]).find('.name').text().replace(":", "");
 							s_content = $(bom_sfn[bpc]).find('.content').text();
 							s_amount = $(bom_sfn[bpc]).find('.amount').text();
 							not.push({
@@ -1208,6 +1329,24 @@
 						this.group_list = main.contentData.templateInfo.body["group_list"];
 						this.item_list = main.contentData.templateInfo.body["item_list"];
 						this.search_list = main.contentData.templateInfo.body["list"];
+						//自動化 填入
+						if (main.contentData.templateInfo.body["tempAutoBomPrint"].orderId != null) {
+							var tempAutoBomPrint = main.contentData.templateInfo.body["tempAutoBomPrint"];
+							main.tempAutoBomPrint.packagePC = tempAutoBomPrint.packagePC;
+							main.tempAutoBomPrint.packageBOG = tempAutoBomPrint.packageBOG;
+							main.tempAutoBomPrint.packageL = tempAutoBomPrint.packageL;
+							main.tempAutoBomPrint.packageBL = tempAutoBomPrint.packageBL;
+							main.tempAutoBomPrint.packageBP = tempAutoBomPrint.packageBP;
+							main.tempAutoBomPrint.packageRP = tempAutoBomPrint.packageRP;
+							main.tempAutoBomPrint.packageOS = tempAutoBomPrint.packageOS;
+							main.tempAutoBomPrint.noteMoc = tempAutoBomPrint.noteMoc;
+							main.tempAutoBomPrint.autoStep2 = true;
+							console.log(main.tempAutoBomPrint);
+						}
+						//沒有資料
+						if (event.r_content.templateInfo.body["list"].length < 2) {
+							main.alertshow(true, "結果->無資料!!");
+						}
 						this.search_update();
 					}
 
@@ -1235,6 +1374,7 @@
 			$(document).off("click", "#s_submit");
 			$(document).off("click", "#a_c_submit");
 			$(document).off("click", "#p_submit");
+			$(document).off("click", "#m_s_submit");
 
 			$(document).off("click", ".a_submit");
 			$(document).off("click", "#s_l_submit");

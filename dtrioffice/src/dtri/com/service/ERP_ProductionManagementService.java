@@ -41,7 +41,7 @@ public class ERP_ProductionManagementService {
 	@Autowired
 	private ProductionRecordsDAO daoRecordsDAO;
 	// 共用
-	private static PMTempBean pmTempBean = new PMTempBean();
+	public static PMTempBean pmTempBean = new PMTempBean();
 
 	/**
 	 * @param entity 查詢使用者資料
@@ -895,7 +895,7 @@ public class ERP_ProductionManagementService {
 		jsonArray.put("已生產量");
 		jsonArray.put("製令狀態");
 		// 10
-		jsonArray.put("製令備註");
+		jsonArray.put("製令備註(訂單/客戶/國家)");
 		jsonArray.put("客戶訂單");
 		jsonArray.put("負責人");
 		jsonArray.put("產品狀態");

@@ -134,7 +134,12 @@
 								<div class="col-md-4 p-0">ID:</div>
 								<div class="col-md-8 p-0" id="a_u_id">0</div>
 							</div>
-							<div class="row m-0 text-left col-md-6 p-1"></div>
+							<div class="row m-0 text-left col-md-6 p-1">
+								<div class="col-md-3 p-0">BOM轉讓:</div>
+								<div class="col-md-6 p-0" id="">
+									<input class="col-md-12" type="text" id="a_u_transfer_user" placeholder="Ex:Bill" />
+								</div>
+							</div>
 							<!-- 2 -->
 							<div class="row m-0 text-left col-md-6 p-1">
 								<div class="col-md-4 p-0">產品型號:</div>
@@ -143,8 +148,8 @@
 								</div>
 							</div>
 							<div class="row m-0 text-left col-md-6 p-1">
-								<div class="col-md-4 p-0">BOM料號:</div>
-								<div class="col-md-8 p-0" id="">
+								<div class="col-md-3 p-0">BOM料號:</div>
+								<div class="col-md-9 p-0" id="">
 									<input class="col-md-12" type="text" id="a_u_bom_number" placeholder="Ex:A512-9487945-08449" required />
 								</div>
 							</div>
@@ -155,7 +160,7 @@
 									<input class="col-md-12" type="text" id="a_u_version_motherboard" placeholder="Ex:R1.3" required />
 								</div>
 							</div>
-							<div class="row m-0 text-left col-md-4 p-1">
+							<div class="row m-0 text-left col-md-3 p-1">
 								<div class="col-md-6 p-0 ">產品狀態 :</div>
 								<div class="col-md-6 p-0">
 									<select class="col-12" id="a_u_kind" id="inlineFormCustomSelect">
@@ -164,10 +169,16 @@
 									</select>
 								</div>
 							</div>
-							<div class="row m-0 text-left col-md-2 p-1">
-								<div class="col-md-6 p-0">啟用 :</div>
-								<div class="col-md-6 p-0">
-									<input class="col-md-12" type="text" id="a_u_useful" placeholder="1=開 2=關" value="1" required />
+							<div class="row m-0 text-left col-md-3 p-1">
+								<div class="col-md-4 p-0">啟用 :</div>
+								<div class="col-md-8 p-0">
+									<select class="col-12" id="a_u_useful" id="inlineFormCustomSelect">
+										<option value="1" selected>可使用</option>
+										<option value="2">暫停中</option>
+										<option value="3">轉讓中</option>
+									</select>
+									<!-- <input class="col-md-12" type="text" id="a_u_useful" placeholder="1=開 2=關" value="1" required />
+								 -->
 								</div>
 							</div>
 							<!-- 4 -->
@@ -568,6 +579,8 @@
                 $("#a_u_type").text("新增資料");
                 $("#a_u_id").text(0);
                 $("#a_u_model").val("");
+                $("#a_u_transfer_user").val("");
+                
                 
                 $("#a_u_bom_number").val("");
                 $("#a_u_version_motherboard").val("");
@@ -708,6 +721,7 @@
                 var id = event.target.attributes.user_id.value;
                 $("#a_u_id").text($(".t_row" + id + " .s_0")[0].innerText);
                 $("#a_u_model").val($(".t_row" + id + " .s_1")[0].innerText);
+               //-- $("#a_u_transfer_user")
                 $("#a_u_version_motherboard").val($(".t_row" + id + " .s_2")[0].innerText);
                	$("#a_u_bom_number").val($(".t_row" + id + " .s_3")[0].innerText);
 				if(a_u_type=="另存資料"){
@@ -789,6 +803,7 @@
             //鎖定資料
             choose_disabled: function (disabled) {
                 $("#a_u_model").attr("disabled", disabled);
+                $("#a_u_transfer_user").attr("disabled", disabled);
                 
                 $("#a_u_bom_number").attr("disabled", disabled);
               
@@ -966,6 +981,7 @@
                 //BOM 產品清單
                 product.id = $("#a_u_id").text();
                 product.product_model = $("#a_u_model").val();
+                product.transfer_user = $("#a_u_transfer_user").val();
                
                 product.version_motherboard = $("#a_u_version_motherboard").val();
                 product.bom_number = $("#a_u_bom_number").val();

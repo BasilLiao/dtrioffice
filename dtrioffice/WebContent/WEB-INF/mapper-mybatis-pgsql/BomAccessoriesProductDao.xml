@@ -142,6 +142,7 @@
 		checked = '',
 		useful = #{useful},
 		bom_type = #{bom_type},
+		transfer_user = #{transfer_user},
 		kind = #{kind}
 		WHERE id = #{id};
 	</update>

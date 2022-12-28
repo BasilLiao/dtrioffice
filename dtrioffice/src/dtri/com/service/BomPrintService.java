@@ -20,6 +20,9 @@ import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
+import dtri.com.db.entity.ERP_INVMB_Entity;
+import dtri.com.db.entity.ERP_MoctaEntity;
+import dtri.com.db.mssql.dao.ERP_MoctaDao;
 import dtri.com.db.pgsql.dao.BomAccessoriesProductDao;
 import dtri.com.db.pgsql.dao.BomAccessoriesTypeItemDao;
 import dtri.com.db.pgsql.dao.BomProductDao;
@@ -39,6 +42,8 @@ public class BomPrintService {
 	private BomAccessoriesProductDao productAccDao;
 	@Autowired
 	private BomAccessoriesTypeItemDao itemAccDao;
+	@Autowired
+	private ERP_MoctaDao moctaDao;
 	@Autowired
 	private LoginService loginService;
 
@@ -66,11 +71,13 @@ public class BomPrintService {
 		List<BomTypeItemEntity> i_list = new ArrayList<BomTypeItemEntity>();
 		List<BomTypeItemEntity> i_listAcc = new ArrayList<BomTypeItemEntity>();
 		int select_nb = 0;// 查詢條件
+		JSONObject packs = new JSONObject();// 自動化 填入 生產注意事項 參數
 		// ----------項目----------
 		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || //
 				entitys.get(0).getProduct_model() != null || //
 				entitys.get(0).getBom_type() != null || //
 				entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
+
 			for (BomProductEntity entity : entitys) {
 				// 組
 				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
@@ -142,7 +149,7 @@ public class BomPrintService {
 				}
 
 				// ID 條件
-				all_where_product += "product_model !=''";
+				all_where_product += "product_model !='' AND useful = 1 ";
 				all_where_product += " AND id in(";
 				for (Entry<Integer, Integer> item : g_m_list.entrySet()) {
 					if (select_nb <= item.getValue()) {
@@ -160,7 +167,7 @@ public class BomPrintService {
 			} else {
 				all_where_group += "type_item_id !=0";
 				// ID 條件
-				all_where_product += "product_model !=''";
+				all_where_product += "product_model !='' AND useful = 1 ";// 只有 (1可使用) 能查
 				// 產品-清單
 				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
 					p_list = productDao.queryProduct(all_where_product, all_limit);
@@ -177,6 +184,62 @@ public class BomPrintService {
 				} else {
 					g_list = productAccDao.queryAccessoriesGroup(all_where_group, group_limit_in);
 				}
+			}
+			// ----------自動化 ERP 製令單--------
+			if (entitys.get(0).getOrderId() != null) {
+				ERP_MoctaEntity erp_MoctaEntity = new ERP_MoctaEntity();
+				List<ERP_MoctaEntity> entities = new ArrayList<ERP_MoctaEntity>();
+
+				// packagePC :ERP->物料-品名-關鍵字:Power cord & 數量0以上
+				erp_MoctaEntity.setTA001_TA002(entitys.get(0).getOrderId());
+				erp_MoctaEntity.setMB002("POWER CORD");
+				entities = moctaDao.queryErpMocta(erp_MoctaEntity);
+				if (entities.size() > 0) {
+					packs.put("packagePC", entities.get(0).getMB002());
+				}
+
+				// packageL :ERP->物料-料號-關鍵字:50-100- & 數量0以上
+				entities = new ArrayList<ERP_MoctaEntity>();
+				erp_MoctaEntity = new ERP_MoctaEntity();
+				erp_MoctaEntity.setTA001_TA002(entitys.get(0).getOrderId());
+				erp_MoctaEntity.setMB001("50-100-");
+				entities = moctaDao.queryErpMocta(erp_MoctaEntity);
+				if (entities.size() > 0) {
+					packs.put("packageL", entities.get(0).getMB002());
+				}
+
+				// packageBL :ERP->物料-品名-關鍵字:BOX label & 數量0以上
+				entities = new ArrayList<ERP_MoctaEntity>();
+				erp_MoctaEntity = new ERP_MoctaEntity();
+				erp_MoctaEntity.setTA001_TA002(entitys.get(0).getOrderId());
+				erp_MoctaEntity.setMB002("BOX label");
+				entities = moctaDao.queryErpMocta(erp_MoctaEntity);
+				if (entities.size() > 0) {
+					packs.put("packageBL", entities.get(0).getMB002());
+				}
+
+				// packageBP :ERP->物料-關鍵字:BULK CARTON & 數量0以上
+				entities = new ArrayList<ERP_MoctaEntity>();
+				erp_MoctaEntity = new ERP_MoctaEntity();
+				erp_MoctaEntity.setTA001_TA002(entitys.get(0).getOrderId());
+				erp_MoctaEntity.setMB002("BULK CARTON");
+				entities = moctaDao.queryErpMocta(erp_MoctaEntity);
+				if (entities.size() > 0) {
+					packs.put("packageBP", entities.get(0).getMB002());
+				} else {
+					// packageRP :ERP->物料-關鍵字:與上方相反
+					packs.put("packageRP", "true");
+				}
+				// noteMoc :ERP->物料-關鍵字:訂單生產加工組裝包裝備註+生產備註
+				entities = new ArrayList<ERP_MoctaEntity>();
+				erp_MoctaEntity = new ERP_MoctaEntity();
+				erp_MoctaEntity.setTA001_TA002(entitys.get(0).getOrderId());
+				entities = moctaDao.queryErpMocta(erp_MoctaEntity);
+				if (entities.size() > 0) {
+					packs.put("noteMoc", entities.get(0).getTA050() + "\n" + entities.get(0).getTA054());
+				}
+				// 製令單
+				packs.put("orderId", entitys.get(0).getOrderId());
 			}
 
 		} else {
@@ -208,6 +271,8 @@ public class BomPrintService {
 		bpg.setBomProductEntities(p_list);
 		// 規格
 		bpg.setBomGroupEntities(g_list);
+		// 自動化 生產注意事項
+		bpg.setTempAutoBomPrint(packs);
 
 		bpg.setBomTypeItemEntities(i_list);
 		bpg.setBomAccessoriesTypeItemEntities(i_listAcc);
@@ -272,6 +337,9 @@ public class BomPrintService {
 				// 類型?
 				if (!one.isNull("bom_type") && !one.get("bom_type").equals(""))
 					p_entity.setBom_type(one.getString("bom_type"));
+				// 工單號?
+				if (!one.isNull("order_id") && !one.get("order_id").equals(""))
+					p_entity.setOrderId(one.getString("order_id"));
 
 				p_entity.setGroupEntity(g_entity);
 				entitys.add(p_entity);
@@ -421,6 +489,8 @@ public class BomPrintService {
 			item_acc_listAll.put(jsonArray);
 		}
 		list.put("item_acc_list", item_acc_listAll);
+		// 自動化-填入?
+		list.put("tempAutoBomPrint", bpg.getTempAutoBomPrint());
 		return list;
 	}
 

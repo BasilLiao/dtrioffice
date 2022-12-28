@@ -182,6 +182,7 @@
 									</div>
 								</td>
 								<td class="small bg-warning"></td>
+								<td class=" bg-warning d-none"><b>說明:匯出時(請使用 '^n' 取代 '換行[Ctrl+Enter]')</b></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
@@ -198,7 +199,6 @@
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
-								<td class=" bg-warning d-none">說明:匯出時(備註欄位 請使用 '^n' 取代 '換行')</td>
 							</tr>
 						</tbody>
 					</table>
@@ -213,6 +213,9 @@
 	<div class="col-8 p-1 border border-primary rounded shadow bg-light h5">
 		<div class="col-12 p-0">
 
+			<div class="row m-0 border">
+				<div class="col-4 p-1 text-danger h4 font-weight-bold" id="new_note_kind"></div>
+			</div>
 			<div class="row m-0 border">
 				<div class="d-none col-4 p-1 " id="new_note_type"></div>
 				<div class="col-2 p-1">製令單號:</div>
@@ -333,820 +336,890 @@
 
 <script type="text/javascript">
 	console.log("production_management_body");
-	templateBody = new Vue({
-		el : "#production_management_body",
-		data : {
-			l_search_thead : "",
-			search_list : "",
-			//Websocket
-			output : null,
-			stompClient : null,
-			moc_id_lock : [],
-			moc_id_tag : [],//標記有更新
-			moc_id_tag_all : [],//標記 欄位有更新
-			s_auto_down : null,
-			s_auto_down_loop : null,
+	templateBody = new Vue(
+			{
+				el : "#production_management_body",
+				data : {
+					l_search_thead : "",
+					search_list : "",
+					//Websocket
+					output : null,
+					stompClient : null,
+					moc_id_lock : [],
+					moc_id_tag : [],//標記有更新
+					moc_id_tag_all : [],//標記 欄位有更新
+					s_auto_down : null,
+					s_auto_down_loop : null,
 
-		},
-		created : function() {
-			//初始化
-			console.log(main.contentData.templateInfo.body["list"]);
-			this.search_list = main.contentData.templateInfo.body["list"];
-			this.moc_id_lock = main.contentData.templateInfo.body["moc_id_lock"];
-			var min_width = 100;
-			//t_header
-			var fixed_left = 101;
-			for (var i = 0; i < this.search_list[0].length; i++) {
-				if (i == 0) {
-					min_width = 60;
-				}
-				if (i == 1 || i == 2) {
-					min_width = 120;
-				}
-				if (i == 3 || i == 4 || i == 11 || i == 14 || i == 16) {
-					min_width = 150;
-				}
-				if (i == 5 || i == 6) {
-					min_width = 300;
-				}
-				if (i == 10) {
-					min_width = 450;
-				}
-				if (i == 15 || i == 17 || i == 20 || i == 21) {
-					min_width = 500;
-				}
-				//固定
-				var sta = "";
-				if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4) {
-					sta = '<th style="min-width: ' + min_width + 'px; left: '+fixed_left+'px;"';
-					sta +='class="s_' + i + ' fixed_cell" scope="col">';
-					sta += this.search_list[0][i] + "</th>";
-					fixed_left = fixed_left + parseInt(min_width);
-				} else {
-					sta = '<th style="min-width: ' + min_width + 'px;"';
-					sta +='class="s_' + i + '" scope="col">';
-					sta += this.search_list[0][i] + "</th>";
-				}
-				$("#search_thead").append(sta);
-				min_width = 100;
-			}
-			//t_body		
-			this.search_update();
-			//lock_update
-			this.lock_update();
-
-			//查詢監聽
-			$(document).on("click", "#s_submit", function(event) {
-				templateBody.send_search();
-			});
-			//清除查詢
-			$(document).on("click", "#c_submit", function(event) {
-				templateBody.rm_search();
-			});
-			//匯出
-			$(document).on("click", "#e_excel", function(event) {
-				templateBody.ex_export();
-			});
-
-			//關閉紀錄
-			$(document).on("click", "#up_clear_submit", function(event) {
-				$("#show_details").addClass("d-none");
-				templateBody.unlock_websocket_req($('#new_moc_id').text());
-			});
-
-			//自動下移
-			$(document).on("change", "#s_auto_down", function(event) {
-				templateBody.auto_down_loop();
-			});
-
-			//標記已讀
-			$(document).on("click", "#up_tag_submit", function(event) {
-				$("#show_details").addClass("d-none");
-				templateBody.tag_websocket_req($('#new_moc_id').text());
-			});
-
-			//存入紀錄
-			$(document).on("click", "#up_save_submit", function(event) {
-				templateBody.unlock_save_websocket_req();
-			});
-			//清除檔案
-			$(document).on("click", "#rd_clear_file_btn", function(event) {
-				$("#excel_file").val("");
-				$("#excel_json").text("[]");
-			});
-			//下載範例
-			$(document).on("click", "#rd_sample_file_btn", function(event) {
-				templateBody.ex_sample_export();
-			});
-			//滑鼠事件
-			$(document).on("mouseover", ".modfiy_note", function(event) {
-				//console.log("in modfiy_note");
-				var b_row_id = $(event.currentTarget).attr("b_row_id");
-				var moc_id = b_row_id.split('<_>')[1];
-				var moc_id_type = b_row_id.split('<_>')[0];
-				//s_15->moc_note->生管
-				//s_17->mpr_note->物控
-				//s_20->ivn_note->倉庫
-				//s_21->mes_note->製程
-				switch (moc_id_type) {
-				case 'moc_note':
-					$('.t_row_' + moc_id + ' .s_15 .note_list').removeClass('d-none');
-					break;
-				case 'mpr_note':
-					$('.t_row_' + moc_id + ' .s_17 .note_list').removeClass('d-none');
-					break;
-				case 'ivn_note':
-					$('.t_row_' + moc_id + ' .s_20 .note_list').removeClass('d-none');
-					break;
-				case 'mes_note':
-					$('.t_row_' + moc_id + ' .s_21 .note_list').removeClass('d-none');
-					break;
-
-				default:
-					break;
-				}
-			});
-			$(document).on("mouseout", ".modfiy_note", function(event) {
-				//console.log("out modfiy_note");
-				var b_row_id = $(event.currentTarget).attr("b_row_id");
-				var moc_id = b_row_id.split('<_>')[1];
-				var moc_id_type = b_row_id.split('<_>')[0];
-
-				//s_15->moc_note->生管
-				//s_17->mpr_note->物控
-				//s_20->ivn_note->倉庫
-				//s_21->mes_note->製程
-				switch (moc_id_type) {
-				case 'moc_note':
-					$('.t_row_' + moc_id + ' .s_15 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_15 .newest').removeClass('d-none');
-					break;
-				case 'mpr_note':
-					$('.t_row_' + moc_id + ' .s_17 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_17 .newest').removeClass('d-none');
-					break;
-				case 'ivn_note':
-					$('.t_row_' + moc_id + ' .s_20 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_20 .newest').removeClass('d-none');
-					break;
-				case 'mes_note':
-					$('.t_row_' + moc_id + ' .s_21 .note_list').addClass('d-none');
-					$('.t_row_' + moc_id + ' .s_21 .newest').removeClass('d-none');
-					break;
-				default:
-					break;
-				}
-
-			});
-
-			//檔案上傳資料
-			$(document).on("change", "#excel_file", function(event) {
-				console.log("change excel_file");
-				var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
-				var files = event.currentTarget.files[0];
-				if (files != null) {
-					if (files.type.indexOf(".xlsx") > 0) {
-						xlsxflag = true;
-					}
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						var data = e.target.result;
-						var workbook = XLSX.read(data, {
-							type : 'binary'
-						});
-						var sheet_name_list = workbook.SheetNames;
-						sheet_name_list.forEach(function(y) {
-							console.log(workbook.Sheets[y]);
-							var sheet = workbook.Sheets[y];
-
-							//[工單]資料
-							var check_have = true;
-							var check_nb = 3;
-							var excel_json = [];
-							var max_qty = 50;
-							while (check_have) {
-								if (max_qty > 0 && sheet['A' + check_nb] && sheet['A' + check_nb]['v'] != "") {
-									max_qty--;
-									sheet['A' + check_nb] = (sheet['A' + check_nb] == null ? {
-										v : ""
-									} : sheet['A' + check_nb]);//工單號
-									sheet['B' + check_nb] = (sheet['B' + check_nb] == null ? {
-										w : ""
-									} : sheet['B' + check_nb]);//備住
-									sheet['C' + check_nb] = (sheet['C' + check_nb] == null ? {
-										v : ""
-									} : sheet['C' + check_nb]);//預計齊料日
-									sheet['D' + check_nb] = (sheet['D' + check_nb] == null ? {
-										v : ""
-									} : sheet['D' + check_nb]);//優先權
-									sheet['E' + check_nb] = (sheet['E' + check_nb] == null ? {
-										v : ""
-									} : sheet['E' + check_nb]);//週期
-
-									var mpr_date = sheet['C' + check_nb]['v'] + "";
-									var moc_priority = sheet['D' + check_nb]['v'] + "";
-									var moc_week = sheet['E' + check_nb]['v'] + "";
-									//檢核-期料日
-									if (mpr_date != '') {
-										if (mpr_date.match(/^[0-9]{8}$/) < 1) {
-											sheet['C' + check_nb]['v'] = "";
-										}
-										var year = mpr_date.substring(0, 4);
-										var month = mpr_date.substring(4, 6);
-										var day = mpr_date.substring(6, 8);
-										sheet['C' + check_nb]['v'] = year + '-' + month + '-' + day;
-									}
-									//檢核-優先權
-									if (moc_priority != '' && moc_priority.match(/^[0-9]\d*$/) < 1) {
-										sheet['D' + check_nb]['v'] = "";
-									}
-									//週期數
-									if (moc_week.match(/^[0-9]{4}[-][W][0-9]{2}$/) < 1) {
-										sheet['E' + check_nb]['v'] = "";
-									}
-									//換行
-									sheet['B' + check_nb]['w'] = sheet['B' + check_nb]['w'].replaceAll('\r\n', '&#10;');
-
-									//新增筆數
-									excel_json.push({
-										'user' : $('#nav_account').text(),
-										'moc_id' : sheet['A' + check_nb]['v'] + "",
-										'ms' : sheet['B' + check_nb]['w'] + "",
-										'mpr_date' : sheet['C' + check_nb]['v'] + "",
-										'priority' : sheet['D' + check_nb]['v'] + "",
-										'week' : sheet['E' + check_nb]['v'] + ""
-									})
-								} else {
-									check_have = false;
-								}
-								check_nb += 1;
-							}
-							console.log(excel_json);
-							if (excel_json.length > 0) {
-								$('#excel_json').text(JSON.stringify(excel_json));
-							}
-						});
-					}
-
-					/*If excel file is .xlsx extension than creates a Array Buffer from excel*/
-					if (xlsxflag) {
-						reader.readAsArrayBuffer($("#excel_file")[0].files[0]);
-					} else {
-						reader.readAsBinaryString($("#excel_file")[0].files[0]);
-					}
-				}
-			});
-
-			//編輯note監聽
-			$(document).on("click", ".modfiy_note", function(event) {
-				var b_row_id = $(event.currentTarget).attr("b_row_id");
-				var moc_id = b_row_id.split('<_>')[1];
-				var moc_id_type = b_row_id.split('<_>')[0];
-				//if(){}
-				templateBody.lock_websocket_req(moc_id);
-				$('#new_moc_id').text($('.t_row_' + moc_id + ' .s_3').text() + "");
-				$('#new_name').text($('#nav_account').text() + "");
-				$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());
-				var mpr_date = $('.t_row_' + moc_id + ' .s_16').text().replaceAll('-', '');//清除-
-				$('#new_mpr_date input').val(mpr_date);
-				$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_30').text());
-				$('#new_note textarea').val('');
-				$('#excel_json').text('[]');
-				$('#excel_file').val('');
-
-				$('#new_note_type').text(moc_id_type);
-				console.log("modfiy_note" + b_row_id);
-			});
-
-			//===WebSocket===
-			this.websocket_connect();
-		},
-		methods : {
-			//查詢更新
-			search_update : function() {
-				//===高度設置===
-				var h = window.innerHeight;
-				console.log("h:" + h);
-				h -= 280;
-				$("#search_table").css('height', h + 'px');
-				//===創建範例===
-				var ex_list = "ex_0";
-				if ($(".t_row_ex_0").length == 0 && this.search_list.length > 1) {
-
-					var r_submit = '<div class="md-6">';
-					r_submit += '<button user_id="' + ex_list + '" class="btn btn-success btn-sm btn-block r_submit">';
-					r_submit += "登</button></div>";
-
-					var fn = '<tr class="exc-no page_all t_row_' + ex_list + '" style="white-space: nowrap;">';
-					fn += '<td class=" exc-no p-2 col-md-12 fixed_cell" style="min-width: 50px; left: 1px;">' + r_submit + ' ';
-					fn += '</td></tr>';
-					$("#search_tbody").append(fn);
-					//計數量
-					var fn_nb = '<td class=" exc-no fixed_cell list_nb" style="min-width: 40px; left: 51px;">0</td>';
-					$("#search_tbody .t_row_" + ex_list).append(fn_nb);
-					//欄位資料
-					var class_val = "";
-					var css_val = "";
-					var b_row_id = "";
-					var b_row_div = "";
-					var css_left = 101;
-					for (var j = 0; j < this.search_list[1].length; j++) {
-						//多餘隱藏
-						class_val = "";
-						css_val = "";
-						b_row_id = "";//每筆資料ID
-						b_div = "";
-						if (j > 21) {
-							class_val = " exc-no d-none s_" + j;
-						} else {
-							class_val = "s_" + j;
+				},
+				created : function() {
+					//初始化
+					console.log(main.contentData.templateInfo.body["list"]);
+					this.search_list = main.contentData.templateInfo.body["list"];
+					this.moc_id_lock = main.contentData.templateInfo.body["moc_id_lock"];
+					var min_width = 100;
+					//t_header
+					var fixed_left = 101;
+					for (var i = 0; i < this.search_list[0].length; i++) {
+						if (i == 0) {
+							min_width = 60;
 						}
-						//可填入[生管備註]
-						if (class_val == 's_15') {
-							class_val += " modfiy_note border border-warning rounded shadow-sm";
-							b_row_id = "moc_note";
+						if (i == 1 || i == 2) {
+							min_width = 120;
 						}
-						//可填入[物控備註]
-						if (class_val == 's_17') {
-							class_val += " modfiy_note border border-warning rounded shadow-sm";
-							b_row_id = "mpr_note";
+						if (i == 3 || i == 4 || i == 11 || i == 14 || i == 16) {
+							min_width = 150;
 						}
-						//可填入[倉庫備註]
-						if (class_val == 's_20') {
-							class_val += " modfiy_note  border border-warning rounded shadow-sm";
-							b_row_id = "ivn_note";
-							b_div = "";
+						if (i == 5 || i == 6) {
+							min_width = 300;
 						}
-						//可填入[製造備註]
-						if (class_val == 's_21') {
-							class_val += " modfiy_note  border border-warning rounded shadow-sm";
-							b_row_id = "mes_note";
+						if (i == 10) {
+							min_width = 450;
 						}
-
+						if (i == 15 || i == 17 || i == 20 || i == 21) {
+							min_width = 500;
+						}
 						//固定
-						if (j < 5) {
-							class_val += " fixed_cell";
-							css_val += " left: " + css_left + "px;";
-							if (j == 0)
-								css_left += 60;
-							if (j == 1)
-								css_left += 120;
-							if (j == 2)
-								css_left += 120;
-							if (j == 3)
-								css_left += 150;
-							if (j == 4)
-								css_left += 150;
-
-						}
-						$("#search_tbody .t_row_" + ex_list).append("<td b_row_id='"+b_row_id+"' class='" + class_val +"' style='"+css_val+"'></td>");
-					}
-					$("#search_tbody .t_row_" + ex_list).addClass('d-none');
-				}
-
-				//===實際資料===
-				$("#search_tbody .show").remove();
-				//t_body
-				var id_key = 3;
-				var fixed_cell_color = false;
-				var week_key = '';
-				var week_qty = 0;
-				for (var i = 1; i < this.search_list.length; i++) {
-					//功能
-					var s_list = this.search_list[i][id_key];
-					//放入到 jQuery 物件內使用
-					var new_one = $($("#search_tbody .t_row_" + ex_list).clone()[0]);
-					new_one.removeClass("t_row_ex_0");
-					new_one.removeClass("d-none");
-					new_one.removeClass("exc-no");
-					new_one.addClass('t_row_' + s_list);
-					new_one.addClass('show');
-					new_one.css('height', 60);
-					new_one.find(".r_submit").attr("id", s_list);
-					new_one.find(".list_nb").text(i);
-
-					//欄位資料
-					for (var j = 0; j < this.search_list[i].length; j++) {
-
-						//特定[可輸入欄位]才需要此標記[工單_欄位]
-						if (new_one.find(".s_" + j).attr("b_row_id") != "") {
-							var c_note = new_one.find(".s_" + j).attr("b_row_id");
-							var b_row_id = c_note + "<_>" + s_list;
-							new_one.find(".s_" + j).attr("b_row_id", b_row_id);
-							//json
-							json_v = JSON.parse(this.search_list[i][j]);
-							//note類-放入到 jQuery 物件內使用
-							for (var k = 0; k < json_v.length; k++) {
-								var ex_note = $($('#ex_note_format').clone()[0]);
-
-								//只顯示最新的
-								if (k + 1 == json_v.length) {
-									ex_note.removeClass('d-none');
-									ex_note.addClass('newest');
-									//顏色
-									ex_note.removeClass('border-secondary');
-									ex_note.addClass('border-primary');
-								}
-								ex_note.addClass('note_list');
-								ex_note.attr("id", "");
-								ex_note.find('.note_name').text(json_v[k]['user'] + "");
-								ex_note.find('.note_date').text(json_v[k]['date'] + "");
-								json_v[k]['ms'] = json_v[k]['ms'].replaceAll('&#10;', '<br>');//換行
-								ex_note.find('.note_content').html(json_v[k]['ms'] + "");
-								new_one.find('.s_' + j).append(ex_note);
-							}
-
+						var sta = "";
+						if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4) {
+							sta = '<th style="min-width: ' + min_width + 'px; left: '+fixed_left+'px;"';
+					sta +='class="s_' + i + ' fixed_cell" scope="col">';
+							sta += this.search_list[0][i] + "</th>";
+							fixed_left = fixed_left + parseInt(min_width);
 						} else {
-							//預計齊料日
-							if (('s_' + j == 's_16') && this.search_list[i][j] > new_one.find(".s_1").text()) {
-								new_one.find(".s_" + j).addClass('text-danger');
-							}
-							new_one.find(".s_" + j).text(this.search_list[i][j]);
-
+							sta = '<th style="min-width: ' + min_width + 'px;"';
+					sta +='class="s_' + i + '" scope="col">';
+							sta += this.search_list[0][i] + "</th>";
 						}
+						$("#search_thead").append(sta);
+						min_width = 100;
 					}
-					//週期
-					if (week_key != this.search_list[i][30]) {
-						var new_week_one = $($('.t_row_week_ex').clone()[0]);
-						new_week_one.removeClass('t_row_week_ex');
-						new_week_one.removeClass('exc-no');
-						new_week_one.attr('id', this.search_list[i][30]);
-						new_week_one.removeClass('d-none');
-						new_week_one.addClass('show');
-						new_week_one.find('.week_nb').text(this.search_list[i][30]);
-						//數量
-						if (week_key != '') {
-							$('#' + week_key).find('.week_qty').text(week_qty);
-							//換色
-							if (fixed_cell_color) {
-								fixed_cell_color = false;
-							} else {
-								fixed_cell_color = true;
+					//t_body		
+					this.search_update();
+					//lock_update
+					this.lock_update();
 
-							}
-						}
-						$("#search_tbody").append(new_week_one);
-						week_qty = 0;
+					//查詢監聽
+					$(document).on("click", "#s_submit", function(event) {
+						templateBody.send_search();
+					});
+					//清除查詢
+					$(document).on("click", "#c_submit", function(event) {
+						templateBody.rm_search();
+					});
+					//匯出
+					$(document).on("click", "#e_excel", function(event) {
+						templateBody.ex_export();
+					});
 
-					}
-					week_qty += (this.search_list[i][7] - this.search_list[i][8]);
-					week_key = this.search_list[i][30];
+					//關閉紀錄
+					$(document).on("click", "#up_clear_submit", function(event) {
+						$("#show_details").addClass("d-none");
+						templateBody.unlock_websocket_req($('#new_moc_id').text());
+					});
 
-					$("#search_tbody").append(new_one);
-					//換色
-					if (fixed_cell_color) {
-						$("#search_tbody .t_row_" + s_list + " .fixed_cell").css("background-color", "#ebecef");
-						fixed_cell_color = false;
-					} else {
-						$("#search_tbody .t_row_" + s_list + " .fixed_cell").css("background-color", "#f8f9fc");
-						fixed_cell_color = true;
-					}
-				}
-
-			},
-			change_colors : function() {
-				$("#search_table").css({
-					backgroundColor : '#f1b0b7'
-				});
-				$("#search_table").animate({
-					backgroundColor : '#ffffff',
-				}, 1000, function() {
-					//console.log(templateBody.color_nb);
-					$("#search_table").css('backgroundColor', '');
-				});
-			},
-			//自動迴圈移動
-			auto_down_loop : function() {
-				if ($("#s_auto_down").val() == "auto") {
-					templateBody.s_auto_down = $("#search_table").animate({
-						scrollTop : 6000
-					}, 100000, function() {
-						$('#search_table').animate({
-							scrollTop : '0px'
-						}, 300);
+					//自動下移
+					$(document).on("change", "#s_auto_down", function(event) {
 						templateBody.auto_down_loop();
 					});
-				} else {
-					templateBody.s_auto_down.stop();
-				}
-			},
-			//鎖住?
-			lock_update : function() {
-				$("#search_tbody .show").css("background-color", "");
-				$("#search_tbody .show").removeClass('lock');
-				for (var i = 0; i < this.moc_id_lock.length; i++) {
-					var key = Object.keys(this.moc_id_lock[i]);
-					var name = this.moc_id_lock[i];
-					$("#search_tbody .t_row_" + key).css("background-color", "#ff0000d0");
-					$("#search_tbody .t_row_" + key).addClass('lock');
-				}
-			},
-			//未讀標記 
-			tag_update : function() {
-				$("#search_tbody .show .s_3").css("background-image", "");
-				$("#search_tbody .show .s_3").removeClass('tag');
-				$('#news_ms').text('');
-				var news_ms = '';
-				for (var i = 0; i < this.moc_id_tag.length; i++) {
-					var key = Object.keys(this.moc_id_tag[i]);
-					var name = $("#search_tbody .t_row_" + key + " .s_12").text();
-					$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
-					$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
-					news_ms += '[' + key + '(' + name + ')] ,';
-				}
-				//A511-123456789]已修改 ,
-				$('#news_ms').text(news_ms);
-			},
-			//只要有異動欄位 標記 
-			tag_all_update : function() {
-				//linear-gradient(30deg, #59ffba8f 0%, #ff7c7c9e 100%)
-				$("#search_tbody .show .tags_all").css("background-image", "");
-				$("#search_tbody .show .tags_all").removeClass('tags_all');
-				var key = "";
-				var v_cells = "";
-				var html_c = "";
-				for (var i = 0; i < this.moc_id_tag_all.length; i++) {
-					key = Object.keys(this.moc_id_tag_all[i]);
-					v_cells = JSON.parse(this.moc_id_tag_all[i][key]);
-					for (var s = 0; s < v_cells.length; s++) {
-						if ($("#search_tbody .t_row_" + key + " ." + v_cells[s])[0] != null) {
-							//console.log("#search_tbody .t_row_" + key + " ." + v_cells[s]);
-							html_c = $("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML;
-							$("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML = '<b><u>' + html_c + '</u></b>';
-							$("#search_tbody .t_row_" + key + " ." + v_cells[s])
-									.css("background-image", "linear-gradient(30deg, #07ff1a40 0%, #6eff000d 100%)");
-							$("#search_tbody .t_row_" + key + " ." + v_cells[s]).addClass('tags_all');
-						}
-					}
-				}
-			},
 
-			//Export
-			ex_export : function() {
-				var search_t = $("#search_table").clone();
-				//修正格式
-				search_t.find("#search_tbody tr .modfiy_note ").each(function() {
-					$(this).html(function(index, text) {
-						if ($(this).find('.note_list') != null) {
-							//每個備註內容
-							$(this).find('.note_list').each(function(index, text) {
-								var note_all = '<div>';
-								note_all += $(this).find('.note_name')[0].innerHTML;
-								note_all += '(' + $(this).find('.note_date')[0].innerHTML + ')';
-								note_all += '<div class="d-none">nextline</div>';//換行
-								note_all += $(this).find('.note_content')[0].innerHTML;
-								note_all += '<div class="d-none">nextline</div>';//換行
-								note_all += '</div>';
-								note_all += '<div class="d-none">nextline</div>';//換行
-								$(this).html($(note_all));
-								//console.log(index + ": " + $(this).html());
-							});
+					//標記已讀
+					$(document).on("click", "#up_tag_submit", function(event) {
+						$("#show_details").addClass("d-none");
+						templateBody.tag_websocket_req($('#new_moc_id').text());
+					});
+
+					//存入紀錄
+					$(document).on("click", "#up_save_submit", function(event) {
+						templateBody.unlock_save_websocket_req();
+					});
+					//清除檔案
+					$(document).on("click", "#rd_clear_file_btn", function(event) {
+						$("#excel_file").val("");
+						$("#excel_json").text("[]");
+					});
+					//下載範例
+					$(document).on("click", "#rd_sample_file_btn", function(event) {
+						templateBody.ex_sample_export();
+					});
+					//滑鼠事件
+					$(document).on("mouseover", ".modfiy_note_show", function(event) {
+						//console.log("in modfiy_note");
+						var b_row_id = $(event.currentTarget).attr("b_row_id");
+						var moc_id = b_row_id.split('<_>')[1];
+						var moc_id_type = b_row_id.split('<_>')[0];
+						//s_15->moc_note->生管
+						//s_17->mpr_note->物控
+						//s_20->ivn_note->倉庫
+						//s_21->mes_note->製程
+						$('#new_note_kind').text("");
+						switch (moc_id_type) {
+						case 'moc_note':
+							$('.t_row_' + moc_id + ' .s_15 .note_list').removeClass('d-none');
+							$('#new_note_kind').text("生管-備註");
+							break;
+						case 'mpr_note':
+							$('.t_row_' + moc_id + ' .s_17 .note_list').removeClass('d-none');
+							$('#new_note_kind').text("物控-備註");
+							break;
+						case 'ivn_note':
+							$('.t_row_' + moc_id + ' .s_20 .note_list').removeClass('d-none');
+							$('#new_note_kind').text("倉儲-備註");
+							break;
+						case 'mes_note':
+							$('.t_row_' + moc_id + ' .s_21 .note_list').removeClass('d-none');
+							$('#new_note_kind').text("製程-備註");
+							break;
+
+						default:
+							break;
 						}
 					});
-				});
+					$(document).on("mouseout", ".modfiy_note_show", function(event) {
+						//console.log("out modfiy_note");
+						var b_row_id = $(event.currentTarget).attr("b_row_id");
+						var moc_id = b_row_id.split('<_>')[1];
+						var moc_id_type = b_row_id.split('<_>')[0];
 
-				$(search_t).table2excel({
-					// exclude CSS class
-					exclude : ".exc-no",//忽略項目
-					name : "Worksheet Name",
-					filename : "生產排程_Export_" + $.datepicker.formatDate('yy-mm-dd', new Date()) + ".xls",//do not include extension
-					fileext : ".xls" // file extension
-				});
-			},
-			//Export
-			ex_sample_export : function() {
-				$("#ex_export_excel").table2excel({
-					// exclude CSS class
-					exclude : ".exc-no",//忽略項目
-					name : "Worksheet Name",
-					filename : "匯入範例_生產排程_Export.xls",//do not include extension
-					fileext : ".xls" // file extension
-				});
-			},
-			//查詢清除
-			rm_search : function() {
+						//s_15->moc_note->生管
+						//s_17->mpr_note->物控
+						//s_20->ivn_note->倉庫
+						//s_21->mes_note->製程
+						switch (moc_id_type) {
+						case 'moc_note':
+							$('.t_row_' + moc_id + ' .s_15 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_15 .newest').removeClass('d-none');
+							break;
+						case 'mpr_note':
+							$('.t_row_' + moc_id + ' .s_17 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_17 .newest').removeClass('d-none');
+							break;
+						case 'ivn_note':
+							$('.t_row_' + moc_id + ' .s_20 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_20 .newest').removeClass('d-none');
+							break;
+						case 'mes_note':
+							$('.t_row_' + moc_id + ' .s_21 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_21 .newest').removeClass('d-none');
+							break;
+						default:
+							break;
+						}
 
-				$("#s_moc_id").val("");
-				$("#s_moc_ta006").val("");
-				$("#s_order_id").val("");
-				$("#s_moc_cuser").val("");
-				$("#s_useful").val("1");
-				$("#s_mpr_date_have").val("0");
-				$("#s_today_modify").val("0");
-				$("#s_auto").val("auto");
-				$("#s_auto_down").val("donot");
+					});
 
-			},
-			//選擇  登記
-			choose_sign : function() {
+					//檔案上傳資料
+					$(document).on("change", "#excel_file", function(event) {
+						console.log("change excel_file");
+						var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
+						var files = event.currentTarget.files[0];
+						if (files != null) {
+							if (files.type.indexOf(".xlsx") > 0) {
+								xlsxflag = true;
+							}
+							var reader = new FileReader();
+							reader.onload = function(e) {
+								var data = e.target.result;
+								var workbook = XLSX.read(data, {
+									type : 'binary'
+								});
+								var sheet_name_list = workbook.SheetNames;
+								sheet_name_list.forEach(function(y) {
+									console.log(workbook.Sheets[y]);
+									var sheet = workbook.Sheets[y];
 
-			},
-			//傳送 查詢
-			send_search : function() {
-				var content = new Object();
-				content.moc_id = $("#s_moc_id").val();
-				content.moc_ta006 = $("#s_moc_ta006").val();
-				content.order_id = $("#s_order_id").val();
-				content.moc_cuser = $("#s_moc_cuser").val();
-				content.moc_ta006_not = $("#s_moc_ta006_not").val();
-				content.useful = $("#s_useful").val();
-				content.today_modify = $("#s_today_modify").val();
-				content.mpr_date_have = $("#s_mpr_date_have").val();
+									//[工單]資料
+									var check_have = true;
+									var check_nb = 3;
+									var excel_json = [];
+									var max_qty = 50;
+									while (check_have) {
+										if (max_qty > 0 && sheet['A' + check_nb] && sheet['A' + check_nb]['v'] != "") {
+											max_qty--;
+											sheet['A' + check_nb] = (sheet['A' + check_nb] == null ? {
+												v : ""
+											} : sheet['A' + check_nb]);//工單號
+											sheet['B' + check_nb] = (sheet['B' + check_nb] == null ? {
+												w : ""
+											} : sheet['B' + check_nb]);//備住
+											sheet['C' + check_nb] = (sheet['C' + check_nb] == null ? {
+												v : ""
+											} : sheet['C' + check_nb]);//預計齊料日
+											sheet['D' + check_nb] = (sheet['D' + check_nb] == null ? {
+												v : ""
+											} : sheet['D' + check_nb]);//優先權
+											sheet['E' + check_nb] = (sheet['E' + check_nb] == null ? {
+												v : ""
+											} : sheet['E' + check_nb]);//週期
 
-				var url = "./production_management.do";
-				var order = "search_update"; //指令
+											var mpr_date = sheet['C' + check_nb]['v'] + "";
+											var moc_priority = sheet['D' + check_nb]['v'] + "";
+											var moc_week = sheet['E' + check_nb]['v'] + "";
+											//檢核-期料日
+											if (mpr_date != '') {
+												if (mpr_date.match(/^[0-9]{8}$/) < 1) {
+													sheet['C' + check_nb]['v'] = "";
+												}
+												var year = mpr_date.substring(0, 4);
+												var month = mpr_date.substring(4, 6);
+												var day = mpr_date.substring(6, 8);
+												sheet['C' + check_nb]['v'] = year + '-' + month + '-' + day;
+											}
+											//檢核-優先權
+											if (moc_priority != '' && moc_priority.match(/^[0-9]\d*$/) < 1) {
+												sheet['D' + check_nb]['v'] = "";
+											}
+											//週期數
+											if (moc_week.match(/^[0-9]{4}[-][W][0-9]{2}$/) < 1) {
+												sheet['E' + check_nb]['v'] = "";
+											}
+											//換行
+											sheet['B' + check_nb]['w'] = sheet['B' + check_nb]['w'].replaceAll('\r\n', '&#10;');
 
-				var data = JSON.stringify({
-					data : {
-						datetime : "",
-						action : "R",
-						whoami : main.loginData.account,
-						cellBackName : "bodyAfter",
-						cellBackOrder : order,
-						content : content,
+											//新增筆數
+											excel_json.push({
+												'user' : $('#nav_account').text(),
+												'moc_id' : sheet['A' + check_nb]['v'] + "",
+												'ms' : sheet['B' + check_nb]['w'] + "",
+												'mpr_date' : sheet['C' + check_nb]['v'] + "",
+												'priority' : sheet['D' + check_nb]['v'] + "",
+												'week' : sheet['E' + check_nb]['v'] + ""
+											})
+										} else {
+											check_have = false;
+										}
+										check_nb += 1;
+									}
+									console.log(excel_json);
+									if (excel_json.length > 0) {
+										$('#excel_json').text(JSON.stringify(excel_json));
+									}
+								});
+							}
+
+							/*If excel file is .xlsx extension than creates a Array Buffer from excel*/
+							if (xlsxflag) {
+								reader.readAsArrayBuffer($("#excel_file")[0].files[0]);
+							} else {
+								reader.readAsBinaryString($("#excel_file")[0].files[0]);
+							}
+						}
+					});
+
+					//編輯note監聽
+					$(document).on("click", ".modfiy_note", function(event) {
+						var b_row_id = $(event.currentTarget).attr("b_row_id");
+						var moc_id = b_row_id.split('<_>')[1];
+						var moc_id_type = b_row_id.split('<_>')[0];
+						//if(){}
+						templateBody.lock_websocket_req(moc_id);
+						$('#new_moc_id').text($('.t_row_' + moc_id + ' .s_3').text() + "");
+						$('#new_name').text($('#nav_account').text() + "");
+						$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());
+						var mpr_date = $('.t_row_' + moc_id + ' .s_16').text().replaceAll('-', '');//清除-
+						$('#new_mpr_date input').val(mpr_date);
+						$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_30').text());
+						$('#new_note textarea').val('');
+						$('#excel_json').text('[]');
+						$('#excel_file').val('');
+
+						$('#new_note_type').text(moc_id_type);
+						console.log("modfiy_note" + b_row_id);
+					});
+
+					//===化自動(拋出資料)===
+					$(document).on("click", ".r_submit", function(event) {
+						console.log($(event.currentTarget).attr("order_id"));
+						var choose = $(".t_row_" + $(event.currentTarget).attr("order_id"));
+						if (choose.find(".tag") != null) {
+							main.alertshow(true, "此製令單:" + $(event.currentTarget).attr("order_id") + "標記解除後,再進行登記生產作業");
+							return;
+						}
+						main.tempAutoBomPrint.orderId = $(event.currentTarget).attr("order_id");//製令單號
+						main.tempAutoBomPrint.orderEndDate = choose.find(".s_2").text();//預計出貨
+						main.tempAutoBomPrint.orderBomId = choose.find(".s_4").text(); //產品品號
+						main.tempAutoBomPrint.orderQty = choose.find(".s_7").text();//數量
+						main.tempAutoBomPrint.packageBOG = choose.find(".s_11").text();//說明書-有客戶訂單則需要有
+
+						var s_10_spits = choose.find(".s_10").text();
+						if (s_10_spits.indexOf("/") > 0 && s_10_spits.split("/").length == 3) {
+							main.tempAutoBomPrint.orderNo = choose.find(".s_10").text().split("/")[0];//訂單號
+							main.tempAutoBomPrint.orderer = choose.find(".s_10").text().split("/")[1];//訂單人
+							main.tempAutoBomPrint.orderCountry = choose.find(".s_10").text().split("/")[2];//訂單國家		
+						} else {
+							main.tempAutoBomPrint.orderNo = "";//訂單號
+							main.tempAutoBomPrint.orderer = "";//訂單人
+							main.tempAutoBomPrint.orderCountry = "";//訂單國家							
+						}
+						main.tempAutoBomPrint.autoStepCheck = true;//自動開單
+						//關閉連線
+						if (this.stompClient != null) {
+							this.stompClient.disconnect();
+						}
+						//轉跳
+						templateNav.jsonSend("./bom_print.do", "update_body");
+					});
+					//===自動化===
+					main.tempAutoBomPrint = {
+						orderId : "",//製令單號
+						orderEndDate : "",//預計出貨
+						orderBomId : "",//產品ID
+						orderQty : 0,//數量
+						orderNo : "",//訂單號
+						orderer : "",//訂購人
+						orderCountry : "",//訂單國家
+						packagePC : "",
+						packageBOG : "",
+						packageL : "",
+						packageBL : "",
+						packageBP : "",
+						packageRP : "",
+						packageOS : "",
+						noteMoc : "",
+						autoStepCheck : false,
+						autoStep1 : false,
+						autoStep2 : false,
+						autoStep3 : false,
+						autoStep4 : false
+					}
+
+					//===WebSocket===
+					this.websocket_connect();
+				},
+				methods : {
+					//查詢更新
+					search_update : function() {
+						//===高度設置===
+						var h = window.innerHeight;
+						console.log("h:" + h);
+						h -= 280;
+						$("#search_table").css('height', h + 'px');
+						//===創建範例===
+						var ex_list = "ex_0";
+						if ($(".t_row_ex_0").length == 0 && this.search_list.length > 1) {
+
+							var r_submit = '<div class="md-6">';
+							r_submit += '<button order_id="' + ex_list + '" class="btn btn-success btn-sm btn-block r_submit">';
+							r_submit += "登</button></div>";
+
+							var fn = '<tr class="exc-no page_all t_row_' + ex_list + '" style="white-space: nowrap;">';
+							fn += '<td class=" exc-no p-2 col-md-12 fixed_cell" style="min-width: 50px; left: 1px;">' + r_submit + ' ';
+							fn += '</td></tr>';
+							$("#search_tbody").append(fn);
+							//計數量
+							var fn_nb = '<td class=" exc-no fixed_cell list_nb" style="min-width: 40px; left: 51px;">0</td>';
+							$("#search_tbody .t_row_" + ex_list).append(fn_nb);
+							//欄位資料
+							var class_val = "";
+							var css_val = "";
+							var b_row_id = "";
+							var b_row_div = "";
+							var css_left = 101;
+							var modfiy_trigger = "";
+							for (var j = 0; j < this.search_list[1].length; j++) {
+								//多餘隱藏
+								class_val = "";
+								css_val = "";
+								b_row_id = "";//每筆資料ID
+								b_div = "";
+								if (j > 21) {
+									class_val = " exc-no d-none s_" + j;
+								} else {
+									class_val = "s_" + j;
+								}
+								//可填入[生管備註]
+								if (class_val == 's_15') {
+									b_row_id = "moc_note";
+									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
+									class_val += " modfiy_note_show border border-secondary shadow-sm";
+								}
+								//可填入[物控備註]
+								if (class_val == 's_17') {
+									b_row_id = "mpr_note";
+									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
+									class_val += " modfiy_note_show border border-secondary shadow-sm";
+								}
+								//可填入[倉庫備註]
+								if (class_val == 's_20') {
+									b_row_id = "ivn_note";
+									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
+									class_val += " modfiy_note_show border border-secondary shadow-sm";
+								}
+								//可填入[製造備註]
+								if (class_val == 's_21') {
+									b_row_id = "mes_note";
+									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
+									class_val += " modfiy_note_show border border-secondary shadow-sm";
+								}
+
+								//固定
+								if (j < 5) {
+									class_val += " fixed_cell";
+									css_val += " left: " + css_left + "px;";
+									if (j == 0)
+										css_left += 60;
+									if (j == 1)
+										css_left += 120;
+									if (j == 2)
+										css_left += 120;
+									if (j == 3)
+										css_left += 150;
+									if (j == 4)
+										css_left += 150;
+
+								}
+								$("#search_tbody .t_row_" + ex_list).append(
+										"<td b_row_id='"+b_row_id+"' class='" + class_val +"' style='"+css_val+"'>" + modfiy_trigger + "</td>");
+							}
+							$("#search_tbody .t_row_" + ex_list).addClass('d-none');
+						}
+
+						//===實際資料===
+						$("#search_tbody .show").remove();
+						//t_body
+						var id_key = 3;
+						var fixed_cell_color = false;
+						var week_key = '';
+						var week_qty = 0;
+						for (var i = 1; i < this.search_list.length; i++) {
+							//功能
+							var s_list = this.search_list[i][id_key];
+							//放入到 jQuery 物件內使用
+							var new_one = $($("#search_tbody .t_row_" + ex_list).clone()[0]);
+							new_one.removeClass("t_row_ex_0");
+							new_one.removeClass("d-none");
+							new_one.removeClass("exc-no");
+							new_one.addClass('t_row_' + s_list);
+							new_one.addClass('show');
+							new_one.css('height', 60);
+							new_one.find(".r_submit").attr("order_id", s_list);
+							new_one.find(".list_nb").text(i);
+
+							//欄位資料
+							for (var j = 0; j < this.search_list[i].length; j++) {
+
+								//特定[可輸入欄位]才需要此標記[工單_欄位]
+								if (new_one.find(".s_" + j).attr("b_row_id") != "") {
+									var c_note = new_one.find(".s_" + j).attr("b_row_id");
+									var b_row_id = c_note + "<_>" + s_list;
+									new_one.find(".s_" + j).attr("b_row_id", b_row_id);
+									new_one.find(".s_" + j + " button").attr("b_row_id", b_row_id);
+									//json
+									json_v = JSON.parse(this.search_list[i][j]);
+									//note類-放入到 jQuery 物件內使用
+									for (var k = 0; k < json_v.length; k++) {
+										var ex_note = $($('#ex_note_format').clone()[0]);
+
+										//只顯示最新的
+										if (k + 1 == json_v.length) {
+											ex_note.removeClass('d-none');
+											ex_note.addClass('newest');
+											//顏色
+											ex_note.removeClass('border-secondary');
+											ex_note.addClass('border-primary');
+										}
+										ex_note.addClass('note_list');
+										ex_note.attr("id", "");
+										ex_note.find('.note_name').text(json_v[k]['user'] + "");
+										ex_note.find('.note_date').text(json_v[k]['date'] + "");
+										json_v[k]['ms'] = json_v[k]['ms'].replaceAll('&#10;', '<br>');//換行
+										ex_note.find('.note_content').html(json_v[k]['ms'] + "");
+										new_one.find('.s_' + j).append(ex_note);
+									}
+
+								} else {
+									//預計齊料日
+									if (('s_' + j == 's_16') && this.search_list[i][j] > new_one.find(".s_1").text()) {
+										new_one.find(".s_" + j).addClass('text-danger');
+									}
+									new_one.find(".s_" + j).text(this.search_list[i][j]);
+
+								}
+							}
+							//週期
+							if (week_key != this.search_list[i][30]) {
+								var new_week_one = $($('.t_row_week_ex').clone()[0]);
+								new_week_one.removeClass('t_row_week_ex');
+								new_week_one.removeClass('exc-no');
+								new_week_one.attr('id', this.search_list[i][30]);
+								new_week_one.removeClass('d-none');
+								new_week_one.addClass('show');
+								new_week_one.find('.week_nb').text(this.search_list[i][30]);
+								//數量
+								if (week_key != '') {
+									$('#' + week_key).find('.week_qty').text(week_qty);
+									//換色
+									if (fixed_cell_color) {
+										fixed_cell_color = false;
+									} else {
+										fixed_cell_color = true;
+
+									}
+								}
+								$("#search_tbody").append(new_week_one);
+								week_qty = 0;
+
+							}
+							week_qty += (this.search_list[i][7] - this.search_list[i][8]);
+							week_key = this.search_list[i][30];
+
+							$("#search_tbody").append(new_one);
+							//換色
+							if (fixed_cell_color) {
+								$("#search_tbody .t_row_" + s_list + " .fixed_cell").css("background-color", "#ebecef");
+								fixed_cell_color = false;
+							} else {
+								$("#search_tbody .t_row_" + s_list + " .fixed_cell").css("background-color", "#f8f9fc");
+								fixed_cell_color = true;
+							}
+						}
+
 					},
-				});
-				main.ajaxSend(url, data);
-			},
-			//Rsp-回傳值-指令
-			bodyAfter : function(event) {
-				console.log("to index success");
-				switch (event.r_cellBackOrder) {
-				case "search_update":
-					//刷新資料
-					if (event.r_content.templateInfo.body["list"] != null && event.r_content.templateInfo.body["list"] != "") {
-						this.search_list = event.r_content.templateInfo.body["list"];
-						this.moc_id_lock = event.r_content.templateInfo.body["moc_id_lock"];
-						this.search_update();
-						this.lock_update();
-						this.tag_all_update();
-						this.tag_update();
-					}
-					break;
-				case "update_body_nav":
-					break;
-				}
-			},
-			//====websocket====
-			websocket_connect : function() {
-				//Step1.初始化連線
-				//SockJS('/dtrioffice/ws/pnmt');表示連接的/ws 路徑/SockJS的端點 addEndpoint "pnmt"
-				var socket = new SockJS('/dtrioffice/ws/pnmt');
-				this.stompClient = Stomp.over(socket);
-				//Step2.啟動接收位置
-				this.stompClient.connect({}, function(frame) {
-					//setConnected(true);
-					console.log('Connected: ' + frame);
-					//訂閱:(廣播)接收位置
-					templateBody.stompClient.subscribe('/toAllClient/synPnmt', function(response) {
-						//自訂回傳位置
-						templateBody.websocket_resp(response);
-					});
-				});
-			},
-			//鎖定-傳送訊息方法
-			lock_websocket_req : function(moc_id) {
-				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
-					'action' : 'only_lock',
-					'userName' : $('#nav_account').text(),
-					'moc_id' : moc_id,
-				}));
-			},
-			//標記已讀-傳送訊息方法
-			tag_websocket_req : function(moc_id) {
-				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
-					'action' : 'moc_tag',
-					'userName' : $('#nav_account').text(),
-					'moc_id' : moc_id,
-				}));
-			},
-			//解鎖定-傳送訊息方法
-			unlock_websocket_req : function(moc_id) {
-				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
-					'action' : 'only_unlock',
-					'userName' : $('#nav_account').text(),
-					'moc_id' : moc_id,
-					'note_cell' : "",
-					'note_value' : "",
-				}));
-			},
-			//解鎖定+存檔-傳送訊息方法
-			unlock_save_websocket_req : function(moc_id) {
-				var moc_week = $('#new_moc_week input').val();
-				var mpr_date = $('#new_mpr_date input').val();
-				var moc_priority = $('#new_moc_priority input').val();
-				//優先權
-				if (moc_priority != '' && moc_priority.match(/^[0-9]\d*$/) < 1) {
-					return false;
-				}
-				//期料日
-				if (mpr_date != '') {
-					if (mpr_date.match(/^[0-9]{8}$/) < 1) {
-						return false;
-					}
-					var year = mpr_date.substring(0, 4);
-					var month = mpr_date.substring(4, 6);
-					var day = mpr_date.substring(6, 8);
-					mpr_date = year + '-' + month + '-' + day;
-				}
-				//周期'(\\{4})[-W/](\\{2})'
-				//週期數
-				if (moc_week.match(/^[0-9]{4}[-][W][0-9]{2}$/) < 1) {
-					return false;
-				}
-
-				this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
-					'action' : 'only_unlock_save',
-					'userName' : $('#nav_account').text(),
-					'moc_id' : $('#new_moc_id').text(),
-					'note_cell' : $('#new_note_type').text(),
-					'note_value' : "" + $('#new_note textarea').val().replaceAll('\n', '&#10;'),
-					'moc_priority' : moc_priority,
-					'moc_week' : moc_week,
-					'mpr_date' : mpr_date,
-					'excel_json' : $('#excel_json').text()
-				}));
-			},
-			//顯示接收回來的訊息方法
-			websocket_resp : function(resp) {
-				var data_resp = JSON.parse(resp['body']);
-				console.log(data_resp);
-				switch (data_resp.action) {
-				case "all_update":
-
-					if ($("#s_auto").val() == "auto") {
-						console.log("all_update");
-						if (data_resp.moc_data != null && data_resp.moc_data.length > 0) {
-							templateBody.search_list = data_resp.moc_data;
-							templateBody.search_update();
-							//避免登出
-							main.timeOut(false);
-							//===動態顏色===
-							this.change_colors();
+					change_colors : function() {
+						$("#search_table").css({
+							backgroundColor : '#f1b0b7'
+						});
+						$("#search_table").animate({
+							backgroundColor : '#ffffff',
+						}, 1000, function() {
+							//console.log(templateBody.color_nb);
+							$("#search_table").css('backgroundColor', '');
+						});
+					},
+					//自動迴圈移動
+					auto_down_loop : function() {
+						if ($("#s_auto_down").val() == "auto") {
+							templateBody.s_auto_down = $("#search_table").animate({
+								scrollTop : 6000
+							}, 100000, function() {
+								$('#search_table').animate({
+									scrollTop : '0px'
+								}, 300);
+								templateBody.auto_down_loop();
+							});
+						} else {
+							templateBody.s_auto_down.stop();
 						}
-					} else {
-						//templateBody.send_search();
+					},
+					//鎖住?
+					lock_update : function() {
+						$("#search_tbody .show").css("background-color", "");
+						$("#search_tbody .show").removeClass('lock');
+						for (var i = 0; i < this.moc_id_lock.length; i++) {
+							var key = Object.keys(this.moc_id_lock[i]);
+							var name = this.moc_id_lock[i];
+							$("#search_tbody .t_row_" + key).css("background-color", "#ff0000d0");
+							$("#search_tbody .t_row_" + key).addClass('lock');
+						}
+					},
+					//未讀標記 
+					tag_update : function() {
+						$("#search_tbody .show .s_3").css("background-image", "");
+						$("#search_tbody .show .s_3").removeClass('tag');
+						$('#news_ms').text('');
+						var news_ms = '';
+						for (var i = 0; i < this.moc_id_tag.length; i++) {
+							var key = Object.keys(this.moc_id_tag[i]);
+							var name = $("#search_tbody .t_row_" + key + " .s_12").text();
+							$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
+							$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
+							news_ms += '[' + key + '(' + name + ')] ,';
+						}
+						//A511-123456789]已修改 ,
+						$('#news_ms').text(news_ms);
+					},
+					//只要有異動欄位 標記 
+					tag_all_update : function() {
+						//linear-gradient(30deg, #59ffba8f 0%, #ff7c7c9e 100%)
+						$("#search_tbody .show .tags_all").css("background-image", "");
+						$("#search_tbody .show .tags_all").removeClass('tags_all');
+						var key = "";
+						var v_cells = "";
+						var html_c = "";
+						for (var i = 0; i < this.moc_id_tag_all.length; i++) {
+							key = Object.keys(this.moc_id_tag_all[i]);
+							v_cells = JSON.parse(this.moc_id_tag_all[i][key]);
+							for (var s = 0; s < v_cells.length; s++) {
+								if ($("#search_tbody .t_row_" + key + " ." + v_cells[s])[0] != null) {
+									//console.log("#search_tbody .t_row_" + key + " ." + v_cells[s]);
+									html_c = $("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML;
+									$("#search_tbody .t_row_" + key + " ." + v_cells[s])[0].innerHTML = '<b><u>' + html_c + '</u></b>';
+									$("#search_tbody .t_row_" + key + " ." + v_cells[s]).css("background-image",
+											"linear-gradient(30deg, #07ff1a40 0%, #6eff000d 100%)");
+									$("#search_tbody .t_row_" + key + " ." + v_cells[s]).addClass('tags_all');
+								}
+							}
+						}
+					},
+
+					//Export
+					ex_export : function() {
+						var search_t = $("#search_table").clone();
+						//修正格式
+						search_t.find("#search_tbody tr .modfiy_note_show").each(function() {
+							$(this).html(function(index, text) {
+								if ($(this).find('.note_list') != null) {
+									//每個備註內容
+									$(this).find('.modfiy_note').remove();
+									$(this).find('.note_list').each(function(index, text) {
+										var note_all = '<div>';
+										note_all += $(this).find('.note_name')[0].innerHTML;
+										note_all += '(' + $(this).find('.note_date')[0].innerHTML + ')';
+										note_all += '<div class="d-none">nextline</div>';//換行
+										note_all += $(this).find('.note_content')[0].innerHTML;
+										note_all += '<div class="d-none">nextline</div>';//換行
+										note_all += '</div>';
+										note_all += '<div class="d-none">nextline</div>';//換行
+										$(this).html($(note_all));
+										//console.log(index + ": " + $(this).html());
+									});
+								}
+							});
+						});
+
+						$(search_t).table2excel({
+							// exclude CSS class
+							exclude : ".exc-no",//忽略項目
+							name : "Worksheet Name",
+							filename : "生產排程_Export_" + $.datepicker.formatDate('yy-mm-dd', new Date()) + ".xls",//do not include extension
+							fileext : ".xls" // file extension
+						});
+					},
+					//Export
+					ex_sample_export : function() {
+						$("#ex_export_excel").table2excel({
+							// exclude CSS class
+							exclude : ".exc-no",//忽略項目
+							name : "Worksheet Name",
+							filename : "匯入範例_生產排程_Export.xls",//do not include extension
+							fileext : ".xls" // file extension
+						});
+					},
+					//查詢清除
+					rm_search : function() {
+
+						$("#s_moc_id").val("");
+						$("#s_moc_ta006").val("");
+						$("#s_order_id").val("");
+						$("#s_moc_cuser").val("");
+						$("#s_useful").val("1");
+						$("#s_mpr_date_have").val("0");
+						$("#s_today_modify").val("0");
+						$("#s_auto").val("auto");
+						$("#s_auto_down").val("donot");
+
+					},
+					//選擇  登記
+					choose_sign : function() {
+
+					},
+					//傳送 查詢
+					send_search : function() {
+						var content = new Object();
+						content.moc_id = $("#s_moc_id").val();
+						content.moc_ta006 = $("#s_moc_ta006").val();
+						content.order_id = $("#s_order_id").val();
+						content.moc_cuser = $("#s_moc_cuser").val();
+						content.moc_ta006_not = $("#s_moc_ta006_not").val();
+						content.useful = $("#s_useful").val();
+						content.today_modify = $("#s_today_modify").val();
+						content.mpr_date_have = $("#s_mpr_date_have").val();
+
+						var url = "./production_management.do";
+						var order = "search_update"; //指令
+
+						var data = JSON.stringify({
+							data : {
+								datetime : "",
+								action : "R",
+								whoami : main.loginData.account,
+								cellBackName : "bodyAfter",
+								cellBackOrder : order,
+								content : content,
+							},
+						});
+						main.ajaxSend(url, data);
+					},
+					//Rsp-回傳值-指令
+					bodyAfter : function(event) {
+						console.log("to index success");
+						switch (event.r_cellBackOrder) {
+						case "search_update":
+							//刷新資料
+							if (event.r_content.templateInfo.body["list"] != null && event.r_content.templateInfo.body["list"] != "") {
+								this.search_list = event.r_content.templateInfo.body["list"];
+								this.moc_id_lock = event.r_content.templateInfo.body["moc_id_lock"];
+								this.search_update();
+								this.lock_update();
+								this.tag_all_update();
+								this.tag_update();
+							}
+							break;
+						case "update_body_nav":
+							break;
+						}
+					},
+					//====websocket====
+					websocket_connect : function() {
+						//Step1.初始化連線
+						//SockJS('/dtrioffice/ws/pnmt');表示連接的/ws 路徑/SockJS的端點 addEndpoint "pnmt"
+						var socket = new SockJS('/dtrioffice/ws/pnmt');
+						this.stompClient = Stomp.over(socket);
+						//Step2.啟動接收位置
+						this.stompClient.connect({}, function(frame) {
+							//setConnected(true);
+							console.log('Connected: ' + frame);
+							//訂閱:(廣播)接收位置
+							templateBody.stompClient.subscribe('/toAllClient/synPnmt', function(response) {
+								//自訂回傳位置
+								templateBody.websocket_resp(response);
+							});
+						});
+					},
+					//鎖定-傳送訊息方法
+					lock_websocket_req : function(moc_id) {
+						this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
+							'action' : 'only_lock',
+							'userName' : $('#nav_account').text(),
+							'moc_id' : moc_id,
+						}));
+					},
+					//標記已讀-傳送訊息方法
+					tag_websocket_req : function(moc_id) {
+						this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
+							'action' : 'moc_tag',
+							'userName' : $('#nav_account').text(),
+							'moc_id' : moc_id,
+						}));
+					},
+					//解鎖定-傳送訊息方法
+					unlock_websocket_req : function(moc_id) {
+						this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
+							'action' : 'only_unlock',
+							'userName' : $('#nav_account').text(),
+							'moc_id' : moc_id,
+							'note_cell' : "",
+							'note_value' : "",
+						}));
+					},
+					//解鎖定+存檔-傳送訊息方法
+					unlock_save_websocket_req : function(moc_id) {
+						var moc_week = $('#new_moc_week input').val();
+						var mpr_date = $('#new_mpr_date input').val();
+						var moc_priority = $('#new_moc_priority input').val();
+						//優先權
+						if (moc_priority != '' && moc_priority.match(/^[0-9]\d*$/) < 1) {
+							return false;
+						}
+						//期料日
+						if (mpr_date != '') {
+							if (mpr_date.match(/^[0-9]{8}$/) < 1) {
+								return false;
+							}
+							var year = mpr_date.substring(0, 4);
+							var month = mpr_date.substring(4, 6);
+							var day = mpr_date.substring(6, 8);
+							mpr_date = year + '-' + month + '-' + day;
+						}
+						//周期'(\\{4})[-W/](\\{2})'
+						//週期數
+						if (moc_week.match(/^[0-9]{4}[-][W][0-9]{2}$/) < 1) {
+							return false;
+						}
+
+						this.stompClient.send("/toServer/synPnmt", {}, JSON.stringify({
+							'action' : 'only_unlock_save',
+							'userName' : $('#nav_account').text(),
+							'moc_id' : $('#new_moc_id').text(),
+							'note_cell' : $('#new_note_type').text(),
+							'note_value' : "" + $('#new_note textarea').val().replaceAll('\n', '&#10;'),
+							'moc_priority' : moc_priority,
+							'moc_week' : moc_week,
+							'mpr_date' : mpr_date,
+							'excel_json' : $('#excel_json').text()
+						}));
+					},
+					//顯示接收回來的訊息方法
+					websocket_resp : function(resp) {
+						var data_resp = JSON.parse(resp['body']);
+						console.log(data_resp);
+						switch (data_resp.action) {
+						case "all_update":
+
+							if ($("#s_auto").val() == "auto") {
+								console.log("all_update");
+								if (data_resp.moc_data != null && data_resp.moc_data.length > 0) {
+									templateBody.search_list = data_resp.moc_data;
+									templateBody.search_update();
+									//避免登出
+									main.timeOut(false);
+									//===動態顏色===
+									this.change_colors();
+								}
+							} else {
+								//templateBody.send_search();
+							}
+							templateBody.moc_id_lock = data_resp.moc_id_lock;
+							templateBody.lock_update();
+							templateBody.moc_id_tag_all = data_resp.moc_id_tag_all;
+							templateBody.tag_all_update();
+							templateBody.moc_id_tag = data_resp.moc_id_tag;
+							templateBody.tag_update();
+							break;
+
+						case "only_lock":
+							console.log("only_lock");
+							console.log(data_resp.moc_id_lock);
+							templateBody.moc_id_lock = data_resp.moc_id_lock;
+							templateBody.lock_update();
+							break;
+						case "only_lock_modify":
+							console.log("only_lock_modify");
+							if (data_resp.message == "OK" && data_resp.moc_user == $("#nav_account").text()) {
+								console.log(data_resp.moc_data);
+								$("#show_details").removeClass("d-none");
+							}
+							break;
+						case "only_unlock_save_modify":
+							$("#show_details").addClass("d-none");
+							$('#new_name').text('');
+							$('#new_moc_id').text('');
+							$('#new_note_type').text('');
+							$('#new_note textarea').val('');
+							$('#new_moc_priority input').val('');
+							$('#new_moc_week input').val('');
+							$('#new_mpr_date input').val('');
+							break;
+						default:
+							break;
+						}
+
 					}
-					templateBody.moc_id_lock = data_resp.moc_id_lock;
-					templateBody.lock_update();
-					templateBody.moc_id_tag_all = data_resp.moc_id_tag_all;
-					templateBody.tag_all_update();
-					templateBody.moc_id_tag = data_resp.moc_id_tag;
-					templateBody.tag_update();
-					break;
+				},
+				//移除監聽事件
+				beforeDestroy : function() {
+					console.log("to beforeDestroy event");
+					$(document).off("click", "#s_submit");
+					$(document).off("click", "#c_submit");
+					$(document).off("click", "#e_excel");
 
-				case "only_lock":
-					console.log("only_lock");
-					console.log(data_resp.moc_id_lock);
-					templateBody.moc_id_lock = data_resp.moc_id_lock;
-					templateBody.lock_update();
-					break;
-				case "only_lock_modify":
-					console.log("only_lock_modify");
-					if (data_resp.message == "OK" && data_resp.moc_user == $("#nav_account").text()) {
-						console.log(data_resp.moc_data);
-						$("#show_details").removeClass("d-none");
+					$(document).off("click", "#up_save_submit");
+					$(document).off("click", "#up_tag_submit");
+					$(document).off("click", "#up_clear_submit");
+					$(document).off("change", "#s_auto_down");
+
+					$(document).off("click", "#rd_clear_file_btn");
+					$(document).off("click", "#rd_sample_file_btn");
+					$(document).off("change", "#excel_file");
+
+					$(document).off("click", ".r_submit");
+					$(document).off("click", ".modfiy_note");
+					$(document).off("mouseover", ".modfiy_note_show");
+					$(document).off("mouseout", ".modfiy_note");
+
+					if (this.stompClient != null) {
+						this.stompClient.disconnect();
 					}
-					break;
-				case "only_unlock_save_modify":
-					$("#show_details").addClass("d-none");
-					$('#new_name').text('');
-					$('#new_moc_id').text('');
-					$('#new_note_type').text('');
-					$('#new_note textarea').val('');
-					$('#new_moc_priority input').val('');
-					$('#new_moc_week input').val('');
-					$('#new_mpr_date input').val('');
-					break;
-				default:
-					break;
-				}
-
-			}
-		},
-		//移除監聽事件
-		beforeDestroy : function() {
-			console.log("to beforeDestroy event");
-			$(document).off("click", "#s_submit");
-			$(document).off("click", "#c_submit");
-			$(document).off("click", "#e_excel");
-
-			$(document).off("click", "#up_save_submit");
-			$(document).off("click", "#up_tag_submit");
-			$(document).off("click", "#up_clear_submit");
-			$(document).off("change", "#s_auto_down");
-
-			$(document).off("click", "#rd_clear_file_btn");
-			$(document).off("click", "#rd_sample_file_btn");
-			$(document).off("change", "#excel_file");
-
-			$(document).off("click", ".modfiy_note");
-			$(document).off("mouseover", ".modfiy_note");
-			$(document).off("mouseout", ".modfiy_note");
-
-			if (this.stompClient !== null) {
-				this.stompClient.disconnect();
-			}
-		},
-	});
+				},
+			});
 </script>

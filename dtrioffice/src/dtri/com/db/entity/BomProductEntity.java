@@ -3,6 +3,8 @@ package dtri.com.db.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONObject;
+
 /**
  * BOM 清單
  * 
@@ -21,9 +23,15 @@ public class BomProductEntity {
 	private String checked;
 	private Integer kind;
 	private String bom_type;
+	private String transfer_user;// 轉讓人
 
 	// 例外處理 非SQL 物件(查詢條件)
 	private BomGroupEntity groupEntity;
+	// 例外處理 非SQL 查詢工單使用
+	private String orderId;
+	// 例外處理 非SQL 回傳 自動化 生管開單
+	private JSONObject tempAutoBomPrint;
+
 	// SQL 回傳條件
 	private List<BomGroupEntity> groupEntitis;
 
@@ -145,5 +153,29 @@ public class BomProductEntity {
 
 	public void setBom_type(String bom_type) {
 		this.bom_type = bom_type;
+	}
+
+	public String getTransfer_user() {
+		return transfer_user;
+	}
+
+	public void setTransfer_user(String transfer_user) {
+		this.transfer_user = transfer_user;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public JSONObject getTempAutoBomPrint() {
+		return tempAutoBomPrint;
+	}
+
+	public void setTempAutoBomPrint(JSONObject tempAutoBomPrint) {
+		this.tempAutoBomPrint = tempAutoBomPrint;
 	}
 }
