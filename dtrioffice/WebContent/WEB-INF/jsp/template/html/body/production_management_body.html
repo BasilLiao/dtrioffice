@@ -108,13 +108,22 @@
 					<div class="col-md-12 p-1">
 						<div class="col p-1">簡易說明:</div>
 						<div class="col p-1">
-							<b>紅色:</b>其他人正在使用中／<b>藍色:</b>已有修改／<b>綠色:</b>資訊異動／<b>黃框:</b>可編輯區塊／<b>藍框:</b>最後編輯／<b>操作:</b>Shift+滾輪=左右移動
+							<b>紅色:</b>其他人正在使用中／
+							<b>藍色:</b>已有修改／
+							<b>綠色:</b>資訊異動／
+							<b>黃框:</b>可編輯區塊／
+							<b>藍框:</b>最後編輯／
+							<b>操作:</b>Shift+滾輪=左右移動／
+							<b>操作:</b>Ctrl+F=快速尋找
 						</div>
 					</div>
 				</div>
 				<div class="row m-0 justify-content-center">
 					<div class="row m-0 justify-content-center col-md-2 p-2">
 						<button id="s_submit" class="col-md-10 btn btn-primary btn-block" type="submit">查詢</button>
+					</div>
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="s_r_submit" class="col-md-10 btn btn-success btn-block" type="submit">立即刷新</button>
 					</div>
 					<div class="row m-0 justify-content-center col-md-2 p-2">
 						<button id="c_submit" class="col-md-10 btn btn-warning btn-block" type="submit">清除</button>
@@ -350,7 +359,7 @@
 					moc_id_tag_all : [],//標記 欄位有更新
 					s_auto_down : null,
 					s_auto_down_loop : null,
-
+					reload_check : false,
 				},
 				created : function() {
 					//初始化
@@ -401,7 +410,11 @@
 
 					//查詢監聽
 					$(document).on("click", "#s_submit", function(event) {
-						templateBody.send_search();
+						templateBody.send_search("s_submit");
+					});
+					//立即刷新
+					$(document).on("click", "#s_r_submit", function(event) {
+						templateBody.send_search("s_r_submit");
 					});
 					//清除查詢
 					$(document).on("click", "#c_submit", function(event) {
@@ -631,8 +644,12 @@
 					$(document).on("click", ".r_submit", function(event) {
 						console.log($(event.currentTarget).attr("order_id"));
 						var choose = $(".t_row_" + $(event.currentTarget).attr("order_id"));
-						if (choose.find(".tag") != null) {
-							main.alertshow(true, "此製令單:" + $(event.currentTarget).attr("order_id") + "標記解除後,再進行登記生產作業");
+						if (!templateBody.reload_check) {
+							main.alertshow(true, "請 點選[立即刷新]後, 再進行 [登記生產] 作業,或 等待自動刷新資料...請稍後.. !!");
+							return;
+						}
+						if (choose.find(".tag").length > 0) {
+							main.alertshow(true, "此製令單: " + $(event.currentTarget).attr("order_id") + " 請標記解除後 , 再進行 [登記生產] 作業 !!");
 							return;
 						}
 						main.tempAutoBomPrint.orderId = $(event.currentTarget).attr("order_id");//製令單號
@@ -1014,7 +1031,7 @@
 
 					},
 					//傳送 查詢
-					send_search : function() {
+					send_search : function(submit) {
 						var content = new Object();
 						content.moc_id = $("#s_moc_id").val();
 						content.moc_ta006 = $("#s_moc_ta006").val();
@@ -1026,6 +1043,10 @@
 						content.mpr_date_have = $("#s_mpr_date_have").val();
 
 						var url = "./production_management.do";
+						//--reload_production--立即刷新
+						if (submit == "s_r_submit") {
+							url = "./reload_production.do";
+						}
 						var order = "search_update"; //指令
 
 						var data = JSON.stringify({
@@ -1145,9 +1166,9 @@
 						console.log(data_resp);
 						switch (data_resp.action) {
 						case "all_update":
-
 							if ($("#s_auto").val() == "auto") {
 								console.log("all_update");
+								templateBody.reload_check = true;//刷新
 								if (data_resp.moc_data != null && data_resp.moc_data.length > 0) {
 									templateBody.search_list = data_resp.moc_data;
 									templateBody.search_update();
@@ -1157,6 +1178,7 @@
 									this.change_colors();
 								}
 							} else {
+								templateBody.reload_check = false;//刷新
 								//templateBody.send_search();
 							}
 							templateBody.moc_id_lock = data_resp.moc_id_lock;
@@ -1200,6 +1222,7 @@
 				beforeDestroy : function() {
 					console.log("to beforeDestroy event");
 					$(document).off("click", "#s_submit");
+					$(document).off("click", "#s_r_submit");
 					$(document).off("click", "#c_submit");
 					$(document).off("click", "#e_excel");
 

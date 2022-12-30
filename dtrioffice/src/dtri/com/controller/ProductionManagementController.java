@@ -86,6 +86,45 @@ public class ProductionManagementController {
 		System.out.println(r_allData);
 		return r_allData.toString();
 	}
+	/**
+	 * 
+	 * 基本載入 /查詢
+	 * 
+	 * @param ajaxJSON 限定用JSON
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/reload_production", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
+	public String reload_production_management(@RequestBody String ajaxJSON) {
+		System.out.println("---controller - reload_production");
+		// Step1.取出 session 訊息 & 檢查權限
+		List<GroupEntity> group = loginService.getSessionGroupBean();
+		boolean checkPermission = loginService.checkPermission(group, SYS_F, "01000001");
+
+		// Step2.解析內容-檢查 -> 取出內容物
+		JsonDataModel data = new JsonDataModel();
+		JSONObject frontData = (JSONObject) data.frontToBack(ajaxJSON).get("data");
+		System.out.println(frontData);
+
+		// Step3.建立回傳元素
+		JSONObject r_allData = new JSONObject();
+		// Step4.檢查許可權 & 輸入物件
+
+		if (checkPermission) { // Step4-1 .DB 取出 正確 資料
+			PMTempBean pmNewTempBean = new PMTempBean();
+			pmNewTempBean.setUserName("server");
+			managementService.doDataProductionManagement("all_update", pmNewTempBean);
+
+			// Step4-2 .包裝資料
+			r_allData = managementService.ajaxRspJson(new JSONObject(), frontData, "訪問成功!!");
+		} else { // Step4-1 .登出 && 包裝 錯誤 資料 r_allData =
+			managementService.fail_ajaxRspJson(frontData, "你沒有權限!!");
+		}
+
+		// Step6.結果回傳
+		System.out.println(r_allData);
+		return r_allData.toString();
+	}
+	
 
 	/**
 	 * 同步(syn_pnmt)

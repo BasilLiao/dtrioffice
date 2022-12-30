@@ -92,7 +92,7 @@
 								<input class="col-12" type="text" id="s_bom_number" name="s_bom_number" placeholder="Ex:10-901-123456" required autofocus />
 							</div>
 						</div>
-						<div class="col-md-6 p-1">
+						<div class="col-md-6 p-1 d-none">
 							<div class="col p-0">製令單號:</div>
 							<div class="col p-0">
 								<input class="col-12" type="text" id="s_order_id" name="s_order_id" placeholder="Ex:A513-8745940-123" disabled="disabled" />
@@ -125,7 +125,7 @@
 			</div>
 			<div class="collapse show" id="collapseFinish">
 				<div class="p-1 mb-2 mt-2 m-0 row">
-					<b>(紅字=試產 / 綠字=可量產 / 白亮底色=已使用過)</b>
+					<b>(<font class="text-danger">紅字=試產</font> / <font class="text-success">綠字=可量產</font> / <font class="bg-white">白亮底色=已使用過)</font></b>
 					<div id="search_choose" class="row m-0 mb-2">
 						<div class="text-left">
 							<b>顯示名稱-></b>
@@ -903,6 +903,7 @@
 				//清除選擇
 				$("#s_model").val("");
 				$("#s_bom_number").val("");
+				$("#s_order_id").val("");
 				$("#s_g_item").val("").trigger("change");
 			},
 

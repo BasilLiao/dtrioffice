@@ -40,7 +40,7 @@
 
 		<where>
 			(TA011 = '1' OR TA011 = '2' OR TA011 = '3')
-			AND (MOCTB.TB004 - MOCTB.TB005) != 0
+			AND (MOCTB.TB004 - MOCTB.TB005) > 0
 			AND MOCTB.TB018 = 'Y'
 			<if test="TA001_TA002 !=null">
 				AND (MOCTA.TA001+'-'+MOCTA.TA002) like concat('%',#{TA001_TA002,jdbcType=VARCHAR},'%')
