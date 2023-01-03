@@ -2,6 +2,10 @@ package dtri.com.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,7 +101,7 @@ public class IndexController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = { RequestMethod.POST }, produces = "application/json;charset=UTF-8")
-	public String logoutCheck(@RequestBody String ajaxJSON) {
+	public String logoutCheck(@RequestBody String ajaxJSON,HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("---controller - logoutCheck");
 		// Step1.解析內容-檢查 -> 取出內容物
 		JsonDataModel data = new JsonDataModel();
@@ -118,6 +122,17 @@ public class IndexController {
 			r_allData = indexService.fail_ajaxRspJson(null);
 		}
 		loginService.sessionLogout();
+		
+		Cookie[] cookies = request.getCookies();
+		// Step0.清除 cookies 紀錄
+		if (cookies != null) {
+	    	 for (Cookie cookie : cookies) {
+	             cookie.setValue("");
+	             cookie.setPath("/");
+	             cookie.setMaxAge(0);
+	             response.addCookie(cookie);
+	         }
+	    }
 
 		// Step6.結果回傳
 		System.out.println(r_allData);

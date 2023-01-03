@@ -660,9 +660,9 @@
 
 						var s_10_spits = choose.find(".s_10").text();
 						if (s_10_spits.indexOf("/") > 0 && s_10_spits.split("/").length == 3) {
-							main.tempAutoBomPrint.orderNo = choose.find(".s_10").text().split("/")[0];//訂單號
-							main.tempAutoBomPrint.orderer = choose.find(".s_10").text().split("/")[1];//訂單人
-							main.tempAutoBomPrint.orderCountry = choose.find(".s_10").text().split("/")[2];//訂單國家		
+							main.tempAutoBomPrint.orderNo = choose.find(".s_10").text().split("/")[2];//訂單號
+							main.tempAutoBomPrint.orderer = choose.find(".s_10").text().split("/")[0];//訂單人
+							main.tempAutoBomPrint.orderCountry = choose.find(".s_10").text().split("/")[1];//訂單國家	
 						} else {
 							main.tempAutoBomPrint.orderNo = "";//訂單號
 							main.tempAutoBomPrint.orderer = "";//訂單人

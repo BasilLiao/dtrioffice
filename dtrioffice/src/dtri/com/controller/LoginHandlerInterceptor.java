@@ -40,6 +40,8 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 		System.out.println("LoginHandlerInterceptor : 登入檢查");
 		String account = request.getParameter("inputAccount");
 		String password = request.getParameter("inputPassword");
+		
+		
 		// Step1.是否 先前 有登入?
 		if (account==null && password == null && loginService.checkLogin()) {
 			// Step1-2.檢查資料完整性

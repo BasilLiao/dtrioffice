@@ -601,7 +601,7 @@
 		//網頁掛載完後自動呼叫
 		mounted : function() {
 			//===自動化===
-			if (main.tempAutoBomPrint.autoStepCheck == true) {
+			if (main.tempAutoBomPrint != null && main.tempAutoBomPrint.autoStepCheck == true) {
 				setTimeout(function() {
 					$('#s_bom_number').val(main.tempAutoBomPrint.orderBomId);
 					$('#s_order_id').val(main.tempAutoBomPrint.orderId);
@@ -745,7 +745,7 @@
 						autoStep3 : false,
 						autoStep4 : false,
 					}
-				}, 1500);
+				}, 2000);
 			},
 			//選擇群組-並建立監聽
 			group_choose : function() {

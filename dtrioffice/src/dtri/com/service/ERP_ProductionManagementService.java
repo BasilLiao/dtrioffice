@@ -895,7 +895,7 @@ public class ERP_ProductionManagementService {
 		jsonArray.put("已生產量");
 		jsonArray.put("製令狀態");
 		// 10
-		jsonArray.put("製令備註(訂單/客戶/國家)");
+		jsonArray.put("製令備註(客戶/國家/訂單)");
 		jsonArray.put("客戶訂單");
 		jsonArray.put("負責人");
 		jsonArray.put("產品狀態");
