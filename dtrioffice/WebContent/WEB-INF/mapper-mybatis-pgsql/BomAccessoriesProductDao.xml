@@ -55,11 +55,11 @@
 		bom_accessories_product(
 		sys_create_date,sys_create_user,sys_modify_date,sys_modify_user,
 		product_model,version_motherboard,bom_number,
-		id,note,useful,kind,bom_type)
+		id,note,useful,kind,bom_type,mfg_part_no,parts_no)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
 		#{product_model},#{version_motherboard},#{bom_number},
-		#{id},#{note},#{useful},#{kind},#{bom_type});
+		#{id},#{note},#{useful},#{kind},#{bom_type},#{mfg_part_no},#{parts_no});
 	</insert>
 	<!-- 群組項目 -->
 	<insert id="addedAccessoriesOneGroup" parameterType="BomGroupEntity">
@@ -142,6 +142,8 @@
 		checked = '',
 		useful = #{useful},
 		bom_type = #{bom_type},
+		mfg_part_no = #{mfg_part_no},
+		parts_no = #{parts_no},
 		transfer_user = #{transfer_user},
 		kind = #{kind}
 		WHERE id = #{id};

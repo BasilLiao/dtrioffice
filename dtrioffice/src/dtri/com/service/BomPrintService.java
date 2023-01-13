@@ -374,6 +374,8 @@ public class BomPrintService {
 		jsonArray.put("修改時間");
 		jsonArray.put("修改者");
 		jsonArray.put("類型");
+		jsonArray.put("驗證碼");
+		jsonArray.put("組件號");
 
 		jsonAll.put(jsonArray);
 		// 內容 產品清單
@@ -394,6 +396,9 @@ public class BomPrintService {
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
 			jsonArray.put(entity.getBom_type());
+			jsonArray.put(entity.getMfg_part_no());
+			jsonArray.put(entity.getParts_no());
+
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);

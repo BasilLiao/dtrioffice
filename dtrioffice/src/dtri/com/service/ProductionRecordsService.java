@@ -63,6 +63,8 @@ public class ProductionRecordsService {
 		recordsEntity.setProduct_model(json.getString("product_model"));
 		recordsEntity.setBom_product_id(json.getString("bom_product_id"));
 		recordsEntity.setBom_product_customer_id(json.getString("bom_product_customer_id"));
+		recordsEntity.setMfg_part_no(json.getString("mfg_part_no"));
+		recordsEntity.setParts_no(json.getString("parts_no"));
 
 		recordsEntity.setBom_id(json.getInt("bom_id"));
 		recordsEntity.setVersion_motherboard(json.getString("version_motherboard"));
@@ -237,6 +239,9 @@ public class ProductionRecordsService {
 			jsonArray.put(entity.getPm_note());// 22
 			jsonArray.put(entity.getBom_type());// 23
 			jsonArray.put(entity.getBom_principal());// 24-負責人
+			jsonArray.put(entity.getMfg_part_no());// 25
+			jsonArray.put(entity.getParts_no());// 26
+
 			jsonAll.put(jsonArray);
 		}
 		list.put("item_list", jsonAll);

@@ -212,6 +212,8 @@ public class ERP_ProductionManagementService {
 					} else {
 						one.setMoc_week(pmTemp.getMoc_week());
 					}
+					System.out.println(one.getMoc_week());
+
 					// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 					switch (one.getMoc_ta011()) {
 					case "1":
@@ -285,6 +287,8 @@ public class ERP_ProductionManagementService {
 							erp_year = now_year;
 						}
 						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
+						System.out.println(one.getMoc_week());
+						
 						// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 						switch (one.getMoc_ta011()) {
 						case "1":

@@ -336,7 +336,9 @@
 					<!-- 備註 -->
 					<div id="" class="border border-dark p-0 m-0" style="height: 160px; width: 100%; overflow: hidden;">
 						<div class="row m-0 p-1 font_20" style="height: 100%">
-							<div class="col-1 font-weight-bolder p-0">備註</div>
+							<div class="col-1 font-weight-bolder p-0">
+								生管<br>備註
+							</div>
 							<div class="col-11 p-0" style="height: 100%">
 								<textarea id="a_u_note2" rows="7" class="col-12 p-1 border border-warning rounded"></textarea>
 							</div>
@@ -350,6 +352,8 @@
 							<div class="col-3 p-0 border border-dark" id="c1_bom_number"></div>
 							<div class="col-7 p-0 border border-dark text-right" id="c1_note" title=""></div>
 							<div class="d-none" id="a_u_bom_principal" title=""></div>
+							<div class="d-none" id="a_u_mfg_part_no" title=""></div>
+							<div class="d-none" id="a_u_parts_no" title=""></div>
 
 						</div>
 					</div>
@@ -394,7 +398,7 @@
 			<div class="col p-0">
 				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseEx" role="button" aria-expanded="false" aria-controls="collapseEx">生產注意事項 (一鍵化)說明: </a>
 			</div>
-			<div class="collapse container" id="collapseEx">
+			<div class="collapse container bg-white" id="collapseEx">
 				<p>***(一鍵)建立注意事項***</p>
 				<p>生產注意事項</p>
 				<p>工單號 : [來源]生管排程->工單號</p>
@@ -926,7 +930,10 @@
 
 				$("#a_u_note").text($(".t_row" + id + " .s_5")[0].innerText);
 				$("#a_u_kind").val($(".t_row" + id + " .s_7")[0].innerText).change();
-
+				
+				$("#a_u_mfg_part_no").text($(".t_row" + id + " .s_13")[0].innerText);
+				$("#a_u_parts_no").text($(".t_row" + id + " .s_14")[0].innerText);
+				
 				if ($(".t_row" + id + " .s_7")[0].innerText == 1) {
 					$("#kind1").text("量產單");
 				} else {
@@ -1244,6 +1251,8 @@
 						content.product_type = $("#kind1").text();
 						content.bom_id = $("#a_u_bom_id").text();
 						content.bom_principal = $("#a_u_bom_principal").text();
+						content.mfg_part_no = $("#a_u_mfg_part_no").text();
+						content.parts_no = $("#a_u_parts_no").text();
 						content.version_motherboard = $("#a_u_version_bios").text();
 						content.pm_note = $("#a_u_note").text();
 						content.note = $("#a_u_note2").val();

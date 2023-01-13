@@ -180,6 +180,19 @@
 								</div>
 							</div>
 							<!-- 4 -->
+							<div class="row m-0 text-left col-md-6 p-1">
+								<div class="col-md-4 p-0">產品 驗證碼:</div>
+								<div class="col-md-8 p-0" id="">
+									<input class="col-md-12" type="text" id="a_u_mfg_part_no" placeholder="Ex:123456(MFG Part No)" />
+								</div>
+							</div>
+							<div class="row m-0 text-left col-md-6 p-1">
+								<div class="col-md-3 p-0">組件號(s):</div>
+								<div class="col-md-9 p-0" id="">
+									<input class="col-md-12" type="text" id="a_u_parts_no" placeholder="Ex:A123/B456/C789(Parts No)" />
+								</div>
+							</div>
+							<!-- 5 -->
 							<div class="row m-0 text-left col-md-12 p-1">
 								<div class="col-md-2 p-0">說明備註:</div>
 								<div class="col-md-10 p-0">
@@ -584,6 +597,8 @@
                 $("#a_u_version_motherboard").val("");
                 $("#a_u_useful").val("1");
                 $("#a_u_note").val("");
+                $("#a_u_parts_no").val("");
+                $("#a_u_mfg_part_no").val("");
 
                 $("#group_number_0").val(0);
 
@@ -723,6 +738,9 @@
                 $("#a_u_note").val($(".t_row" + id + " .s_4")[0].innerText);
                 $("#a_u_useful").val($(".t_row" + id + " .s_5")[0].innerText);
                 $("#a_u_kind").val($(".t_row" + id + " .s_6")[0].innerText).change();
+                //
+                $("#a_u_mfg_part_no").val($(".t_row" + id + " .s_11")[0].innerText);
+                $("#a_u_parts_no").val($(".t_row" + id + " .s_12")[0].innerText);
                 
                 var group_tbody = "";
                
@@ -802,6 +820,8 @@
                 $("#a_u_useful").attr("disabled", disabled);
                 $("#a_u_note").attr("disabled", disabled);
                 $("#a_u_kind").attr("disabled", disabled);
+                $("#a_u_mfg_part_no").attr("disabled", disabled);
+                $("#parts_no").attr("disabled", disabled);
                 
                 $("#group_tbody select").attr("disabled", disabled);
                 $("#group_tbody button").attr("disabled", disabled);
@@ -972,6 +992,9 @@
                 product.version_motherboard = $("#a_u_version_motherboard").val();
                 product.bom_number = $("#a_u_bom_number").val();
                 product.note = $("#a_u_note").val();
+                product.mfg_part_no = $("#a_u_mfg_part_no").val();
+                product.parts_no = $("#a_u_parts_no").val();
+                
                 product.useful = $("#a_u_useful").val();
                 product.kind = $("#a_u_kind").val(); 
 

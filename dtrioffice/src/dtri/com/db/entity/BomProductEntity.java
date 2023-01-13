@@ -24,6 +24,8 @@ public class BomProductEntity {
 	private Integer kind;
 	private String bom_type;
 	private String transfer_user;// 轉讓人
+	private String mfg_part_no;// MFG Part No(驗證碼)
+	private String parts_no;// Parts No(組件號)
 
 	// 例外處理 非SQL 物件(查詢條件)
 	private BomGroupEntity groupEntity;
@@ -177,5 +179,21 @@ public class BomProductEntity {
 
 	public void setTempAutoBomPrint(JSONObject tempAutoBomPrint) {
 		this.tempAutoBomPrint = tempAutoBomPrint;
+	}
+
+	public String getMfg_part_no() {
+		return mfg_part_no;
+	}
+
+	public void setMfg_part_no(String mfg_part_no) {
+		this.mfg_part_no = mfg_part_no;
+	}
+
+	public String getParts_no() {
+		return parts_no;
+	}
+
+	public void setParts_no(String parts_no) {
+		this.parts_no = parts_no;
 	}
 }

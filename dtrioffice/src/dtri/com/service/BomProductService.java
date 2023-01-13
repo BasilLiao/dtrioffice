@@ -298,11 +298,13 @@ public class BomProductService {
 			p_entity.setKind(product.getInt("kind"));
 			p_entity.setNote(product.getString("note"));
 			p_entity.setBom_type("product");
+			p_entity.setParts_no(product.getString("parts_no"));
+			p_entity.setMfg_part_no(product.getString("mfg_part_no"));
 			p_entity.setTransfer_user(product.getString("transfer_user"));
-			if(!product.getString("transfer_user").equals("")) {
-				p_entity.setUseful(3);//轉讓中
+			if (!product.getString("transfer_user").equals("")) {
+				p_entity.setUseful(3);// 轉讓中
 			}
-			
+
 			// 取得ID
 			p_entity.setId(product.getInt("id"));
 			// 如果是新增或另存 (取下個ID)
@@ -362,19 +364,24 @@ public class BomProductService {
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
 			jsonArray = new JSONArray();
 
-			jsonArray.put(entity.getId());
+			jsonArray.put(entity.getId());//0
+			
 			jsonArray.put(entity.getProduct_model());
 			jsonArray.put(entity.getVersion_motherboard());
-
 			jsonArray.put(entity.getBom_number());
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getUseful());
+			//5
 			jsonArray.put(entity.getKind());
 
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
+			
+			jsonArray.put(entity.getMfg_part_no());
+			jsonArray.put(entity.getParts_no());
+			
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);
@@ -411,17 +418,9 @@ public class BomProductService {
 						continue;
 					}
 					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
+				} 
 			}
 
 			groupOne.put(jsonArray);
@@ -448,15 +447,7 @@ public class BomProductService {
 						continue;
 					}
 					jsonArray.put(value);
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

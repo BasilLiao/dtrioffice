@@ -93,14 +93,14 @@ public class ProductionPrintService {
 		} else {
 			entity.setProduct_status(1);
 		}
-		//規格
+		// 規格
 		if (!content.isNull("bom_product_content") && !content.get("bom_product_content").equals(""))
 			entity.setBom_product_content(content.getString("bom_product_content"));
-		
-		//預計出貨日
+
+		// 預計出貨日
 		if (!content.isNull("product_hope_date") && !content.get("product_hope_date").equals(""))
-		entity.setProduct_hope_date(Fm_Time_Model.toDate(content.getString("product_hope_date")));
-		
+			entity.setProduct_hope_date(Fm_Time_Model.toDate(content.getString("product_hope_date")));
+
 		return entity;
 	}
 
@@ -175,6 +175,8 @@ public class ProductionPrintService {
 			jsonArray.put(entity.getBom_product_content());// s_16 產品規格-規格
 			jsonArray.put(entity.getProduct_type());// s_17 產品-狀態
 			jsonArray.put(entity.getBom_principal());// s_18 產品規格-負責人
+			jsonArray.put(entity.getMfg_part_no());// s_19 產品 驗證碼
+			jsonArray.put(entity.getParts_no());// s_20 組件號
 
 			jsonAll.put(jsonArray);
 		}

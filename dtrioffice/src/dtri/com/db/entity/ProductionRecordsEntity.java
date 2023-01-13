@@ -33,13 +33,16 @@ public class ProductionRecordsEntity {
 	private String product_start_sn;
 	private String product_end_sn;
 	private String bom_type;// BOM 類型 product = 產品BOM /accessories = 配件BOM
-	private String bom_principal;//負責人
+	private String bom_principal;// 負責人
 
 	private Date product_hope_date;// 期望日
 	private Date product_check_date;// 檢核日
 	private Date product_finish_date;// 完工日
 	private String product_package;// 包裝json{}
-	private String product_type;// 產品狀態 技轉中 /可量產
+	private String product_type;// 產品狀態 技轉中 / 可量產
+
+	private String mfg_part_no;// MFG Part No(驗證碼)
+	private String parts_no;// Parts No(組件號)
 
 	public Date getProduct_hope_date() {
 		return product_hope_date;
@@ -271,6 +274,22 @@ public class ProductionRecordsEntity {
 
 	public void setPm_note(String pm_note) {
 		this.pm_note = pm_note;
+	}
+
+	public String getMfg_part_no() {
+		return mfg_part_no;
+	}
+
+	public void setMfg_part_no(String mfg_part_no) {
+		this.mfg_part_no = mfg_part_no;
+	}
+
+	public String getParts_no() {
+		return parts_no;
+	}
+
+	public void setParts_no(String parts_no) {
+		this.parts_no = parts_no;
 	}
 
 }

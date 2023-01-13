@@ -71,7 +71,8 @@ public class APIService {
 	public MesApiBean mes_setting_bean(JSONObject mes) {
 		// 非資料庫資料(MES 專用)
 		MesApiBean mesApi = new MesApiBean();
-		mesApi.setPh_p_number(mes.has("ph_p_number") ? mes.getString("ph_p_number") : "");// 產品 認證/號/名稱
+		mesApi.setPh_mfg_p_no(mes.has("ph_mfg_p_no") ? mes.getString("ph_mfg_p_no") : "");// 產品 認證/號/名稱
+		mesApi.setPh_ps_no(mes.has("ph_ps_no") ? mes.getString("ph_ps_no") : "");// 產品 組件號(s)
 		mesApi.setPh_wpro_id(mes.has("ph_wpro_id") ? mes.getString("ph_wpro_id") : "");// 工作程序
 		mesApi.setPh_wc_line(mes.has("ph_wc_line") ? mes.getString("ph_wc_line") : "");// 產線線別
 		mesApi.setPr_type(mes.has("pr_type") ? mes.getString("pr_type") : "");// 製令單類型
@@ -108,7 +109,8 @@ public class APIService {
 			production_records.put("ph_pb_g_id", "");
 			production_records.put("ph_schedule", "");
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
-			production_records.put("ph_p_number", mesApi.getPh_p_number());// 產品 認證/編號
+			production_records.put("ph_mfg_p_no", mesApi.getPh_mfg_p_no());// 產品 認證/編號
+			production_records.put("ph_ps_no", mesApi.getPh_mfg_p_no());// 產品 組件號(s)
 			production_records.put("ph_wc_line", mesApi.getPh_wc_line());// 產線-程序
 			production_records.put("ph_p_name", mesApi.getPh_p_name());// 產品 認證/編號
 			production_records.put("ph_s_date", "");
@@ -222,7 +224,6 @@ public class APIService {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
-			// check_connect = false;
 			return false;
 		} finally {
 

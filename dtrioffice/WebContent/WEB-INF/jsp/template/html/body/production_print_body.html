@@ -137,9 +137,9 @@
 			</div>
 			<div class="h5 collapse show m-0" id="collapseAdded3">
 				<div class="p-1 row m-0 mt-2">
-					<div class="row m-0 col-md-4 p-1">
-						<div class="col-md-4 p-0">範例SN碼 :</div>
-						<div class="col-md-8 p-0" id="p_sn_rule" style="background: white;" contenteditable="false"></div>
+					<div class="row m-0 col-md-6 p-1">
+						<div class="col-md-4 p-1">預覽產品SN碼 (身分) :</div>
+						<div class="col-md-8 p-1 border border-success" id="p_sn_rule" style="background: white;" contenteditable="false"></div>
 					</div>
 					<div class="row m-0 p-1 col-md-12 border border-secondary" style="background: white; height: 100px; overflow-y: scroll;">
 						<div class="row m-0" id="sn_p">
@@ -170,53 +170,76 @@
 					</div>
 				</div>
 				<div class="p-1 mb-2 mt-2 m-0 row">
-					<div class="row m-0 col-md-3 p-1">
-						<div class="col-md-5 p-0">製成系統 (設置):</div>
-						<div class="col-md-7 p-0">
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0">製成系統 (設置):</div>
+						<div class="col-md p-0">
 							<select id="pr_type" class="col-12">
 								<option class="production_t_no" value="" selected="selected">製令單類型</option>
 							</select>
 						</div>
 					</div>
-					<div class="col-md-1 p-1">
-						<select id="pr_w_years" class="col-12">
-							<option class="pr_w_years_no" value="" selected="selected">保固年分</option>
-						</select>
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0 text-light">.</div>
+						<div class="col-md p-0">
+							<select id="pr_w_years" class="col-12">
+								<option class="pr_w_years_no" value="" selected="selected">保固年分</option>
+							</select>
+						</div>
 					</div>
-					<div class="col-md-2 p-1">
-						<select id="ph_wpro_id" class="col-12">
-							<option class="ph_wpro_id_no" value="" selected="selected">工作程序</option>
-						</select>
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0 text-light">.</div>
+						<div class="col-md p-0">
+							<select id="ph_wc_line" class="col-12">
+								<option class="ph_wc_line_no" value="" selected="selected">生產線</option>
+							</select>
+						</div>
 					</div>
-					<div class="col-md-1 p-1">
-						<select id="ph_wc_line" class="col-12">
-							<option class="ph_wc_line_no" value="" selected="selected">生產線</option>
-						</select>
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0 text-light">.</div>
+						<div class="col-md p-0">
+							<select id="ph_wpro_id" class="col-12">
+								<option class="ph_wpro_id_no" value="" selected="selected">工作程序</option>
+							</select>
+						</div>
+					</div>
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0 text-light">.</div>
+						<div class="col-md p-0">
+							<select id="ph_ll_g_id" class="col-12">
+								<option class="ph_ll_g_no" value="" selected="selected">產品標籤(組)</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="p-1 mb-2 mt-2 m-0 row">
-					<div class="row m-0 col-md-3 p-1">
-						<div class="col-md-5 p-0">客製化SN(固定):</div>
-						<div class="col-md-7 p-0">
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0">客製化SN(固定):</div>
+						<div class="col-md p-0">
 							<input class="col-12" type="text" id="ps_sn_burn_fixed" name="ps_sn_burn_fixed" placeholder="Ex:301KYTTS2013" />
 						</div>
 					</div>
-					<div class="row m-0 col-md-3 p-1">
-						<div class="col-md-5 p-0">流水號(浮動):</div>
-						<div class="col-md-7 p-0">
-							<input class="col-12 p-0" type="number" id="ps_sn_burn_nb" name="ps_sn_burn_nb" placeholder="Ex:0000" max="9999" min="0000" />
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0">流水號(浮動):</div>
+						<div class="col-md p-0">
+							<input class="col-12 pr-0" type="number" id="ps_sn_burn_nb" name="ps_sn_burn_nb" placeholder="Ex:0000" max="9999" min="0000" />
 						</div>
 					</div>
-					<div class="row m-0 col-md-3 p-1">
-						<div class="col-md-5 p-0">P/N(產品號):</div>
-						<div class="col-md-7 p-0">
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0">P/N(產品號):</div>
+						<div class="col-md p-0">
 							<input class="col-12" type="text" id="ph_p_name" name="ph_p_name" placeholder="Ex:90-311-T63KA01" />
 						</div>
 					</div>
-					<div class="row m-0 col-md-3 p-1">
-						<div class="col-md-6 p-0">Part No(驗證碼):</div>
-						<div class="col-md-6 p-0">
-							<input class="col-12" type="text" id="ph_p_number" name="ph_p_number" placeholder="Ex:123456" />
+					<div class="m-0 col-md-2 p-2">
+						<div class="col-md p-0">MFG Part No(驗證碼):</div>
+						<div class="col-md p-0">
+							<input class="col-12" type="text" id="ph_mfg_p_no" name="ph_mfg_p_no" placeholder="Ex:123456" />
+						</div>
+					</div>
+					<div class="m-0 col-md-3 p-2">
+						<div class="col-md p-0">Parts No(組件號):</div>
+						<div class="col-md p-0">
+							<input class="col-12" type="text" id="ph_ps_no" name="ph_ps_no" placeholder="Ex:A123/B456/C789" />
 						</div>
 					</div>
 				</div>
@@ -941,6 +964,9 @@
 				$("#client_name").attr("contenteditable", false);
 				$("#p_number").attr("contenteditable", true);
 
+				$("#ph_mfg_p_no").val($(".t_row" + id_p + " .s_19").text());
+				$("#ph_ps_no").val($(".t_row" + id_p + " .s_20").text());
+
 				//共用欄位位				
 				come_from = $(".t_row" + id_p + " .s_11").text();//來源
 				$("#ver_motherboard").text($(".t_row" + id_p + " .s_10")[0].innerText);//MB
@@ -1250,7 +1276,8 @@
 								return;
 							}
 						}
-						content.ph_p_number = $("#ph_p_number").val();
+						content.ph_mfg_p_no = $("#ph_mfg_p_no").val();
+						content.ph_ps_no = $("#ph_ps_no").val();
 						content.ph_p_name = $("#ph_p_name").val();
 						content.sn = sn_array;
 

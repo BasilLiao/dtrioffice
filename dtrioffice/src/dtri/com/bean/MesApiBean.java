@@ -14,8 +14,10 @@ public class MesApiBean {
 
 	private String ps_b_f_sn; // 特殊SN 固定
 	private String ps_b_sn; // 特殊SN 序列
-	private String ph_p_number; // 認證編號
-	private String ph_p_name;//產品編號/名稱
+	private String ph_mfg_p_no; // 產品 驗證碼
+	private String ph_ps_no; // 產品 組件號
+
+	private String ph_p_name;// 產品編號/名稱
 
 	public String getPr_type() {
 		return pr_type;
@@ -57,14 +59,6 @@ public class MesApiBean {
 		this.ps_b_sn = ps_b_sn;
 	}
 
-	public String getPh_p_number() {
-		return ph_p_number;
-	}
-
-	public void setPh_p_number(String ph_p_number) {
-		this.ph_p_number = ph_p_number;
-	}
-
 	public String getPh_p_name() {
 		return ph_p_name;
 	}
@@ -89,6 +83,20 @@ public class MesApiBean {
 		this.pr_p_v = pr_p_v;
 	}
 
-	
+	public String getPh_mfg_p_no() {
+		return ph_mfg_p_no;
+	}
+
+	public void setPh_mfg_p_no(String ph_mfg_p_no) {
+		this.ph_mfg_p_no = ph_mfg_p_no;
+	}
+
+	public String getPh_ps_no() {
+		return ph_ps_no;
+	}
+
+	public void setPh_ps_no(String ph_ps_no) {
+		this.ph_ps_no = ph_ps_no;
+	}
 
 }

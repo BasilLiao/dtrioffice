@@ -3,7 +3,7 @@
 	font-size: 28px;
 	line-height: 28px;
 	height: 50px;
-    overflow: hidden;
+	overflow: hidden;
 }
 
 .font_24 {
@@ -374,6 +374,26 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-md-4 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>驗證碼(MFG Part No)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_p_mfg_p_no"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>組件號(Parts No)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_p_ps_no"></div>
+									</div>
+								</div>
+							</div>
 							<div class="col-md-3 p-0">
 								<div class="col-md-12">
 									<div class="row">
@@ -384,7 +404,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 p-0">
+							<div class="col-md-2 p-0">
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-4 p-2 pr-0 border border-secondary">
@@ -400,7 +420,7 @@
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-2 p-2 pr-0 border border-secondary">
-											<b>PM:備註<br>說明
+											<b>BOM規格<br>備註說明
 											</b>
 										</div>
 										<div class="col-md-10 p-2 pr-0 border border-secondary" id="a_p_pm_note"></div>
@@ -413,7 +433,7 @@
 								<div class="col-md-12 bg-light">
 									<div class="row">
 										<div class="col-md-2 p-2 pr-0 border border-secondary">
-											<b>生產注意事項:備註<br>說明
+											<b>生產注意事項<br>備註說明
 											</b>
 										</div>
 										<div class="col-md-10 p-2 pr-0 border border-warning rounded" id="a_p_note" contenteditable="true"></div>
@@ -900,6 +920,9 @@
 				$("#a_p_pm_note").text("");
 				$("#a_p_note").text("");
 
+				$("#a_p_mfg_p_no").text("");
+				$("#a_p_ps_no").text("");
+
 				$('#pkg_modify .cb_pkg_ch').prop('checked', false);
 				$('#pkg_modify .cb_pkg_ch').removeAttr('checked');
 				//清除預覽
@@ -969,6 +992,9 @@
 				$("#a_p_p").text($(".t_row" + id + " .s_24")[0].innerText);
 				$("#a_p_note").text($(".t_row" + id + " .s_14")[0].innerText);
 				$("#a_p_pm_note").text($(".t_row" + id + " .s_22")[0].innerText);
+				//
+				$("#a_p_mfg_p_no").text($(".t_row" + id + " .s_25")[0].innerText);
+				$("#a_p_ps_no").text($(".t_row" + id + " .s_26")[0].innerText);
 
 				//包裝型態
 				var pkg = $(".t_row" + id + " .s_12")[0].innerText;
