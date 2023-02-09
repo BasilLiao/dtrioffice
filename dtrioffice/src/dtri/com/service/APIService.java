@@ -75,6 +75,7 @@ public class APIService {
 		mesApi.setPh_ps_no(mes.has("ph_ps_no") ? mes.getString("ph_ps_no") : "");// 產品 組件號(s)
 		mesApi.setPh_wpro_id(mes.has("ph_wpro_id") ? mes.getString("ph_wpro_id") : "");// 工作程序
 		mesApi.setPh_wc_line(mes.has("ph_wc_line") ? mes.getString("ph_wc_line") : "");// 產線線別
+		mesApi.setPh_ll_g_name(mes.has("ph_ll_g_name") ? mes.getString("ph_ll_g_name") : "");// 標籤群
 		mesApi.setPr_type(mes.has("pr_type") ? mes.getString("pr_type") : "");// 製令單類型
 		mesApi.setPr_p_v(mes.has("pr_p_v") ? mes.getString("pr_p_v") : "");// 產品版本
 		mesApi.setPr_w_years(mes.has("pr_w_years") ? mes.getString("pr_w_years") : "");// 保固年分
@@ -109,6 +110,7 @@ public class APIService {
 			production_records.put("ph_pb_g_id", "");
 			production_records.put("ph_schedule", "");
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
+			production_records.put("ph_ll_g_name", mesApi.getPh_ll_g_name());// 產品標籤-連動
 			production_records.put("ph_mfg_p_no", mesApi.getPh_mfg_p_no());// 產品 認證/編號
 			production_records.put("ph_ps_no", mesApi.getPh_mfg_p_no());// 產品 組件號(s)
 			production_records.put("ph_wc_line", mesApi.getPh_wc_line());// 產線-程序

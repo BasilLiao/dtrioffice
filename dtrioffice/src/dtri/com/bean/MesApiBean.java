@@ -11,6 +11,7 @@ public class MesApiBean {
 	private String pr_p_v; // 產品版本
 	private String ph_wpro_id; // 工作程序
 	private String ph_wc_line; // 產線線別
+	private String ph_ll_g_name;// 標籤組
 
 	private String ps_b_f_sn; // 特殊SN 固定
 	private String ps_b_sn; // 特殊SN 序列
@@ -97,6 +98,14 @@ public class MesApiBean {
 
 	public void setPh_ps_no(String ph_ps_no) {
 		this.ph_ps_no = ph_ps_no;
+	}
+
+	public String getPh_ll_g_name() {
+		return ph_ll_g_name;
+	}
+
+	public void setPh_ll_g_name(String ph_ll_g_name) {
+		this.ph_ll_g_name = ph_ll_g_name;
 	}
 
 }
