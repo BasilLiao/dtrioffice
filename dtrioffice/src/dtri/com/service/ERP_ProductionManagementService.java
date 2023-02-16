@@ -108,6 +108,9 @@ public class ERP_ProductionManagementService {
 			boolean same_check = false;
 			for (ERP_PM_Entity one : erp_entities) {
 				one.setMoc_id(one.getMoc_id().replaceAll(" ", ""));
+				// 避免是空值
+				one.setMoc_ta009(one.getMoc_ta009().equals("") ? Fm_Time_Model.to_yyMMdd(new Date()) : one.getMoc_ta009());
+				one.setMoc_ta010(one.getMoc_ta010().equals("") ? Fm_Time_Model.to_yyMMdd(new Date()) : one.getMoc_ta010());
 				one.setMoc_ta009(Fm_Time_Model.to_yyMMdd(one.getMoc_ta009())); // 預計開工
 				one.setMoc_ta010(Fm_Time_Model.to_yyMMdd(one.getMoc_ta010())); // 預計完工
 				same_check = false;
@@ -288,7 +291,7 @@ public class ERP_ProductionManagementService {
 						}
 						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
 						System.out.println(one.getMoc_week());
-						
+
 						// 1.未生產,2.已發料,3.生產中,Y.已完工,y.指定完工
 						switch (one.getMoc_ta011()) {
 						case "1":

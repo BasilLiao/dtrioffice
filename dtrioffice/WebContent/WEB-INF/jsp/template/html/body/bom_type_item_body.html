@@ -587,11 +587,10 @@
                 var content = new Object();
 				var group_list = [];
                 content.group_id = $("#a_u_group_id").text();
-                content.group_name = $("#a_u_group_name").val();
+                content.group_name = $("#a_u_group_name").val().replaceAll("&","and");;
                 content.type_order = $("#a_u_type_order").val();
                 content.type = $("#a_u_group_type select").val();
                 content.checkdf = $("#a_u_group_checkdf").prop("checked");
-
                 
                 var action = "C";
                 var url = "./added_bom_type_item.do";
@@ -604,6 +603,7 @@
 	                	 for(var r = 4;r<this.now_column_n;r++){
              				//如果是含有NO的單詞
              				var checkVal = $("#item_thead th div input")[r-4].value;
+           					checkVal = checkVal.replaceAll("&","and");
              				if(checkVal.length>2){
                 				if(checkVal.search("no")>=0){
                 					checkVal = checkVal.replaceAll("no","ｎｏ")

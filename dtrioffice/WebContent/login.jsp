@@ -61,7 +61,7 @@ body {
 			<div class="row m-0 p-0 ">
 				<div class="col-4">&copy; 2020 DT Research, Inc. All Rights Reserved.</div>
 				<div class="col-4">請使用 Brave/Chrome 瀏覽器 最佳解析度為 1366*768 以上</div>
-				<div class="col-4">版本: Beta v0.88.07</div>
+				<div class="col-4">版本: Beta v0.88.08</div>
 			</div>
 		</div>
 	</div>

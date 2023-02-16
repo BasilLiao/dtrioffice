@@ -39,6 +39,7 @@ public class Fm_Time_Model {
 			date = sdf.format(format_yyyyMMdd.parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
+			date = "";
 		}
 		return date;
 	}
