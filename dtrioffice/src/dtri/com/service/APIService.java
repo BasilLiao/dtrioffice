@@ -112,7 +112,7 @@ public class APIService {
 			production_records.put("ph_wp_id", mesApi.getPh_wpro_id());// 工作站-程序
 			production_records.put("ph_ll_g_name", mesApi.getPh_ll_g_name());// 產品標籤-連動
 			production_records.put("ph_mfg_p_no", mesApi.getPh_mfg_p_no());// 產品 認證/編號
-			production_records.put("ph_ps_no", mesApi.getPh_mfg_p_no());// 產品 組件號(s)
+			production_records.put("ph_ps_no", mesApi.getPh_ps_no());// 產品 組件號(s)
 			production_records.put("ph_wc_line", mesApi.getPh_wc_line());// 產線-程序
 			production_records.put("ph_p_name", mesApi.getPh_p_name());// 產品 認證/編號
 			production_records.put("ph_s_date", "");
