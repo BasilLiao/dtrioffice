@@ -137,11 +137,11 @@
 			</div>
 			<div class="h5 collapse show m-0" id="collapseAdded3">
 				<div class="p-1 row m-0 mt-2">
-					<div class="row m-0 col-md-6 p-1">
-						<div class="col-md-4 p-1">預覽產品SN碼 (身分) :</div>
-						<div class="col-md-8 p-1 border border-success" id="p_sn_rule" style="background: white;" contenteditable="false"></div>
+					<div class="row m-0 col-md-12 p-1">
+						<div class="col-md-1 p-1">預覽SN碼 :</div>
+						<div class="col-md-4 p-1 border border-success" id="p_sn_rule" style="background: white;" contenteditable="false"></div>
 					</div>
-					<div class="row m-0 p-1 col-md-12 border border-secondary" style="background: white; height: 100px; overflow-y: scroll;">
+					<div class="row m-0 p-1 col-md-12 border border-secondary" style="background: white; height: 65px; overflow-y: scroll;">
 						<div class="row m-0" id="sn_p">
 							<div class="p-1 production_sn d-none" id="g_id">
 								<select class="select_sn p-1 pr-3 m-1">
@@ -159,16 +159,6 @@
 				<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseAdded4" role="button" aria-expanded="true" aria-controls="collapseAdded3">流程卡設置:</a>
 			</div>
 			<div class="h5 collapse show m-0" id="collapseAdded4">
-				<div class="p-1 mb-2 mt-2 m-0 row">
-					<div class="row m-0 col-md-2 p-1">
-						<div>自訂SN碼 ?</div>
-						<div class="custom-control custom-switch">
-							<input id="sn_customized_ok" class="custom-control-input" type="checkbox" />
-							<!--  -->
-							<label class="custom-control-label" for="sn_customized_ok"> </label>
-						</div>
-					</div>
-				</div>
 				<div class="p-1 mb-2 mt-2 m-0 row">
 					<div class="m-0 col-md-2 p-2">
 						<div class="col-md p-0">製成系統 (設置):</div>
@@ -211,17 +201,34 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="p-1 mb-2 mt-2 m-0 row">
-					<div class="m-0 col-md-2 p-2">
-						<div class="col-md p-0">客製化SN(固定):</div>
-						<div class="col-md p-0">
-							<input class="col-12" type="text" id="ps_sn_burn_fixed" name="ps_sn_burn_fixed" placeholder="Ex:301KYTTS2013" />
+					<div class="m-0 col-md-6 p-0 row border border-danger rounded shadow bg-warning">
+						<div class="m-0 col-md-2 p-2">
+							<div class="col-md p-0">客製化SN?</div>
+							<div class="col-md p-0 custom-control custom-switch" style="top: 5px;">
+								<input id="sn_customized_ok" class="custom-control-input" type="checkbox" />
+								<!--  -->
+								<label class="custom-control-label" for="sn_customized_ok" style="left: 40px;"> </label>
+							</div>
 						</div>
-					</div>
-					<div class="m-0 col-md-2 p-2">
-						<div class="col-md p-0">流水號(浮動):</div>
-						<div class="col-md p-0">
-							<input class="col-12 pr-0" type="number" id="ps_sn_burn_nb" name="ps_sn_burn_nb" placeholder="Ex:0000" max="9999" min="0000" />
+						<div class="m-0 col-md-4 p-2">
+							<div class="col-md p-0">客製化SN(固定):</div>
+							<div class="col-md p-0">
+								<input class="col-12" type="text" id="ps_sn_burn_fixed" name="ps_sn_burn_fixed" placeholder="Ex:301KYTTS2013" />
+							</div>
+						</div>
+						<div class="m-0 col-md-4 p-2">
+							<div class="col-md p-0">流水號(浮動):</div>
+							<div class="col-md p-0">
+								<input class="col-12 pr-0" type="number" id="ps_sn_burn_nb" name="ps_sn_burn_nb" placeholder="Ex:0000" max="9999" min="0000" />
+							</div>
+						</div>
+						<div class="m-0 col-md-2 p-2">
+							<div class="col-md p-0">SN(長度):</div>
+							<div class="col-md p-0">
+								<input class="col-8 b" disabled="disabled" type="text" id="ph_ps_no_burn_nb" name="ph_ps_no_burn_nb" placeholder="" /> 碼
+							</div>
 						</div>
 					</div>
 					<div class="m-0 col-md-2 p-2">
@@ -236,12 +243,13 @@
 							<input class="col-12" type="text" id="ph_mfg_p_no" name="ph_mfg_p_no" placeholder="Ex:123456" />
 						</div>
 					</div>
-					<div class="m-0 col-md-3 p-2">
+					<div class="m-0 col-md-2 p-2">
 						<div class="col-md p-0">Parts No(組件號):</div>
 						<div class="col-md p-0">
 							<input class="col-12" type="text" id="ph_ps_no" name="ph_ps_no" placeholder="Ex:A123/B456/C789" />
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -807,6 +815,12 @@
 					}, "slow");
 				}, 500);
 			});
+			//自訂義SN長度
+			$(document).on("change", "#ps_sn_burn_nb", function(event) {
+				var ps_size = $("#ps_sn_burn_fixed").val() + $("#ps_sn_burn_nb").val();
+				$("#ph_ps_no_burn_nb").val(ps_size.length);
+			});
+
 		},
 		methods : {
 			search_choose : function(event) {
@@ -1493,6 +1507,7 @@
 			$(document).off("click", ".from_move");
 			$(document).off("click", ".production_ok");
 
+			$(document).off("change", "#ps_sn_burn_nb");
 			$(document).off("change", ".ph_wc_line");
 			$(document).off("change", ".ph_wpro_id");
 			$(document).off("change", ".select_sn");
