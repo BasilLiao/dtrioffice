@@ -102,6 +102,7 @@
         	packageRP:"",
         	packageOS:"",
         	noteMoc:"",
+        	aubomnumber:"",
         	autoStepCheck:false,
         	autoStep1:false,
         	autoStep2:false,

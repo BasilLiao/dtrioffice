@@ -414,6 +414,26 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-md-6 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>ERP 產品品名</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-secondary" id="a_p_name"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>ERP 產品規格</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-secondary" id="a_p_specification"></div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="row m-0">
 							<div class="col-md-12 p-0">
@@ -917,6 +937,9 @@
 				$("#a_h_d").text("");
 				$("#a_p_bt").text("");
 				$("#a_p_p").text("");
+				$("#a_p_name").text("");
+				$("#a_p_specification").text("");
+
 				$("#a_p_pm_note").text("");
 				$("#a_p_note").text("");
 
@@ -995,6 +1018,9 @@
 				//
 				$("#a_p_mfg_p_no").text($(".t_row" + id + " .s_25")[0].innerText);
 				$("#a_p_ps_no").text($(".t_row" + id + " .s_26")[0].innerText);
+
+				$("#a_p_specification").text($(".t_row" + id + " .s_27")[0].innerText);
+				$("#a_p_name").text($(".t_row" + id + " .s_28")[0].innerText);
 
 				//包裝型態
 				var pkg = $(".t_row" + id + " .s_12")[0].innerText;

@@ -19,6 +19,7 @@ public class ERP_PM_Entity {
 	// 主要資料 ERP
 	private String moc_id;// 製令單(TA001+TA002)
 	private String moc_ta006;// 產品品號
+	private String cop_td004;// 客戶品號
 	private String moc_ta006_not;// 不包含-產品品號(非Table)
 	private String moc_ta034;// 產品品名
 	private String moc_ta035;// 產品規格
@@ -53,11 +54,11 @@ public class ERP_PM_Entity {
 	public String toString() {
 		return "ProductionManagementEntity [sys_create_date=" + sys_create_date + ", sys_create_user=" + sys_create_user + ", sys_modify_date="
 				+ sys_modify_date + ", sys_modify_user=" + sys_modify_user + ", sys_check_sum=" + sys_check_sum + ", useful=" + useful + ", note=" + note
-				+ ", id=" + id + ", moc_id=" + moc_id + ", moc_ta006=" + moc_ta006 + ", moc_ta034=" + moc_ta034 + ", moc_ta035=" + moc_ta035 + ", moc_ta015="
-				+ moc_ta015 + ", moc_ta017=" + moc_ta017 + ", moc_ta009=" + moc_ta009 + ", moc_ta010=" + moc_ta010 + ", moc_ta011=" + moc_ta011 + ", cop_tc012="
-				+ cop_tc012 + ", moc_ta029=" + moc_ta029 + ", order_id=" + order_id + ", bom_kind=" + bom_kind + ", moc_note=" + moc_note + ", moc_status="
-				+ moc_status + ", moc_priority=" + moc_priority + ", ivn_note=" + ivn_note + ", ivn_status=" + ivn_status + ", ivn_items=" + ivn_items
-				+ ", mpr_note=" + mpr_note + ", mpr_date=" + mpr_date + ", mes_note=" + mes_note + "]";
+				+ ", id=" + id + ", moc_id=" + moc_id + ", moc_ta006=" + moc_ta006 + ", cop_td004=" + cop_td004 + ", moc_ta034=" + moc_ta034 + ", moc_ta035="
+				+ moc_ta035 + ", moc_ta015=" + moc_ta015 + ", moc_ta017=" + moc_ta017 + ", moc_ta009=" + moc_ta009 + ", moc_ta010=" + moc_ta010 + ", moc_ta011="
+				+ moc_ta011 + ", cop_tc012=" + cop_tc012 + ", moc_ta029=" + moc_ta029 + ", order_id=" + order_id + ", bom_kind=" + bom_kind + ", moc_note="
+				+ moc_note + ", moc_status=" + moc_status + ", moc_priority=" + moc_priority + ", ivn_note=" + ivn_note + ", ivn_status=" + ivn_status
+				+ ", ivn_items=" + ivn_items + ", mpr_note=" + mpr_note + ", mpr_date=" + mpr_date + ", mes_note=" + mes_note + "]";
 	}
 
 	public Date getSys_create_date() {
@@ -330,6 +331,14 @@ public class ERP_PM_Entity {
 
 	public void setMoc_ta054(String moc_ta054) {
 		this.moc_ta054 = moc_ta054;
+	}
+
+	public String getCop_td004() {
+		return cop_td004;
+	}
+
+	public void setCop_td004(String cop_td004) {
+		this.cop_td004 = cop_td004;
 	}
 
 }

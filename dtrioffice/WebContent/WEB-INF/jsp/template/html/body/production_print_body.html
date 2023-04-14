@@ -249,6 +249,18 @@
 							<input class="col-12" type="text" id="ph_ps_no" name="ph_ps_no" placeholder="Ex:A123/B456/C789" />
 						</div>
 					</div>
+					<div class="m-0 col-md-6 p-2">
+						<div class="col-md p-0">ERP 產品品號:</div>
+						<div class="col-md p-0">
+							<input class="col-12" type="text" id="pr_name" name="pr_name" placeholder="" disabled="disabled" />
+						</div>
+					</div>
+					<div class="m-0 col-md-6 p-2">
+						<div class="col-md p-0">ERP 產品規格敘述:</div>
+						<div class="col-md p-0">
+							<input class="col-12" type="text" id="pr_specification" name="pr_specification" placeholder="" disabled="disabled" />
+						</div>
+					</div>
 
 				</div>
 			</div>
@@ -997,6 +1009,8 @@
 
 				$("#ph_mfg_p_no").val($(".t_row" + id_p + " .s_19").text());
 				$("#ph_ps_no").val($(".t_row" + id_p + " .s_20").text());
+				$("#pr_name").val($(".t_row" + id_p + " .s_21").text());
+				$("#pr_specification").val($(".t_row" + id_p + " .s_22").text());
 
 				//共用欄位位				
 				come_from = $(".t_row" + id_p + " .s_11").text();//來源
@@ -1311,6 +1325,9 @@
 						content.ph_mfg_p_no = $("#ph_mfg_p_no").val();
 						content.ph_ps_no = $("#ph_ps_no").val();
 						content.ph_p_name = $("#ph_p_name").val();
+						content.pr_specification = $("#pr_specification").val();
+						content.pr_name = $("#pr_name").val();
+						
 						content.sn = sn_array;
 
 						order = "production_search_update";

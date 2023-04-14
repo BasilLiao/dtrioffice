@@ -77,14 +77,16 @@
 		product_model,bom_product_id,bom_product_customer_id,
 		mfg_part_no,parts_no,
 		version_motherboard,note,pm_note,come_from,product_status,bom_product_content,bom_principal,
-		product_progress,bom_id,bom_type,product_hope_date,product_package)
+		product_progress,bom_id,bom_type,product_hope_date,product_package,
+		product_name,product_specification)
 		VALUES
 		(#{sys_create_date},#{sys_create_user},#{sys_modify_date},#{sys_modify_user},
 		#{id},#{order_id},#{client_name},#{production_quantity},#{product_type},
 		#{product_model},#{bom_product_id},#{bom_product_customer_id},
 		#{mfg_part_no},#{parts_no},
 		#{version_motherboard},#{note},#{pm_note},#{come_from},#{product_status},#{bom_product_content},#{bom_principal},
-		#{product_progress},#{bom_id},#{bom_type},#{product_hope_date},#{product_package});
+		#{product_progress},#{bom_id},#{bom_type},#{product_hope_date},#{product_package},
+		#{product_name},#{product_specification});
 	</insert>
 
 	<!-- 更新 狀態 內容 -->

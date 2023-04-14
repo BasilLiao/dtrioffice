@@ -128,6 +128,8 @@ public class APIService {
 			production_records.put("sys_c_user", "");
 			production_records.put("sys_ver", "0");
 			production_records.put("sys_status", "0");
+			production_records.put("pr_name", entity.getProduct_name());// ERP 產品品名
+			production_records.put("pr_specification", entity.getProduct_specification());// ERP 產品規格
 			production_records.put("sys_sn_auto", sys_sn);// 是否 是系統生產
 
 			// [包裝]產品序號

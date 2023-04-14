@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
+import dtri.com.db.entity.ERP_PM_Entity;
 import dtri.com.db.entity.ProductionRecordsEntity;
+import dtri.com.db.pgsql.dao.ProductionManagementDao;
 import dtri.com.db.pgsql.dao.ProductionRecordsDAO;
 import dtri.com.tools.Fm_Time_Model;
 import dtri.com.tools.JsonDataModel;
@@ -29,6 +31,9 @@ public class ProductionRecordsService {
 	private LoginService loginService;
 	@Autowired
 	private ProductionRecordsDAO dao;
+
+	@Autowired
+	private ProductionManagementDao pm_Dao;
 
 	/**
 	 * @param entity
@@ -88,6 +93,16 @@ public class ProductionRecordsService {
 		 **/
 		recordsEntity.setBom_product_content(json.getJSONObject("bom_product_content") + "");// 產品規格
 		recordsEntity.setProduct_type(json.getString("product_type"));// 技轉中 可量產
+		// 抓取生管排程資料
+		ERP_PM_Entity search_data = new ERP_PM_Entity();
+		search_data.setUseful(1);// 有效=1 無效=2
+		search_data.setMoc_ta006('%' + json.getString("bom_product_id") + '%');// BOM號
+		// --search_data.setMoc_id(json.getString("production_id"));//製令單號
+		List<ERP_PM_Entity> erp_pm_ets = pm_Dao.searchERP_PM_List(search_data);
+		if (erp_pm_ets.size() > 0) {
+			recordsEntity.setProduct_specification(erp_pm_ets.get(0).getMoc_ta035());// 產品規格
+			recordsEntity.setProduct_name(erp_pm_ets.get(0).getMoc_ta034());// 產品品名
+		}
 
 		if (dao.beforeCheckAddOne(json.getString("production_id")) == null) {
 			dao.addOne(recordsEntity);
@@ -241,6 +256,8 @@ public class ProductionRecordsService {
 			jsonArray.put(entity.getBom_principal());// 24-負責人
 			jsonArray.put(entity.getMfg_part_no());// 25
 			jsonArray.put(entity.getParts_no());// 26
+			jsonArray.put(entity.getProduct_specification());// 27--ERP產品規格
+			jsonArray.put(entity.getProduct_name());// 28--產品名稱
 
 			jsonAll.put(jsonArray);
 		}

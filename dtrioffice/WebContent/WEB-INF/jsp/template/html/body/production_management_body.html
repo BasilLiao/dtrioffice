@@ -150,7 +150,7 @@
 						<thead>
 							<tr id="search_thead_kind" class=" exc-no h5 text-center" style="position: sticky; top: 0px; z-index: 5;">
 								<th colspan="7" class="fixed_cell table-success" scope="col" style="width: 620px; left: 1px; z-index: 3;">功能/固定</th>
-								<th colspan="8" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
+								<th colspan="9" class="fixed_cell table-secondary" scope="col">基本 ERP 資料</th>
 								<th colspan="3" class="fixed_cell table-info" scope="col">生管</th>
 								<th colspan="2" class="fixed_cell table-warning" scope="col">物控</th>
 								<th colspan="3" class="fixed_cell table-light" scope="col">倉庫</th>
@@ -192,6 +192,7 @@
 								</td>
 								<td class="small bg-warning"></td>
 								<td class=" bg-warning d-none"><b>說明:匯出時(請使用 '^n' 取代 '換行[Ctrl+Enter]')</b></td>
+								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
 								<td class=" bg-warning"></td>
@@ -376,16 +377,16 @@
 						if (i == 1 || i == 2) {
 							min_width = 120;
 						}
-						if (i == 3 || i == 4 || i == 11 || i == 14 || i == 16) {
+						if (i == 3 || i == 4 || i == 5  || i == 12 || i == 13 ||i == 15 || i == 17) {
 							min_width = 150;
 						}
-						if (i == 5 || i == 6) {
+						if (i == 6 || i == 7) {
 							min_width = 300;
 						}
-						if (i == 10) {
+						if (i == 11) {
 							min_width = 450;
 						}
-						if (i == 15 || i == 17 || i == 20 || i == 21) {
+						if (i == 16 || i == 18 || i == 21 || i == 22) {
 							min_width = 500;
 						}
 						//固定
@@ -468,19 +469,19 @@
 						$('#new_note_kind').text("");
 						switch (moc_id_type) {
 						case 'moc_note':
-							$('.t_row_' + moc_id + ' .s_15 .note_list').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_16 .note_list').removeClass('d-none');
 							$('#new_note_kind').text("生管-備註");
 							break;
 						case 'mpr_note':
-							$('.t_row_' + moc_id + ' .s_17 .note_list').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_18 .note_list').removeClass('d-none');
 							$('#new_note_kind').text("物控-備註");
 							break;
 						case 'ivn_note':
-							$('.t_row_' + moc_id + ' .s_20 .note_list').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_21 .note_list').removeClass('d-none');
 							$('#new_note_kind').text("倉儲-備註");
 							break;
 						case 'mes_note':
-							$('.t_row_' + moc_id + ' .s_21 .note_list').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_22 .note_list').removeClass('d-none');
 							$('#new_note_kind').text("製程-備註");
 							break;
 
@@ -500,20 +501,20 @@
 						//s_21->mes_note->製程
 						switch (moc_id_type) {
 						case 'moc_note':
-							$('.t_row_' + moc_id + ' .s_15 .note_list').addClass('d-none');
-							$('.t_row_' + moc_id + ' .s_15 .newest').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_16 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_16 .newest').removeClass('d-none');
 							break;
 						case 'mpr_note':
-							$('.t_row_' + moc_id + ' .s_17 .note_list').addClass('d-none');
-							$('.t_row_' + moc_id + ' .s_17 .newest').removeClass('d-none');
+							$('.t_row_' + moc_id + ' .s_18 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_18 .newest').removeClass('d-none');
 							break;
 						case 'ivn_note':
-							$('.t_row_' + moc_id + ' .s_20 .note_list').addClass('d-none');
-							$('.t_row_' + moc_id + ' .s_20 .newest').removeClass('d-none');
-							break;
-						case 'mes_note':
 							$('.t_row_' + moc_id + ' .s_21 .note_list').addClass('d-none');
 							$('.t_row_' + moc_id + ' .s_21 .newest').removeClass('d-none');
+							break;
+						case 'mes_note':
+							$('.t_row_' + moc_id + ' .s_22 .note_list').addClass('d-none');
+							$('.t_row_' + moc_id + ' .s_22 .newest').removeClass('d-none');
 							break;
 						default:
 							break;
@@ -629,9 +630,9 @@
 						$('#new_moc_id').text($('.t_row_' + moc_id + ' .s_3').text() + "");
 						$('#new_name').text($('#nav_account').text() + "");
 						$('#new_moc_priority input').val($('.t_row_' + moc_id + ' .s_0').text());
-						var mpr_date = $('.t_row_' + moc_id + ' .s_16').text().replaceAll('-', '');//清除-
+						var mpr_date = $('.t_row_' + moc_id + ' .s_17').text().replaceAll('-', '');//清除-
 						$('#new_mpr_date input').val(mpr_date);
-						$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_30').text());
+						$('#new_moc_week input').val($('.t_row_' + moc_id + ' .s_31').text());
 						$('#new_note textarea').val('');
 						$('#excel_json').text('[]');
 						$('#excel_file').val('');
@@ -655,14 +656,15 @@
 						main.tempAutoBomPrint.orderId = $(event.currentTarget).attr("order_id");//製令單號
 						main.tempAutoBomPrint.orderEndDate = choose.find(".s_2").text();//預計出貨
 						main.tempAutoBomPrint.orderBomId = choose.find(".s_4").text(); //產品品號
-						main.tempAutoBomPrint.orderQty = choose.find(".s_7").text();//數量
-						main.tempAutoBomPrint.packageBOG = choose.find(".s_11").text();//說明書-有客戶訂單則需要有
-
-						var s_10_spits = choose.find(".s_10").text();
-						if (s_10_spits.indexOf("/") > 0 && s_10_spits.split("/").length == 3) {
-							main.tempAutoBomPrint.orderNo = choose.find(".s_10").text().split("/")[2];//訂單號
-							main.tempAutoBomPrint.orderer = choose.find(".s_10").text().split("/")[0];//訂單人
-							main.tempAutoBomPrint.orderCountry = choose.find(".s_10").text().split("/")[1];//訂單國家	
+						main.tempAutoBomPrint.aubomnumber = choose.find(".s_5").text();//客戶BOM
+						main.tempAutoBomPrint.orderQty = choose.find(".s_8").text();//數量
+						main.tempAutoBomPrint.packageBOG = choose.find(".s_12").text();//說明書-有客戶訂單則需要有
+						main.tempAutoBomPrint.noteMoc =  choose.find(".s_16 .border-primary .note_content").text();  
+						var s_11_spits = choose.find(".s_11").text(); 
+						if (s_11_spits.indexOf("/") > 0 && s_11_spits.split("/").length == 3) {
+							main.tempAutoBomPrint.orderNo = choose.find(".s_11").text().split("/")[2];//訂單號
+							main.tempAutoBomPrint.orderer = choose.find(".s_11").text().split("/")[0];//訂單人
+							main.tempAutoBomPrint.orderCountry = choose.find(".s_11").text().split("/")[1];//訂單國家	
 						} else {
 							main.tempAutoBomPrint.orderNo = "";//訂單號
 							main.tempAutoBomPrint.orderer = "";//訂單人
@@ -739,31 +741,31 @@
 								css_val = "";
 								b_row_id = "";//每筆資料ID
 								b_div = "";
-								if (j > 21) {
+								if (j > 22) {
 									class_val = " exc-no d-none s_" + j;
 								} else {
 									class_val = "s_" + j;
 								}
 								//可填入[生管備註]
-								if (class_val == 's_15') {
+								if (class_val == 's_16') {
 									b_row_id = "moc_note";
 									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
 									class_val += " modfiy_note_show border border-secondary shadow-sm";
 								}
 								//可填入[物控備註]
-								if (class_val == 's_17') {
+								if (class_val == 's_18') {
 									b_row_id = "mpr_note";
 									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
 									class_val += " modfiy_note_show border border-secondary shadow-sm";
 								}
 								//可填入[倉庫備註]
-								if (class_val == 's_20') {
+								if (class_val == 's_21') {
 									b_row_id = "ivn_note";
 									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
 									class_val += " modfiy_note_show border border-secondary shadow-sm";
 								}
 								//可填入[製造備註]
-								if (class_val == 's_21') {
+								if (class_val == 's_22') {
 									b_row_id = "mes_note";
 									modfiy_trigger = '<button type="submit" b_row_id="'+b_row_id+'" class="modfiy_note col-md-2 btn btn-sm btn-warning mb-1">編輯</button>';
 									class_val += " modfiy_note_show border border-secondary shadow-sm";
@@ -846,7 +848,7 @@
 
 								} else {
 									//預計齊料日
-									if (('s_' + j == 's_16') && this.search_list[i][j] > new_one.find(".s_1").text()) {
+									if (('s_' + j == 's_17') && this.search_list[i][j] > new_one.find(".s_1").text()) {
 										new_one.find(".s_" + j).addClass('text-danger');
 									}
 									new_one.find(".s_" + j).text(this.search_list[i][j]);
@@ -854,14 +856,14 @@
 								}
 							}
 							//週期
-							if (week_key != this.search_list[i][30]) {
+							if (week_key != this.search_list[i][31]) {
 								var new_week_one = $($('.t_row_week_ex').clone()[0]);
 								new_week_one.removeClass('t_row_week_ex');
 								new_week_one.removeClass('exc-no');
-								new_week_one.attr('id', this.search_list[i][30]);
+								new_week_one.attr('id', this.search_list[i][31]);
 								new_week_one.removeClass('d-none');
 								new_week_one.addClass('show');
-								new_week_one.find('.week_nb').text(this.search_list[i][30]);
+								new_week_one.find('.week_nb').text(this.search_list[i][31]);
 								//數量
 								if (week_key != '') {
 									$('#' + week_key).find('.week_qty').text(week_qty);
@@ -877,8 +879,8 @@
 								week_qty = 0;
 
 							}
-							week_qty += (this.search_list[i][7] - this.search_list[i][8]);
-							week_key = this.search_list[i][30];
+							week_qty += (this.search_list[i][8] - this.search_list[i][9]);
+							week_key = this.search_list[i][31];
 
 							$("#search_tbody").append(new_one);
 							//換色
@@ -937,7 +939,7 @@
 						var news_ms = '';
 						for (var i = 0; i < this.moc_id_tag.length; i++) {
 							var key = Object.keys(this.moc_id_tag[i]);
-							var name = $("#search_tbody .t_row_" + key + " .s_12").text();
+							var name = $("#search_tbody .t_row_" + key + " .s_13").text();
 							$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
 							$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
 							news_ms += '[' + key + '(' + name + ')] ,';

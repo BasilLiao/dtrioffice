@@ -109,6 +109,7 @@ public class ERP_ProductionManagementService {
 			for (ERP_PM_Entity one : erp_entities) {
 				one.setMoc_id(one.getMoc_id().replaceAll(" ", ""));
 				// 避免是空值
+				one.setCop_td004(one.getCop_td004() == null ? "" : one.getCop_td004()); // 客戶品號
 				one.setMoc_ta009(one.getMoc_ta009().equals("") ? Fm_Time_Model.to_yyMMdd(new Date()) : one.getMoc_ta009());
 				one.setMoc_ta010(one.getMoc_ta010().equals("") ? Fm_Time_Model.to_yyMMdd(new Date()) : one.getMoc_ta010());
 				one.setMoc_ta009(Fm_Time_Model.to_yyMMdd(one.getMoc_ta009())); // 預計開工
@@ -151,14 +152,19 @@ public class ERP_ProductionManagementService {
 						tag_all_arr.put("s_4");
 						same_check = true;
 					}
+					// 客戶品號
+					if (!pmTemp.getCop_td004().equals(one.getCop_td004()) && tag_all_str.indexOf("s_5") < 0) {
+						tag_all_arr.put("s_5");
+						same_check = true;
+					}
 					// 預計產量
-					if ((!("" + pmTemp.getMoc_ta015()).equals(one.getMoc_ta015() + "")) && tag_all_str.indexOf("s_7") < 0) {
-						tag_all_arr.put("s_7");
+					if ((!("" + pmTemp.getMoc_ta015()).equals(one.getMoc_ta015() + "")) && tag_all_str.indexOf("s_8") < 0) {
+						tag_all_arr.put("s_8");
 						same_check = true;
 					}
 					// 製令備註
-					if (!pmTemp.getMoc_ta029().equals(one.getMoc_ta029()) && tag_all_str.indexOf("s_10") < 0) {
-						tag_all_arr.put("s_10");
+					if (!pmTemp.getMoc_ta029().equals(one.getMoc_ta029()) && tag_all_str.indexOf("s_11") < 0) {
+						tag_all_arr.put("s_11");
 						same_check = true;
 					}
 
@@ -262,6 +268,7 @@ public class ERP_ProductionManagementService {
 							new_note.put("ms", one.getMoc_ta054());
 							new_notes.put(new_note);
 						}
+						one.setCop_td004(one.getCop_td004() == null ? "" : one.getCop_td004());
 						one.setMoc_note(new_notes.toString());
 						one.setMoc_status("");// (查)開單狀態
 						one.setMoc_priority(100);
@@ -331,7 +338,7 @@ public class ERP_ProductionManagementService {
 					pm_Dao.addedOne(one);
 					// Step. 如果有變化ERP 資料(預計生產數 預計開工 預計完工 產品品號 生產備註 )
 					tag_all_arr = new JSONArray();
-					tag_all_arr.put("s_0").put("s_1").put("s_2").put("s_3").put("s_4").put("s_5").put("s_6").put("s_7");
+					tag_all_arr.put("s_0").put("s_1").put("s_2").put("s_3").put("s_4").put("s_5").put("s_6").put("s_7").put("s_8");
 					tag_all_id.put(one.getMoc_id(), tag_all_arr);
 					tag_all_time.put(one.getMoc_id(), Fm_Time_Model.to_yyMMdd(new Date()));
 				}
@@ -520,8 +527,8 @@ public class ERP_ProductionManagementService {
 									upd_pm_one.setSys_modify_user(new_name);
 									upd_pm_one.setMoc_note(new_notes.toString());
 									// 標記修改
-									if (tagAllIDs.toString().indexOf("s_15") < 0) {
-										tagAllIDs.put("s_15");
+									if (tagAllIDs.toString().indexOf("s_16") < 0) {
+										tagAllIDs.put("s_16");
 									}
 								}
 								// 優先權(priority)
@@ -565,8 +572,8 @@ public class ERP_ProductionManagementService {
 								pmTempBean.setMocTagId(mocTagId);
 							}
 							// 標記修改
-							if (tagAllID.toString().indexOf("s_15") < 0) {
-								tagAllID.put("s_15");
+							if (tagAllID.toString().indexOf("s_16") < 0) {
+								tagAllID.put("s_16");
 							}
 						}
 						// 標記修改-優先權
@@ -611,8 +618,8 @@ public class ERP_ProductionManagementService {
 									mocTagIds.put(one.getString("moc_id"), pmTempBean.getMapPmEntity().get(one.getString("moc_id")).getMoc_cuser());
 									pmTempBean.setMocTagId(mocTagIds);
 									// 標記修改
-									if (tagAllIDs.toString().indexOf("s_17") < 0) {
-										tagAllIDs.put("s_17");
+									if (tagAllIDs.toString().indexOf("s_18") < 0) {
+										tagAllIDs.put("s_18");
 									}
 								}
 								// 齊料日(mpr_date)
@@ -621,8 +628,8 @@ public class ERP_ProductionManagementService {
 									upd_pm_one.setSys_modify_date(new Date());
 									upd_pm_one.setSys_modify_user(new_name);
 									// 標記修改
-									if (tagAllIDs.toString().indexOf("s_16") < 0) {
-										tagAllIDs.put("s_16");
+									if (tagAllIDs.toString().indexOf("s_17") < 0) {
+										tagAllIDs.put("s_17");
 									}
 								}
 								pmTempBean.getMapPmEntity().put(one.getString("moc_id"), upd_pm_one);
@@ -648,8 +655,8 @@ public class ERP_ProductionManagementService {
 							mocTagId.put(new_id, pmTempBean.getMapPmEntity().get(new_id).getMoc_cuser());
 							pmTempBean.setMocTagId(mocTagId);
 							// 標記修改
-							if (tagAllID.toString().indexOf("s_17") < 0) {
-								tagAllID.put("s_17");
+							if (tagAllID.toString().indexOf("s_18") < 0) {
+								tagAllID.put("s_18");
 							}
 						}
 						// 齊料日
@@ -658,8 +665,8 @@ public class ERP_ProductionManagementService {
 							upd_pm.setSys_modify_date(new Date());
 							upd_pm.setSys_modify_user(new_name);
 							// 標記修改
-							if (tagAllID.toString().indexOf("s_16") < 0) {
-								tagAllID.put("s_16");
+							if (tagAllID.toString().indexOf("s_17") < 0) {
+								tagAllID.put("s_17");
 							}
 						}
 						pmTempBean.getMapPmEntity().put(new_id, upd_pm);
@@ -685,8 +692,8 @@ public class ERP_ProductionManagementService {
 						mocTagId.put(new_id, pmTempBean.getMapPmEntity().get(new_id).getMoc_cuser());
 						pmTempBean.setMocTagId(mocTagId);
 						// 標記修改
-						if (tagAllID.toString().indexOf("s_20") < 0) {
-							tagAllID.put("s_20");
+						if (tagAllID.toString().indexOf("s_21") < 0) {
+							tagAllID.put("s_21");
 						}
 					}
 					pmTempBean.getMapPmEntity().put(new_id, upd_pm);
@@ -711,8 +718,8 @@ public class ERP_ProductionManagementService {
 						mocTagId.put(new_id, pmTempBean.getMapPmEntity().get(new_id).getMoc_cuser());
 						pmTempBean.setMocTagId(mocTagId);
 						// 標記修改
-						if (tagAllID.toString().indexOf("s_21") < 0) {
-							tagAllID.put("s_21");
+						if (tagAllID.toString().indexOf("s_22") < 0) {
+							tagAllID.put("s_22");
 						}
 					}
 					pmTempBean.getMapPmEntity().put(new_id, upd_pm);
@@ -763,33 +770,34 @@ public class ERP_ProductionManagementService {
 				jsonArray.put(entity.getMoc_id()); // 製令單號
 				jsonArray.put(entity.getMoc_ta006()); // 產品品號
 				// 5
+				jsonArray.put(entity.getCop_td004() == null ? "" : entity.getCop_td004()); // 客戶品號
 				jsonArray.put(entity.getMoc_ta034() == null ? "" : entity.getMoc_ta034()); // 產品品名
 				jsonArray.put(entity.getMoc_ta035() == null ? "" : entity.getMoc_ta035()); // 產品規格
 				jsonArray.put(entity.getMoc_ta015()); // 預計產量
 				jsonArray.put(entity.getMoc_ta017()); // 已生產量
-				jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 				// 10
+				jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 				jsonArray.put(entity.getMoc_ta029()); // 製令備註
 				jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
 				jsonArray.put(entity.getMoc_cuser());// 負責人
 				jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
-				jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 				// 15
+				jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 				jsonArray.put(entity.getMoc_note()); // 生管-備註
 				jsonArray.put(entity.getMpr_date()); // 物控-預計齊料
 				jsonArray.put(entity.getMpr_note()); // 物控-備註
 				jsonArray.put(entity.getIvn_items()); // 倉庫-備料狀態
-				jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
 				// 20
+				jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
 				jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 				jsonArray.put(entity.getMes_note()); // 倉庫-備註
-				// 22 隱藏 系統
+				// 23 隱藏 系統
 				jsonArray.put(entity.getId());
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 				jsonArray.put(entity.getSys_create_user());
 				jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 				jsonArray.put(entity.getSys_modify_user());
-				// 27
+				// 28
 				jsonArray.put(entity.getNote());
 				jsonArray.put(entity.getUseful());
 				jsonArray.put(entity.getSys_check_sum());
@@ -896,24 +904,25 @@ public class ERP_ProductionManagementService {
 		jsonArray.put("製令單號");
 		jsonArray.put("產品品號");
 		// 5
+		jsonArray.put("客戶品號");
 		jsonArray.put("產品品名");
 		jsonArray.put("產品規格");
 		jsonArray.put("預計產量");
 		jsonArray.put("已生產量");
-		jsonArray.put("製令狀態");
 		// 10
+		jsonArray.put("製令狀態");
 		jsonArray.put("製令備註(客戶/國家/訂單)");
 		jsonArray.put("客戶訂單");
 		jsonArray.put("負責人");
 		jsonArray.put("產品狀態");
-		jsonArray.put("延展開單");
 		// 15
+		jsonArray.put("延展開單");
 		jsonArray.put("生管-備註");
 		jsonArray.put("預計齊料");
 		jsonArray.put("物控-備註");
 		jsonArray.put("備料狀態");
-		jsonArray.put("缺料項數");
 		// 20
+		jsonArray.put("缺料項數");
 		jsonArray.put("倉庫-備註");
 		jsonArray.put("製造-備註");
 
@@ -927,34 +936,35 @@ public class ERP_ProductionManagementService {
 			jsonArray.put(entity.getMoc_id()); // 製令單號
 			jsonArray.put(entity.getMoc_ta006()); // 產品品號
 			// 5
+			jsonArray.put(entity.getCop_td004() == null ? "" : entity.getCop_td004()); // 客戶品號
 			jsonArray.put(entity.getMoc_ta034() == null ? "" : entity.getMoc_ta034()); // 產品品名
 			jsonArray.put(entity.getMoc_ta035() == null ? "" : entity.getMoc_ta035()); // 產品規格
 			jsonArray.put(entity.getMoc_ta015()); // 預計產量
 			jsonArray.put(entity.getMoc_ta017()); // 已生產量
-			jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 			// 10
+			jsonArray.put(entity.getMoc_ta011()); // 製令狀態
 			jsonArray.put(entity.getMoc_ta029()); // 製令單備註
 			jsonArray.put(entity.getCop_tc012()); // 客戶訂單號
 			jsonArray.put(entity.getMoc_cuser()); // 負責人(開單人)
 			jsonArray.put(entity.getBom_kind()); // 生管-產品狀態
-			jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 			// 15
+			jsonArray.put(entity.getMoc_status()); // 生管-延展開單
 			jsonArray.put(entity.getMoc_note()); // 生管-備註
 			jsonArray.put(entity.getMpr_date()); // 物控-預計齊料
 			jsonArray.put(entity.getMpr_note()); // 物控-備註
 			jsonArray.put(entity.getIvn_items()); // 倉庫-備料狀態
-			jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
 			// 20
+			jsonArray.put(entity.getIvn_items()); // 倉庫-缺料項數
 			jsonArray.put(entity.getIvn_note()); // 倉庫-備註
 			jsonArray.put(entity.getMes_note()); // 產線-備註
 
-			// 22 隱藏 系統
+			// 23 隱藏 系統
 			jsonArray.put(entity.getId());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
-			// 27
+			// 28
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getUseful());
 			jsonArray.put(entity.getSys_check_sum());

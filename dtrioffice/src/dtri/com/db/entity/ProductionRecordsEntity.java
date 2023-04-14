@@ -24,10 +24,10 @@ public class ProductionRecordsEntity {
 	private String bom_product_content;// bom規格json{}
 	private String bom_product_customer_id;// 客戶定義用
 
-	private String version_motherboard;
+	private String version_motherboard;// 主板號
 	private String note;
-	private String pm_note;
-	private String come_from;
+	private String pm_note;// 專案經理NOTE
+	private String come_from;// 來源
 	private Integer product_progress;
 	private Integer product_status;
 	private String product_start_sn;
@@ -40,6 +40,8 @@ public class ProductionRecordsEntity {
 	private Date product_finish_date;// 完工日
 	private String product_package;// 包裝json{}
 	private String product_type;// 產品狀態 技轉中 / 可量產
+	private String product_name;// 產品品名
+	private String product_specification;// 產品規格
 
 	private String mfg_part_no;// MFG Part No(驗證碼)
 	private String parts_no;// Parts No(組件號)
@@ -290,6 +292,22 @@ public class ProductionRecordsEntity {
 
 	public void setParts_no(String parts_no) {
 		this.parts_no = parts_no;
+	}
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+	public String getProduct_specification() {
+		return product_specification;
+	}
+
+	public void setProduct_specification(String product_specification) {
+		this.product_specification = product_specification;
 	}
 
 }

@@ -67,6 +67,7 @@
 		#{ivn_status}, ivn_items = #{ivn_items},
 		mpr_note = #{mpr_note}, mpr_date = #{mpr_date}, mes_note = #{mes_note},note = #{note},
 
+		cop_td004= #{cop_td004},
 		moc_ta006= #{moc_ta006},moc_ta034= #{moc_ta034},moc_ta035= #{moc_ta035},
 		moc_ta015= #{moc_ta015},moc_ta017= #{moc_ta017},moc_ta009= #{moc_ta009},
 		moc_ta010= #{moc_ta010},moc_ta011= #{moc_ta011},cop_tc012= #{cop_tc012},
@@ -82,7 +83,7 @@
 		INSERT INTO
 		production_management(
 		bom_kind, moc_id,
-		moc_ta006, moc_ta034, moc_ta035, moc_ta015, moc_ta017,
+		cop_td004,moc_ta006, moc_ta034, moc_ta035, moc_ta015, moc_ta017,
 		moc_ta009, moc_ta010, moc_ta011, cop_tc012,
 		moc_ta029,
 		order_id,
@@ -92,7 +93,7 @@
 		sys_check_sum, sys_create_date, sys_create_user, sys_modify_date,
 		sys_modify_user, useful,moc_cuser, moc_week)
 		VALUES (#{bom_kind}, #{moc_id},
-		#{moc_ta006}, #{moc_ta034}, #{moc_ta035}, #{moc_ta015}, #{moc_ta017},
+		#{cop_td004}, #{moc_ta006}, #{moc_ta034}, #{moc_ta035}, #{moc_ta015}, #{moc_ta017},
 		#{moc_ta009}, #{moc_ta010}, #{moc_ta011},
 		#{cop_tc012},
 		#{moc_ta029},

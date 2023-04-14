@@ -400,26 +400,88 @@
 			</div>
 			<div class="collapse container bg-white" id="collapseEx">
 				<p>***(一鍵)建立注意事項***</p>
-				<p>生產注意事項</p>
-				<p>工單號 : [來源]生管排程->工單號</p>
-				<p>訂單 : [來源]C.生管排程->製令備註,[來源]D.鼎新ERP備註 ,使用/區分:訂單/客戶/國家 ,</p>
-
-				<p>預計出貨 : [來源]C.生管排程->預計完工日</p>
-				<p>客戶 : [同上]</p>
-				<p>國家 : [同上]</p>
-				<p>數量 : [來源]C.生管排程->預計產量</p>
-				<p>產品BOM號 : [來源]C.生管排程->產品品號[匹配]A.產品BOM規格->產品BOM號</p>
-				<p>包裝型態 :</p>
-				<p>1.Power cord [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有:POWER CORD & 數量0以上</p>
-				<p>2.BOG [來源]D.鼎新ERP->製令工單與訂單號 [條件](訂單號) 不為空 說明書</p>
-				<p>3.License [來源]D.鼎新ERP->製令工單內 [條件](料號)含有:50-100- & 數量0以上</p>
-				<p>4.BOX Lable [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有: BOX label & 數量0以上</p>
-				<p>5.Bulk Pack [來源]D.鼎新ERP->製令工單內 [條件](料號名稱)含有: BULK CARTON & 數量0以上</p>
-				<p>6.Retail Pack [來源]與Bulk Pack 相反</p>
-				<p>7.作業系統OS [來源]不確定</p>
-
-				<p>備註 : [來源]D.鼎新ERP->製令工單內 [條件]訂單生產加工組裝包裝備註+生產注意事項</p>
-
+				<p>***如果發現.鼎新ERP[物料]定義不標準,請通知採購部->文管部->即可修正***</p>
+				<table class="border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
+					<thead>
+						<tr>
+							<th>生產注意事項:對應欄位</th>
+							<th>來源</th>
+							<th style="width: 41%;">參照欄位</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>工單號</td>
+							<td>延展:生管排程</td>
+							<td>工單號</td>
+						</tr>
+						<tr>
+							<td>訂單</td>
+							<td>延展:生管排程/鼎新ERP</td>
+							<td>製令備註</td>
+						</tr>
+						<tr>
+							<td>訂單/客戶/國家</td>
+							<td>延展:生管排程/鼎新ERP</td>
+							<td>製令備註[(請使用/區分) 訂單/客戶/國家]</td>
+						</tr>
+						<tr>
+							<td>預計出貨</td>
+							<td>延展:生管排程</td>
+							<td>預計完工日</td>
+						</tr>
+						<tr>
+							<td>數量</td>
+							<td>延展:生管排程</td>
+							<td>預計產量</td>
+						</tr>
+						<tr>
+							<td>產品BOM號</td>
+							<td>延展:生管排程</td>
+							<td>產品品號[匹配]產品BOM號</td>
+						</tr>
+						<tr>
+							<td>包裝型態.1.Power cord</td>
+							<td>鼎新ERP</td>
+							<td>製令工單內 [條件](料號名稱)含有:POWER CORD & 數量0以上</td>
+						</tr>
+						<tr>
+							<td>包裝型態.2.BOG</td>
+							<td>鼎新ERP</td>
+							<td>製令工單與訂單號 [條件](訂單號) 不為空 說明書</td>
+						</tr>
+						<tr>
+							<td>包裝型態.3.License</td>
+							<td>鼎新ERP</td>
+							<td>製令工單內 [條件](料號)含有:50-100- & 數量0以上</td>
+						</tr>
+						<tr>
+							<td>包裝型態.4.BOX Lable</td>
+							<td>鼎新ERP</td>
+							<td>製令工單內 [條件](料號名稱)含有: BOX label & 數量0以上</td>
+						</tr>
+						<tr>
+							<td>包裝型態.5.Bulk Pack</td>
+							<td>鼎新ERP</td>
+							<td>製令工單內 [條件](料號名稱)含有: BULK CARTON & 數量0以上</td>
+						</tr>
+						<tr>
+							<td>包裝型態.6.Retail Pack</td>
+							<td>鼎新ERP</td>
+							<td>與.5.Bulk Pack 相反</td>
+						</tr>
+						<tr>
+							<td>包裝型態.7.作業系統OS</td>
+							<td>鼎新ERP</td>
+							<td>[來源]不確定</td>
+						</tr>
+						<tr>
+							<td>生管備註</td>
+							<td>鼎新ERP</td>
+							<td>製令工單內 [條件]訂單生產加工組裝包裝備註+生產注意事項</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -692,7 +754,7 @@
 						$('#a_u_c').val(main.tempAutoBomPrint.orderer);//客戶
 						$('#a_u_country').val(main.tempAutoBomPrint.orderCountry);//國家
 						$('#a_u_nb').val(main.tempAutoBomPrint.orderQty);//數量
-
+						
 						//packagePC = Power cord
 						if (main.tempAutoBomPrint.packagePC != null) {
 							$('#pkg_1 .cb_pkg').trigger("click");
@@ -725,6 +787,9 @@
 						} else {
 							$('#a_u_note2').val(main.tempAutoBomPrint.noteMoc);
 						}
+						if (main.tempAutoBomPrint.aubomnumber != "") {
+							$('#a_u_bom_number').val(main.tempAutoBomPrint.aubomnumber);//客戶BOM
+						}
 					}
 					//初始化
 					main.tempAutoBomPrint = {
@@ -743,13 +808,14 @@
 						packageRP : "",
 						packageOS : "",
 						noteMoc : "",
+						aubomnumber : "",
 						autoStepCheck : false,
 						autoStep1 : false,
 						autoStep2 : false,
 						autoStep3 : false,
 						autoStep4 : false,
 					}
-				}, 2000);
+				}, 2500);
 			},
 			//選擇群組-並建立監聽
 			group_choose : function() {
@@ -930,10 +996,10 @@
 
 				$("#a_u_note").text($(".t_row" + id + " .s_5")[0].innerText);
 				$("#a_u_kind").val($(".t_row" + id + " .s_7")[0].innerText).change();
-				
+
 				$("#a_u_mfg_part_no").text($(".t_row" + id + " .s_13")[0].innerText);
 				$("#a_u_parts_no").text($(".t_row" + id + " .s_14")[0].innerText);
-				
+
 				if ($(".t_row" + id + " .s_7")[0].innerText == 1) {
 					$("#kind1").text("量產單");
 				} else {
@@ -1349,7 +1415,7 @@
 							main.tempAutoBomPrint.packageBP = tempAutoBomPrint.packageBP;
 							main.tempAutoBomPrint.packageRP = tempAutoBomPrint.packageRP;
 							main.tempAutoBomPrint.packageOS = tempAutoBomPrint.packageOS;
-							main.tempAutoBomPrint.noteMoc = tempAutoBomPrint.noteMoc;
+							//main.tempAutoBomPrint.noteMoc = tempAutoBomPrint.noteMoc;
 							main.tempAutoBomPrint.autoStep2 = true;
 							console.log(main.tempAutoBomPrint);
 						}

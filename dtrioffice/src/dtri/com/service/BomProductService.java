@@ -1,6 +1,5 @@
 package dtri.com.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,8 +65,9 @@ public class BomProductService {
 		List<BomTypeItemEntity> i_list = new ArrayList<BomTypeItemEntity>();
 		int select_nb = 0;// 查詢條件
 		// ----------項目----------
-		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || entitys.get(0).getProduct_model() != null
-				|| entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
+		if (entitys.size() > 0 && (entitys.get(0).getBom_number() != null || //
+				entitys.get(0).getProduct_model() != null || //
+				entitys.get(0).getGroupEntity().getType_item_group_id() != null)) {
 			for (BomProductEntity entity : entitys) {
 				// 組
 				if (entity.getGroupEntity().getType_item_group_id() != null && entity.getGroupEntity().getType_item_group_id() != 0) {
@@ -161,7 +161,7 @@ public class BomProductService {
 			for (BomProductEntity one : p_list) {
 				group_limit_in.add(one.getId());
 			}
-			g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);
+			g_list = productDao.queryGroup("type_item_id !=0", group_limit_in);//type_item_id !=0, []
 		}
 
 		// 項目-清單
@@ -364,24 +364,24 @@ public class BomProductService {
 		for (BomProductEntity entity : bpg.getBomProductEntities()) {
 			jsonArray = new JSONArray();
 
-			jsonArray.put(entity.getId());//0
-			
+			jsonArray.put(entity.getId());// 0
+
 			jsonArray.put(entity.getProduct_model());
 			jsonArray.put(entity.getVersion_motherboard());
 			jsonArray.put(entity.getBom_number());
 			jsonArray.put(entity.getNote());
 			jsonArray.put(entity.getUseful());
-			//5
+			// 5
 			jsonArray.put(entity.getKind());
 
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_create_date()));
 			jsonArray.put(entity.getSys_create_user());
 			jsonArray.put(Fm_Time_Model.to_yMd_Hms(entity.getSys_modify_date()));
 			jsonArray.put(entity.getSys_modify_user());
-			
+
 			jsonArray.put(entity.getMfg_part_no());
 			jsonArray.put(entity.getParts_no());
-			
+
 			jsonAll.put(jsonArray);
 		}
 		list.put("list", jsonAll);
@@ -420,7 +420,7 @@ public class BomProductService {
 					jsonArray.put(value);
 				} catch (Exception e) {
 					e.printStackTrace();
-				} 
+				}
 			}
 
 			groupOne.put(jsonArray);

@@ -20,7 +20,6 @@ import dtri.com.bean.JsonTemplateBean;
 import dtri.com.db.entity.BomGroupEntity;
 import dtri.com.db.entity.BomProductEntity;
 import dtri.com.db.entity.BomTypeItemEntity;
-import dtri.com.db.entity.ERP_INVMB_Entity;
 import dtri.com.db.entity.ERP_MoctaEntity;
 import dtri.com.db.mssql.dao.ERP_MoctaDao;
 import dtri.com.db.pgsql.dao.BomAccessoriesProductDao;
@@ -171,6 +170,13 @@ public class BomPrintService {
 				// 產品-清單
 				if (entitys.size() == 0 || entitys.get(0).getBom_type().equals("product")) {
 					p_list = productDao.queryProduct(all_where_product, all_limit);
+					//如果產品->沒有則找配件
+					if(p_list.size()==0) {
+						p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
+						if(p_list.size()>0) {
+							entitys.get(0).setBom_type("accessories");							
+						}
+					}
 				} else {
 					p_list = productAccDao.queryAccessoriesProduct(all_where_product, all_limit);
 				}
