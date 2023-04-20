@@ -116,10 +116,10 @@ public class ERP_ProductionManagementService {
 				one.setMoc_ta010(Fm_Time_Model.to_yyMMdd(one.getMoc_ta010())); // 預計完工
 				same_check = false;
 				// 測試用
-//				if(one.getMoc_id().equals("A511-220617001")) {
-//					System.out.println("in:"+one.getMoc_ta015());
-//					System.out.println("in");
-//				}
+				if(one.getMoc_id().equals("A521-230418002")) {
+					System.out.println("in:"+one.getMoc_ta015());
+					System.out.println("in");
+				}
 
 				// Step5.是否要同 pmTempBean 一起更新
 				if (all_temp != null && all_temp.containsKey(one.getMoc_id())) {// 工單號

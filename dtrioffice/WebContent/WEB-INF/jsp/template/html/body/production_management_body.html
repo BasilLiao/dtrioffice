@@ -108,13 +108,7 @@
 					<div class="col-md-12 p-1">
 						<div class="col p-1">簡易說明:</div>
 						<div class="col p-1">
-							<b>紅色:</b>其他人正在使用中／
-							<b>藍色:</b>已有修改／
-							<b>綠色:</b>資訊異動／
-							<b>黃框:</b>可編輯區塊／
-							<b>藍框:</b>最後編輯／
-							<b>操作:</b>Shift+滾輪=左右移動／
-							<b>操作:</b>Ctrl+F=快速尋找
+							<b>紅色:</b>其他人正在使用中／ <b>藍色:</b>已有修改／ <b>綠色:</b>資訊異動／ <b>黃框:</b>可編輯區塊／ <b>藍框:</b>最後編輯／ <b>操作:</b>Shift+滾輪=左右移動／ <b>操作:</b>Ctrl+F=快速尋找
 						</div>
 					</div>
 				</div>
@@ -140,7 +134,7 @@
 				<a class="btn btn-sm btn-success" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 : </a>
 				<div class="col-11 row m-0 p-1" style="background-color: #dee2e6;">
 					<div class="h5 m-0 text-primary">捷報:</div>
-					<div class="h5 m-0 col" id="news_ms" style="overflow: hidden; white-space: nowrap;"></div>
+					<div class="p-0 m-0 col row" id="news_ms" style="overflow: hidden; white-space: nowrap;"></div>
 				</div>
 			</div>
 			<div class="collapse show" id="collapseFinish">
@@ -377,7 +371,7 @@
 						if (i == 1 || i == 2) {
 							min_width = 120;
 						}
-						if (i == 3 || i == 4 || i == 5  || i == 12 || i == 13 ||i == 15 || i == 17) {
+						if (i == 3 || i == 4 || i == 5 || i == 12 || i == 13 || i == 15 || i == 17) {
 							min_width = 150;
 						}
 						if (i == 6 || i == 7) {
@@ -659,8 +653,8 @@
 						main.tempAutoBomPrint.aubomnumber = choose.find(".s_5").text();//客戶BOM
 						main.tempAutoBomPrint.orderQty = choose.find(".s_8").text();//數量
 						main.tempAutoBomPrint.packageBOG = choose.find(".s_12").text();//說明書-有客戶訂單則需要有
-						main.tempAutoBomPrint.noteMoc =  choose.find(".s_16 .border-primary .note_content").text();  
-						var s_11_spits = choose.find(".s_11").text(); 
+						main.tempAutoBomPrint.noteMoc = choose.find(".s_16 .border-primary .note_content").text();
+						var s_11_spits = choose.find(".s_11").text();
 						if (s_11_spits.indexOf("/") > 0 && s_11_spits.split("/").length == 3) {
 							main.tempAutoBomPrint.orderNo = choose.find(".s_11").text().split("/")[2];//訂單號
 							main.tempAutoBomPrint.orderer = choose.find(".s_11").text().split("/")[0];//訂單人
@@ -942,10 +936,10 @@
 							var name = $("#search_tbody .t_row_" + key + " .s_13").text();
 							$("#search_tbody .t_row_" + key + " .s_3").css("background-image", "linear-gradient(30deg, #5975ff8f 0%, #c67cff9e 100%)");
 							$("#search_tbody .t_row_" + key + " .s_3").addClass('tag');
-							news_ms += '[' + key + '(' + name + ')] ,';
+							news_ms += '<div class="small p-0 pr-1 pb-1" style="overflow: hidden;">[' + key + '(' + name + ')] </div>';
 						}
 						//A511-123456789]已修改 ,
-						$('#news_ms').text(news_ms);
+						$('#news_ms').html(news_ms);
 					},
 					//只要有異動欄位 標記 
 					tag_all_update : function() {

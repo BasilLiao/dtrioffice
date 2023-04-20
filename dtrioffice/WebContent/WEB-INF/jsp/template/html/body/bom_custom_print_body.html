@@ -1,0 +1,1559 @@
+<style id="table2Style">
+.font_28 {
+	font-size: 28px;
+	line-height: 28px;
+	height: 50px;
+	overflow: hidden;
+}
+
+.font_24 {
+	font-size: 24px;
+	line-height: 24px;
+}
+
+.font_20 {
+	font-size: 20px;
+	line-height: 20px;
+}
+
+.cb_pkg_ch {
+	height: 18px;
+	width: 18px;
+}
+
+#search_table {
+	height: 485px;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
+
+.border-warning {
+	background-color: floralwhite;
+}
+</style>
+<div class="pt-4 m-0 row shadow" id="bom_custom_print_body">
+	<div class="col-md-12 p-0">
+		<div class="mb-3 text-center">
+			<h3>
+				<b>生產注意事項(自訂)</b>
+			</h3>
+		</div>
+
+		<!-- 查詢功能 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="row m-0 mb-2">
+				<div class="col-md-5 p-0">
+					<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseSearch" role="button" aria-expanded="true" aria-controls="collapseSearch">查詢功能</a>
+				</div>
+			</div>
+			<div class="mb-0 collapse show" id="collapseSearch">
+				<div class="row mb-4 m-0 pt-2 h5">
+					<div class="col-md-2">
+						<div class="m-0">
+							<div class="col p-1">製令單號 :</div>
+							<input class="col p-1" type="text" id="s_id" placeholder="Ex:A512-201007008" required autofocus />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="m-0">
+							<div class="col p-1">BOM料號 :</div>
+							<input class="col p-1" type="text" id="s_bom_product_id" placeholder="Ex:133Z12108B216" required />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="m-0">
+							<div class="col p-1">產品型號 :</div>
+							<input class="col p-1" type="text" id="s_product_model" placeholder="Ex:313TY" required />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="m-0">
+							<div class="col p-1">狀態 :</div>
+							<select class="col p-1" id="s_product_status" style="height: 36px;">
+								<option value="-1">請選擇</option>
+								<option value="0">作廢單</option>
+								<option value="1">有效單</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="m-0">
+							<div class="col p-1">流程進度 :</div>
+							<select class="col p-1" id="s_product_progress" style="height: 36px;">
+								<option value="-1">請選擇</option>
+								<option value="1">準備物料</option>
+								<option value="2">預約生產</option>
+								<option value="3">準備生產</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<!-- 功能 按鈕 -->
+				<div class="row m-0 justify-content-center">
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="s_submit" class="col-md-10 btn btn-primary btn-block" type="submit">查詢</button>
+					</div>
+					<div class="row m-0 justify-content-center col-md-2 p-2">
+						<button id="s_c_submit" class="col-md-10 btn btn-warning btn-block" type="button">清除</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 功能:查詢結果  /修改 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="col p-0">
+				<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseFinish" role="button" aria-expanded="true" aria-controls="collapseFinish"> 查詢結果 </a>
+			</div>
+			<div class="collapse show" id="collapseFinish">
+				<div class="p-1 mb-2 mt-2 m-0 row">
+					<div id="search_choose" class="row m-0 mb-2">
+						<div class="text-left">
+							<b>顯示名稱-></b>
+						</div>
+					</div>
+					<!-- 顯示內容 -->
+					<table id="search_table" class="border border-secondary table table-sm table-hover table-striped table-bordered table-responsive">
+						<thead>
+							<tr id="search_thead" class="bg-primary h5">
+								<th scope="col" style="min-width: 65px;">功能</th>
+								<th scope="col" style="min-width: 30px;">筆</th>
+							</tr>
+						</thead>
+						<tbody id="search_tbody"></tbody>
+					</table>
+					<div id="page-items" aria-label="Page" class="col">
+						<ul class="pagination justify-content-center m-0">
+							<li class="page-item p_p disabled"><a id="p_p" class="page-link" href="#" onclick="return templateBody.change_page(this);">Previous 10 </a></li>
+							<li class="page-item p_nb p1 active"><a id="p1" class="page-link" href="#" onclick="return templateBody.change_page(this);">1</a></li>
+							<li class="page-item p_nb p2"><a id="p2" class="page-link" href="#" onclick="return templateBody.change_page(this);">2</a></li>
+							<li class="page-item p_nb p3"><a id="p3" class="page-link" href="#" onclick="return templateBody.change_page(this);">3</a></li>
+							<li class="page-item p_nb p4"><a id="p4" class="page-link" href="#" onclick="return templateBody.change_page(this);">4</a></li>
+							<li class="page-item p_nb p5"><a id="p5" class="page-link" href="#" onclick="return templateBody.change_page(this);">5</a></li>
+							<li class="page-item p_nb p6"><a id="p6" class="page-link" href="#" onclick="return templateBody.change_page(this);">6</a></li>
+							<li class="page-item p_nb p7"><a id="p7" class="page-link" href="#" onclick="return templateBody.change_page(this);">7</a></li>
+							<li class="page-item p_nb p8"><a id="p8" class="page-link" href="#" onclick="return templateBody.change_page(this);">8</a></li>
+							<li class="page-item p_nb p9"><a id="p9" class="page-link" href="#" onclick="return templateBody.change_page(this);">9</a></li>
+							<li class="page-item p_nb p10"><a id="p10" class="page-link" href="#" onclick="return templateBody.change_page(this);">10</a></li>
+							<li class="page-item p_n disabled"><a id="p_n" class="page-link" href="#" onclick="return templateBody.change_page(this);">Next 10 </a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 新增/修改功能 -->
+		<div class="mb-3 border border-primary rounded shadow bg-light">
+			<div class="row m-0 mb-2">
+				<div class="col-md-5 p-0">
+					<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseAdded" role="button" aria-expanded="true" aria-controls="collapseAdded"> 新增/另存 </a>
+				</div>
+			</div>
+			<form onsubmit="return templateBody.send_update_save();">
+				<div class="collapse show" id="collapseAdded">
+					<!-- 新增 或 修改(分辨) -->
+					<div class="text-left row mb-2 m-0 ">
+						<div class="col-md-3" id="a_u_type" style="font-size: 25px; color: red;">查看細節(新增)</div>
+					</div>
+					<div class="border" style="background: white;">
+						<!-- 細節表單 -->
+						<div class="row  m-0">
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>來源</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_c_f">生產注意事項</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>預計日期</b>
+											<p class="small m-0" style="line-height: 0px;">(yyyy-MM-dd)</p>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning " contenteditable="true" id="a_h_d"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>開工日期</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_e_d"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>完工日期</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_f_d"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>人</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_f_d"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row  m-0">
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>建立人</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_c_u"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>建立時間</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_c_d"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-6 p-2 pr-0 border border-secondary">
+											<b>修改人</b>
+										</div>
+										<div class="col-md-6 p-2 pr-0 border border-secondary" id="a_m_u"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>修改時間</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_m_d"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>狀態(單)</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_u">有效單</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row  m-0">
+							<div class="col-md-4 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class=" col-md-5 p-2 pr-0 border border-secondary">
+											<b>工單號(製令單)*</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_id" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>BOM號(公司)*</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_p_id" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>主機板號*</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning rounded" id="a_v_m" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>進度</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_s">預約生產</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-md-4 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>訂單編號*</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_o_i" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>BOM號(客戶)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_p_c_id" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>客戶名*</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning rounded" id="a_c_n" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>國家*</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning rounded" id="a_c_n2" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-md-4 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>驗證碼(MFG Part No)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_p_mfg_p_no" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>組件號(Parts No)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-warning rounded" id="a_p_ps_no" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>產品型號*</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning" id="a_p_m" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>數量*</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-warning rounded" id="a_p_q" contenteditable="true">1</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>產品(SN起始)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_s_sn"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12 ">
+									<div class="row">
+										<div class="col-md-5 p-2 pr-0 border border-secondary">
+											<b>(SN結束)</b>
+										</div>
+										<div class="col-md-7 p-2 pr-0 border border-secondary" id="a_e_sn"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 p-0">
+								<div class="col-md-12">
+									<div class="row bg-light">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>產品類型*</b>
+										</div>
+										<div class="col-md-8 p-0 pr-0 border border-warning rounded">
+											<select class="col p-1" id="a_p_bt" style="height: 36px;">
+												<option value="">請選擇</option>
+												<option value="PCBA">PCBA</option>
+												<option value="外購品">外購品</option>
+												<option value="其他">其他</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>負責人</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_p"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-5 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>產品品名</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-warning" id="a_p_name" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-5 p-0">
+								<div class="col-md-12 ">
+									<div class="row bg-light">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>規格敘述</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-warning" id="a_p_specification" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 p-0">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4 p-2 pr-0 border border-secondary">
+											<b>狀態(品)</b>
+										</div>
+										<div class="col-md-8 p-2 pr-0 border border-secondary" id="a_p_t">量產單</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-md-12 p-0">
+								<div class="col-md-12">
+									<div class="row bg-light">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>BOM規格<br>備註說明
+											</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-warning" id="a_p_pm_note" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-md-12 p-0">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-2 p-2 pr-0 border border-secondary bg-light">
+											<b>BOM規格<br>項目*
+											</b>
+										</div>
+										<div class="col-md-10 m-0 p-2 pr-0 border border-secondary row" id="a_p_pm_items">
+											<div id="ex_p_pm_item" class=" col-3 row p-0 m-0 border border-secondary bg-light">
+												<div class="col-3 p-1">
+													<button id="" class="a_p_pm_submit btn btn-warning btn-sm btn-block m-0 p-0 mb-2" type="button">增</button>
+													<button id="" class="d_p_pm_submit btn btn-danger btn-sm btn-block  m-0 p-0 d-none" type="button">刪</button>
+												</div>
+												<div class="col-2 p-0">
+													<div class="col p-1">
+														<b>項目:</b>
+													</div>
+													<div class="col p-1">
+														<b>敘述:</b>
+													</div>
+													<div class="col p-0 pl-1">
+														<b>數量:</b>
+													</div>
+												</div>
+												<div class="col-7 p-1">
+													<div class="p_pm_item_name border border-warning rounded col p-0 mb-1" contenteditable="false">ex:CPU</div>
+													<div class="p_pm_item_value border border-warning rounded col p-0 mb-1" contenteditable="false">ex:i5-8870</div>
+													<div class="p_pm_item_qty border border-warning rounded col p-0 " contenteditable="false">ex:20</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m-0">
+							<div class="col-md-12 p-0">
+								<div class="col-md-12 bg-light">
+									<div class="row">
+										<div class="col-md-2 p-2 pr-0 border border-secondary">
+											<b>生產注意事項<br>備註說明
+											</b>
+										</div>
+										<div class="col-md-10 p-2 pr-0 border border-warning rounded" id="a_p_note" contenteditable="true"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row m-0 p-0  bg-light">
+							<div class="col-2 font-weight-bolder p-2 border border-secondary">
+								包裝<br>形態
+							</div>
+							<div id="pkg_modify" class="col-10 p-0 border border-secondary">
+								<div id="pkg_1" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_1" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Power cord</div>
+								</div>
+								<div id="pkg_2" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_2" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOG</div>
+								</div>
+								<div id="pkg_3" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_3" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">License</div>
+								</div>
+								<div id="pkg_4" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_4" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">BOX Label</div>
+								</div>
+								<div id="pkg_5" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_5" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Bulk Pack</div>
+								</div>
+								<div id="pkg_6" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_6" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">Retail Pack</div>
+								</div>
+								<div id="pkg_7" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_7" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">作業系統OS</div>
+								</div>
+								<div id="pkg_8" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_8" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">NA1</div>
+								</div>
+								<div id="pkg_9" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_9" class="cb_pkg p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox">
+									</div>
+									<div class="cb_pkg_name border border-warning col-10 font_20 p-1" contenteditable="true" style="white-space: nowrap; overflow: hidden;">NA2</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 功能 按鈕 -->
+					<div class="row m-0 justify-content-center">
+						<div class="row m-0 justify-content-center col-md-2 p-2">
+							<button id="a_u_submit" class="col-md-10 btn btn-primary btn-block" type="submit">存入資料</button>
+						</div>
+						<div class="row m-0 justify-content-center col-md-2 p-2">
+							<button id="a_c_submit" class="col-md-10 btn btn-warning btn-block" type="button">清除內容</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- 預覽列印 -->
+		<div class="border border-primary rounded shadow bg-light">
+			<div class="row m-0 mb-2">
+				<div class="col-md-5 p-0">
+					<a class="btn btn-success btn-sm" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="true" aria-controls="collapseReport"> 預覽列印 </a>
+				</div>
+			</div>
+			<div class="collapse show" id="collapseReport">
+				<div id="collapseAddedPrint" class="border border-dark" style="background: white; height: 1455px; width: 1110px; overflow: hidden; margin: auto;">
+					<!-- [標題] -->
+					<div id="snList" class="border border-dark p-0 m-0 text-left" style="height: 282px; width: 100%">
+						<div class="border border-dark h1 mb-0 p-2 text-center font-weight-bolder">生產注意事項</div>
+						<div class="row m-0 ">
+							<div class="col-1 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">工單</div>
+							<div class="col-3 p-1 pt-2 border border-dark font_28" id="a_u_id"></div>
+							<div class="col-1 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">訂單</div>
+							<div class="col-3 p-1 pt-2 border border-dark font_28" id="a_u_o_id"></div>
+							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">預計出貨</div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28" id="a_u_o_date"></div>
+						</div>
+						<div class="row m-0">
+							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">客戶 / 國家</div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28" id="a_u_c"></div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28" id="a_u_country"></div>
+							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder">數量</div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28" id="a_u_nb"></div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28 text-center" id="kind1"></div>
+						</div>
+						<div class="row m-0">
+							<div class="col-2 p-1 border border-dark  mb-0 ">
+								<p class="h3 font-weight-bolder m-0" style="line-height: 21px;">產品BOM號</p>
+								<p class="text-muted small m-0">(公司BOM號/客戶BOM號)</p>
+							</div>
+							<div class="col-3 p-1 pt-2 border border-dark font_28" title="可支援 公司BOM/客戶BOM" id="a_u_bom_number"></div>
+							<div class="d-none" id="a_u_bom_id">632</div>
+							<div class="col-1 p-1 border border-dark h3 mb-0 font-weight-bolder">型號</div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28 can_rm" id="a_u_model"></div>
+							<div class="col-2 p-1 pt-2 border border-dark h3 mb-0 font-weight-bolder font_24">主板(硬)版本</div>
+							<div class="col-2 p-1 pt-2 border border-dark font_28 can_rm" id="a_u_version_bios"></div>
+						</div>
+						<div class="row m-0">
+							<div class="col-2 p-1 border border-dark h3 mb-0 font-weight-bolder">PM備註</div>
+							<div class="col-10 p-0 border border-dark font_20" style="height: 67px">
+								<div id="a_u_note" class="col-12 p-1 border border-dark rounded" style="overflow: hidden; height: 65px;"></div>
+							</div>
+						</div>
+					</div>
+					<!-- [產品內容 需裝配] -->
+					<div id="setHardware" class="border border-dark p-0 m-0 text-left" style="height: 720px; width: 100%; overflow: hidden;">
+						<div class="row m-0">
+							<div class="listLeft col-6 p-1">
+								<div class="p-1 border-bottom border-right border-secondary itemSample ui-sortable-handle d-none" style="height: 34px; overflow: hidden;">
+									<div class="m-0 font_20" style="white-space: nowrap;">
+										<span class="name font-weight-bolder pr-1"></span> <span class="content"></span> <span class="amount"></span>
+									</div>
+								</div>
+							</div>
+							<div class="listRight col-6 p-1"></div>
+						</div>
+					</div>
+					<!-- [產品內容 不裝配] -->
+					<div id="setHardware_notUse" class="border border-dark p-0 m-0" style="height: 131px; width: 100%; overflow: hidden;">
+						<div class="row m-0 list_notUse">
+							<div class=" row m-1 font_24">
+								<div class="name font-weight-bolder pr-1">注意!!不裝配 :</div>
+							</div>
+							<div class="d-none itemSample_notUse row m-1 font_20 border-bottom border-right border-secondary">
+								<div class="name font-weight-bolder pr-1"></div>
+								<div class="content pr-1"></div>
+								<div class="amount"></div>
+							</div>
+						</div>
+					</div>
+					<!-- 包裝型態 -->
+					<div id="" class="border border-dark p-0 m-0" style="height: 140px; width: 100%; overflow: hidden;">
+						<div class="row m-0 p-1 font_20">
+							<div class="col-1 font-weight-bolder p-0 pt-1">
+								包裝<br>形態
+							</div>
+							<div id="pkg_print" class="col-11 p-0">
+								<div id="pkg_1" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_1" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">Power cord</div>
+								</div>
+								<div id="pkg_2" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_2" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">BOG</div>
+								</div>
+								<div id="pkg_3" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_3" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">License</div>
+								</div>
+								<div id="pkg_4" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_4" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">BOX Label</div>
+								</div>
+								<div id="pkg_5" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_5" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">Bulk Pack</div>
+								</div>
+								<div id="pkg_6" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_6" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">Retail Pack</div>
+								</div>
+								<div id="pkg_7" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_7" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">作業系統OS</div>
+								</div>
+								<div id="pkg_8" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_8" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">NA1</div>
+								</div>
+								<div id="pkg_9" class="itemSample float-left col-md-4 row p-1 m-0">
+									<div id="cb_pkg_9" class="cb_pkg_lk p-0 border border-secondary rounded" style="background-color: #e9ecef;">
+										<input class="cb_pkg_ch m-2" type="checkbox" disabled="disabled">
+									</div>
+									<div class="cb_pkg_name border col-10 font_20 p-1" style="white-space: nowrap; overflow: hidden;">NA2</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 備註 -->
+					<div id="" class="border border-dark p-0 m-0" style="height: 160px; width: 100%; overflow: hidden;">
+						<div class="row m-0 p-1 font_20" style="height: 100%">
+							<div class="col-1 font-weight-bolder p-0">備註</div>
+							<div class="col-11 p-0" style="height: 100%">
+								<div id="a_u_note2" class="col-12 p-1 border border-dark rounded" style="height: 100%;"></div>
+							</div>
+						</div>
+					</div>
+					<!-- 類型 -->
+					<div id="fromTo" class="border border-dark p-0 m-0" style="height: 22px; width: 100%; font-size: 12px;">
+						<div class="row m-0 text-muted">
+							<div class="col-1 p-0 border border-dark">類型/原BOM:</div>
+							<div class="col-1 p-0 border border-dark" id="c1_bom_type"></div>
+							<div class="col-2 p-0 border border-dark" id="c1_bom_number"></div>
+							<div class="col-8 p-0 border border-dark text-right" id="c1_note" title=""></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 功能 按鈕 -->
+			<div class="row m-0 justify-content-center">
+				<div class="row m-0 justify-content-center col-md-2 p-2"></div>
+				<div class="row m-0 justify-content-center col-md-2 p-2">
+					<button id="p_submit" class="col-md-10 btn btn-primary btn-block" type="button">列印內容</button>
+				</div>
+				<div class="row m-0 justify-content-center col-md-2 p-2">
+					<b class="col-md-12 text-danger small">注意 : [登記生產]過4個月後<br>製令單 將自動 [標記廢止]!!
+					</b>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	console.log("bom_custom_print_body");
+	templateBody = new Vue({
+		el : "#bom_custom_print_body",
+		data : {
+			item_list : "",
+			old_id : "",
+			p_pm_item_nbr : 0,
+			//分頁功能
+			page_max : 100,//當前本批 筆數
+			page_max_total : 100,//最大總數
+			page_batch : 0,//第幾批
+			page_batch_total : 100,//每批間格值
+			page_every : 10, //當前每頁筆數
+			page_stay : 1,//當前頁數
+		},
+		created : function() {
+			//初始化
+			templateBody = this;
+			console.log(main.contentData.templateInfo.body);
+			this.item_list = main.contentData.templateInfo.body["item_list"];
+			$("#a_p_p").text("" + $("#nav_account").text());
+			//t_choose
+			var t_choose = "";
+			for (var i = 0; i < this.item_list[0].length; i++) {
+				t_choose += '[<div class="text-left form-check">';
+				t_choose += '<input class="form-check-input" type="checkbox" value="" id="s_' + i + '" checked>';
+				t_choose += '<label class="form-check-label" for="s_' + i + '">';
+				t_choose += this.item_list[0][i];
+				t_choose += "</label></div>]";
+			}
+			$("#search_choose").append(t_choose);
+			//t_header_group
+			var t_header_group = "";
+			var min_width = "85px;";
+			for (var i = 0; i < this.item_list[0].length; i++) {
+				min_width = "85px;";
+				if (i == 7 || i == 9) {
+					min_width = "120px;";
+				} else if (i == 0 || i == 1 || i == 2 || i == 6 || i == 8) {
+					min_width = "175px;";
+				} else if ((this.item_list[0].length - 1) == i) {
+					min_width += "width: 100%;"
+
+				}
+				t_header_group += '<th style="min-width: ' + min_width + '" class="s_' + i + '" scope="col">' + this.item_list[0][i] + "</th>";
+			}
+			$("#search_thead").append(t_header_group);
+
+			//t_body_purchasing
+			this.search_update();
+
+			//動態監聽顯示Table 物件 查看開關
+			$(document).on("click", "#search_choose input", function(event) {
+				templateBody.search_choose(event);
+			});
+			//查詢監聽
+			$(document).on("click", "#s_submit", function(event) {
+				templateBody.change_page_init();
+				templateBody.send_search();
+			});
+			//清除修改
+			$(document).on("click", "#a_c_submit", function(event) {
+				templateBody.rm_added();
+			});
+			//清除查詢
+			$(document).on("click", "#s_c_submit", function(event) {
+				templateBody.rm_search();
+			});
+			$(document).on("click", "#p_submit", function(event) {
+				templateBody.printDiv();
+				return;
+			});
+			//另改監聽
+			$(document).on("click", ".a_submit", function(event) {
+				templateBody.choose_update("查看細節(另存)", event);
+				templateBody.old_id = $('#a_id').text();
+			});
+
+			//勾選條件設定
+			$(document).on("click", ".cb_pkg", function(event) {
+				console.log(event.currentTarget.id);
+				if (event.currentTarget.id != '') {
+					var key = event.currentTarget.id;
+					if ($('#' + key + " input").attr('checked') == 'checked') {
+						$('#' + key + " input").prop('checked', false);
+						$('#' + key + " input").removeAttr('checked');
+					} else {
+						$('#' + key + " input").prop('checked', true);
+						$('#' + key + " input").attr('checked', 'checked');
+					}
+				}
+			});
+			//BOM項目新增
+			$(document).on("click", ".a_p_pm_submit", function(event) {
+				var p_pm_item = $($("#ex_p_pm_item").clone());
+				//定義新內容
+				p_pm_item.attr("id", "p_pm_item_" + templateBody.p_pm_item_nbr);
+				p_pm_item.addClass("p_pm_item_nbr");
+				p_pm_item.find(".a_p_pm_submit").addClass("d-none");
+				p_pm_item.find(".d_p_pm_submit").removeClass("d-none");
+				p_pm_item.find(".d_p_pm_submit").attr("id", "p_pm_sbt_" + templateBody.p_pm_item_nbr++)
+
+				p_pm_item.find(".p_pm_item_name").text("");
+				p_pm_item.find(".p_pm_item_value").text("");
+				p_pm_item.find(".p_pm_item_qty").text("1");
+
+				p_pm_item.find(".p_pm_item_name").attr("contenteditable", true);
+				p_pm_item.find(".p_pm_item_value").attr("contenteditable", true);
+				p_pm_item.find(".p_pm_item_qty").attr("contenteditable", true);
+
+				$("#a_p_pm_items").append(p_pm_item);
+			});
+			//BOM項目移除
+			$(document).on("click", ".d_p_pm_submit", function(event) {
+				$("#" + event.currentTarget.id.replace("p_pm_sbt_", "p_pm_item_")).remove();
+			});
+
+		},
+		methods : {
+			//動態切換 動態更改單元組
+			change_purchasing : function(event) {
+				$.each(templateBody.link_list, function(key, value) {
+					if (value[0] == event.target.value) {
+						$("#a_0").text(value[0]);
+						$("#a_2").text(value[2]);
+						$("#a_3").text(value[3]);
+					}
+				});
+			},
+
+			//查詢更新
+			search_update : function() {
+				//頁數-刷新
+				this.change_page_update();
+
+				//t_body
+				$("#search_tbody").empty();
+				var t_body = "";
+				var list_id = "";
+				var a_submit = "";
+				var d_submit = "";
+
+				var none = 10;//需隱藏 多餘
+				var progress = 4//進度
+				var status = 5;//單據狀態
+				for (var i = 1; i < this.item_list.length; i++) {
+					//頁數-每頁顯示(不再顯示範圍內則隱藏)
+					var page_group = this.change_page_btn(i);
+					//功能
+					list_id = this.item_list[i][0];
+
+					a_submit = "";
+					a_submit += '<div class="md-6">';
+					a_submit += '<button purchasing_id="' + list_id + '" class="btn btn-warning btn-sm btn-block a_submit">';
+					a_submit += "另(覽)</button></div>";
+
+					t_body += '<tr class="page_all t_row'+ list_id +' '+ page_group+ '" style="white-space: nowrap;" >' + '<th class="ml-0 col-md-12 row">'
+							+ a_submit + d_submit + "</th>";
+					//計數量
+					t_body += "<td>" + (i) + "</td>";
+					//關聯內容
+					/*	完成ERP工單(準備物料)=1
+						完成注意事項(預約生產)=2
+						完成->流程卡(準備生產)=3
+					 */
+					for (var j = 0; j < this.item_list[i].length; j++) {
+						if (progress == j) {
+							switch (this.item_list[i][j]) {
+							case 1:
+								t_body += "<td class='s_" + j + "'>準備物料</td>";
+								break;
+							case 2:
+								t_body += "<td class='s_" + j + "'>預約生產</td>";
+								break;
+							case 3:
+								t_body += "<td class='s_" + j + "'>準備生產</td>";
+								break;
+							default:
+								t_body += "<td class='s_" + j + "'>自訂紀錄</td>";
+								break;
+							}
+							continue;
+						}
+
+						if (status == j) {
+							switch (this.item_list[i][j]) {
+							case 1:
+								t_body += "<td class='s_" + j + "'>有效單</td>";
+								break;
+							case 0:
+								t_body += "<td class='s_" + j + "'>無效單</td>";
+								break;
+							default:
+								t_body += "<td class='s_" + j + "'>自訂紀錄</td>";
+								break;
+							}
+							continue;
+						}
+						if (j > none) {
+							t_body += "<td class='s_" + j + " d-none' >" + this.item_list[i][j] + "</td>";
+						} else {
+							t_body += "<td class='s_" + j + "'>" + this.item_list[i][j] + "</td>";
+						}
+					}
+				}
+				$("#search_tbody").append(t_body + "</tr>");
+
+			},
+			//顯示 查詢列表
+			search_choose : function(event) {
+				console.log(event.target.checked);
+				if (!event.target.checked) {
+					$("#search_thead ." + event.target.id).hide();
+					$("#search_tbody ." + event.target.id).hide();
+				} else {
+					$("#search_thead ." + event.target.id).show();
+					$("#search_tbody ." + event.target.id).show();
+				}
+			},
+
+			//清除新增/修該內容
+			rm_added : function() {
+				$("#a_u_type").text("查看細節(新增)");
+				templateBody.p_pm_item_nbr = 0;//初始化
+				//基本欄位
+				$("#a_id").text("");
+				$("#a_p_id").text("");
+				$("#a_h_d").text("");
+				$("#a_p_c_id").text("");
+				$("#a_p_q").text("1");
+				$("#a_p_s").text("預約生產");
+
+				$("#a_c_d").text("");
+				$("#a_c_u").text("");
+				$("#a_m_d").text("");
+				$("#a_m_u").text("");
+				$("#a_p_u").text("有效單");
+
+				$("#a_o_i").text("");
+				$("#a_c_n").text("");
+				$("#a_c_n2").text("");
+
+				$("#a_v_m").text("");
+				$("#a_p_m").text("");
+				$("#a_p_t").text("量產單");
+
+				$("#a_c_f").text("生產注意事項");
+				$("#a_s_sn").text("");
+				$("#a_e_sn").text("");
+				$(".cb_pkg_name").text("");
+				$("#a_h_d").text("");
+				$("#a_p_bt").val("");
+				$("#a_p_p").text("" + $("#nav_account").text());
+				$("#a_p_name").text("");
+				$("#a_p_specification").text("");
+
+				$("#a_p_pm_note").text("");
+				$("#a_p_note").text("");
+
+				$("#a_p_mfg_p_no").text("");
+				$("#a_p_ps_no").text("");
+				//移除BOM規格
+				$(".p_pm_item_nbr").remove();
+
+				$('#pkg_modify .cb_pkg_ch').prop('checked', false);
+				$('#pkg_modify .cb_pkg_ch').removeAttr('checked');
+				//清除預覽
+				$("#a_u_id").text('');//工單
+				$("#a_u_o_id").text('');//訂單
+				$("#a_u_o_date").text('');//預計出貨
+				$("#a_u_c").text('');//客戶名稱
+				$("#a_u_country").text('');//客戶國家
+				$("#a_u_nb").text('');//數量
+				$("#kind1").text('');//技轉?
+
+				$("#a_u_bom_number").text('');//客戶BOM
+				$("#a_u_model").text('');//型號
+				$("#a_u_version_bios").text('');//主機板
+				$("#a_u_note").text('');//PM備註
+				$("#a_u_note2").text('');//備註
+				$("#c1_bom_type").text('');
+				$("#c1_bom_number").text('');//公司BOM
+				$("#c1_note").text('');
+				$('#pkg_print .cb_pkg_ch').prop('checked', false);
+				$('#pkg_print .cb_pkg_ch').removeAttr('checked');
+
+				$(".listRight .item").remove('');
+				$(".listLeft .item").remove('');
+				$(".item_notUse").remove('');
+			},
+
+			rm_search : function() {
+				$("#s_id").val("");
+				$("#s_product_model").val("");
+				$("#s_bom_product_id").val("");
+				$("#s_product_progress").val("-1").trigger("change");
+				$("#s_product_status").val("-1").trigger("change");
+				//基本欄位
+			},
+
+			//選擇  查看
+			choose_update : function(type, event) {
+				templateBody.rm_added();
+				$("#a_u_type").text(type);
+				templateBody.p_pm_item_nbr = 0;//初始化
+				var id = event.target.attributes.purchasing_id.value;
+				//
+				$("#a_c_f").text($(".t_row" + id + " .s_11")[0].innerText);//來源
+				$("#a_h_d").text($(".t_row" + id + " .s_6")[0].innerText);//期望時間
+				//
+				$("#a_c_d").text($(".t_row" + id + " .s_7")[0].innerText);//時間
+				$("#a_c_u").text($(".t_row" + id + " .s_8")[0].innerText);//建立人
+				$("#a_m_d").text($(".t_row" + id + " .s_9")[0].innerText);//時間
+				$("#a_m_u").text($(".t_row" + id + " .s_10")[0].innerText);//修改人
+				$("#a_p_u").text("有效單");//狀態
+				//
+				$("#a_id").text($(".t_row" + id + " .s_0")[0].innerText);//工單
+				$("#a_p_id").text($(".t_row" + id + " .s_1")[0].innerText);//公司BOM
+				$("#a_v_m").text($(".t_row" + id + " .s_13")[0].innerText);//主機板
+				$("#a_p_s").text("預約生產");//進度
+				//
+				$("#a_o_i").text($(".t_row" + id + " .s_15")[0].innerText);//訂單
+				$("#a_p_c_id").text($(".t_row" + id + " .s_2")[0].innerText);//客戶BOM
+				$("#a_c_n").text($(".t_row" + id + " .s_16")[0].innerText.split('(')[0]);//客戶名稱
+				$("#a_c_n2").text($(".t_row" + id + " .s_16")[0].innerText.split('(')[1].replace(')', ''));//客戶國家
+
+				$("#a_p_q").text($(".t_row" + id + " .s_3")[0].innerText);
+				//
+				$("#a_s_sn").text($(".t_row" + id + " .s_18")[0].innerText);
+				$("#a_e_sn").text($(".t_row" + id + " .s_19")[0].innerText);
+				$("#a_p_m").text($(".t_row" + id + " .s_17")[0].innerText);
+				$("#a_p_t").text($(".t_row" + id + " .s_21")[0].innerText);
+				//
+				$("#a_p_bt").val($(".t_row" + id + " .s_23")[0].innerText);
+				$("#a_p_p").text($(".t_row" + id + " .s_24")[0].innerText);
+				$("#a_p_note").text($(".t_row" + id + " .s_14")[0].innerText);
+				$("#a_p_pm_note").text($(".t_row" + id + " .s_22")[0].innerText);
+				//
+				$("#a_p_mfg_p_no").text($(".t_row" + id + " .s_25")[0].innerText);
+				$("#a_p_ps_no").text($(".t_row" + id + " .s_26")[0].innerText);
+
+				$("#a_p_specification").text($(".t_row" + id + " .s_27")[0].innerText);
+				$("#a_p_name").text($(".t_row" + id + " .s_28")[0].innerText);
+				//規格
+				var p_pm_item = JSON.parse($(".t_row" + id + " .s_20")[0].innerText);
+				if (p_pm_item != null) {
+					var y = 0;
+					var x = 0;
+					if (p_pm_item["have"].length > 0) {
+						for (y = 0; y < p_pm_item["have"].length; y++) {
+							$("#ex_p_pm_item .a_p_pm_submit").trigger("click");
+
+							var qty = p_pm_item["have"][y]['amount'].replace('x', '').replace('(', '').replace(')', '');
+							$("#p_pm_item_" + y + " .p_pm_item_name").text(p_pm_item["have"][y]['name']);
+							$("#p_pm_item_" + y + " .p_pm_item_value").text(p_pm_item["have"][y]['content']);
+							$("#p_pm_item_" + y + " .p_pm_item_qty").text(qty == '' ? 1 : qty);
+						}
+					}
+					if (p_pm_item["not"].length > 0) {
+						for (x = 0; x < p_pm_item["not"].length; x++) {
+							$("#ex_p_pm_item .a_p_pm_submit").trigger("click");
+							$("#p_pm_item_" + (x + y) + " .p_pm_item_name").text(p_pm_item["not"][x]['name']);
+							$("#p_pm_item_" + (x + y) + " .p_pm_item_value").text(p_pm_item["not"][x]['content']);
+							$("#p_pm_item_" + (x + y) + " .p_pm_item_qty").text(0);
+						}
+					}
+				}
+
+				//包裝型態
+				var pkg = $(".t_row" + id + " .s_12")[0].innerText;
+				if (pkg != null && pkg != "null") {
+					pkg = JSON.parse($(".t_row" + id + " .s_12")[0].innerText);
+					console.log(pkg);
+					//modfiy
+					for (var c = 1; c <= 9; c++) {
+						var cb_pkg_name = pkg['cb_pkg_' + c]['cb_pkg_name'];
+						var cb_pkg = pkg['cb_pkg_' + c]['cb_pkg'];
+						$('#pkg_modify #pkg_' + c + " .cb_pkg_name").text(cb_pkg_name);
+						if (cb_pkg == 'checked') {
+							$('#pkg_modify #pkg_' + c + " .cb_pkg_ch").prop('checked', true);
+							$('#pkg_modify #pkg_' + c + " .cb_pkg_ch").attr('checked', 'checked');
+						}
+					}
+					//show print
+					$("#a_u_id").text($(".t_row" + id + " .s_0")[0].innerText);//工單
+					$("#a_u_o_id").text($(".t_row" + id + " .s_15")[0].innerText);//訂單
+					$("#a_u_o_date").text($(".t_row" + id + " .s_6")[0].innerText);//預計出貨
+
+					var a_u_c = $(".t_row" + id + " .s_16")[0].innerText.replace(' ', '').replace('(', '_').replace(')', '');
+					$("#a_u_c").text(a_u_c.split('_')[0]);//客戶名稱
+					$("#a_u_country").text(a_u_c.split('_')[1]);//客戶國家
+
+					$("#a_u_nb").text($(".t_row" + id + " .s_3")[0].innerText);//數量
+					$("#kind1").text($(".t_row" + id + " .s_21")[0].innerText);//技轉?
+
+					if ($(".t_row" + id + " .s_2")[0].innerText == "") {//客戶BOM
+						$("#a_u_bom_number").text($(".t_row" + id + " .s_1")[0].innerText);//公司BOM
+					} else {
+						$("#a_u_bom_number").text($(".t_row" + id + " .s_2")[0].innerText);//客戶BOM
+					}
+					$("#a_u_model").text($(".t_row" + id + " .s_17")[0].innerText);//型號
+					$("#a_u_version_bios").text($(".t_row" + id + " .s_13")[0].innerText);//主機板
+					$("#a_u_note").text($(".t_row" + id + " .s_22")[0].innerText);//PM備註
+					$("#a_u_note2").text($(".t_row" + id + " .s_14")[0].innerText);//備註
+					$("#c1_bom_type").text($(".t_row" + id + " .s_23")[0].innerText);
+					$("#c1_bom_number").text($(".t_row" + id + " .s_1")[0].innerText);//公司BOM
+
+					var c1_note = "表單編號:QR-701-06 / 規格負責人 : " + $(".t_row" + id + " .s_24")[0].innerText;
+					c1_note += " / 建單日期 : " + ($(".t_row" + id + " .s_9")[0].innerText).split(' ')[0];
+					c1_note += " / 建單人 : " + $("#nav_account").text() + " / 單據來源:生產注意事項";
+					$("#c1_note").text(c1_note);
+					//規格
+					var bpc = JSON.parse($(".t_row" + id + " .s_20")[0].innerText);
+					if (bpc != null) {
+						//有
+						var listLeft = $(".listLeft");
+						var listRight = $(".listRight");
+						var sample = listLeft.find(".itemSample");
+						var columnItemNumber = 21;//每行最多 項目
+						var new_use = "";
+						listLeft.find(".item").remove();
+						listRight.find(".item").remove();
+						for (var y = 0; y < bpc["have"].length; y++) {
+							new_use = $(sample.clone());
+							new_use.removeClass("itemSample").addClass("item").removeClass("d-none");
+							new_use.find('.name').text(bpc["have"][y]['name']);
+							new_use.find('.content').text(bpc["have"][y]['content']);
+							new_use.find('.amount').text(bpc["have"][y]['amount']);
+							if (y < columnItemNumber) {
+								listLeft.append(new_use);
+							} else {
+								listRight.append(new_use);
+							}
+						}
+						//沒有
+						$(".item_notUse").remove();
+						var list_notUse = $(".list_notUse");
+						var sample_notUse = list_notUse.find(".itemSample_notUse");
+						var new_notUse = "";
+						for (var n = 0; n < bpc["not"].length; n++) {
+							new_notUse = $(sample_notUse.clone());
+							new_notUse.removeClass("d-none").removeClass("itemSample_notUse").addClass("item_notUse");
+							new_notUse.find('.name').text(bpc["not"][n]['name']);
+							new_notUse.find('.content').text(bpc["not"][n]['content']);
+							//bpc["not"][n]['amount'];
+							list_notUse.append(new_notUse);
+						}
+
+					}
+
+					//包裝
+					for (var c = 1; c <= 9; c++) {
+						var cb_pkg_name = pkg['cb_pkg_' + c]['cb_pkg_name'];
+						var cb_pkg = pkg['cb_pkg_' + c]['cb_pkg'];
+						$('#pkg_print #pkg_' + c + " .cb_pkg_name").text(cb_pkg_name);
+						if (cb_pkg == 'checked') {
+							$('#pkg_print #pkg_' + c + " .cb_pkg_ch").prop('checked', true);
+							$('#pkg_print #pkg_' + c + " .cb_pkg_ch").attr('checked', 'checked');
+						}
+					}
+				}
+
+				//移動
+				setTimeout(function() {
+					$("html,body").animate({
+						scrollTop : 1000
+					}, 'slow');
+				}, 200);
+			},
+			printDiv : function() {
+				var divToPrint = document.getElementById("collapseAddedPrint");
+				var style = document.getElementById("table2Style");
+				var newWin = window.open("", "Print-Window");
+				newWin.document.open();
+				newWin.document.write("<html>" + "<head>" + '<link rel="stylesheet" href="./thirdparty/css/bootstrap-4.4.1.min.css" />' + style.outerHTML
+						+ "</head>" + '<body onload="window.print()" class="container" id="main">' + "<div>" + divToPrint.innerHTML + "</div>" + "</body>"
+						+ "</html>");
+
+				newWin.document.getElementById('a_u_id').value = $("#a_u_id").val();
+				newWin.document.getElementById('a_u_o_id').value = $("#a_u_o_id").val();
+				newWin.document.getElementById('a_u_o_date').value = $("#a_u_o_date").val();
+				newWin.document.getElementById('a_u_country').value = $("#a_u_country").val();
+				newWin.document.getElementById('a_u_bom_number').value = $("#a_u_bom_number").val();
+				newWin.document.getElementById('a_u_note').value = $("#a_u_note").val();
+				newWin.document.getElementById('a_u_note2').value = $('#a_u_note2').val();
+				newWin.document.getElementById('a_u_c').value = $("#a_u_c").val();
+				newWin.document.getElementById('a_u_nb').value = $("#a_u_nb").val();
+
+				newWin.document.close();
+
+				setTimeout(function() {
+					newWin.close();
+				}, 500);
+			},
+			//頁數-初始化(新增 or 修改 or 刪除 or 條件 要重製)
+			change_page_init : function() {
+				//active 更換為第一格
+				var a = "active";
+				var d = "disabled";
+				$(".page-item").removeClass(a);
+				$(".page-item").removeClass(d);
+				for (var re_page = 1; re_page <= 10; re_page++) {
+					var now_page = re_page + (this.page_batch * 10);
+					//如果就在第一頁 不需更換
+					if (!$("#page-items .p" + now_page).hasClass("p" + re_page)) {
+						$("#page-items .p" + now_page).addClass("p" + re_page);
+						$("#page-items .p" + re_page).removeClass("p" + now_page);
+						$("#page-items .p" + re_page + " a").text(re_page);
+						$("#page-items .p" + re_page + " a").attr("id", "p" + re_page);
+					}
+					if (re_page == 1) {
+						$("#page-items .p" + re_page).addClass(a);
+					}
+				}
+				//分頁功能
+				this.page_max = 100;//當前本批 筆數
+				this.page_max_total = 100;//最大總數
+				this.page_batch = 0;//第幾批
+				this.page_batch_total = 100;//每批間格值
+				this.page_every = 10;//當前每頁筆數
+				this.page_stay = 1;//當前頁數
+
+			},
+			//頁數-刷新
+			change_page_update : function() {
+				//頁數-取得當前最大筆數 && 頁數
+				this.page_max = this.item_list.length;
+				$(".p_n").removeClass("disabled");
+				if (this.page_max < this.page_max_total) {
+					$(".p_n").addClass("disabled");
+				}
+				$(".p_p").removeClass("disabled");
+				if (this.page_batch < 1) {
+					$(".p_p").addClass("disabled");
+				}
+				//頁數-隱藏多於頁數
+				$(".p_nb").addClass("disabled");
+
+			},
+			//頁數-換頁按鈕建置(頁數-每頁顯示)
+			change_page_btn : function(i) {
+				var d_none = "";
+				if (i > (this.page_every * this.page_stay)) {
+					d_none = "d-none";
+				}
+				//頁數-(個位數)+(十位數)
+				var page_group = "pg_" + (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
+				var page_nb = "p" + (Math.floor((i - 1) / this.page_every) + 1 + (this.page_batch * 10));
+				$("." + page_nb).removeClass("disabled");
+				return page_group + " " + d_none;
+			},
+			//頁數-換頁查詢
+			change_page : function(event) {
+				var d = "disabled";
+				var d_n = "d-none";
+				var a = "active";
+				var pg = "pg_";
+				console.log("page btn is:" + event.text);
+				//選定頁數
+				if (event.id != "p_p" && event.id != "p_n") {
+					$(".page-item").removeClass(a);
+					$("." + event.id).addClass(a);
+
+					$(".page_all").addClass(d_n);
+					$("." + pg + event.text).removeClass(d_n);
+
+				} else if (event.id == "p_p") {//上10頁(批數 要大於1)
+					if (this.page_batch > 0) {
+						//換上一批次 頁數
+						$(".page-item").removeClass(a);
+
+						for (var i = 1; i <= 10; i++) {
+							var now_page = i + (this.page_batch * 10);
+							var previous_page = i + ((this.page_batch) * 10) - 10;
+							$(".p" + now_page).addClass("p" + previous_page);
+							$(".p" + previous_page).removeClass("p" + now_page);
+							$(".p" + previous_page + " a").text(previous_page);
+							$(".p" + previous_page + " a").attr("id", "p" + previous_page);
+							if (i == 1) {
+								$(".p" + previous_page).addClass(a);
+							}
+						}
+						this.page_batch -= 1;
+						this.send_search("");
+					}
+				} else if (event.id == "p_n") {//下10頁(必須滿100筆最大量 )
+					if (this.page_max >= this.page_max_total) {
+						//換下一批次 頁數
+						$(".page-item").removeClass(a);
+						for (var i = 1; i <= 10; i++) {
+							var now_page = i + (this.page_batch * 10);
+							var next_page = i + ((this.page_batch + 1) * 10);
+							$(".p" + now_page).addClass("p" + next_page);
+							$(".p" + next_page).removeClass("p" + now_page);
+							$(".p" + next_page + " a").text(next_page);
+							$(".p" + next_page + " a").attr("id", "p" + next_page);
+							if (i == 1) {
+								$(".p" + next_page).addClass(a);
+							}
+						}
+						this.page_batch += 1;
+						this.send_search("");
+					}
+				}
+				return false;
+			},
+			//傳送  廢止 或 更新
+			send_update_save : function() {
+				//無法對自訂單做修正
+				if ($('#a_p_u').text() == '自訂紀錄' || $('#a_p_u').text() == '無效單' || $('#a_p_s').text() == '準備生產') {
+					main.alertshow(true, " 結果->無法修改[自訂紀錄] or [無效單] or [準備生產]");
+					return false;
+				}
+				// 條件項目
+				var content = new Object();
+				content.id = $("#a_id").text();
+				content.product_status = 0;
+				console.log(content);
+				//(廢止)預設				
+				var action = "D";
+				var url = "./create_bom_custom_print.do";
+				var order = "search_update"; //指令
+
+				//如果是 (另存)參數 or 查看細節(新增)
+				if ($("#a_u_type").text() == "查看細節(另存)" || $("#a_u_type").text() == "查看細節(新增)") {
+					if ($('#a_h_d').text() != '' && $('#a_id').text() != '' && //
+					$('#a_p_id').text() != '' && $('#a_v_m').text() != '' && //
+					$('#a_o_i').text() != '' && $('#a_c_n').text() != '' && //
+					$('#a_c_n2').text() != '' && $('#a_p_m').text() != '' && //
+					$('#a_p_q').text() != '' && $('#a_p_bt').val() != '' && //
+					$(".p_pm_item_nbr").length > 0) {
+						content.id = this.old_id;
+						content.product_hope_date = $('#a_h_d').text();//預計日期(出貨日)
+						content.new_id = $('#a_id').text();//製令單
+						content.bom_product_id = $('#a_p_id').text();//產品BOM號
+						content.version_motherboard = $('#a_v_m').text();//主機板號
+						content.order_id = $('#a_o_i').text();//客戶訂單
+						content.bom_product_customer_id = $('#a_p_c_id').text();//客戶BOM
+						content.client_name = $('#a_c_n').text() + "(" + $('#a_c_n2').text() + ")";//客戶名稱 
+						//=======
+						content.mfg_part_no = $('#a_p_mfg_p_no').text();//驗證碼(MFG Part No)
+						content.parts_no = $('#a_p_ps_no').text(); //組件號(Parts No)
+						content.produt_model = $('#a_p_m').text();//產品型號
+						content.production_quantity = $('#a_p_q').text();//數量
+						//=======
+						content.bom_type = $('#a_p_bt').val();//產品類型
+						content.bom_principal = $('#a_p_p').text();//產品負責人 
+
+						content.product_name = $('#a_p_name').text(); //產品品名
+						content.product_specification = $('#a_p_specification').text(); //產品規格
+						content.note = $('#a_p_note').text();//生管備註
+						content.pm_note = $('#a_p_pm_note').text();//PM備註
+						//bom規格json{}
+						var bom_product_content = {};
+						var content_have = {};
+						var bom_product_content_have = [];
+						var bom_product_content_not = [];
+						$(".p_pm_item_nbr").get().forEach(function(entry) {
+							content_have = {};
+							content_have.name = $(entry).find(".p_pm_item_name").text();
+							content_have.content = $(entry).find(".p_pm_item_value").text();
+							//數量
+							if ($(entry).find(".p_pm_item_qty").text() >= 1) {
+								content_have.amount = '(x' + $(entry).find(".p_pm_item_qty").text() + ')';
+								if ($(entry).find(".p_pm_item_qty").text() == 1) {
+									//如果是1數量則不特別顯示
+									content_have.amount = '';
+								}
+								bom_product_content_have.push(content_have);
+							} else {
+								content_have.amount = '';
+								bom_product_content_not.push(content_have);
+							}
+						});
+						bom_product_content.not = bom_product_content_not;
+						bom_product_content.have = bom_product_content_have;
+						content.bom_product_content = bom_product_content;// bom規格json{}
+						//======
+						//包裝型態
+						var cb_pkg_all = {};
+						for (var c = 1; c <= 9; c++) {
+							var cb_pkg_name = $("#pkg_modify #pkg_" + c + " .cb_pkg_name").text();
+							var cb_pkg = $("#pkg_modify #pkg_" + c + " .cb_pkg input").attr('checked');
+							cb_pkg = (cb_pkg == null ? "" : cb_pkg);
+							cb_pkg_all["cb_pkg_" + c] = {
+								"cb_pkg" : cb_pkg,
+								"cb_pkg_name" : cb_pkg_name
+							};
+						}
+						content.cb_pkg_all = cb_pkg_all;
+
+						action = "U";
+						url = "./create_bom_custom_print.do";
+					} else {
+						main.alertshow(true, " 結果->欄位尚未填寫完整,請在確認!!");
+						return false;
+					}
+				}
+
+				var data = JSON.stringify({
+					data : {
+						datetime : "",
+						action : action,
+						whoami : main.loginData.account,
+						cellBackName : "bodyAfter",
+						cellBackOrder : order,
+						content : content,
+					},
+				});
+				main.ajaxSend(url, data);
+				return false; //防止真傳送
+			},
+			//傳送 查詢
+			send_search : function() {
+				var content = new Object();
+				content.id = $("#s_id").val();
+				content.product_progress = $("#s_product_progress").val();
+				content.product_status = $("#s_product_status").val();
+				content.product_model = $("#s_product_model").val();
+				content.bom_product_id = $("#s_bom_product_id").val();
+
+				//頁數
+				content.page_nb = this.page_batch * this.page_batch_total;//批次(起始數)
+				content.page_total = this.page_batch_total;//(每次要的最大數量)
+
+				var url = "./bom_custom_print.do";
+				var order = "search_update"; //指令
+
+				var data = JSON.stringify({
+					data : {
+						datetime : "",
+						action : "R",
+						whoami : main.loginData.account,
+						cellBackName : "bodyAfter",
+						cellBackOrder : order,
+						content : content,
+					},
+				});
+				main.ajaxSend(url, data);
+			},
+			//Rsp-回傳值
+			bodyAfter : function(event) {
+				console.log("to index success");
+				switch (event.r_cellBackOrder //指令
+				) {
+				case "search_update":
+					//空直免刷新
+					if (event.r_content.templateInfo.body["item_list"] != null && event.r_content.templateInfo.body["item_list"] != "") {
+						//刷新資料
+						this.item_list = event.r_content.templateInfo.body["item_list"];
+						this.search_update();
+						this.rm_added();
+						//移動
+						setTimeout(function() {
+							$("html,body").animate({
+								scrollTop : 0
+							}, 'slow');
+						}, 200);
+					}
+					break;
+				case "update_body_nav":
+					break;
+				}
+			},
+		},
+
+		//監聽事件移除
+		beforeDestroy : function() {
+			console.log("to beforeDestroy event");
+			$(document).off("click", "#search_choose input");
+			$(document).off("click", "#s_submit");
+			$(document).off("click", "#a_c_submit");
+			$(document).off("click", "#s_c_submit");
+			$(document).off("click", ".a_submit");
+			$(document).off("click", ".cb_pkg");
+			$(document).off("click", ".a_p_pm_submit");
+			$(document).off("click", ".d_p_pm_submit");
+
+			$(document).off("click", "#p_submit");
+
+		},
+	});
+</script>
