@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dtri.com.bean.JsonObjBean;
 import dtri.com.bean.JsonTemplateBean;
-import dtri.com.db.entity.ERP_PM_Entity;
 import dtri.com.db.entity.ProductionRecordsEntity;
 import dtri.com.db.pgsql.dao.BomCustomPrintDao;
 import dtri.com.db.pgsql.dao.ProductionManagementDao;
@@ -31,9 +30,6 @@ public class BomCoustomPrintService {
 	private LoginService loginService;
 	@Autowired
 	private BomCustomPrintDao dao;
-
-	@Autowired
-	private ProductionManagementDao pm_Dao;
 
 	/**
 	 * @param entity
