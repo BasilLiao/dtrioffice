@@ -1302,7 +1302,11 @@
 						//
 						content.order_id = $('#a_o_i').text();//訂單
 						content.bom_product_customer_id = $('#a_p_c_id').text();//客戶BOM
-						content.client_name = $('#a_c_n').text();//客戶名稱
+						if($('#a_c_n').text().indexOf(')')>0 && $('#a_c_n').text().indexOf('(')>0){
+							content.client_name = $('#a_c_n').text();//客戶名稱							
+						}else{
+							content.client_name = $('#a_c_n').text()+"(X)";//客戶名稱		
+						}
 						content.production_quantity = $('#a_p_q').text();//數量
 						//
 						content.note = $('#a_p_note').text();//備註

@@ -1398,12 +1398,18 @@
 				var order = "search_update"; //指令
 
 				//如果是 (另存)參數 or 查看細節(新增)
+				var regEx = /^\d{4}-\d{2}-\d{2}$/;//日期格式 yyyy-MM-dd
 				if ($("#a_u_type").text() == "查看細節(另存)" || $("#a_u_type").text() == "查看細節(新增)") {
-					if ($('#a_h_d').text() != '' && $('#a_id').text() != '' && //
-					$('#a_p_id').text() != '' && $('#a_v_m').text() != '' && //
-					$('#a_o_i').text() != '' && $('#a_c_n').text() != '' && //
-					$('#a_c_n2').text() != '' && $('#a_p_m').text() != '' && //
-					$('#a_p_q').text() != '' && $('#a_p_bt').val() != '' && //
+					if ($('#a_h_d').text().replaceAll(' ', '') != '' && $('#a_h_d').text().match(regEx) != null && //
+					$('#a_id').text().replaceAll(' ', '') != '' && //
+					$('#a_p_id').text().replaceAll(' ', '') != '' && //
+					$('#a_v_m').text().replaceAll(' ', '') != '' && //
+					$('#a_o_i').text().replaceAll(' ', '') != '' && //
+					$('#a_c_n').text().replaceAll(' ', '') != '' && //
+					$('#a_c_n2').text().replaceAll(' ', '') != '' && //
+					$('#a_p_m').text().replaceAll(' ', '') != '' && //
+					$('#a_p_q').text().replaceAll(' ', '') != '' && //
+					$('#a_p_bt').val().replaceAll(' ', '') != '' && //
 					$(".p_pm_item_nbr").length > 0) {
 						content.id = this.old_id;
 						content.product_hope_date = $('#a_h_d').text();//預計日期(出貨日)
@@ -1419,13 +1425,13 @@
 						content.produt_model = $('#a_p_m').text();//產品型號
 						content.production_quantity = $('#a_p_q').text();//數量
 						//=======
-						content.bom_type = $('#a_p_bt').val();//產品類型
-						content.bom_principal = $('#a_p_p').text();//產品負責人 
+						content.bom_type = $('#a_p_bt').val() == '' ? '其他' : $('#a_p_bt').val();//產品類型
+						content.bom_principal = $('#a_p_p').text() == '' ? 'N/A' : $('#a_p_p').text();//產品負責人 
 
-						content.product_name = $('#a_p_name').text(); //產品品名
-						content.product_specification = $('#a_p_specification').text(); //產品規格
-						content.note = $('#a_p_note').text();//生管備註
-						content.pm_note = $('#a_p_pm_note').text();//PM備註
+						content.product_name = $('#a_p_name').text() == '' ? 'N/A' : $('#a_p_name').text(); //產品品名
+						content.product_specification = $('#a_p_specification').text() == '' ? 'N/A' : $('#a_p_specification').text(); //產品規格
+						content.note = $('#a_p_note').text() == '' ? 'N/A' : $('#a_p_note').text();//生管備註
+						content.pm_note = $('#a_p_pm_note').text() == '' ? 'N/A' : $('#a_p_pm_note').text();//PM備註
 						//bom規格json{}
 						var bom_product_content = {};
 						var content_have = {};
