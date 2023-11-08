@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Fm_Time_Model {
 
@@ -76,7 +77,7 @@ public class Fm_Time_Model {
 	/** get Date to week **/
 	public static int getWeek(Date date) {
 		try {
-			Calendar cal = Calendar.getInstance();
+			Calendar cal = Calendar.getInstance(Locale.TAIWAN);
 			cal.setMinimalDaysInFirstWeek(7);
 			cal.setTime(date);
 			int week = cal.get(Calendar.WEEK_OF_YEAR);
