@@ -213,10 +213,7 @@ public class ERP_ProductionManagementService {
 					one.setMes_note(pmTemp.getMes_note());
 					old_week = Integer.parseInt(pmTemp.getMoc_week().split("-W")[1]);
 					old_year = Integer.parseInt(pmTemp.getMoc_week().split("-W")[0]);
-					// 測試
-					if (pmTemp.getMoc_id().equals("A511-230413006")) {
-						System.out.println("A511-230413006");
-					}
+					
 					// 如果(同一年含去年)且(週期小於本周)
 					if (old_year <= now_year && old_week < now_week) {
 						one.setMoc_week(now_year + "-W" + String.format("%02d", now_week));
@@ -298,10 +295,7 @@ public class ERP_ProductionManagementService {
 						erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
 						erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
 						// 如果(同一年含去年)且(週期小於本周)
-						// 測試
-						if (pmTemp.getMoc_id()!=null && pmTemp.getMoc_id().equals("A511-230413006")) {
-							System.out.println("A511-230413006");
-						}
+						
 						if (erp_year <= now_year && erp_week < now_week) {
 							erp_week = now_week;
 							erp_year = now_year;
@@ -549,10 +543,7 @@ public class ERP_ProductionManagementService {
 									upd_pm_one.setSys_modify_date(new Date());
 									upd_pm_one.setSys_modify_user(new_name);
 									// 標記修改
-									// 測試
-									if (upd_pm_one!=null && upd_pm_one.getMoc_id().equals("A511-230413006")) {
-										System.out.println("A511-230413006");
-									}
+									
 									if (tagAllIDs.toString().indexOf("s_0") < 0) {
 										tagAllIDs.put("s_0");
 									}
@@ -587,10 +578,7 @@ public class ERP_ProductionManagementService {
 								mocTagId.remove(new_id);
 								pmTempBean.setMocTagId(mocTagId);
 							}
-							// 測試
-							if (upd_pm!=null && upd_pm.getMoc_id().equals("A511-230413006")) {
-								System.out.println("A511-230413006");
-							}
+							
 							// 標記修改
 							if (tagAllID.toString().indexOf("s_16") < 0) {
 								tagAllID.put("s_16");
