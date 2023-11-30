@@ -77,10 +77,26 @@ public class Fm_Time_Model {
 	/** get Date to week **/
 	public static int getWeek(Date date) {
 		try {
+			// 今年
+			Date dateNow = new Date();
+			Calendar calNow = Calendar.getInstance(Locale.TAIWAN);
+			calNow.setMinimalDaysInFirstWeek(7);
+			calNow.setTime(dateNow);
+			int yearNow = calNow.get(Calendar.YEAR);
+
+			// 預計日
 			Calendar cal = Calendar.getInstance(Locale.TAIWAN);
 			cal.setMinimalDaysInFirstWeek(7);
 			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH);
+			int day = cal.get(Calendar.DAY_OF_MONTH);
 			int week = cal.get(Calendar.WEEK_OF_YEAR);
+			// 週期(可能是在每年最後 交替會出現異常 由取代)
+			if (month == 0 && yearNow < year && day < 7 && week >= 52) {
+				week = 0;
+			}
+
 			return week;
 		} catch (Exception e) {
 			e.printStackTrace();
