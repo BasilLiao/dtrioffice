@@ -246,6 +246,17 @@ public class ERP_ProductionManagementService {
 					default:
 						break;
 					}
+					// 生管-製令單
+					JSONArray new_notes = new JSONArray();
+					if (one.getMoc_ta054() != null && !one.getMoc_ta054().equals("")) {
+						JSONObject new_note = new JSONObject();
+						new_note.put("date", Fm_Time_Model.to_yMd_Hms(new Date()));
+						new_note.put("user", one.getMoc_cuser());
+						new_note.put("ms", one.getMoc_ta054());
+						new_notes.put(new_note);
+					}
+					one.setMoc_note(new_notes.toString());
+					
 					// 系統
 					one.setNote("");
 					one.setUseful(1);
