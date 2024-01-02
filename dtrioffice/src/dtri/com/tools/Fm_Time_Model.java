@@ -93,7 +93,7 @@ public class Fm_Time_Model {
 			int day = cal.get(Calendar.DAY_OF_MONTH);
 			int week = cal.get(Calendar.WEEK_OF_YEAR);
 			// 週期(可能是在每年最後 交替會出現異常 由取代)
-			if (month == 0 && yearNow < year && day < 7 && week >= 52) {
+			if (month == 0 && yearNow <= year && day < 7 && week >= 52) {
 				week = 0;
 			}
 

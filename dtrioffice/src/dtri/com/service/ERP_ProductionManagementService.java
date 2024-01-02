@@ -211,18 +211,19 @@ public class ERP_ProductionManagementService {
 					one.setIvn_status(pmTemp.getIvn_status());// 1=齊料 2=未齊 3=未備
 					// 產線
 					one.setMes_note(pmTemp.getMes_note());
-					old_week = Integer.parseInt(pmTemp.getMoc_week().split("-W")[1]);
-					old_year = Integer.parseInt(pmTemp.getMoc_week().split("-W")[0]);
+					
+					
+					//該ERP的[預計開工]
+					erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
+					erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
 					
 					// 如果(同一年含去年)且(週期小於本周)
-					if (old_year <= now_year && old_week < now_week) {
+					if (erp_year < now_year ||(erp_year <= now_year && erp_week < now_week)) {
 						one.setMoc_week(now_year + "-W" + String.format("%02d", now_week));
-					} else if (!pmTemp.getMoc_ta009().equals(one.getMoc_ta009())) {// 週期有修改
-						erp_week = Fm_Time_Model.getWeek(Fm_Time_Model.toDate(one.getMoc_ta009()));
-						erp_year = Integer.parseInt(one.getMoc_ta009().split("-")[0]);
+						
+					}else {
 						one.setMoc_week(erp_year + "-W" + String.format("%02d", erp_week));
-					} else {
-						one.setMoc_week(pmTemp.getMoc_week());
+						
 					}
 					System.out.println(one.getMoc_week());
 
