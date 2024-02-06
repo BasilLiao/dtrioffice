@@ -91,7 +91,7 @@ public class ProductionSnService {
 		ArrayList<String> sn_list = new ArrayList<String>();
 		// 可辨識規則
 		ProductionSnEntity sn_YYWW = new ProductionSnEntity();
-		ProductionSnEntity sn_000 = new ProductionSnEntity();
+		ProductionSnEntity sn_0000 = new ProductionSnEntity();
 
 		// 取出 現在(動態部分)序列規則
 		for (ProductionSnEntity s : entity) {
@@ -104,10 +104,10 @@ public class ProductionSnService {
 				sn_YYWW.setSn_name(s.getSn_name());// 起始值
 				sn_YYWW.setSn_value(s.getSn_value());// 規則
 			}
-			if (s.getSn_value().equals("[000]")) {
-				sn_000.setSn_id(s.getSn_id());
-				sn_000.setSn_name(s.getSn_name());// 起始值
-				sn_000.setSn_value(s.getSn_value());// 規則
+			if (s.getSn_value().equals("[0000]")) {
+				sn_0000.setSn_id(s.getSn_id());
+				sn_0000.setSn_name(s.getSn_name());// 起始值
+				sn_0000.setSn_value(s.getSn_value());// 規則
 			}
 		});
 
@@ -118,14 +118,14 @@ public class ProductionSnService {
 		for (int i = 0; i < total; i++) {
 
 			// 流水號
-			sn_000_new = get000(sn_000.getSn_name());
+			sn_000_new = get000(sn_0000.getSn_name());
 			// 如果數字為0 則在 年週期 加1(進位)
-			if (sn_000_new.equals("000")) {
+			if (sn_000_new.equals("0000")) {
 				sn_YYWW.setSn_name("" + (Integer.parseInt(sn_YYWW.getSn_name()) + 1));
 				sn_000_new = String.format("%0" + sn_000_new.length() + "d", 1);
 			}
-			sn_for_item = sn_item.replace(sn_000.getSn_value(), sn_000_new);
-			sn_000.setSn_name(sn_000_new);
+			sn_for_item = sn_item.replace(sn_0000.getSn_value(), sn_000_new);
+			sn_0000.setSn_name(sn_000_new);
 
 			// 年周
 			sn_YYWW_new = getYYWW(sn_YYWW.getSn_name());
@@ -136,7 +136,7 @@ public class ProductionSnService {
 		}
 		obj.put("sn_list", sn_list);
 		obj.put("sn_YYWW", sn_YYWW);
-		obj.put("sn_000" , sn_000);
+		obj.put("sn_000" , sn_0000);
 		return obj;
 	}
 
